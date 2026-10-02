@@ -19,7 +19,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Check private repository token
         env:
@@ -40,14 +40,12 @@ jobs:
             base44/shared
           path: source
 
+      - name: Install DuckDB for SportsDataverse Parquet reads
+        run: python -m pip install --disable-pip-version-check duckdb
+
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-
-      - name: Check required CFBD key
-        env:
-          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-        run: test -n "$CFBD_API_KEY" || { echo 'Add repository secret CFBD_API_KEY'; exit 1; }
 
       - name: Read existing private data branch
         uses: actions/checkout@v6
@@ -68,10 +66,12 @@ jobs:
       - name: Fetch, calculate, and materialize all CFB timeframes
         working-directory: source
         env:
-          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
+          CFB_SPORTSDATAVERSE_INPUT_DIR: ${{ runner.temp }}/cfb-sportsdataverse
           CFB_REFRESH_PREVIOUS_SEASON: ${{ github.event.inputs.refresh_previous || 'false' }}
-        run: deno run --allow-net --allow-env --allow-read --allow-write scripts/refresh_cfb_team_stats_github.ts
+        run: |
+          python scripts/prepare_cfb_sportsdataverse.py
+          deno run --allow-net --allow-env --allow-read --allow-write scripts/refresh_cfb_team_stats_github.ts
 
       - name: Publish CFB stats cache
         working-directory: data
