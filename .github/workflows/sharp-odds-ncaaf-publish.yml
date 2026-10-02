@@ -1,0 +1,79 @@
+name: Refresh NCAAF SharpOdds cache
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sharp-odds-ncaaf-publisher
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check private repository token
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
+
+      - name: Read source from the private app repository
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: main
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            base44/functions
+          path: source
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check required SharpAPI key
+        env:
+          SHARP_API_KEY: ${{ secrets.SHARP_API_KEY }}
+        run: test -n "$SHARP_API_KEY" || { echo 'Add repository secret SHARP_API_KEY'; exit 1; }
+
+      - name: Read existing private data branch
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: sharpodds-data
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+          path: data
+
+      - name: Configure private data commit identity
+        working-directory: data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Refresh and materialize NCAAF snapshots
+        working-directory: source
+        env:
+          SHARP_API_KEY: ${{ secrets.SHARP_API_KEY }}
+          PINNACLE_GUEST_API_KEY: ${{ secrets.PINNACLE_GUEST_API_KEY }}
+          NOVIG_CLIENT_ID: ${{ secrets.NOVIG_CLIENT_ID }}
+          NOVIG_CLIENT_SECRET: ${{ secrets.NOVIG_CLIENT_SECRET }}
+          REBET_API_KEY: ${{ secrets.REBET_API_KEY }}
+          SHARP_ODDS_OUTPUT_DIR: ${{ github.workspace }}/data
+          SHARP_ODDS_IMPORT_ONLY: 'true'
+        run: deno run --allow-net --allow-env --allow-read --allow-write scripts/refresh_sharp_odds_ncaaf_github.ts
+
+      - name: Publish NCAAF cache generation
+        working-directory: data
+        run: |
+          git add sharp-odds/ncaaf
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -qm 'Refresh NCAAF SharpOdds cache'
+          git push --quiet origin HEAD:sharpodds-data

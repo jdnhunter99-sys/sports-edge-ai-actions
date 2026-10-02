@@ -1,0 +1,69 @@
+name: Publish private PropLine JSON
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: propline-private-data-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - name: Check private repository token
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
+
+      - name: Read source from the private app repository
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: main
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            base44/functions
+          path: source
+
+      - name: Check required API key
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: test -n "$PROPLINE_API_KEY" || { echo 'Add repository secret PROPLINE_API_KEY'; exit 1; }
+
+      - name: Read existing private data branch
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: propline-data
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+          path: data
+
+      - name: Configure private data commit identity
+        working-directory: data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Fetch and build complete JSON generation
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+          PROPLINE_OUTPUT_DIR: ${{ github.workspace }}/data
+        run: python3 source/scripts/publish_propline.py
+
+      - name: Atomically commit and publish completed generation
+        working-directory: data
+        run: |
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -qm 'Publish complete PropLine JSON generation'
+          git push --quiet origin HEAD:propline-data
