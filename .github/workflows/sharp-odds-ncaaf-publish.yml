@@ -31,6 +31,7 @@ jobs:
           sparse-checkout: |
             scripts
             base44/functions
+            base44/shared
           path: source
 
       - uses: denoland/setup-deno@v2
