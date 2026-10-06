@@ -77,8 +77,18 @@ def fetch_html(path: str) -> tuple[str, str]:
 
 def parse_rows(page_sport: str, market: str, body: str) -> list[dict]:
     output = []
-    for match in re.finditer(r'<li\b[^>]*class="[^"]*\bborder\b[^"]*"[^>]*>[\s\S]*?</li>', body, re.I):
-        row = match.group(0)
+    # Match fetchCFBProps/fetchNFLProps extractors exactly: list entries begin
+    # with this marker and terminate at the first closing li.
+    search_from = 0
+    while True:
+        start = body.find('<li class="border', search_from)
+        if start < 0:
+            break
+        end = body.find('</li>', start)
+        if end < 0:
+            break
+        row = body[start:end + 5]
+        search_from = end + 5
         player = re.search(r'<a[^>]+href="[^\"]*/prop-bets/(\d+)/[^\"]*"[^>]*>([\s\S]*?)</a>', row, re.I)
         if not player:
             continue
@@ -102,12 +112,32 @@ def parse_rows(page_sport: str, market: str, body: str) -> list[dict]:
         over = re.search(r"o(\d+(?:\.\d+)?)([+-]\d{2,4})", row, re.I)
         under = re.search(r"u(\d+(?:\.\d+)?)([+-]\d{2,4})", row, re.I)
         line = float(over.group(1)) if over else float(under.group(1)) if under else projection
+        row_market = re.search(r'data-market="([^\"]+)"', row, re.I)
+        row_market_label = html.unescape(row_market.group(1)).strip() if row_market else None
+        market_key = normalize_cfb_market(row_market_label) if page_sport == "cfb" and market == "all" else market
+        if not market_key:
+            continue
         output.append({"player": name, "playerId": player.group(1), "team": team, "opponent": opponent,
-            "isHome": is_home, "matchup": matchup_text or None, "market": market, "line": line,
+            "isHome": is_home, "matchup": matchup_text or None, "line": line,
             "projection": projection, "overOdds": over.group(2) if over else None,
             "underOdds": under.group(2) if under else None, "gameId": event.group(1) if event else None,
-            "source": "ScoresAndOdds"})
+            "rawMarket": row_market_label, "market": market_key, "source": "ScoresAndOdds"})
     return output
+
+def normalize_cfb_market(value: str | None) -> str | None:
+    raw = re.sub(r'[^a-z0-9]+', ' ', (value or '').lower()).strip()
+    aliases = {
+        'passing yards': 'passing_yards', 'pass yards': 'passing_yards',
+        'passing tds': 'passing_tds', 'passing touchdowns': 'passing_tds',
+        'completions': 'passing_completions', 'passing completions': 'passing_completions',
+        'pass attempts': 'passing_attempts', 'passing attempts': 'passing_attempts',
+        'rushing yards': 'rushing_yards', 'rush yards': 'rushing_yards',
+        'rush attempts': 'rushing_attempts', 'rushing attempts': 'rushing_attempts',
+        'rushing tds': 'rushing_tds', 'rushing touchdowns': 'rushing_tds',
+        'receiving yards': 'receiving_yards', 'receptions': 'receptions',
+        'receiving tds': 'receiving_tds', 'receiving touchdowns': 'receiving_tds',
+    }
+    return aliases.get(raw)
 
 def number(value: str):
     try:
@@ -134,12 +164,24 @@ def fetch_market(sport: str, market: str, paths: list[str]) -> tuple[str, list[d
 
 def fetch_screen(sport: str, screen: str, markets: list[tuple[str, list[str]]]) -> dict:
     props, diagnostics = [], {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-        futures = [pool.submit(fetch_market, sport, market, paths) for market, paths in markets]
-        for future in concurrent.futures.as_completed(futures):
-            market, rows, attempts = future.result()
+    if sport == 'cfb':
+        # ScoresAndOdds' current NCAAF all-props board is the reliable route;
+        # market detail URLs can redirect/return no rows. Read each row's own
+        # data-market field instead of labeling the entire board as one market.
+        try:
+            body, final_url = fetch_html('/ncaaf/props')
+            rows = parse_rows('cfb', 'all', body)
             props.extend(rows)
-            diagnostics[market] = attempts
+            diagnostics['all'] = [{'path': '/ncaaf/props', 'finalUrl': final_url, 'status': 200, 'rows': len(rows)}]
+        except Exception as error:
+            diagnostics['all'] = [{'path': '/ncaaf/props', 'error': str(error)[:200], 'rows': 0}]
+    else:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+            futures = [pool.submit(fetch_market, sport, market, paths) for market, paths in markets]
+            for future in concurrent.futures.as_completed(futures):
+                market, rows, attempts = future.result()
+                props.extend(rows)
+                diagnostics[market] = attempts
     unique, seen = [], set()
     for prop in props:
         key = (prop["playerId"], prop["market"], prop.get("gameId"))
