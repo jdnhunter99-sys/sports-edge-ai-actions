@@ -20,19 +20,12 @@ jobs:
           PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
         run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
 
-      - name: Read source from the private app repository
+      - name: Check out this Actions repository
         uses: actions/checkout@v6
         with:
-          repository: jdnhunter99-sys/sports-edge-ai2
-          ref: main
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           persist-credentials: false
           fetch-depth: 1
-          sparse-checkout: |
-            scripts
-            base44/functions
-            base44/shared
-          path: source
+          path: action
 
       - name: Check required API key
         env:
@@ -59,7 +52,7 @@ jobs:
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
           PROPLINE_OUTPUT_DIR: ${{ github.workspace }}/data
-        run: python3 source/scripts/publish_propline_game_odds.py
+        run: python3 action/scripts/publish_propline_game_odds.py
 
       - name: Commit and publish completed game caches
         working-directory: data
