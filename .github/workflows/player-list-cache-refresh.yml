@@ -15,21 +15,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Check private source repository token
+      - name: Check out this Actions repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Check private app repository token
         env:
           PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
         run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
-
-      - name: Check out player-list fetcher source
-        uses: actions/checkout@v6
-        with:
-          repository: jdnhunter99-sys/sports-edge-ai2
-          ref: main
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
-          persist-credentials: false
-          fetch-depth: 1
-          sparse-checkout: scripts/refresh_player_lists_github.py
-          path: source
 
       - name: Check out published cache branch
         uses: actions/checkout@v6
@@ -51,7 +47,7 @@ jobs:
       - name: Fetch and build per-screen JSON caches directly from source
         env:
           PLAYER_LISTS_OUTPUT_DIR: ${{ github.workspace }}/data/player-lists
-        run: python3 source/scripts/refresh_player_lists_github.py
+        run: python3 action/scripts/refresh_player_lists_github.py
 
       - name: Publish completed JSON cache files
         working-directory: data
