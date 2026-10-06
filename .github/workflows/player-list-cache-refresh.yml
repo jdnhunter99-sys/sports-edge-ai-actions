@@ -1,0 +1,66 @@
+name: Refresh prop center and projection player-list caches
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: player-list-cache-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Validate required secrets
+        env:
+          BASE44_APP_ID: ${{ secrets.BASE44_APP_ID }}
+          PLAYER_LIST_CACHE_ACTION_SECRET: ${{ secrets.PLAYER_LIST_CACHE_ACTION_SECRET }}
+        run: |
+          test -n "$BASE44_APP_ID" || { echo 'Add repository secret BASE44_APP_ID'; exit 1; }
+          test -n "$PLAYER_LIST_CACHE_ACTION_SECRET" || { echo 'Add repository secret PLAYER_LIST_CACHE_ACTION_SECRET'; exit 1; }
+
+      - name: Refresh each screen's player-list cache
+        env:
+          BASE44_APP_ID: ${{ secrets.BASE44_APP_ID }}
+          BASE44_APP_BASE_URL: ${{ secrets.BASE44_APP_BASE_URL }}
+          PLAYER_LIST_CACHE_ACTION_SECRET: ${{ secrets.PLAYER_LIST_CACHE_ACTION_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          base_url = (os.environ.get('BASE44_APP_BASE_URL') or 'https://base44.app').rstrip('/')
+          app_id = os.environ['BASE44_APP_ID']
+          endpoint = f"{base_url}/api/apps/{app_id}/functions/runPlayerListsCacheRefresh"
+          secret = os.environ['PLAYER_LIST_CACHE_ACTION_SECRET']
+          # Each target refreshes the persisted data source used by that screen.
+          # The UI continues to read its existing materialized cache contract.
+          targets = [
+              'nfl_prop_center',
+              'mlb_prop_center',
+              'wnba_prop_center',
+              'cfb_prop_center',
+              'nfl_projections',
+          ]
+
+          for target in targets:
+              print(f"Refreshing cache target: {target}", flush=True)
+              body = json.dumps({'target': target}).encode()
+              request = urllib.request.Request(
+                  endpoint,
+                  data=body,
+                  headers={
+                      'Authorization': f'Bearer {secret}',
+                      'Content-Type': 'application/json',
+                      'X-App-Id': app_id,
+                  },
+                  method='POST',
+              )
+              with urllib.request.urlopen(request, timeout=780) as response:
+                  result = json.loads(response.read().decode())
+              if not result.get('ok'):
+                  raise RuntimeError(f"{target} refresh failed: {result}")
+              print(json.dumps(result, separators=(',', ':')), flush=True)
+          PY
