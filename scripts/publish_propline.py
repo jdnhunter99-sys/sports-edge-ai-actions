@@ -69,12 +69,12 @@ def fetch_closing(sport,event_id,key):
 def norm(v):
  return unicodedata.normalize('NFKD',str(v or '')).encode('ascii','ignore').decode().lower().strip()
 
-def player_identity(value,name):
+def player_identity(value,name,team=None):
  raw=str(value or '').strip()
  if raw:
   if raw.lower().startswith('espn:'): raw=raw.split(':',1)[1].strip()
   return 'id:'+raw.casefold()
- return 'name:'+norm(name)
+ return 'name:'+norm(name)+'|team:'+norm(team)
 
 def cfb_name_parts(value):
  name=str(value or '').strip()
@@ -368,8 +368,8 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      if not isinstance(name,str) or not name.strip(): continue
      if is_non_player(sport,raw_name): continue
      player_id=outcome.get('player_id') or outcome.get('athlete_id')
-     identity=player_identity(player_id,name)
      team_info=roster_team_for(sport,outcome,raw_name,ev,roster_index)
+     identity=player_identity(player_id,name,team_info.get('team') or team_suffix)
      p=players.get(identity)
      if p is None:
       p={'player':name,'sport':sport,'event_id':eid,
@@ -410,15 +410,36 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
   # A temporary upstream CFB gap must not prevent fresh data for every other
   # sport from publishing. main() will retain the prior CFB cache when present.
   return {'players':0,'events':len(events),'empty_response':True}
- write_json(root/sport/'index.json',{'sport':sport,'fetched_at':stamp,'players':index})
+ event_index=[]
+ for ev in events:
+  if not isinstance(ev,dict) or ev.get('id') is None: continue
+  event_index.append({
+   'id':str(ev['id']),'event_id':str(ev['id']),
+   'name':ev.get('name') or ev.get('title'),
+   'home_team':ev.get('home_team'),'away_team':ev.get('away_team'),
+   'commence_time':ev.get('commence_time'),
+  })
+ write_json(root/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':event_index,'players':index})
  return {'players':count,'events':len(events)}
 
-def build_player_list(sport,screen,index,stamp):
+def build_player_list(sport,screen,index,stamp,source_events=None):
  # This compact index is derived from the same PropLine response that produced
  # the detailed player-odds files. A player appears only when PropLine returned
  # at least one player market for them.
  by_key={}
  games={}
+ for event in source_events or []:
+  if not isinstance(event,dict): continue
+  event_id=str(event.get('id') or event.get('event_id') or '')
+  if not event_id: continue
+  games[event_id]={
+   'id':event_id,'eventId':event_id,'gameId':event_id,
+   'name':event.get('name') or event.get('title'),
+   'homeTeam':event.get('home_team') or event.get('homeTeam'),
+   'awayTeam':event.get('away_team') or event.get('awayTeam'),
+   'commenceTime':event.get('commence_time') or event.get('commenceTime'),
+   'players':[],
+  }
  for entry in index:
   name=str(entry.get('player') or '').strip()
   if not name: continue
@@ -432,7 +453,7 @@ def build_player_list(sport,screen,index,stamp):
   clean_name=name[:qualifier.start()].strip() if qualifier else name
   team=entry.get('team') or (qualifier.group(1) if qualifier else None)
   player_id=entry.get('player_id')
-  identity=player_identity(player_id,clean_name)
+  identity=player_identity(player_id,clean_name,team)
   key=identity
   player=by_key.get(key)
   if player is None:
@@ -479,15 +500,19 @@ def build_player_list(sport,screen,index,stamp):
   if not name: continue
   clean_name,qualifier=cfb_name_parts(name) if sport=='cfb' else (name,None)
   player_id=entry.get('player_id')
-  identity=player_identity(player_id,clean_name)
+  entry_team=entry.get('team') or (qualifier.group(1) if qualifier else None)
+  identity=player_identity(player_id,clean_name,entry_team)
   player=by_key.get(identity)
   if player is None: continue
   event_id=str(entry.get('event_id') or '')
   game=games.setdefault(event_id,{
-   'id':event_id,'eventId':event_id,'homeTeam':entry.get('home_team'),
-   'awayTeam':entry.get('away_team'),'commenceTime':entry.get('commence_time'),
-   'players':[]})
-  game_player=next((p for p in game['players'] if player_identity(p.get('playerId'),p.get('name'))==identity),None)
+   'id':event_id,'eventId':event_id,'gameId':event_id,'name':None,
+   'homeTeam':entry.get('home_team'),'awayTeam':entry.get('away_team'),
+   'commenceTime':entry.get('commence_time'),'players':[]})
+  if not game.get('homeTeam'): game['homeTeam']=entry.get('home_team')
+  if not game.get('awayTeam'): game['awayTeam']=entry.get('away_team')
+  if not game.get('commenceTime'): game['commenceTime']=entry.get('commence_time')
+  game_player=next((p for p in game['players'] if player_identity(p.get('playerId'),p.get('name'),p.get('team'))==identity),None)
   if game_player is None:
    game_player={'playerId':player.get('playerId'),'name':player.get('name'),'team':entry.get('team') or player.get('team') or qualifier,
     'opponent':entry.get('opponent') or player.get('opponent'),'position':entry.get('position'),
@@ -498,6 +523,9 @@ def build_player_list(sport,screen,index,stamp):
    if str(prop.get('gameId') or '')!=event_id: continue
    if not any(row.get('gameId')==prop.get('gameId') and row.get('market')==prop.get('market') for row in game_player['props']):
     game_player['props'].append(prop)
+ for game in games.values():
+  game['playerCount']=len(game['players'])
+  game['propCount']=sum(len(player['props']) for player in game['players'])
  games_list=sorted(games.values(),key=lambda game:(str(game.get('commenceTime') or ''),game.get('id') or ''))
  return {
   'ok':True, 'sport':sport, 'screen':screen, 'updated_at':stamp,
@@ -519,7 +547,8 @@ def publish_player_lists(root,stamp):
   screens=['prop-center']
   if sport=='nfl': screens.append('projections')
   for screen in screens:
-   payload=build_player_list(sport,screen,entries,stamp)
+   source_events=index_data.get('events') if isinstance(index_data,dict) else []
+   payload=build_player_list(sport,screen,entries,stamp,source_events)
    write_json(root/'player-lists'/sport/f'{screen}.json',payload)
    team_count=sum(bool(player.get('team')) for player in payload['players'])
    print(f"Published candidate player-lists/{sport}/{screen}.json: {payload['game_count']} games / {payload['player_count']} unique PropLine players ({team_count} with team metadata) / {payload['prop_count']} player-market rows",flush=True)
