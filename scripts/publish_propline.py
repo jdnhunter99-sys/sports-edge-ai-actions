@@ -69,12 +69,12 @@ def fetch_closing(sport,event_id,key):
 def norm(v):
  return unicodedata.normalize('NFKD',str(v or '')).encode('ascii','ignore').decode().lower().strip()
 
-def player_identity(value,name):
+def player_identity(value,name,team=None):
  raw=str(value or '').strip()
  if raw:
   if raw.lower().startswith('espn:'): raw=raw.split(':',1)[1].strip()
   return 'id:'+raw.casefold()
- return 'name:'+norm(name)
+ return 'name:'+norm(name)+'|team:'+norm(team)
 
 def cfb_name_parts(value):
  name=str(value or '').strip()
@@ -368,8 +368,8 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      if not isinstance(name,str) or not name.strip(): continue
      if is_non_player(sport,raw_name): continue
      player_id=outcome.get('player_id') or outcome.get('athlete_id')
-     identity=player_identity(player_id,name)
      team_info=roster_team_for(sport,outcome,raw_name,ev,roster_index)
+     identity=player_identity(player_id,name,team_info.get('team') or team_suffix)
      p=players.get(identity)
      if p is None:
       p={'player':name,'sport':sport,'event_id':eid,
@@ -453,7 +453,7 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   clean_name=name[:qualifier.start()].strip() if qualifier else name
   team=entry.get('team') or (qualifier.group(1) if qualifier else None)
   player_id=entry.get('player_id')
-  identity=player_identity(player_id,clean_name)
+  identity=player_identity(player_id,clean_name,team)
   key=identity
   player=by_key.get(key)
   if player is None:
@@ -500,7 +500,8 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   if not name: continue
   clean_name,qualifier=cfb_name_parts(name) if sport=='cfb' else (name,None)
   player_id=entry.get('player_id')
-  identity=player_identity(player_id,clean_name)
+  entry_team=entry.get('team') or (qualifier.group(1) if qualifier else None)
+  identity=player_identity(player_id,clean_name,entry_team)
   player=by_key.get(identity)
   if player is None: continue
   event_id=str(entry.get('event_id') or '')
@@ -511,7 +512,7 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   if not game.get('homeTeam'): game['homeTeam']=entry.get('home_team')
   if not game.get('awayTeam'): game['awayTeam']=entry.get('away_team')
   if not game.get('commenceTime'): game['commenceTime']=entry.get('commence_time')
-  game_player=next((p for p in game['players'] if player_identity(p.get('playerId'),p.get('name'))==identity),None)
+  game_player=next((p for p in game['players'] if player_identity(p.get('playerId'),p.get('name'),p.get('team'))==identity),None)
   if game_player is None:
    game_player={'playerId':player.get('playerId'),'name':player.get('name'),'team':entry.get('team') or player.get('team') or qualifier,
     'opponent':entry.get('opponent') or player.get('opponent'),'position':entry.get('position'),
