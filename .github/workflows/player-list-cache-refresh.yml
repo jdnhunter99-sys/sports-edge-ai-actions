@@ -3,6 +3,9 @@ name: Refresh prop center and projection player-list caches
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: player-list-cache-refresh
   cancel-in-progress: false
@@ -10,62 +13,52 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 45
     steps:
-      - name: Validate required secrets
+      - name: Check private source repository token
         env:
-          BASE44_APP_ID: ${{ secrets.BASE44_APP_ID }}
-          PLAYER_LIST_CACHE_ACTION_SECRET: ${{ secrets.PLAYER_LIST_CACHE_ACTION_SECRET }}
-        run: |
-          test -n "$BASE44_APP_ID" || { echo 'Add repository secret BASE44_APP_ID'; exit 1; }
-          test -n "$PLAYER_LIST_CACHE_ACTION_SECRET" || { echo 'Add repository secret PLAYER_LIST_CACHE_ACTION_SECRET'; exit 1; }
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
 
-      - name: Refresh each screen's player-list cache
+      - name: Check out player-list fetcher source
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: main
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout: scripts/refresh_player_lists_github.py
+          path: source
+
+      - name: Check out published cache branch
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: main
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+          path: data
+
+      - name: Prepare cache branch
+        working-directory: data
+        run: |
+          git fetch origin refs/heads/player-lists-data:refs/remotes/origin/player-lists-data 2>/dev/null \
+            && git checkout -B player-lists-data origin/player-lists-data \
+            || { git checkout --orphan player-lists-data; git rm -rf .; }
+
+      - name: Fetch and build per-screen JSON caches directly from source
         env:
-          BASE44_APP_ID: ${{ secrets.BASE44_APP_ID }}
-          BASE44_APP_BASE_URL: ${{ secrets.BASE44_APP_BASE_URL }}
-          PLAYER_LIST_CACHE_ACTION_SECRET: ${{ secrets.PLAYER_LIST_CACHE_ACTION_SECRET }}
+          PLAYER_LISTS_OUTPUT_DIR: ${{ github.workspace }}/data/player-lists
+        run: python3 source/scripts/refresh_player_lists_github.py
+
+      - name: Publish completed JSON cache files
+        working-directory: data
         run: |
-          python3 - <<'PY'
-          import json
-          import os
-          import urllib.error
-          import urllib.request
-
-          base_url = (os.environ.get('BASE44_APP_BASE_URL') or 'https://base44.app').rstrip('/')
-          app_id = os.environ['BASE44_APP_ID']
-          endpoint = f"{base_url}/api/apps/{app_id}/functions/runPlayerListsCacheRefresh"
-          secret = os.environ['PLAYER_LIST_CACHE_ACTION_SECRET']
-          # Each target refreshes the persisted data source used by that screen.
-          # The UI continues to read its existing materialized cache contract.
-          targets = [
-              'nfl_prop_center',
-              'mlb_prop_center',
-              'wnba_prop_center',
-              'cfb_prop_center',
-              'nfl_projections',
-          ]
-
-          for target in targets:
-              print(f"Refreshing cache target: {target}", flush=True)
-              body = json.dumps({'target': target}).encode()
-              request = urllib.request.Request(
-                  endpoint,
-                  data=body,
-                  headers={
-                      'X-Player-List-Cache-Secret': secret,
-                      'Content-Type': 'application/json',
-                      'X-App-Id': app_id,
-                  },
-                  method='POST',
-              )
-              try:
-                  with urllib.request.urlopen(request, timeout=780) as response:
-                      result = json.loads(response.read().decode())
-              except urllib.error.HTTPError as error:
-                  detail = error.read().decode('utf-8', errors='replace')[:2000]
-                  raise RuntimeError(f"{target} Base44 function returned HTTP {error.code}: {detail}") from error
-              if not result.get('ok'):
-                  raise RuntimeError(f"{target} refresh failed: {result}")
-              print(json.dumps(result, separators=(',', ':')), flush=True)
-          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add player-lists
+          if git diff --cached --quiet; then echo 'Player-list cache unchanged'; exit 0; fi
+          git commit -qm 'Refresh prop center and projection player-list caches'
+          git push --quiet origin HEAD:player-lists-data
