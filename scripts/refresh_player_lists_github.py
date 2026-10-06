@@ -152,10 +152,9 @@ def fetch_screen(sport: str, screen: str, markets: list[tuple[str, list[str]]]) 
         if prop["market"] not in player["markets"]:
             player["markets"].append(prop["market"])
         player["props"].append(prop)
-    if not unique:
-        raise RuntimeError(f"{sport}/{screen}: upstream returned no player prop rows; refusing to publish an empty cache")
     now = dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z")
     return {"ok": True, "sport": sport, "screen": screen, "updated_at": now,
+        "status": "ready" if unique else "empty",
         "source": "ScoresAndOdds", "player_count": len(players_by_id), "prop_count": len(unique),
         "players": list(players_by_id.values()), "props": unique, "diagnostics": diagnostics}
 
@@ -171,10 +170,20 @@ def main():
                 print(f"Fetching {sport}/{screen}", flush=True)
                 payload = fetch_screen(sport, screen, markets)
             path = f"{sport}/{screen}.json"
-            outputs[path] = payload
             dest = root / path
+            if markets is not None and payload.get("status") == "empty" and dest.is_file():
+                try:
+                    previous = json.loads(dest.read_text(encoding="utf-8"))
+                except (OSError, json.JSONDecodeError):
+                    previous = None
+                if isinstance(previous, dict) and previous.get("ok") is True and previous.get("prop_count", 0) > 0:
+                    print(f"WARNING: {path} returned no props; preserving last good cache ({previous.get('prop_count')} props). Market diagnostics: {json.dumps(payload.get('diagnostics', {}), separators=(',', ':'))}", flush=True)
+                    continue
+            outputs[path] = payload
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+            if payload.get("status") == "empty":
+                print(f"WARNING: {path} has no current props. Market diagnostics: {json.dumps(payload.get('diagnostics', {}), separators=(',', ':'))}", flush=True)
             print(f"Published candidate {path}: {payload['player_count']} players / {payload['prop_count']} props", flush=True)
 
     projection_path = root / "nfl/projections.json"
