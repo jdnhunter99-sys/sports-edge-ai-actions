@@ -1852,7 +1852,6 @@ async function cfbdGet(path: string, params: Record<string, any>, apiKey: string
   for (let attempt = 1; attempt <= 3; attempt++) {
     const response = await fetch(url.toString(), {
       headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
-      signal: AbortSignal.timeout(45_000),
     });
     if (response.ok) {
       const json = await response.json().catch(() => []);
@@ -1964,11 +1963,14 @@ async function writeSourceCache(base44: any, record: any) {
 
 export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: any = null): Promise<Response> {
   try {
-    // This standalone Actions copy is called with file-backed entity adapters.
-    // Keep the Base44 SDK out of this module graph so GitHub runners do not
-    // resolve an unused npm dependency tree.
-    const base44 = injectedBase44;
-    if (!base44) throw new Error('A file-backed Base44 adapter is required by the GitHub CFB publisher.');
+    // The GitHub publisher injects file-backed entity adapters. Load the
+    // Base44 SDK only for normal function invocations so Deno Actions never
+    // needs to resolve the app's npm package.
+    let base44 = injectedBase44;
+    if (!base44) {
+      const { createClientFromRequest } = await import('npm:@base44/sdk@0.8.39');
+      base44 = createClientFromRequest(req);
+    }
     const body = req.method === 'GET' ? {} : safeJsonParse(await req.text().catch(() => '{}'));
     const currentStatsSeasonForRequest = resolveStatsSeason(undefined);
     const season = body?.previousSeason === true
@@ -2015,9 +2017,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
 
     const apiKey = Deno.env.get('CFBD_API_KEY') || '';
     if (!apiKey) return Response.json({ ok: false, error: 'CFBD_API_KEY not set' }, { status: 500 });
-    console.info('[CFB refresh] Starting ' + season + ' cache refresh.');
     const cfbTeamKeys = await fetchCfbTeamKeys(season, apiKey);
-    console.info('[CFB refresh] CFBD team directory returned ' + cfbTeamKeys.size + ' FBS teams.');
     const limit = Math.max(1, Math.min(n(body?.limit, 30), MAX_TEAMS_PER_RUN));
     const offset = Math.max(0, n(body?.offset, 0));
     const requestedTeams = Array.isArray(body?.teams)
@@ -2051,7 +2051,6 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         year: season, seasonType: 'regular', classification,
       }, apiKey)))).flat();
       const schedule = [...new Map(schedules.map((game: any) => [String(game?.id), game])).values()];
-      console.info('[CFB refresh] ' + season + ': received ' + schedule.length + ' scheduled FBS/FCS games.');
 
       const completed = schedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
       if (!completed.length) throw new Error(`No completed FBS/FCS games returned by CFBD for ${season}`);
@@ -2062,10 +2061,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const playRows: any[] = [];
       const passingGameRows: any[] = [];
       const sourceWarnings: string[] = [];
-      console.info('[CFB refresh] ' + season + ': fetching ' + completedWeeks.length + ' completed weeks across ' + CFB_CLASSIFICATIONS.join(', ') + '.');
       for (const week of completedWeeks) {
         for (const classification of CFB_CLASSIFICATIONS) {
-          console.info('[CFB refresh] ' + season + ' week ' + week + '/' + completedWeeks[completedWeeks.length - 1] + ' (' + classification + ') source fetch starting.');
           const params = { year: season, week, seasonType: 'regular', classification };
           const boxWeek = await cfbdGet('/games/teams', params, apiKey);
           let drivesWeek: any[] = [];
@@ -2094,7 +2091,6 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           driveRows.push(...drivesWeek);
           playRows.push(...playsWeek);
           passingGameRows.push(...passingWeek);
-          console.info('[CFB refresh] ' + season + ' week ' + week + ' (' + classification + ') complete: ' + boxWeek.length + ' box rows; ' + driveRows.length + ' drives, ' + playRows.length + ' plays, ' + passingGameRows.length + ' passing rows accumulated.');
         }
       }
 

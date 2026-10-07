@@ -37,9 +37,7 @@ jobs:
           fetch-depth: 1
 
       - name: Verify standalone CFB publisher checkout
-        run: |
-          test -f action/scripts/refresh_cfb_team_stats_github.ts || { echo 'CFB publisher script is missing from the Actions repository main branch'; find . -maxdepth 4 -type f -print; exit 1; }
-          test -f action/scripts/build_cfb_prop_center_cache.py || { echo 'CFB prop-center cache builder is missing from the Actions repository main branch'; exit 1; }
+        run: test -f action/scripts/refresh_cfb_team_stats_github.ts || { echo 'CFB publisher script is missing from the Actions repository main branch'; find . -maxdepth 4 -type f -print; exit 1; }
 
       - uses: denoland/setup-deno@v2
         with:
@@ -67,17 +65,12 @@ jobs:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           CFB_REFRESH_PREVIOUS_SEASON: ${{ github.event.inputs.refresh_previous || 'false' }}
         run: |
-          deno run --no-npm --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_team_stats_github.ts
+          deno run --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_team_stats_github.ts
 
-      - name: Build compact prop-center opponent and player-log caches
-        env:
-          CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
-        run: python3 action/scripts/build_cfb_prop_center_cache.py
-
-      - name: Publish CFB stats and prop-center caches
+      - name: Publish CFB stats cache
         working-directory: data
         run: |
-          git add cfb-team-stats cfb-prop-center
+          git add cfb-team-stats
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Refresh CFB team stats cache'
           git push --quiet origin HEAD:cfb-team-stats-data
