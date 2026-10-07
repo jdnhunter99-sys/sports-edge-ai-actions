@@ -29,6 +29,14 @@ jobs:
           test -n "$CFBD_API_KEY" || { echo 'Add repository secret CFBD_API_KEY'; exit 1; }
           test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
 
+      - name: Check out this Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
