@@ -28,18 +28,22 @@ type CacheIndex = {
 async function fetchSeasonSchedule(season: number) {
   const apiKey = Deno.env.get('CFBD_API_KEY')?.trim();
   if (!apiKey) throw new Error('CFBD_API_KEY is required to build per-game CFB cache files');
-  const url = new URL('https://api.collegefootballdata.com/games');
-  url.searchParams.set('year', String(season));
-  url.searchParams.set('seasonType', 'regular');
-  url.searchParams.set('classification', 'fbs');
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
-    signal: AbortSignal.timeout(30_000),
-  });
-  if (!response.ok) throw new Error(`CFBD schedule request failed for ${season}: HTTP ${response.status} ${String(await response.text()).slice(0, 500)}`);
-  const schedule = await response.json();
-  if (!Array.isArray(schedule)) throw new Error(`CFBD schedule response for ${season} was not an array`);
-  return schedule.filter((game: any) => game?.id != null && game?.homeTeam && game?.awayTeam);
+  const fetchSchedule = async (classification: 'fbs' | 'fcs') => {
+    const url = new URL('https://api.collegefootballdata.com/games');
+    url.searchParams.set('year', String(season));
+    url.searchParams.set('seasonType', 'regular');
+    url.searchParams.set('classification', classification);
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!response.ok) throw new Error(`CFBD ${classification.toUpperCase()} schedule request failed for ${season}: HTTP ${response.status} ${String(await response.text()).slice(0, 500)}`);
+    const schedule = await response.json();
+    if (!Array.isArray(schedule)) throw new Error(`CFBD ${classification.toUpperCase()} schedule response for ${season} was not an array`);
+    return schedule.filter((game: any) => game?.id != null && game?.homeTeam && game?.awayTeam);
+  };
+  const schedules = await Promise.all([fetchSchedule('fbs'), fetchSchedule('fcs')]);
+  return [...new Map(schedules.flat().map((game: any) => [String(game.id), game])).values()];
 }
 
 async function readJson<T>(path: string, fallback: T): Promise<T> {
@@ -153,7 +157,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       // Treat the full source team name as authoritative. Cached abbreviations
       // can collide across providers or divisions; a trustworthy name lets us
       // canonicalize the team without carrying a stale/wrong key forward.
-      const key = normalizeCFBSchool(payload.team || payload.teamKey || row.team_abbr || '');
+      const key = normalizeCFBSchool(payload.teamKey || row.team_abbr || payload.team || '');
       if (!key) continue;
       teamPayloads[key] = payload;
       if (String(row.scraped_at || '') > latest) latest = String(row.scraped_at);
@@ -226,7 +230,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
     updated_at: new Date().toISOString(),
     timeframes: writtenFrames,
   };
-  console.info(`Materialized CFB season ${season}: ${result.fbsTeamCount} FBS teams, ${Object.keys(writtenFrames).length} timeframes.`);
+  console.info(`Materialized CFB season ${season}: ${result.fbsTeamCount} FBS teams, ${result.fcsTeamCount || 0} supported FCS teams, ${Object.keys(writtenFrames).length} timeframes.`);
   return result;
 }
 
@@ -247,10 +251,13 @@ async function refreshUnlessQuotaExceeded(season: number, isPrevious: boolean) {
     console.warn(`CFBD monthly quota is exhausted; keeping the last published cache for ${season}.`);
   }
 }
-if (refreshPrevious || !historicalAlreadyPresent) {
+if (refreshPrevious) {
   await refreshUnlessQuotaExceeded(previousSeason, true);
 } else {
-  console.info(`Keeping existing previous-season (${previousSeason}) materialization; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
+  const previousSeasonStatus = historicalAlreadyPresent
+    ? 'keeping existing materialization'
+    : 'no current-version materialization exists; leaving previous season untouched';
+  console.info(`Skipping previous-season (${previousSeason}) refresh because refresh_previous was not checked; ${previousSeasonStatus}.`);
 }
 if (!quotaExhausted) await refreshUnlessQuotaExceeded(currentSeason, false);
 
