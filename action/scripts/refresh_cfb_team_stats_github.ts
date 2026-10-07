@@ -17,7 +17,7 @@ const previousSeason = currentSeason - 1;
 const refreshPrevious = Deno.env.get('CFB_REFRESH_PREVIOUS_SEASON') === 'true';
 
 type TeamRecord = Record<string, any>;
-type FrameManifest = { path: string; teams: number; scraped_at: string };
+type FrameManifest = { path: string; teams: number; games?: number; game_cache_pattern?: string; scraped_at: string };
 type CacheIndex = {
   sport?: string;
   cacheVersion?: number;
@@ -216,6 +216,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       path,
       teams: Object.keys(teamPayloads).length,
       games: gameCount,
+      game_cache_pattern: `cfb-team-stats/v${result.cacheVersion}/${season}/games/{gameId}/${timeframe.toLowerCase()}.json`,
       scraped_at: latest || result.scrapedAt || new Date().toISOString(),
     };
   }

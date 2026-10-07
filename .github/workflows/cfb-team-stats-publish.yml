@@ -32,10 +32,13 @@ jobs:
       - name: Check out this Actions repository
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.sha }}
+          ref: main
           persist-credentials: false
           fetch-depth: 1
           path: action
+
+      - name: Verify standalone CFB publisher checkout
+        run: test -f action/scripts/refresh_cfb_team_stats_github.ts || { echo 'CFB publisher script is missing from the Actions repository main branch'; find action -maxdepth 3 -type f -print; exit 1; }
 
       - uses: denoland/setup-deno@v2
         with:
