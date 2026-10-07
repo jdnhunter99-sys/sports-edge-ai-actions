@@ -40,9 +40,6 @@ jobs:
             base44/shared
           path: source
 
-      - name: Install DuckDB for SportsDataverse Parquet reads
-        run: python -m pip install --disable-pip-version-check duckdb
-
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
@@ -67,10 +64,9 @@ jobs:
         working-directory: source
         env:
           CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
-          CFB_SPORTSDATAVERSE_INPUT_DIR: ${{ runner.temp }}/cfb-sportsdataverse
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           CFB_REFRESH_PREVIOUS_SEASON: ${{ github.event.inputs.refresh_previous || 'false' }}
         run: |
-          python scripts/prepare_cfb_sportsdataverse.py
           deno run --allow-net --allow-env --allow-read --allow-write scripts/refresh_cfb_team_stats_github.ts
 
       - name: Publish CFB stats cache
