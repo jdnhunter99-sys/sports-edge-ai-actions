@@ -12,20 +12,15 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'ARK', name: 'Arkansas Razorbacks', aliases: ['ARK','Arkansas','Arkansas Razorbacks'] },
   { abbr: 'ARST', name: 'Arkansas State Red Wolves', aliases: ['ARST','Arkansas State','Arkansas State Red Wolves','ArkansasState'] },
   { abbr: 'ARMY', name: 'Army Black Knights', aliases: ['ARMY','Army','Army Black','Army Black Knights'] },
-  { abbr: 'APSU', name: 'Austin Peay Governors', aliases: ['APSU','Austin Peay','Austin Peay Governors','Austin Peay State','Austin Peay State Governors','Austin Peay State University','Governors'] },
   { abbr: 'AUB', name: 'Auburn Tigers', aliases: ['AUB','Auburn','Auburn Tigers'] },
   { abbr: 'BALL', name: 'Ball State Cardinals', aliases: ['BALL','Ball State','Ball State Cardinals','BallState'] },
   { abbr: 'BAY', name: 'Baylor Bears', aliases: ['BAY','Baylor','Baylor Bears'] },
-  { abbr: 'BCU', name: 'Bethune-Cookman Wildcats', aliases: ['BCU','B-CU','Bethune-Cookman','Bethune Cookman','Bethune-Cookman Wildcats','Bethune Cookman Wildcats','Bethune-Cookman University'] },
   { abbr: 'BSU', name: 'Boise State Broncos', aliases: ['BSU','Boise State','Boise State Broncos','BoiseState'] },
   { abbr: 'BC', name: 'Boston College Eagles', aliases: ['BC','Boston College','Boston College Eagles','BostonCollege'] },
   { abbr: 'BGSU', name: 'Bowling Green Falcons', aliases: ['BGSU','Bowling Green','Bowling Green Falcons','BowlingGreen'] },
   { abbr: 'BUFF', name: 'Buffalo Bulls', aliases: ['BUFF','Buffalo','Buffalo Bulls'] },
-  { abbr: 'BUCK', name: 'Bucknell Bison', aliases: ['BUCK','Bucknell','Bucknell Bison','Bucknell University'] },
   { abbr: 'BYU', name: 'BYU Cougars', aliases: ['BYU','BYU Cougars'] },
   { abbr: 'CAL', name: 'California Golden Bears', aliases: ['CAL','California','California Golden Bears'] },
-  { abbr: 'CAMP', name: 'Campbell Fighting Camels', aliases: ['CAMP','Campbell','Campbell Fighting Camels','Campbell University','Fighting Camels','Camels'] },
-  { abbr: 'CP', name: 'Cal Poly Mustangs', aliases: ['CP','Cal Poly','Cal Poly Mustangs','Cal Poly SLO','Cal Poly San Luis Obispo','California Polytechnic','California Polytechnic State University'] },
   { abbr: 'CMU', name: 'Central Michigan Chippewas', aliases: ['CMU','Central Michigan','Central Michigan Chippewas','CentralMichigan'] },
   { abbr: 'CLT', name: 'Charlotte 49ers', aliases: ['CLT','Charlotte','Charlotte 49ers'] },
   { abbr: 'CIN', name: 'Cincinnati Bearcats', aliases: ['CIN','Cincinnati','Cincinnati Bearcats'] },
@@ -36,10 +31,9 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'DEL', name: 'Delaware Blue Hens', aliases: ['DEL','Delaware','Delaware Blue Hens'] },
   { abbr: 'DUKE', name: 'Duke Blue Devils', aliases: ['DUKE','Duke','Duke Blue Devils'] },
   { abbr: 'ECU', name: 'East Carolina Pirates', aliases: ['ECU','East Carolina','East Carolina Pirates','EastCarolina'] },
-  { abbr: 'EKU', name: 'Eastern Kentucky Colonels', aliases: ['EKU','Eastern Kentucky','Eastern Kentucky Colonels','Eastern Kentucky University','Eastern Kentucky St','Eastern Ky','EasternKentucky','EasternKy'] },
   { abbr: 'EMU', name: 'Eastern Michigan Eagles', aliases: ['EMU','Eastern Michigan','Eastern Michigan Eagles','EasternMichigan'] },
   { abbr: 'FLA', name: 'Florida Gators', aliases: ['FLA','Florida','Florida Gators'] },
-  { abbr: 'FAU', name: 'Florida Atlantic Owls', aliases: ['FAU','FAU Owls','FATL','FLA ATL','Florida Atlantic','Florida Atlantic Owls','Florida Atlantic University','Florida Atlantic University Owls','FloridaAtlantic'] },
+  { abbr: 'FAU', name: 'Florida Atlantic Owls', aliases: ['FAU','Florida Atlantic','Florida Atlantic Owls','FloridaAtlantic'] },
   { abbr: 'FIU', name: 'FIU Panthers', aliases: ['FIU','FIU Panthers','FloridaInternational'] },
   { abbr: 'FSU', name: 'Florida State Seminoles', aliases: ['FSU','Florida State','Florida State Seminoles','FloridaState'] },
   { abbr: 'FRES', name: 'Fresno State Bulldogs', aliases: ['FRES','Fresno State','Fresno State Bulldogs','FresnoState'] },
@@ -49,10 +43,9 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'GT', name: 'Georgia Tech Yellow Jackets', aliases: ['GT','Georgia Tech','Georgia Tech Yellow Jackets','GeorgiaTech'] },
   { abbr: 'HAW', name: 'Hawai‘i Rainbow Warriors', aliases: ['HAW','Hawaii','Hawai‘i','Hawai‘i Rainbow Warriors'] },
   { abbr: 'HOU', name: 'Houston Cougars', aliases: ['HOU','Houston','Houston Cougars'] },
-  { abbr: 'HOW', name: 'Howard Bison', aliases: ['HOW','Howard','Howard Bison','Howard University'] },
   { abbr: 'ILL', name: 'Illinois Fighting Illini', aliases: ['ILL','Illinois','Illinois Fighting Illini'] },
   { abbr: 'IND', name: 'Indiana Hoosiers', aliases: ['IND','Indiana','Indiana Hoosiers'] },
-  { abbr: 'IOWA', name: 'Iowa Hawkeyes', aliases: ['IOWA','IOW','Iowa','Iowa Hawkeye','Iowa Hawkeyes','University of Iowa'] },
+  { abbr: 'IOWA', name: 'Iowa Hawkeyes', aliases: ['IOWA','Iowa','Iowa Hawkeyes'] },
   { abbr: 'ISU', name: 'Iowa State Cyclones', aliases: ['ISU','Iowa State','Iowa State Cyclones','IowaState'] },
   { abbr: 'JVST', name: 'Jacksonville State Gamecocks', aliases: ['JVST','JXST','JAXST','JSU','Jacksonville State','Jacksonville State Gamecocks','JacksonvilleState'] },
   { abbr: 'JMU', name: 'James Madison Dukes', aliases: ['JMU','James Madison','James Madison Dukes','JamesMadison'] },
@@ -83,11 +76,9 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'NCST', name: 'NC State Wolfpack', aliases: ['NC State','NC State Wolfpack','NCST','NCState'] },
   { abbr: 'NEB', name: 'Nebraska Cornhuskers', aliases: ['NEB','Nebraska','Nebraska Cornhuskers'] },
   { abbr: 'NEV', name: 'Nevada Wolf Pack', aliases: ['NEV','Nevada','Nevada Wolf Pack'] },
-  { abbr: 'NICH', name: 'Nicholls Colonels', aliases: ['NICH','Nicholls','Nicholls Colonels','Nicholls St','Nicholls State','Nicholls State Colonels','Nicholls State University','Nicholls State University Colonels'] },
   { abbr: 'UNM', name: 'New Mexico Lobos', aliases: ['New Mexico','New Mexico Lobos','NewMexico','UNM'] },
-  { abbr: 'NMSU', name: 'New Mexico State Aggies', aliases: ['NMSU','New Mexico State','New Mexico State Aggies','NewMexicoState'] },
+  { abbr: 'NMSU', name: 'New Mexico State Aggies', aliases: ['NMSU','NMSU Aggies','New Mexico State','New Mexico State Aggies','New Mexico St','New Mexico St Aggies','NewMexicoState'] },
   { abbr: 'UNC', name: 'North Carolina Tar Heels', aliases: ['North Carolina','North Carolina Tar Heels','NorthCarolina','UNC'] },
-  { abbr: 'NDSU', name: 'North Dakota State Bison', aliases: ['NDSU','North Dakota State','North Dakota State Bison','North Dakota State University','North Dakota St','N Dakota State','N Dakota St','NorthDakotaState','NDSU Bison','Bison'] },
   { abbr: 'UNT', name: 'North Texas Mean Green', aliases: ['North Texas','North Texas Mean Green','NorthTexas','UNT'] },
   { abbr: 'NIU', name: 'Northern Illinois Huskies', aliases: ['NIU','Northern Illinois','Northern Illinois Huskies','NorthernIllinois'] },
   { abbr: 'NU', name: 'Northwestern Wildcats', aliases: ['NU','Northwestern','Northwestern Wildcats'] },
@@ -102,12 +93,9 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'ORST', name: 'Oregon State Beavers', aliases: ['ORST','Oregon State','Oregon State Beavers','OregonState'] },
   { abbr: 'PSU', name: 'Penn State Nittany Lions', aliases: ['PSU','Penn State','Penn State Nittany Lions','PennState'] },
   { abbr: 'PITT', name: 'Pittsburgh Panthers', aliases: ['PITT','Pittsburgh','Pittsburgh Panthers'] },
-  { abbr: 'PORST', name: 'Portland State Vikings', aliases: ['PORST','Portland State','Portland State Vikings','Portland State University','Portland St','Portland St Vikings'] },
   { abbr: 'PUR', name: 'Purdue Boilermakers', aliases: ['PUR','Purdue','Purdue Boilermakers'] },
   { abbr: 'RICE', name: 'Rice Owls', aliases: ['RICE','Rice','Rice Owls'] },
-  { abbr: 'RICH', name: 'Richmond Spiders', aliases: ['RICH','Richmond','Richmond Spiders','University of Richmond'] },
   { abbr: 'RUTG', name: 'Rutgers Scarlet Knights', aliases: ['RUTG','Rutgers','Rutgers Scarlet Knights'] },
-  { abbr: 'SAC', name: 'Sacramento State Hornets', aliases: ['SAC','Sacramento State','Sacramento State Hornets','Sacramento St','Sac St','Sac State','SacramentoState','CSUS'] },
   { abbr: 'MER', name: 'Mercer Bears', aliases: ['MER','Mercer','Mercer Bears'] },
   { abbr: 'PRST', name: 'Presbyterian Blue Hose', aliases: ['PRST','Presbyterian','Presbyterian Blue Hose'] },
   { abbr: 'SHSU', name: 'Sam Houston Bearkats', aliases: ['SHSU','Sam Houston Bearkats','SamHouston'] },
@@ -117,24 +105,21 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'SMU', name: 'SMU Mustangs', aliases: ['SMU','SMU Mustangs'] },
   { abbr: 'USA', name: 'South Alabama Jaguars', aliases: ['South Alabama','South Alabama Jaguars','SouthAlabama','USA'] },
   { abbr: 'SC', name: 'South Carolina Gamecocks', aliases: ['SC','South Carolina','South Carolina Gamecocks','SouthCarolina'] },
-  { abbr: 'SDST', name: 'South Dakota State Jackrabbits', aliases: ['SDST','S Dakota St','South Dakota St','South Dakota State','South Dakota State Jackrabbits','South Dakota State University','Jackrabbits'] },
   { abbr: 'USF', name: 'South Florida Bulls', aliases: ['South Florida','South Florida Bulls','SouthFlorida','USF'] },
   { abbr: 'USM', name: 'Southern Miss Golden Eagles', aliases: ['Southern Miss','Southern Miss Golden Eagles','SouthernMiss','USM'] },
   { abbr: 'STAN', name: 'Stanford Cardinal', aliases: ['STAN','Stanford','Stanford Cardinal'] },
-  { abbr: 'STBK', name: 'Stony Brook Seawolves', aliases: ['STBK','SBU','Stony Brook','Stony Brook Seawolves','Stony Brook University','SUNY Stony Brook'] },
   { abbr: 'SYR', name: 'Syracuse Orange', aliases: ['SYR','Syracuse','Syracuse Orange'] },
   { abbr: 'TCU', name: 'TCU Horned Frogs', aliases: ['TCU','TCU Horned Frogs'] },
   { abbr: 'TEM', name: 'Temple Owls', aliases: ['TEM','Temple','Temple Owls'] },
   { abbr: 'TENN', name: 'Tennessee Volunteers', aliases: ['TENN','Tennessee','Tennessee Volunteers'] },
-  { abbr: 'TOW', name: 'Towson Tigers', aliases: ['TOW','Towson','Towson Tigers','Towson University'] },
   { abbr: 'TEX', name: 'Texas Longhorns', aliases: ['TEX','Texas','Texas Longhorns'] },
   { abbr: 'TA&M', name: 'Texas A&M Aggies', aliases: ['TA&M','Texas A&M','Texas A&M Aggies','TexasAandM'] },
-  { abbr: 'TXST', name: 'Texas State Bobcats', aliases: ['TXST','TXST Bobcats','TX State','Texas St','Texas St Bobcats','Texas State','Texas State Bobcats','Texas State University','Texas State University Bobcats','TexasState'] },
+  { abbr: 'TXST', name: 'Texas State Bobcats', aliases: ['TXST','Texas State','Texas State Bobcats','TexasState'] },
   { abbr: 'TTU', name: 'Texas Tech Red Raiders', aliases: ['TTU','Texas Tech','Texas Tech Red Raiders','TexasTech'] },
   { abbr: 'TOL', name: 'Toledo Rockets', aliases: ['TOL','Toledo','Toledo Rockets'] },
-  { abbr: 'TROY', name: 'Troy Trojans', aliases: ['TROY','Troy','Troy Trojans','Troy University'] },
+  { abbr: 'TROY', name: 'Troy Trojans', aliases: ['TROY','Troy','Troy Trojans'] },
   { abbr: 'TULN', name: 'Tulane Green Wave', aliases: ['TULN','Tulane','Tulane Green Wave'] },
-  { abbr: 'TLSA', name: 'Tulsa Golden Hurricane', aliases: ['TLSA','TUL','Tulsa','Tulsa Golden Hurricane','Tulsa University','University of Tulsa'] },
+  { abbr: 'TLSA', name: 'Tulsa Golden Hurricane', aliases: ['TLSA','Tulsa','Tulsa Golden Hurricane'] },
   { abbr: 'UAB', name: 'UAB Blazers', aliases: ['UAB','UAB Blazers'] },
   { abbr: 'UCF', name: 'UCF Knights', aliases: ['UCF','UCF Knights'] },
   { abbr: 'UCLA', name: 'UCLA Bruins', aliases: ['UCLA','UCLA Bruins'] },
@@ -144,21 +129,16 @@ export const CFB_TEAMS: CfbTeamDef[] = [
   { abbr: 'USC', name: 'USC Trojans', aliases: ['USC','USC Trojans'] },
   { abbr: 'UTSA', name: 'UTSA Roadrunners', aliases: ['UTSA','UTSA Roadrunners'] },
   { abbr: 'UTAH', name: 'Utah Utes', aliases: ['UTAH','Utah','Utah Utes'] },
-  { abbr: 'UTU', name: 'Utah Tech Trailblazers', aliases: ['UTU','Utah Tech','Utah Tech Trailblazers','Utah Tech University','Dixie State','Dixie State Trailblazers'] },
-  { abbr: 'UTM', name: 'UT Martin Skyhawks', aliases: ['UTM','UT Martin','UT-Martin','Tennessee-Martin','Tennessee Martin','University of Tennessee at Martin','UT Martin Skyhawks'] },
   { abbr: 'USU', name: 'Utah State Aggies', aliases: ['USU','Utah State','Utah State Aggies','UtahState'] },
   { abbr: 'UTEP', name: 'UTEP Miners', aliases: ['UTEP','UTEP Miners'] },
   { abbr: 'VAN', name: 'Vanderbilt Commodores', aliases: ['VAN','Vanderbilt','Vanderbilt Commodores'] },
-  { abbr: 'VMI', name: 'VMI Keydets', aliases: ['VMI','Virginia Military Institute','Virginia Military Institute Keydets','VMI Keydets','Keydets'] },
-  { abbr: 'WAG', name: 'Wagner Seahawks', aliases: ['WAG','Wagner','Wagner Seahawks','Wagner College','Wagner College Seahawks'] },
   { abbr: 'UVA', name: 'Virginia Cavaliers', aliases: ['UVA','Virginia','Virginia Cavaliers'] },
   { abbr: 'VT', name: 'Virginia Tech Hokies', aliases: ['VT','Virginia Tech','Virginia Tech Hokies','VirginiaTech'] },
   { abbr: 'WAKE', name: 'Wake Forest Demon Deacons', aliases: ['WAKE','Wake Forest','Wake Forest Demon Deacons','WakeForest'] },
   { abbr: 'WASH', name: 'Washington Huskies', aliases: ['WASH','Washington','Washington Huskies'] },
   { abbr: 'WSU', name: 'Washington State Cougars', aliases: ['WSU','Washington State','Washington State Cougars','WashingtonState'] },
   { abbr: 'WVU', name: 'West Virginia Mountaineers', aliases: ['WVU','West Virginia','West Virginia Mountaineers','WestVirginia'] },
-  { abbr: 'W&M', name: 'William & Mary Tribe', aliases: ['W&M','WM','William & Mary','William and Mary','William & Mary Tribe','William and Mary Tribe','William & Mary College','College of William & Mary','Tribe'] },
-  { abbr: 'WKU', name: 'Western Kentucky Hilltoppers', aliases: ['WKU','Western Kentucky Hilltoppers','WesternKentucky'] },
+  { abbr: 'WKU', name: 'Western Kentucky Hilltoppers', aliases: ['WKU','WKU Hilltoppers','Western Kentucky','Western Kentucky Hilltoppers','Western KY','Western KY Hilltoppers','WesternKentucky'] },
   { abbr: 'WMU', name: 'Western Michigan Broncos', aliases: ['WMU','Western Michigan','Western Michigan Broncos','WesternMichigan'] },
   { abbr: 'WIS', name: 'Wisconsin Badgers', aliases: ['WIS','Wisconsin','Wisconsin Badgers'] },
   { abbr: 'WYO', name: 'Wyoming Cowboys', aliases: ['WYO','Wyoming','Wyoming Cowboys'] },
@@ -169,13 +149,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   '49ers': 'CLT',
   'a m': 'TA&M',
   'a-state': 'ARST',
-  'apsu': 'APSU',
-  'austin peay': 'APSU',
-  'austin peay governors': 'APSU',
-  'austin peay state': 'APSU',
-  'austin peay state governors': 'APSU',
-  'austin peay state university': 'APSU',
-  'governors': 'APSU',
   'afa': 'AF',
   'air force': 'AF',
   'air force academy': 'AF',
@@ -228,13 +201,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'baylor': 'BAY',
   'baylor bears': 'BAY',
   'baylor university': 'BAY',
-  'bcu': 'BCU',
-  'b-cu': 'BCU',
-  'bethune-cookman': 'BCU',
-  'bethune cookman': 'BCU',
-  'bethune-cookman wildcats': 'BCU',
-  'bethune cookman wildcats': 'BCU',
-  'bethune-cookman university': 'BCU',
   'bc': 'BC',
   'bearcats': 'CIN',
   'bearkats': 'SHSU',
@@ -267,10 +233,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'buff': 'BUFF',
   'buffalo': 'BUFF',
   'buffalo bulls': 'BUFF',
-  'buck': 'BUCK',
-  'bucknell': 'BUCK',
-  'bucknell bison': 'BUCK',
-  'bucknell university': 'BUCK',
   'buffaloes': 'COLO',
   'buffs': 'COLO',
   'bulls': 'BUFF',
@@ -278,13 +240,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'byu cougars': 'BYU',
   'cal': 'CAL',
   'california': 'CAL',
-  'cal poly': 'CP',
-  'cal poly mustangs': 'CP',
-  'cal poly slo': 'CP',
-  'cal poly san luis obispo': 'CP',
-  'california polytechnic': 'CP',
-  'california polytechnic state university': 'CP',
-  'cp': 'CP',
   'california berkeley': 'CAL',
   'california golden bears': 'CAL',
   'california state university fresno': 'FRES',
@@ -367,15 +322,8 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'florida atlantic': 'FAU',
   'florida atlantic owls': 'FAU',
   'florida atlantic university': 'FAU',
-  'florida atlantic university owls': 'FAU',
-  'fau owls': 'FAU',
-  'fatl': 'FAU',
-  'fla atl': 'FAU',
   'florida gators': 'FLA',
-  'florida intl': 'FIU',
-  'florida intl panthers': 'FIU',
   'florida international': 'FIU',
-  'florida international panthers': 'FIU',
   'florida international university': 'FIU',
   'florida st': 'FSU',
   'florida state': 'FSU',
@@ -423,10 +371,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'hou': 'HOU',
   'houston': 'HOU',
   'houston cougars': 'HOU',
-  'how': 'HOW',
-  'howard': 'HOW',
-  'howard bison': 'HOW',
-  'howard university': 'HOW',
   'hurricanes': 'MIA',
   'huskers': 'NEB',
   'icanes': 'MIA',
@@ -439,10 +383,7 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'indiana hoosiers': 'IND',
   'indiana university': 'IND',
   'iowa': 'IOWA',
-  'iow': 'IOWA',
-  'iowa hawkeye': 'IOWA',
   'iowa hawkeyes': 'IOWA',
-  'university of iowa': 'IOWA',
   'iowa st': 'ISU',
   'iowa state': 'ISU',
   'iowa state cyclones': 'ISU',
@@ -659,12 +600,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'pitt panthers': 'PITT',
   'pittsburgh': 'PITT',
   'pittsburgh panthers': 'PITT',
-  'porst': 'PORST',
-  'portland st': 'PORST',
-  'portland st vikings': 'PORST',
-  'portland state': 'PORST',
-  'portland state vikings': 'PORST',
-  'portland state university': 'PORST',
   'psu': 'PSU',
   'pur': 'PUR',
   'purdue': 'PUR',
@@ -679,10 +614,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'redhawks': 'M-OH',
   'rice': 'RICE',
   'rice owls': 'RICE',
-  'rich': 'RICH',
-  'richmond': 'RICH',
-  'richmond spiders': 'RICH',
-  'university of richmond': 'RICH',
   'rice university': 'RICE',
   'roadrunners': 'UTSA',
   'rockets': 'TOL',
@@ -716,23 +647,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'south alabama jaguars': 'USA',
   'south carolina': 'SC',
   'south carolina gamecocks': 'SC',
-  'sdst': 'SDST',
-  's dakota st': 'SDST',
-  'south dakota st': 'SDST',
-  'south dakota state': 'SDST',
-  'south dakota state jackrabbits': 'SDST',
-  'south dakota state university': 'SDST',
-  'jackrabbits': 'SDST',
-  'camp': 'CAMP',
-  'campbell': 'CAMP',
-  'campbell fighting camels': 'CAMP',
-  'campbell university': 'CAMP',
-  'fighting camels': 'CAMP',
-  'camels': 'CAMP',
-  'tow': 'TOW',
-  'towson': 'TOW',
-  'towson tigers': 'TOW',
-  'towson university': 'TOW',
   'south florida': 'USF',
   'south florida bulls': 'USF',
   'southern cal': 'USC',
@@ -745,12 +659,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'stan': 'STAN',
   'stanford': 'STAN',
   'stanford cardinal': 'STAN',
-  'stbk': 'STBK',
-  'sbu': 'STBK',
-  'stony brook': 'STBK',
-  'stony brook seawolves': 'STBK',
-  'stony brook university': 'STBK',
-  'suny stony brook': 'STBK',
   'stanford university': 'STAN',
   'state': 'MSST',
   'sun devils': 'ASU',
@@ -783,13 +691,9 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'texas christian university': 'TCU',
   'texas longhorns': 'TEX',
   'texas st': 'TXST',
-  'texas st bobcats': 'TXST',
   'texas state': 'TXST',
   'texas state bobcats': 'TXST',
   'texas state university': 'TXST',
-  'texas state university bobcats': 'TXST',
-  'tx state': 'TXST',
-  'txst bobcats': 'TXST',
   'texas tech': 'TTU',
   'texas tech red raiders': 'TTU',
   'texas tech university': 'TTU',
@@ -800,7 +704,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'the u': 'MIA',
   'thundering herd': 'MRSH',
   'tlsa': 'TLSA',
-  'tul': 'TLSA',
   'tol': 'TOL',
   'toledo': 'TOL',
   'toledo rockets': 'TOL',
@@ -814,8 +717,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'tuln': 'TULN',
   'tulsa': 'TLSA',
   'tulsa golden hurricane': 'TLSA',
-  'tulsa university': 'TLSA',
-  'university of tulsa': 'TLSA',
   'txst': 'TXST',
   'u of l': 'LOU',
   'uab': 'UAB',
@@ -929,19 +830,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'utah state aggies': 'USU',
   'utah state university': 'USU',
   'utah utes': 'UTAH',
-  'utu': 'UTU',
-  'utah tech': 'UTU',
-  'utah tech trailblazers': 'UTU',
-  'utah tech university': 'UTU',
-  'dixie state': 'UTU',
-  'dixie state trailblazers': 'UTU',
-  'utm': 'UTM',
-  'ut martin': 'UTM',
-  'ut-martin': 'UTM',
-  'tennessee-martin': 'UTM',
-  'tennessee martin': 'UTM',
-  'university of tennessee at martin': 'UTM',
-  'ut martin skyhawks': 'UTM',
   'utep': 'UTEP',
   'utep miners': 'UTEP',
   'utes': 'UTAH',
@@ -996,15 +884,6 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
   'wolverines': 'MICH',
   'wsu': 'WSU',
   'wvu': 'WVU',
-  'w&m': 'W&M',
-  'wm': 'W&M',
-  'william & mary': 'W&M',
-  'william and mary': 'W&M',
-  'william & mary tribe': 'W&M',
-  'william and mary tribe': 'W&M',
-  'william & mary college': 'W&M',
-  'college of william & mary': 'W&M',
-  'tribe': 'W&M',
   'wyo': 'WYO',
   'wyoming': 'WYO',
   'wyoming cowboys': 'WYO',
@@ -1013,39 +892,47 @@ const CFB_FBS_ALIAS_TO_ABBR: Record<string, string> = {
 };
 
 export function canonicalCfbTeam(value: any): CfbTeamDef | null {
-  const input = value && typeof value === 'object'
-    ? [value.school, value.name, value.displayName, value.shortDisplayName, value.shortName, value.abbr, value.abbreviation]
-    : [value];
+  // Strip trailing rank suffixes (e.g. "(5)") from ranked provider labels such
+  // as "Miami (FL) (5)" before lookup; they otherwise miss the identity table.
+  const deRanked = String(value || '').replace(/\s*\(\s*\d+\s*\)\s*$/, '').trim();
+  const normalized = normalizeText(deRanked);
+  if (!normalized) return null;
+  const aliasAbbr = CFB_FBS_ALIAS_TO_ABBR[normalized];
+  if (aliasAbbr) return CFB_TEAMS.find((team) => team.abbr === aliasAbbr) || null;
 
-  for (const candidate of input) {
-    const deRanked = String(candidate || '').replace(/\s*\(\s*\d+\s*\)\s*$/, '').trim();
-    const normalized = normalizeText(deRanked);
-    if (!normalized) continue;
-    const aliasAbbr = CFB_FBS_ALIAS_TO_ABBR[normalized];
-    if (aliasAbbr) {
-      const exactAlias = CFB_TEAMS.find((team) => team.abbr === aliasAbbr);
-      if (exactAlias) return exactAlias;
-    }
-    const exact = CFB_TEAMS.find((team) => normalizeText(team.abbr) === normalized || normalizeText(team.name) === normalized || team.aliases.some((alias) => normalizeText(alias) === normalized));
-    if (exact) return exact;
-
-    // Only match long labels, and choose the most specific alias. This avoids
-    // short tokens such as "Ohio" or "Miami" accidentally capturing a
-    // different school while still handling provider variants like "Jax St".
-    if (normalized.replace(/ /g, '').length < 6) continue;
-    const compact = normalized.replace(/ /g, '');
-    let best: { team: CfbTeamDef; score: number } | null = null;
-    for (const team of CFB_TEAMS) {
-      const aliases = [team.name, ...team.aliases].map((alias) => normalizeText(alias)).filter((alias) => alias.replace(/ /g, '').length >= 6);
-      for (const alias of aliases) {
-        const aliasCompact = alias.replace(/ /g, '');
-        const matches = normalized.includes(alias) || alias.includes(normalized) || compact.includes(aliasCompact) || aliasCompact.includes(compact);
-        if (!matches) continue;
-        const score = Math.min(compact.length, aliasCompact.length) * 10 + aliasCompact.length;
-        if (!best || score > best.score) best = { team, score };
-      }
-    }
-    if (best) return best.team;
+  // Exact identities always win. This covers ESPN abbreviations/full names and
+  // the explicit aliases generated from the frontend team table.
+  for (const team of CFB_TEAMS) {
+    if (normalizeText(team.abbr) === normalized || normalizeText(team.name) === normalized || team.aliases.some((a) => normalizeText(a) === normalized)) return team;
   }
-  return null;
+
+  // For shortened provider labels choose the MOST SPECIFIC fuzzy identity, not
+  // the first one in the table. A first-match scan makes names such as
+  // "Ohio State" resolve to Ohio because "Ohio" is encountered first.
+  // Space-compacted comparisons additionally let "Miami (FL)" match the
+  // "MiamiFL" alias and other state-qualified labels resolve correctly.
+  const compact = normalized.replace(/ /g, '');
+  let best: { team: CfbTeamDef; score: number } | null = null;
+  for (const team of CFB_TEAMS) {
+    const candidates = [team.name, ...team.aliases]
+      .map((alias) => normalizeText(alias))
+      .filter((alias) => alias.length >= 4);
+    for (const alias of candidates) {
+      const aliasCompact = alias.replace(/ /g, '');
+      let a = 0;
+      let b = 0;
+      if (normalized.includes(alias) || alias.includes(normalized)) {
+        a = normalized.length;
+        b = alias.length;
+      } else if (compact && aliasCompact && (compact.includes(aliasCompact) || aliasCompact.includes(compact))) {
+        a = compact.length;
+        b = aliasCompact.length;
+      } else {
+        continue;
+      }
+      const score = Math.min(a, b) * 10 + b;
+      if (!best || score > best.score) best = { team, score };
+    }
+  }
+  return best?.team || null;
 }
