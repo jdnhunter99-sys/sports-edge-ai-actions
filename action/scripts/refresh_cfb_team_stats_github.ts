@@ -114,6 +114,7 @@ const base44Adapter = {
 };
 
 async function refreshSeason(season: number, isPrevious: boolean) {
+  console.info(`[CFB publisher v22] Starting season ${season} refresh${isPrevious ? ' (previous season)' : ''}.`);
   teamRows.clear();
   const priorSeasonLogs = await readJson<any>(gameLogPath(season - 1), null);
   const request = new Request('https://github-actions.local/cfb-stats-refresh', {
