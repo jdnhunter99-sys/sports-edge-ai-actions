@@ -9,12 +9,13 @@
 // Required secret: CFBD_API_KEY
 
 import { normalizeCFBSchool, cfbDisplayName } from '../../shared/cfbTeamIdentity.ts';
-import { canonicalCfbTeam, CFB_TEAMS } from '../../shared/cfbOddsTeams.ts';
+import { canonicalCfbTeam } from '../../shared/cfbOddsTeams.ts';
 
 const CFBD_BASE = 'https://api.collegefootballdata.com';
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
-const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 22;
+const MAX_TEAMS_PER_RUN = 300;
+const CFB_CLASSIFICATIONS = ['fbs', 'fcs'] as const;
+const CACHE_VERSION = 24;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
@@ -311,11 +312,11 @@ function teamBoxTotals(team: any): BoxTotals {
         out.extraPointsMadeReported = true;
       }
     }
-    else if (['extrapointsmade', 'xpmade', 'patmade', 'pointaftertouchdownmade'].includes(key)) {
+    else if (['extrapointsmade', 'extrapointmade', 'xpmade', 'xpm', 'patmade', 'pointaftertouchdownmade'].includes(key)) {
       out.extraPointsMade = n(value);
       out.extraPointsMadeReported = true;
     }
-    else if (['extrapointsattempted', 'extrapointattempts', 'xpattempts', 'patattempts', 'pointaftertouchdownattempts'].includes(key)) {
+    else if (['extrapointsattempted', 'extrapointattempted', 'extrapointattempts', 'xpatt', 'xpa', 'xpattempts', 'patatt', 'patattempts', 'pointaftertouchdownattempts'].includes(key)) {
       out.extraPointsAttempted = n(value);
       out.extraPointsAttemptedReported = true;
     }
@@ -1622,15 +1623,19 @@ function mergeStandardStats(stats: any, raw: Record<string, any> | undefined) {
   const fgAtt = standardValue(raw, ['fieldGoalsAttempted', 'fieldGoalAttempts', 'fgAttempts']) ?? fgPair?.[1] ?? null;
   const xpPair = standardPair(raw, ['extraPoints', 'extraPointsMadeExtraPointsAttempted', 'pointAfterTouchdown', 'PAT']);
   const xpMade = standardValue(raw, ['extraPointsMade', 'xpMade', 'xpm', 'patMade', 'pointAfterTouchdownMade']) ?? xpPair?.[0] ?? null;
-  const xpAtt = standardValue(raw, ['extraPointsAttempted', 'extraPointAttempts', 'xpAttempts', 'xpa', 'patAttempts', 'pointAfterTouchdownAttempts']) ?? xpPair?.[1] ?? null;
+  const xpAtt = standardValue(raw, ['extraPointsAttempted', 'extraPointAttempts', 'xpAttempts', 'xpAtt', 'xpa', 'patAttempts', 'patAtt', 'pointAfterTouchdownAttempts']) ?? xpPair?.[1] ?? null;
+  const reportedXpPct = standardValue(raw, ['extraPointPct', 'extraPointsPct', 'xpPct', 'patPct', 'extraPointPercentage', 'patPercentage']);
   if (fgMade != null) stats.special_teams.fieldGoalsMadePerGame = perGame(fgMade);
   if (fgMade != null && fgAtt != null) {
     stats.special_teams.fieldGoalPct = percent(fgMade, fgAtt);
     stats.special_teams.fieldGoals = `${fgMade}-${fgAtt}`;
     stats.special_teams.fieldGoalsMadeFieldGoalsAttempted = `${fgMade}-${fgAtt}`;
   }
+  if ((xpMade != null && xpAtt != null) || reportedXpPct != null) {
+    const normalizedPct = reportedXpPct == null ? null : (reportedXpPct <= 1 ? reportedXpPct * 100 : reportedXpPct);
+    stats.special_teams.extraPointPct = xpMade != null && xpAtt ? percent(xpMade, xpAtt) : normalizedPct;
+  }
   if (xpMade != null && xpAtt != null) {
-    stats.special_teams.extraPointPct = percent(xpMade, xpAtt);
     stats.special_teams.extraPoints = `${xpMade}-${xpAtt}`;
     stats.special_teams.extraPointsMadeExtraPointsAttempted = `${xpMade}-${xpAtt}`;
   }
@@ -1736,13 +1741,12 @@ function rankLeague(statsByTeam: Map<string, any>) {
 // summaries cannot be blended here: L5/L10/L15 must take each team's actual
 // most recent games, including games played before the season boundary.
 async function fetchPriorSeasonLogs(season: number, apiKey: string) {
-  const fbsTeamKeys = await fetchFbsTeamKeys(season, apiKey);
-  const schedule = await cfbdGet('/games', {
-    year: season,
-    seasonType: 'regular',
-    classification: 'fbs',
-  }, apiKey);
-  const completed = schedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
+  const teamKeys = await fetchCfbTeamKeys(season, apiKey);
+  const schedule = (await Promise.all(CFB_CLASSIFICATIONS.map((classification) => cfbdGet('/games', {
+    year: season, seasonType: 'regular', classification,
+  }, apiKey)))).flat();
+  const uniqueSchedule = [...new Map(schedule.map((game: any) => [String(game?.id), game])).values()];
+  const completed = uniqueSchedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
   const weeks = [...new Set(completed.map((game: any) => n(game?.week, 0)).filter((week: number) => week > 0))]
     .sort((a: number, b: number) => a - b);
   const boxGames: any[] = [];
@@ -1750,24 +1754,26 @@ async function fetchPriorSeasonLogs(season: number, apiKey: string) {
   const playRows: any[] = [];
   const passingRows: any[] = [];
   for (const week of weeks) {
-    const params = { year: season, week, seasonType: 'regular', classification: 'fbs' };
-    boxGames.push(...await cfbdGet('/games/teams', params, apiKey));
-    await pause(250);
-    driveRows.push(...await cfbdGet('/drives', params, apiKey).catch(() => []));
-    await pause(250);
-    playRows.push(...await cfbdGet('/plays', params, apiKey).catch(() => []));
-    await pause(250);
-    passingRows.push(...await cfbdGet('/passing/teams/games', params, apiKey).catch(() => []));
-    await pause(250);
+    for (const classification of CFB_CLASSIFICATIONS) {
+      const params = { year: season, week, seasonType: 'regular', classification };
+      boxGames.push(...await cfbdGet('/games/teams', params, apiKey));
+      await pause(250);
+      driveRows.push(...await cfbdGet('/drives', params, apiKey).catch(() => []));
+      await pause(250);
+      playRows.push(...await cfbdGet('/plays', params, apiKey).catch(() => []));
+      await pause(250);
+      passingRows.push(...await cfbdGet('/passing/teams/games', params, apiKey).catch(() => []));
+      await pause(250);
+    }
   }
 
-  const situational = situationalByGameTeam(driveRows, playRows);
-  const passing = passingGameByTeam(passingRows);
-  const specialTeams = specialTeamsByGameTeam(playRows);
+  const situational = situationalByGameTeam(uniqueCFBDRows(driveRows), uniqueCFBDRows(playRows));
+  const passing = passingGameByTeam(uniqueCFBDRows(passingRows));
+  const specialTeams = specialTeamsByGameTeam(uniqueCFBDRows(playRows));
   const scheduleById = new Map(completed.map((game: any) => [String(game.id), game]));
   const logs = new Map<string, TeamGame[]>();
   const names = new Map<string, string>();
-  for (const game of boxGames) {
+  for (const game of uniqueCFBDRows(boxGames)) {
     const scheduled: any = scheduleById.get(String(game?.id));
     const teams = Array.isArray(game?.teams) ? game.teams : [];
     if (!scheduled || teams.length < 2) continue;
@@ -1810,119 +1816,31 @@ async function fetchPriorSeasonLogs(season: number, apiKey: string) {
     logs.get(homeKey)!.push(homeLog);
     logs.get(awayKey)!.push(awayLog);
   }
-  const fcsSupplement = await fetchSupportedFcsLogs(season, fbsTeamKeys, apiKey);
-  for (const [key, name] of fcsSupplement.names) names.set(key, name);
-  for (const [key, games] of fcsSupplement.logs) {
-    if (!logs.has(key)) logs.set(key, []);
-    const existingIds = new Set(logs.get(key)!.map((game) => String(game.gameId)));
-    logs.get(key)!.push(...games.filter((game) => !existingIds.has(String(game.gameId))));
-  }
   for (const teamLogs of logs.values()) teamLogs.sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId));
-  const teamKeys = [...new Set([...fbsTeamKeys, ...logs.keys()])].filter((key) => {
-    if (!(logs.get(key)?.length)) return false;
-    if (fbsTeamKeys.has(key)) return true;
-    const canonical = canonicalCfbTeam(names.get(key) || '');
-    return Boolean(canonical && teamKey(canonical.abbr) === key);
-  });
-  return { logs, names, teamKeys };
+  return { logs, names, teamKeys: [...new Set([...teamKeys, ...logs.keys()])].filter((key) => (logs.get(key)?.length || 0) > 0) };
 }
 
-async function fetchFbsTeamKeys(season: number, apiKey: string): Promise<Set<string>> {
+async function fetchCfbTeamKeys(season: number, apiKey: string): Promise<Set<string>> {
+  // CFBD exposes /teams/fbs, but not a parallel /teams/fcs route. FCS teams
+  // are discovered from their actual schedules and box-score rows below.
   const teams = await cfbdGet('/teams/fbs', { year: season }, apiKey);
   const keys = new Set(teams.map((team: any) => teamKey(team?.school || team?.name || team?.abbreviation)).filter(Boolean));
   if (keys.size < 120) throw new Error(`CFBD returned only ${keys.size} FBS teams for ${season}; refusing to publish an incomplete team frame.`);
   return keys;
 }
 
-// The FBS schedule endpoint omits FCS-vs-FCS games. Fetch those games for
-// schools supported by the app so their season and rolling leaderboard rows
-// use their complete schedule, not only FBS crossover games.
-async function fetchSupportedFcsLogs(season: number, fbsTeamKeys: Set<string>, apiKey: string) {
-  const supportedKeys = new Set(CFB_TEAMS.map((team) => teamKey(team.abbr)).filter(Boolean));
-  const schedule = await cfbdGet('/games', { year: season, seasonType: 'regular', classification: 'fcs' }, apiKey);
-  const completed = schedule.filter((game: any) => {
-    if (game?.completed !== true || game?.homePoints == null || game?.awayPoints == null) return false;
-    const homeKey = teamKey(game?.homeTeam);
-    const awayKey = teamKey(game?.awayTeam);
-    const fcsHome = Boolean(homeKey && supportedKeys.has(homeKey) && !fbsTeamKeys.has(homeKey));
-    const fcsAway = Boolean(awayKey && supportedKeys.has(awayKey) && !fbsTeamKeys.has(awayKey));
-    // FBS/FCS crossover games already come through the FBS schedule feed.
-    return (fcsHome || fcsAway) && !fbsTeamKeys.has(homeKey) && !fbsTeamKeys.has(awayKey);
-  });
-  const weeks = [...new Set(completed.map((game: any) => n(game?.week, 0)).filter((week: number) => week > 0))]
-    .sort((a: number, b: number) => a - b);
-  const gameIds = new Set(completed.map((game: any) => String(game.id)));
-  const scheduleById = new Map(completed.map((game: any) => [String(game.id), game]));
-  const boxGames: any[] = [];
-  const driveRows: any[] = [];
-  const playRows: any[] = [];
-  const passingRows: any[] = [];
-
-  for (const week of weeks) {
-    const params = { year: season, week, seasonType: 'regular', classification: 'fcs' };
-    const boxes = await cfbdGet('/games/teams', params, apiKey);
-    boxGames.push(...boxes.filter((row: any) => gameIds.has(String(row?.id))));
-    await pause(250);
-    driveRows.push(...await cfbdGet('/drives', params, apiKey).catch(() => []));
-    await pause(250);
-    playRows.push(...await cfbdGet('/plays', params, apiKey).catch(() => []));
-    await pause(250);
-    passingRows.push(...await cfbdGet('/passing/teams/games', params, apiKey).catch(() => []));
-    await pause(250);
-  }
-
-  const situational = situationalByGameTeam(driveRows, playRows);
-  const passing = passingGameByTeam(passingRows);
-  const specialTeams = specialTeamsByGameTeam(playRows);
-  const logs = new Map<string, TeamGame[]>();
-  const names = new Map<string, string>();
-  for (const game of boxGames) {
-    const scheduled: any = scheduleById.get(String(game?.id));
-    const teams = Array.isArray(game?.teams) ? game.teams : [];
-    if (!scheduled || teams.length < 2) continue;
-    const home = teams.find((team: any) => String(team?.homeAway || '').toLowerCase() === 'home') || teams[0];
-    const away = teams.find((team: any) => String(team?.homeAway || '').toLowerCase() === 'away') || teams[1];
-    if (!home || !away) continue;
-    const homeKey = teamKey(home.team || scheduled.homeTeam);
-    const awayKey = teamKey(away.team || scheduled.awayTeam);
-    if (!homeKey || !awayKey) continue;
-    names.set(homeKey, String(home.team || scheduled.homeTeam || homeKey));
-    names.set(awayKey, String(away.team || scheduled.awayTeam || awayKey));
-    const id = String(game.id);
-    const date = String(scheduled.startDate || '').slice(0, 10);
-    const week = n(scheduled.week, 0);
-    const homePoints = n(home.points ?? scheduled.homePoints, 0);
-    const awayPoints = n(away.points ?? scheduled.awayPoints, 0);
-    const homeTotals = teamBoxTotals(home);
-    const awayTotals = teamBoxTotals(away);
-    const homeLog: TeamGame = {
-      gameId: id, date, week, pointsFor: homePoints, pointsAgainst: awayPoints,
-      lineScores: Array.isArray(scheduled?.homeLineScores) ? scheduled.homeLineScores : [],
-      opponentLineScores: Array.isArray(scheduled?.awayLineScores) ? scheduled.awayLineScores : [],
-      own: homeTotals, opp: awayTotals,
-      situational: situational.get(`${id}|${homeKey}`), oppSituational: situational.get(`${id}|${awayKey}`),
-      passing: passing.get(`${id}|${homeKey}`), oppPassing: passing.get(`${id}|${awayKey}`),
-      specialTeams: specialTeams.get(`${id}|${homeKey}`), oppSpecialTeams: specialTeams.get(`${id}|${awayKey}`),
-    };
-    const awayLog: TeamGame = {
-      gameId: id, date, week, pointsFor: awayPoints, pointsAgainst: homePoints,
-      lineScores: Array.isArray(scheduled?.awayLineScores) ? scheduled.awayLineScores : [],
-      opponentLineScores: Array.isArray(scheduled?.homeLineScores) ? scheduled.homeLineScores : [],
-      own: awayTotals, opp: homeTotals,
-      situational: situational.get(`${id}|${awayKey}`), oppSituational: situational.get(`${id}|${homeKey}`),
-      passing: passing.get(`${id}|${awayKey}`), oppPassing: passing.get(`${id}|${homeKey}`),
-      specialTeams: specialTeams.get(`${id}|${awayKey}`), oppSpecialTeams: specialTeams.get(`${id}|${homeKey}`),
-    };
-    if (!logs.has(homeKey)) logs.set(homeKey, []);
-    if (!logs.has(awayKey)) logs.set(awayKey, []);
-    logs.get(homeKey)!.push(homeLog);
-    logs.get(awayKey)!.push(awayLog);
-  }
-  return { completed, weeks, logs, names };
-}
-
 async function pause(ms: number) {
   await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function uniqueCFBDRows(rows: any[]): any[] {
+  const seen = new Set<string>();
+  return (rows || []).filter((row) => {
+    const key = row?.id != null ? `id:${row.id}` : row?.playId != null ? `play:${row.playId}` : JSON.stringify(row);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 async function cfbdGet(path: string, params: Record<string, any>, apiKey: string): Promise<any[]> {
@@ -2099,7 +2017,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
 
     const apiKey = Deno.env.get('CFBD_API_KEY') || '';
     if (!apiKey) return Response.json({ ok: false, error: 'CFBD_API_KEY not set' }, { status: 500 });
-    const fbsTeamKeys = await fetchFbsTeamKeys(season, apiKey);
+    const cfbTeamKeys = await fetchCfbTeamKeys(season, apiKey);
     const limit = Math.max(1, Math.min(n(body?.limit, 30), MAX_TEAMS_PER_RUN));
     const offset = Math.max(0, n(body?.offset, 0));
     const requestedTeams = Array.isArray(body?.teams)
@@ -2129,17 +2047,13 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       completedGameCount = n(boxSource.completedGameCount, 0);
       boxGameCount = n(boxSource.boxGameCount, 0);
     } else {
-      const schedule = await cfbdGet('/games', {
-        year: season,
-        seasonType: 'regular',
-        classification: 'fbs',
-      }, apiKey);
+      const schedules = (await Promise.all(CFB_CLASSIFICATIONS.map((classification) => cfbdGet('/games', {
+        year: season, seasonType: 'regular', classification,
+      }, apiKey)))).flat();
+      const schedule = [...new Map(schedules.map((game: any) => [String(game?.id), game])).values()];
 
       const completed = schedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
-      if (!completed.length) throw new Error(`No completed FBS games returned by CFBD for ${season}`);
-      // The FBS schedule can contain FCS opponents and may omit a side's
-      // classification. Use CFBD's season-specific FBS directory as the
-      // authoritative team set so FCS rows cannot crowd real FBS teams out.
+      if (!completed.length) throw new Error(`No completed FBS/FCS games returned by CFBD for ${season}`);
 
       completedWeeks = [...new Set(completed.map((game: any) => n(game?.week, 0)).filter((week) => week > 0))].sort((a: number, b: number) => a - b);
       const boxGames: any[] = [];
@@ -2148,51 +2062,43 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const passingGameRows: any[] = [];
       const sourceWarnings: string[] = [];
       for (const week of completedWeeks) {
-        const params = { year: season, week, seasonType: 'regular', classification: 'fbs' };
-
-        // These are large endpoints, especially /plays. Stagger them instead of
-        // firing four concurrent requests per week, which can trigger upstream
-        // throttling and make the entire Base44 refresh much less reliable.
-        const boxWeek = await cfbdGet('/games/teams', params, apiKey);
-        let drivesWeek: any[] = [];
-        let playsWeek: any[] = [];
-        let passingWeek: any[] = [];
-
-        // Previous-season buttons only need a stable historical snapshot. Skip
-        // the enormous drive/play feeds there; standard + advanced season data
-        // and game box scores still populate the core Offense/Defense/Special
-        // Teams views while keeping a historical rebuild practical.
-        if (!historicalSeason) {
-          await pause(450);
-          drivesWeek = await cfbdGet('/drives', params, apiKey).catch((error: any) => {
-            sourceWarnings.push(`drives week ${week}: ${error?.message || String(error)}`);
-            return [];
-          });
-          await pause(450);
-          playsWeek = await cfbdGet('/plays', params, apiKey).catch((error: any) => {
-            sourceWarnings.push(`plays week ${week}: ${error?.message || String(error)}`);
-            return [];
-          });
-          await pause(450);
-          passingWeek = await cfbdGet('/passing/teams/games', params, apiKey).catch((error: any) => {
-            sourceWarnings.push(`passing teams/games week ${week}: ${error?.message || String(error)}`);
-            return [];
-          });
-        } else {
-          await pause(150);
+        for (const classification of CFB_CLASSIFICATIONS) {
+          const params = { year: season, week, seasonType: 'regular', classification };
+          const boxWeek = await cfbdGet('/games/teams', params, apiKey);
+          let drivesWeek: any[] = [];
+          let playsWeek: any[] = [];
+          let passingWeek: any[] = [];
+          if (!historicalSeason) {
+            await pause(450);
+            drivesWeek = await cfbdGet('/drives', params, apiKey).catch((error: any) => {
+              sourceWarnings.push(`drives ${classification} week ${week}: ${error?.message || String(error)}`);
+              return [];
+            });
+            await pause(450);
+            playsWeek = await cfbdGet('/plays', params, apiKey).catch((error: any) => {
+              sourceWarnings.push(`plays ${classification} week ${week}: ${error?.message || String(error)}`);
+              return [];
+            });
+            await pause(450);
+            passingWeek = await cfbdGet('/passing/teams/games', params, apiKey).catch((error: any) => {
+              sourceWarnings.push(`passing ${classification} week ${week}: ${error?.message || String(error)}`);
+              return [];
+            });
+          } else {
+            await pause(150);
+          }
+          boxGames.push(...boxWeek);
+          driveRows.push(...drivesWeek);
+          playRows.push(...playsWeek);
+          passingGameRows.push(...passingWeek);
         }
-
-        boxGames.push(...boxWeek);
-        driveRows.push(...drivesWeek);
-        playRows.push(...playsWeek);
-        passingGameRows.push(...passingWeek);
       }
 
-      const situationalMap = situationalByGameTeam(driveRows, playRows);
-      const passingMap = passingGameByTeam(passingGameRows);
-      const specialTeamsMap = specialTeamsByGameTeam(playRows);
+      const situationalMap = situationalByGameTeam(uniqueCFBDRows(driveRows), uniqueCFBDRows(playRows));
+      const passingMap = passingGameByTeam(uniqueCFBDRows(passingGameRows));
+      const specialTeamsMap = specialTeamsByGameTeam(uniqueCFBDRows(playRows));
       const scheduleById = new Map(completed.map((game: any) => [String(game.id), game]));
-      for (const game of boxGames) {
+      for (const game of uniqueCFBDRows(boxGames)) {
         const scheduleGame: any = scheduleById.get(String(game?.id));
         if (!scheduleGame) continue;
         const teams = Array.isArray(game?.teams) ? game.teams : [];
@@ -2245,7 +2151,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       }
 
       for (const log of logs.values()) log.sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId));
-      allTeamKeys = [...fbsTeamKeys].filter((key) => (logs.get(key)?.length || 0) > 0).sort();
+      allTeamKeys = [...new Set([...cfbTeamKeys, ...logs.keys()])].filter((key) => (logs.get(key)?.length || 0) > 0).sort();
       completedGameCount = completed.length;
       boxGameCount = boxGames.length;
 
@@ -2274,30 +2180,6 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       });
     }
 
-    // FBS/FCS crossover logs come from the FBS feed; add the supported FCS
-    // schools' FCS-vs-FCS schedules as well so their season averages and ranks
-    // are based on all completed games.
-    const fcsSupplement = await fetchSupportedFcsLogs(season, fbsTeamKeys, apiKey);
-    completedWeeks = [...new Set([...completedWeeks, ...fcsSupplement.weeks])].sort((a, b) => a - b);
-    for (const [key, name] of fcsSupplement.names) teamNames.set(key, name);
-    for (const [key, games] of fcsSupplement.logs) {
-      if (!logs.has(key)) logs.set(key, []);
-      const existingIds = new Set(logs.get(key)!.map((game) => String(game.gameId)));
-      logs.get(key)!.push(...games.filter((game) => !existingIds.has(String(game.gameId))));
-    }
-    for (const teamLogs of logs.values()) teamLogs.sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId));
-
-    // Only accept non-FBS keys when the source display name resolves back to
-    // that exact canonical team key, avoiding abbreviation collisions.
-    const fbsKeysWithLogs = new Set(allTeamKeys);
-    const observedKeys = [...new Set([...allTeamKeys, ...logs.keys()])];
-    allTeamKeys = observedKeys.filter((key) => {
-      if (!(logs.get(key)?.length)) return false;
-      if (fbsKeysWithLogs.has(key)) return true;
-      const canonical = canonicalCfbTeam(teamNames.get(key) || '');
-      return Boolean(canonical && teamKey(canonical.abbr) === key);
-    }).sort();
-
     if (!completedWeeks.length || !allTeamKeys.length) throw new Error(`CFB source cache contains no completed team data for ${season}`);
 
     const warnings: string[] = [];
@@ -2324,9 +2206,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         }
       }
       for (const key of priorSeasonLogs.keys()) {
-        const canonical = canonicalCfbTeam(priorSeasonNames.get(key) || teamNames.get(key) || '');
-        const isKnownTeam = Boolean(canonical && teamKey(canonical.abbr) === key);
-        if ((fbsKeysWithLogs.has(key) || isKnownTeam) && !allTeamKeys.includes(key)) allTeamKeys.push(key);
+        if (cfbTeamKeys.has(key) && !allTeamKeys.includes(key)) allTeamKeys.push(key);
         if (!teamNames.has(key) && priorSeasonNames.has(key)) teamNames.set(key, priorSeasonNames.get(key)!);
       }
       allTeamKeys.sort();
@@ -2356,12 +2236,9 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           advancedMap = new Map(Object.entries(cachedAdvanced.teams));
         } else {
           try {
-            const advancedRows = await cfbdGet('/stats/season/advanced', {
-              year: season,
-              startWeek,
-              endWeek: maxCompletedWeek,
-              classification: 'fbs',
-            }, apiKey);
+            const advancedRows = (await Promise.all(CFB_CLASSIFICATIONS.map((classification) => cfbdGet('/stats/season/advanced', {
+              year: season, startWeek, endWeek: maxCompletedWeek, classification,
+            }, apiKey)))).flat();
             advancedMap = advancedByTeam(advancedRows);
             await writeSourceCache(base44, {
               cache_key: advancedSourceKey,
@@ -2396,7 +2273,10 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
             const standardRows = await cfbdGet('/stats/season', {
               year: season, startWeek, endWeek: maxCompletedWeek, classification: 'fbs',
             }, apiKey);
-            standardMap = standardByTeam(standardRows);
+            const fcsStandardRows = await cfbdGet('/stats/season', {
+              year: season, startWeek, endWeek: maxCompletedWeek, classification: 'fcs',
+            }, apiKey);
+            standardMap = standardByTeam([...standardRows, ...fcsStandardRows]);
             await writeSourceCache(base44, {
               cache_key: standardSourceKey, cache_date: cacheDate, season, source_type: 'standard',
               start_week: startWeek, end_week: maxCompletedWeek, scraped_at: new Date().toISOString(),
@@ -2491,9 +2371,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       completedWeeks,
       completedGameCount,
       boxGameCount,
-      fbsTeamCount: fbsTeamKeys.size,
-      fcsTeamCount: allTeamKeys.filter((key) => !fbsTeamKeys.has(key)).length,
-      teamCount: allTeamKeys.length,
+      cfbTeamCount: allTeamKeys.length,
+      fbsFcsTeamCount: allTeamKeys.length,
       requestedTeamCount: requestedTeams.length || sliceKeys.length,
       materializedTeamCount: sliceKeys.length,
       cachedRecords: results.length,
