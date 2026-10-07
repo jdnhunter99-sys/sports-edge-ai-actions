@@ -21,24 +21,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Check private repository token
+      - name: Validate required secrets
         env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
-        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
-
-      - name: Read source from the private app repository
-        uses: actions/checkout@v6
-        with:
-          repository: jdnhunter99-sys/sports-edge-ai2
-          ref: main
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
-          persist-credentials: false
-          fetch-depth: 1
-          sparse-checkout: |
-            scripts
-            base44/functions
-            base44/shared
-          path: source
+        run: |
+          test -n "$CFBD_API_KEY" || { echo 'Add repository secret CFBD_API_KEY'; exit 1; }
+          test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
 
       - uses: denoland/setup-deno@v2
         with:
@@ -61,7 +50,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Fetch, calculate, and materialize all CFB timeframes
-        working-directory: source
+        working-directory: action
         env:
           CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
