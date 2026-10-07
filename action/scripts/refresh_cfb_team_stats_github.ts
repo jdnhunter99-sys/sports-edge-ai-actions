@@ -25,6 +25,23 @@ type CacheIndex = {
   seasons?: Record<string, { season: number; updated_at: string; timeframes: Record<string, FrameManifest> }>;
 };
 
+async function fetchSeasonSchedule(season: number) {
+  const apiKey = Deno.env.get('CFBD_API_KEY')?.trim();
+  if (!apiKey) throw new Error('CFBD_API_KEY is required to build per-game CFB cache files');
+  const url = new URL('https://api.collegefootballdata.com/games');
+  url.searchParams.set('year', String(season));
+  url.searchParams.set('seasonType', 'regular');
+  url.searchParams.set('classification', 'fbs');
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) throw new Error(`CFBD schedule request failed for ${season}: HTTP ${response.status} ${String(await response.text()).slice(0, 500)}`);
+  const schedule = await response.json();
+  if (!Array.isArray(schedule)) throw new Error(`CFBD schedule response for ${season} was not an array`);
+  return schedule.filter((game: any) => game?.id != null && game?.homeTeam && game?.awayTeam);
+}
+
 async function readJson<T>(path: string, fallback: T): Promise<T> {
   try { return JSON.parse(await Deno.readTextFile(path)) as T; }
   catch (error) {
@@ -121,6 +138,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   } else {
     throw new Error(`CFB refresh did not return game logs for ${season}; rolling windows cannot be refreshed safely.`);
   }
+  const gameSchedule = await fetchSeasonSchedule(season);
 
   const writtenFrames: Record<string, FrameManifest> = {};
   for (const timeframe of TIMEFRAMES) {
@@ -163,9 +181,41 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       team_count: Object.keys(teamPayloads).length,
       teams: teamPayloads,
     })}\n`);
+    const gameEntries = gameSchedule;
+    let gameCount = 0;
+    for (const game of gameEntries) {
+      const gameId = String(game?.id || '').trim();
+      const awayKey = normalizeCFBSchool(game?.awayTeam || '');
+      const homeKey = normalizeCFBSchool(game?.homeTeam || '');
+      if (!/^\d+$/.test(gameId) || !awayKey || !homeKey) continue;
+      const away = teamPayloads[awayKey] || null;
+      const home = teamPayloads[homeKey] || null;
+      if (!away && !home) continue;
+      const gamePath = `cfb-team-stats/v${result.cacheVersion}/${season}/games/${gameId}/${timeframe.toLowerCase()}.json`;
+      await Deno.mkdir(`${cacheRoot}/${season}/games/${gameId}`, { recursive: true });
+      await Deno.writeTextFile(`${outputRoot.replace(/\/$/, '')}/${gamePath}`, `${JSON.stringify({
+        sport: 'cfb',
+        schemaVersion: 1,
+        cacheVersion: result.cacheVersion,
+        season,
+        timeframe,
+        gameId,
+        date: String(game.startDate || '').slice(0, 10) || null,
+        week: Number(game.week || 0) || null,
+        completed: game.completed === true,
+        awayTeamKey: awayKey,
+        homeTeamKey: homeKey,
+        awayTeam: game.awayTeam || away?.team || awayKey,
+        homeTeam: game.homeTeam || home?.team || homeKey,
+        teams: { [awayKey]: away, [homeKey]: home },
+        updated_at: latest || result.scrapedAt || new Date().toISOString(),
+      })}\n`);
+      gameCount++;
+    }
     writtenFrames[timeframe] = {
       path,
       teams: Object.keys(teamPayloads).length,
+      games: gameCount,
       scraped_at: latest || result.scrapedAt || new Date().toISOString(),
     };
   }
