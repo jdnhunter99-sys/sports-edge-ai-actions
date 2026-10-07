@@ -179,10 +179,6 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   return result;
 }
 
-const historicalFramePaths = TIMEFRAMES.map((timeframe) => seasons[String(previousSeason)]?.timeframes?.[timeframe]?.path || '');
-const historicalHasCurrentVersion = historicalFramePaths.every((path) => path.includes(`/v${CACHE_VERSION}/${previousSeason}/`));
-const historicalGameLogsExist = await Deno.stat(gameLogPath(previousSeason)).then(() => true).catch(() => false);
-const historicalAlreadyPresent = historicalHasCurrentVersion && historicalGameLogsExist;
 let refreshedSeasonCount = 0;
 let quotaExhausted = false;
 async function refreshUnlessQuotaExceeded(season: number, isPrevious: boolean) {
@@ -196,10 +192,10 @@ async function refreshUnlessQuotaExceeded(season: number, isPrevious: boolean) {
     console.warn(`CFBD monthly quota is exhausted; keeping the last published cache for ${season}.`);
   }
 }
-if (refreshPrevious || !historicalAlreadyPresent) {
+if (refreshPrevious) {
   await refreshUnlessQuotaExceeded(previousSeason, true);
 } else {
-  console.info(`Keeping existing previous-season (${previousSeason}) materialization; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
+  console.info(`Skipping previous-season (${previousSeason}) refresh; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
 }
 if (!quotaExhausted) await refreshUnlessQuotaExceeded(currentSeason, false);
 
