@@ -1925,21 +1925,37 @@ async function pause(ms: number) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+let cfbdRequestCount = 0;
+
 async function cfbdGet(path: string, params: Record<string, any>, apiKey: string): Promise<any[]> {
   const url = new URL(`${CFBD_BASE}${path}`);
   for (const [key, value] of Object.entries(params || {})) {
     if (value !== undefined && value !== null && value !== '') url.searchParams.set(key, String(value));
   }
+  const requestId = ++cfbdRequestCount;
+  const startedAt = Date.now();
+  console.info(`[CFB v22] CFBD request #${requestId} started: ${path}?${url.searchParams.toString()}`);
   let last = '';
   for (let attempt = 1; attempt <= 3; attempt++) {
-    const response = await fetch(url.toString(), {
-      headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
-    });
+    let response: Response;
+    try {
+      response = await fetch(url.toString(), {
+        headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
+        signal: AbortSignal.timeout(45_000),
+      });
+    } catch (error: any) {
+      const detail = error?.message || String(error);
+      console.error(`[CFB v22] CFBD request #${requestId} failed after ${Date.now() - startedAt}ms: ${detail}`);
+      throw new Error(`CFBD ${path} request #${requestId} failed or timed out after 45 seconds: ${detail}`);
+    }
     if (response.ok) {
       const json = await response.json().catch(() => []);
-      return Array.isArray(json) ? json : [];
+      const rows = Array.isArray(json) ? json : [];
+      console.info(`[CFB v22] CFBD request #${requestId} completed in ${Date.now() - startedAt}ms: ${path} (${rows.length} rows)`);
+      return rows;
     }
     last = `${response.status} ${await response.text().catch(() => '')}`.slice(0, 300);
+    console.warn(`[CFB v22] CFBD request #${requestId} attempt ${attempt}/3 returned HTTP ${response.status} after ${Date.now() - startedAt}ms`);
     if (![429, 502, 503, 504].includes(response.status)) break;
     await new Promise((resolve) => setTimeout(resolve, attempt * 900));
   }
@@ -2147,7 +2163,10 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const playRows: any[] = [];
       const passingGameRows: any[] = [];
       const sourceWarnings: string[] = [];
-      for (const week of completedWeeks) {
+      console.info(`[CFB v22] Season ${season}: loaded ${completed.length} completed FBS games across ${completedWeeks.length} weeks; fetching weekly team data.`);
+      for (let weekIndex = 0; weekIndex < completedWeeks.length; weekIndex++) {
+        const week = completedWeeks[weekIndex];
+        console.info(`[CFB v22] Season ${season}: starting week ${week} (${weekIndex + 1}/${completedWeeks.length}).`);
         const params = { year: season, week, seasonType: 'regular', classification: 'fbs' };
 
         // These are large endpoints, especially /plays. Stagger them instead of
@@ -2344,6 +2363,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     const maxCompletedWeek = Math.max(...completedWeeks);
 
     for (const timeframe of timeframes) {
+      console.info(`[CFB v22] Season ${season}: calculating ${timeframe} team stats for ${allTeamKeys.length} teams.`);
       const upper = String(timeframe).toUpperCase();
       const windowSize = upper === 'SEASON' ? 0 : n(upper.replace(/^L/, ''), 0);
       const startWeek = windowSize ? Math.max(1, maxCompletedWeek - windowSize + 1) : 1;
