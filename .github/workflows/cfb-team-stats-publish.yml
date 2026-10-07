@@ -35,10 +35,9 @@ jobs:
           ref: main
           persist-credentials: false
           fetch-depth: 1
-          path: action
 
       - name: Verify standalone CFB publisher checkout
-        run: test -f action/scripts/refresh_cfb_team_stats_github.ts || { echo 'CFB publisher script is missing from the Actions repository main branch'; find action -maxdepth 3 -type f -print; exit 1; }
+        run: test -f action/scripts/refresh_cfb_team_stats_github.ts || { echo 'CFB publisher script is missing from the Actions repository main branch'; find . -maxdepth 4 -type f -print; exit 1; }
 
       - uses: denoland/setup-deno@v2
         with:
@@ -61,13 +60,12 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Fetch, calculate, and materialize all CFB timeframes
-        working-directory: action
         env:
           CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           CFB_REFRESH_PREVIOUS_SEASON: ${{ github.event.inputs.refresh_previous || 'false' }}
         run: |
-          deno run --allow-net --allow-env --allow-read --allow-write scripts/refresh_cfb_team_stats_github.ts
+          deno run --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_team_stats_github.ts
 
       - name: Publish CFB stats cache
         working-directory: data
