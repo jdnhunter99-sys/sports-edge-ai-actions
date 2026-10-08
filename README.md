@@ -1,16 +1,24 @@
-# SportsEdgeAI public Actions runner
+# SportsEdgeAI Actions and published data
 
-This repository hosts the GitHub Actions publishers used by SportsEdgeAI. The CFB
-team-stats publisher is self-contained here: it fetches CFBD data, computes the
-team frames, and publishes JSON to the private `sports-edge-ai2` data branch. Other
-publishers may read source code from `sports-edge-ai2` as described by their workflows.
+This repository owns the SportsEdgeAI GitHub Actions workflows, their runner
+scripts, and the JSON cache branches they publish. Base44 dispatches workflows
+from this repository and its backend functions read the published JSON here.
 
-Add the repository secrets required by each workflow before running it:
+## One-time data migration
 
-- `PRIVATE_REPO_TOKEN` with access to write generated data to the private repository branches
-- `PROPLINE_API_KEY` for both PropLine workflows
-- `CFBD_API_KEY` for CFB team stats
+Before deploying Base44 readers that point here, run **Migrate published JSON to
+Actions repository** once. It copies the existing `cfb-team-stats-data`,
+`sharpodds-data`, `propline-data`, and `player-lists-data` branches from
+`sports-edge-ai2`, and seeds `nfl-projection-backtest-data` from the current app
+JSON. It does not delete the source branches.
+
+## Repository secrets
+
+- `PRIVATE_REPO_TOKEN` with read access to `jdnhunter99-sys/sports-edge-ai2` (used for the one-time migration and the NFL model-source checkout)
+- `CFBD_API_KEY` for the CFB team-stats publisher
 - `SHARP_API_KEY` for NCAAF SharpOdds
+- `PROPLINE_API_KEY` for both PropLine publishers
 - `PINNACLE_GUEST_API_KEY`, `NOVIG_CLIENT_ID`, `NOVIG_CLIENT_SECRET`, and `REBET_API_KEY` when configured for SharpOdds
 
-All workflows support manual dispatch. Base44 remains responsible for scheduled dispatches.
+Set Actions' workflow permission to read and write repository contents. Base44
+continues to dispatch these workflows, including scheduled triggers.

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: player-list-cache-refresh
@@ -22,27 +22,21 @@ jobs:
           fetch-depth: 1
           path: action
 
-      - name: Check private app repository token
-        env:
-          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
-        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
-
-      - name: Check out published cache branch
+      - name: Check out the published player-list branch
         uses: actions/checkout@v6
         with:
-          repository: jdnhunter99-sys/sports-edge-ai2
-          ref: main
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          repository: ${{ github.repository }}
+          ref: player-lists-data
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 1
           path: data
 
-      - name: Prepare cache branch
+      - name: Configure data commit identity
         working-directory: data
         run: |
-          git fetch origin refs/heads/player-lists-data:refs/remotes/origin/player-lists-data 2>/dev/null \
-            && git checkout -B player-lists-data origin/player-lists-data \
-            || { git checkout --orphan player-lists-data; git rm -rf .; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Fetch and build per-screen JSON caches directly from source
         env:
@@ -52,8 +46,6 @@ jobs:
       - name: Publish completed JSON cache files
         working-directory: data
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add player-lists
           if git diff --cached --quiet; then echo 'Player-list cache unchanged'; exit 0; fi
           git commit -qm 'Refresh prop center and projection player-list caches'

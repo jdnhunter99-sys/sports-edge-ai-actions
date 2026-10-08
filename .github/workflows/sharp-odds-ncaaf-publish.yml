@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: sharp-odds-ncaaf-publisher
@@ -13,54 +13,41 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
-      - name: Check private repository token
+      - name: Check required SharpOdds secrets
         env:
-          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
-        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
+          SHARP_API_KEY: ${{ secrets.SHARP_API_KEY }}
+        run: test -n "$SHARP_API_KEY" || { echo 'Add repository secret SHARP_API_KEY'; exit 1; }
 
-      - name: Read source from the private app repository
+      - name: Check out this Actions repository
         uses: actions/checkout@v6
         with:
-          repository: jdnhunter99-sys/sports-edge-ai2
           ref: main
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           persist-credentials: false
           fetch-depth: 1
-          sparse-checkout: |
-            scripts
-            base44/functions
-            base44/shared
-          path: source
 
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
-      - name: Check required SharpAPI key
-        env:
-          SHARP_API_KEY: ${{ secrets.SHARP_API_KEY }}
-        run: test -n "$SHARP_API_KEY" || { echo 'Add repository secret SHARP_API_KEY'; exit 1; }
-
-      - name: Read existing private data branch
+      - name: Check out the published SharpOdds data branch
         uses: actions/checkout@v6
         with:
-          repository: jdnhunter99-sys/sports-edge-ai2
+          repository: ${{ github.repository }}
           ref: sharpodds-data
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 1
           path: data
 
-      - name: Configure private data commit identity
+      - name: Configure data commit identity
         working-directory: data
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Refresh and materialize NCAAF snapshots
-        working-directory: source
         env:
           SHARP_API_KEY: ${{ secrets.SHARP_API_KEY }}
           PINNACLE_GUEST_API_KEY: ${{ secrets.PINNACLE_GUEST_API_KEY }}
@@ -69,7 +56,7 @@ jobs:
           REBET_API_KEY: ${{ secrets.REBET_API_KEY }}
           SHARP_ODDS_OUTPUT_DIR: ${{ github.workspace }}/data
           SHARP_ODDS_IMPORT_ONLY: 'true'
-        run: deno run --allow-net --allow-env --allow-read --allow-write scripts/refresh_sharp_odds_ncaaf_github.ts
+        run: deno run --node-modules-dir=auto --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_sharp_odds_ncaaf_github.ts
 
       - name: Publish NCAAF cache generation
         working-directory: data

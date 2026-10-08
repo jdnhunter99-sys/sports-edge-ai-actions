@@ -1,0 +1,74 @@
+name: Migrate published JSON to Actions repository
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: migrate-published-json
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Actions main for the existing backtest seed
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: true
+          fetch-depth: 1
+          path: action
+
+      - name: Check source repository access token
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN with read access to sports-edge-ai2'; exit 1; }
+
+      - name: Copy existing published data branches
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          TARGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          target_url="https://x-access-token:${TARGET_TOKEN}@github.com/${TARGET_REPOSITORY}.git"
+          for branch in cfb-team-stats-data sharpodds-data propline-data player-lists-data; do
+            if git ls-remote --exit-code --heads "$target_url" "$branch" >/dev/null 2>&1; then
+              echo "${branch} already exists in the Actions repository; leaving it untouched"
+              continue
+            fi
+            echo "Migrating ${branch}"
+            git clone --quiet --depth=1 --branch "$branch" \
+              "https://x-access-token:${PRIVATE_REPO_TOKEN}@github.com/jdnhunter99-sys/sports-edge-ai2.git" "source-${branch}"
+            git -C "source-${branch}" push --quiet "$target_url" HEAD:"refs/heads/${branch}"
+          done
+
+      - name: Seed the NFL backtest JSON branch
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          TARGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          target_url="https://x-access-token:${TARGET_TOKEN}@github.com/${TARGET_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$target_url" nfl-projection-backtest-data >/dev/null 2>&1; then
+            echo 'nfl-projection-backtest-data already exists; leaving it untouched'
+          else
+            mkdir backtest-data
+            cp action/data-seed/nfl-projection-backtest.json backtest-data/nfl-projection-backtest.json
+            git -C backtest-data init -q -b nfl-projection-backtest-data
+            git -C backtest-data config user.name 'github-actions[bot]'
+            git -C backtest-data config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git -C backtest-data add nfl-projection-backtest.json
+            git -C backtest-data commit -qm 'Migrate NFL projection backtest JSON'
+            git -C backtest-data push --quiet "$target_url" HEAD:refs/heads/nfl-projection-backtest-data
+          fi
+
+          git -C action config user.name 'github-actions[bot]'
+          git -C action config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C action rm -q data-seed/nfl-projection-backtest.json
+          git -C action commit -qm 'Remove one-time NFL backtest data seed'
+          git -C action push --quiet origin HEAD:main

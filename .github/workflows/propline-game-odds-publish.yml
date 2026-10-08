@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: propline-private-data-publisher
@@ -15,11 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 13
     steps:
-      - name: Check private repository token
-        env:
-          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
-        run: test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
-
       - name: Check out this Actions repository
         uses: actions/checkout@v6
         with:
@@ -32,17 +27,17 @@ jobs:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: test -n "$PROPLINE_API_KEY" || { echo 'Add repository secret PROPLINE_API_KEY'; exit 1; }
 
-      - name: Read existing private data branch
+      - name: Check out the published PropLine data branch
         uses: actions/checkout@v6
         with:
-          repository: jdnhunter99-sys/sports-edge-ai2
+          repository: ${{ github.repository }}
           ref: propline-data
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 1
           path: data
 
-      - name: Configure private data commit identity
+      - name: Configure data commit identity
         working-directory: data
         run: |
           git config user.name 'github-actions[bot]'
@@ -54,7 +49,7 @@ jobs:
           PROPLINE_OUTPUT_DIR: ${{ github.workspace }}/data
         run: python3 action/scripts/publish_propline_game_odds.py
 
-      - name: Commit and publish completed game caches
+      - name: Publish completed game caches
         working-directory: data
         run: |
           git add game-odds

@@ -5,7 +5,7 @@ const outputRoot = Deno.env.get('CFB_STATS_OUTPUT_DIR')?.trim();
 if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 if (!Deno.env.get('CFBD_API_KEY')?.trim()) throw new Error('CFBD_API_KEY is required');
 
-const CACHE_VERSION = 22;
+const CACHE_VERSION = 23;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
 const TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
@@ -17,34 +17,13 @@ const previousSeason = currentSeason - 1;
 const refreshPrevious = Deno.env.get('CFB_REFRESH_PREVIOUS_SEASON') === 'true';
 
 type TeamRecord = Record<string, any>;
-type FrameManifest = { path: string; teams: number; games?: number; game_cache_pattern?: string; scraped_at: string };
+type FrameManifest = { path: string; teams: number; scraped_at: string };
 type CacheIndex = {
   sport?: string;
   cacheVersion?: number;
   updated_at?: string;
   seasons?: Record<string, { season: number; updated_at: string; timeframes: Record<string, FrameManifest> }>;
 };
-
-async function fetchSeasonSchedule(season: number) {
-  const apiKey = Deno.env.get('CFBD_API_KEY')?.trim();
-  if (!apiKey) throw new Error('CFBD_API_KEY is required to build per-game CFB cache files');
-  const fetchSchedule = async (classification: 'fbs' | 'fcs') => {
-    const url = new URL('https://api.collegefootballdata.com/games');
-    url.searchParams.set('year', String(season));
-    url.searchParams.set('seasonType', 'regular');
-    url.searchParams.set('classification', classification);
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
-      signal: AbortSignal.timeout(30_000),
-    });
-    if (!response.ok) throw new Error(`CFBD ${classification.toUpperCase()} schedule request failed for ${season}: HTTP ${response.status} ${String(await response.text()).slice(0, 500)}`);
-    const schedule = await response.json();
-    if (!Array.isArray(schedule)) throw new Error(`CFBD ${classification.toUpperCase()} schedule response for ${season} was not an array`);
-    return schedule.filter((game: any) => game?.id != null && game?.homeTeam && game?.awayTeam);
-  };
-  const schedules = await Promise.all([fetchSchedule('fbs'), fetchSchedule('fcs')]);
-  return [...new Map(schedules.flat().map((game: any) => [String(game.id), game])).values()];
-}
 
 async function readJson<T>(path: string, fallback: T): Promise<T> {
   try { return JSON.parse(await Deno.readTextFile(path)) as T; }
@@ -114,7 +93,6 @@ const base44Adapter = {
 };
 
 async function refreshSeason(season: number, isPrevious: boolean) {
-  console.info(`[CFB publisher v22] Starting season ${season} refresh${isPrevious ? ' (previous season)' : ''}.`);
   teamRows.clear();
   const priorSeasonLogs = await readJson<any>(gameLogPath(season - 1), null);
   const request = new Request('https://github-actions.local/cfb-stats-refresh', {
@@ -143,7 +121,6 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   } else {
     throw new Error(`CFB refresh did not return game logs for ${season}; rolling windows cannot be refreshed safely.`);
   }
-  const gameSchedule = await fetchSeasonSchedule(season);
 
   const writtenFrames: Record<string, FrameManifest> = {};
   for (const timeframe of TIMEFRAMES) {
@@ -158,7 +135,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       // Treat the full source team name as authoritative. Cached abbreviations
       // can collide across providers or divisions; a trustworthy name lets us
       // canonicalize the team without carrying a stale/wrong key forward.
-      const key = normalizeCFBSchool(payload.teamKey || row.team_abbr || payload.team || '');
+      const key = normalizeCFBSchool(payload.team || payload.teamKey || row.team_abbr || '');
       if (!key) continue;
       teamPayloads[key] = payload;
       if (String(row.scraped_at || '') > latest) latest = String(row.scraped_at);
@@ -186,42 +163,9 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       team_count: Object.keys(teamPayloads).length,
       teams: teamPayloads,
     })}\n`);
-    const gameEntries = gameSchedule;
-    let gameCount = 0;
-    for (const game of gameEntries) {
-      const gameId = String(game?.id || '').trim();
-      const awayKey = normalizeCFBSchool(game?.awayTeam || '');
-      const homeKey = normalizeCFBSchool(game?.homeTeam || '');
-      if (!/^\d+$/.test(gameId) || !awayKey || !homeKey) continue;
-      const away = teamPayloads[awayKey] || null;
-      const home = teamPayloads[homeKey] || null;
-      if (!away && !home) continue;
-      const gamePath = `cfb-team-stats/v${result.cacheVersion}/${season}/games/${gameId}/${timeframe.toLowerCase()}.json`;
-      await Deno.mkdir(`${cacheRoot}/${season}/games/${gameId}`, { recursive: true });
-      await Deno.writeTextFile(`${outputRoot.replace(/\/$/, '')}/${gamePath}`, `${JSON.stringify({
-        sport: 'cfb',
-        schemaVersion: 1,
-        cacheVersion: result.cacheVersion,
-        season,
-        timeframe,
-        gameId,
-        date: String(game.startDate || '').slice(0, 10) || null,
-        week: Number(game.week || 0) || null,
-        completed: game.completed === true,
-        awayTeamKey: awayKey,
-        homeTeamKey: homeKey,
-        awayTeam: game.awayTeam || away?.team || awayKey,
-        homeTeam: game.homeTeam || home?.team || homeKey,
-        teams: { [awayKey]: away, [homeKey]: home },
-        updated_at: latest || result.scrapedAt || new Date().toISOString(),
-      })}\n`);
-      gameCount++;
-    }
     writtenFrames[timeframe] = {
       path,
       teams: Object.keys(teamPayloads).length,
-      games: gameCount,
-      game_cache_pattern: `cfb-team-stats/v${result.cacheVersion}/${season}/games/{gameId}/${timeframe.toLowerCase()}.json`,
       scraped_at: latest || result.scrapedAt || new Date().toISOString(),
     };
   }
@@ -231,7 +175,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
     updated_at: new Date().toISOString(),
     timeframes: writtenFrames,
   };
-  console.info(`Materialized CFB season ${season}: ${result.fbsTeamCount} FBS teams, ${result.fcsTeamCount || 0} supported FCS teams, ${Object.keys(writtenFrames).length} timeframes.`);
+  console.info(`Materialized CFB season ${season}: ${result.fbsTeamCount} FBS teams, ${Object.keys(writtenFrames).length} timeframes.`);
   return result;
 }
 
@@ -252,13 +196,10 @@ async function refreshUnlessQuotaExceeded(season: number, isPrevious: boolean) {
     console.warn(`CFBD monthly quota is exhausted; keeping the last published cache for ${season}.`);
   }
 }
-if (refreshPrevious) {
+if (refreshPrevious || !historicalAlreadyPresent) {
   await refreshUnlessQuotaExceeded(previousSeason, true);
 } else {
-  const previousSeasonStatus = historicalAlreadyPresent
-    ? 'keeping existing materialization'
-    : 'no current-version materialization exists; leaving previous season untouched';
-  console.info(`Skipping previous-season (${previousSeason}) refresh because refresh_previous was not checked; ${previousSeasonStatus}.`);
+  console.info(`Keeping existing previous-season (${previousSeason}) materialization; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
 }
 if (!quotaExhausted) await refreshUnlessQuotaExceeded(currentSeason, false);
 

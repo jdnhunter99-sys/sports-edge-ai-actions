@@ -10,7 +10,7 @@ on:
         default: false
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: cfb-team-stats-publisher
@@ -21,13 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Validate required secrets
+      - name: Check required CFBD API key
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
-        run: |
-          test -n "$CFBD_API_KEY" || { echo 'Add repository secret CFBD_API_KEY'; exit 1; }
-          test -n "$PRIVATE_REPO_TOKEN" || { echo 'Add repository secret PRIVATE_REPO_TOKEN'; exit 1; }
+        run: test -n "$CFBD_API_KEY" || { echo 'Add repository secret CFBD_API_KEY'; exit 1; }
 
       - name: Check out this Actions repository
         uses: actions/checkout@v6
@@ -36,24 +33,21 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
 
-      - name: Verify standalone CFB publisher checkout
-        run: test -f action/scripts/refresh_cfb_team_stats_github.ts || { echo 'CFB publisher script is missing from the Actions repository main branch'; find . -maxdepth 4 -type f -print; exit 1; }
-
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
-      - name: Read existing private data branch
+      - name: Check out the published CFB data branch
         uses: actions/checkout@v6
         with:
-          repository: jdnhunter99-sys/sports-edge-ai2
+          repository: ${{ github.repository }}
           ref: cfb-team-stats-data
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 1
           path: data
 
-      - name: Configure private data commit identity
+      - name: Configure data commit identity
         working-directory: data
         run: |
           git config user.name 'github-actions[bot]'
@@ -64,8 +58,7 @@ jobs:
           CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           CFB_REFRESH_PREVIOUS_SEASON: ${{ github.event.inputs.refresh_previous || 'false' }}
-        run: |
-          deno run --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_team_stats_github.ts
+        run: deno run --node-modules-dir=auto --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_team_stats_github.ts
 
       - name: Publish CFB stats cache
         working-directory: data

@@ -1,0 +1,84 @@
+name: NFL Projection Backtest
+
+on:
+  schedule:
+    - cron: '15 19 * * 2'
+  workflow_dispatch:
+    inputs:
+      season:
+        description: NFL season to grade
+        required: false
+        type: string
+      week:
+        description: Week to grade
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nfl-projection-backtest
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out this Actions repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Check out app model source
+        uses: actions/checkout@v6
+        with:
+          repository: jdnhunter99-sys/sports-edge-ai2
+          ref: main
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          persist-credentials: false
+          fetch-depth: 1
+          path: source
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Install app model dependencies
+        run: npm ci --prefix source
+
+      - name: Check out the published backtest data branch
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository }}
+          ref: nfl-projection-backtest-data
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+          path: data
+
+      - name: Generate backtest results
+        env:
+          NFL_SEASON: ${{ inputs.season }}
+          NFL_WEEK: ${{ inputs.week }}
+          SPORTS_EDGE_SOURCE_DIR: ${{ github.workspace }}/source
+          NFL_BACKTEST_OUTPUT_PATH: ${{ github.workspace }}/data/nfl-projection-backtest.json
+        run: node --max-old-space-size=4096 action/scripts/nfl-projection-backtest.mjs
+
+      - name: Commit results
+        working-directory: data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add nfl-projection-backtest.json
+          if git diff --cached --quiet; then
+            echo 'No backtest changes to commit.'
+          else
+            git commit -m 'Update NFL projection backtest results'
+            git push --quiet origin HEAD:nfl-projection-backtest-data
+          fi
