@@ -1,0 +1,60 @@
+{
+  "sport": "cfb",
+  "schemaVersion": 1,
+  "cacheVersion": 23,
+  "updated_at": "2026-10-08T14:47:51.593Z",
+  "seasons": {
+    "2025": {
+      "season": 2025,
+      "updated_at": "2026-10-08T14:45:56.184Z",
+      "timeframes": {
+        "season": {
+          "path": "cfb-team-stats/v23/2025/season.json",
+          "teams": 136,
+          "scraped_at": "2026-10-08T14:45:14.736Z"
+        },
+        "L5": {
+          "path": "cfb-team-stats/v23/2025/l5.json",
+          "teams": 136,
+          "scraped_at": "2026-10-08T14:45:14.736Z"
+        },
+        "L10": {
+          "path": "cfb-team-stats/v23/2025/l10.json",
+          "teams": 136,
+          "scraped_at": "2026-10-08T14:45:14.736Z"
+        },
+        "L15": {
+          "path": "cfb-team-stats/v23/2025/l15.json",
+          "teams": 136,
+          "scraped_at": "2026-10-08T14:45:14.736Z"
+        }
+      }
+    },
+    "2026": {
+      "season": 2026,
+      "updated_at": "2026-10-08T14:47:51.592Z",
+      "timeframes": {
+        "season": {
+          "path": "cfb-team-stats/v23/2026/season.json",
+          "teams": 138,
+          "scraped_at": "2026-10-08T14:47:36.504Z"
+        },
+        "L5": {
+          "path": "cfb-team-stats/v23/2026/l5.json",
+          "teams": 138,
+          "scraped_at": "2026-10-08T14:47:36.504Z"
+        },
+        "L10": {
+          "path": "cfb-team-stats/v23/2026/l10.json",
+          "teams": 138,
+          "scraped_at": "2026-10-08T14:47:36.504Z"
+        },
+        "L15": {
+          "path": "cfb-team-stats/v23/2026/l15.json",
+          "teams": 138,
+          "scraped_at": "2026-10-08T14:47:36.504Z"
+        }
+      }
+    }
+  }
+}
