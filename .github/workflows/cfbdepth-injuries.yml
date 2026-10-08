@@ -1,0 +1,38 @@
+name: CFBDepth injury reports
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cfbdepth-injuries
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch all team reports
+        run: python scripts/cfbdepth_injuries.py --out data/cfbdepth --workers 4
+      - name: Upload results including partial coverage diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cfbdepth-injuries
+          path: data/cfbdepth/
+          if-no-files-found: warn
+      - name: Commit only a complete refresh
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/cfbdepth/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Refresh CFBDepth injury reports'
+          git push
