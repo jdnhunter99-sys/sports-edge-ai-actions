@@ -1,0 +1,61 @@
+name: Publish CFB player game-log cache
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cfb-player-game-logs-publisher
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Prepare the player-log data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_BRANCH: cfb-player-game-logs-data
+        run: |
+          mkdir data
+          cd data
+          git init -b "$DATA_BRANCH"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git fetch --depth=1 origin "$DATA_BRANCH"
+            git reset --hard FETCH_HEAD
+          fi
+
+      - name: Fetch bulk CFB data and build player logs
+        env:
+          CFB_PLAYER_LOGS_OUTPUT_DIR: ${{ github.workspace }}/data
+        run: deno run --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_player_game_logs_github.ts
+
+      - name: Publish normalized player logs
+        working-directory: data
+        env:
+          DATA_BRANCH: cfb-player-game-logs-data
+        run: |
+          git add cfb-player-game-logs
+          if git diff --cached --quiet; then
+            echo 'Player game-log cache is unchanged.'
+            exit 0
+          fi
+          git commit -qm 'Refresh CFB player game-log cache'
+          git push --quiet origin "HEAD:${DATA_BRANCH}"
