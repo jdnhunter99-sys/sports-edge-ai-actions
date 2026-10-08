@@ -9,8 +9,9 @@ from this repository and its backend functions read the published JSON here.
 Before deploying Base44 readers that point here, run **Migrate published JSON to
 Actions repository** once. It copies the existing `cfb-team-stats-data`,
 `sharpodds-data`, `propline-data`, and `player-lists-data` branches from
-`sports-edge-ai2`, and seeds `nfl-projection-backtest-data` from the current app
-JSON. It does not delete the source branches.
+`sports-edge-ai2` as a snapshot of each branch's current files (without copying
+its old Git history), and seeds `nfl-projection-backtest-data` from the current
+app JSON. It does not delete the source branches.
 
 ## Repository secrets
 
