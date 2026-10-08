@@ -41,7 +41,7 @@ jobs:
               continue
             fi
             echo "Migrating ${branch}"
-            git clone --quiet --depth=1 --branch "$branch" \
+            git clone --quiet --branch "$branch" \
               "https://x-access-token:${PRIVATE_REPO_TOKEN}@github.com/jdnhunter99-sys/sports-edge-ai2.git" "source-${branch}"
             git -C "source-${branch}" push --quiet "$target_url" HEAD:"refs/heads/${branch}"
           done
