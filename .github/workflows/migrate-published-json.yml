@@ -35,7 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           target_url="https://x-access-token:${TARGET_TOKEN}@github.com/${TARGET_REPOSITORY}.git"
-          for branch in cfb-team-stats-data sharpodds-data propline-data player-lists-data; do
+          for branch in cfb-team-stats-data sharpodds-data propline-data; do
             if git ls-remote --exit-code --heads "$target_url" "$branch" >/dev/null 2>&1; then
               echo "${branch} already exists in the Actions repository; leaving it untouched"
               continue
