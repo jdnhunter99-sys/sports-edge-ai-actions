@@ -340,7 +340,10 @@ function teamBoxTotals(team: any): BoxTotals {
     else if (['tacklesforloss', 'tfl'].includes(key)) { out.tacklesForLoss = n(value); seen.add('tacklesForLoss'); }
     else if (['qbhurries', 'quarterbackhurries'].includes(key)) { out.qbHurries = n(value); seen.add('qbHurries'); }
     else if (['passesdeflected', 'passbreakups', 'pbus'].includes(key)) { out.passesDeflected = n(value); seen.add('passesDeflected'); }
-    else if (['fumblesforced', 'forcedfumbles'].includes(key)) { out.forcedFumbles = n(value); seen.add('forcedFumbles'); }
+    else if (matchesCategory('fumblesforced', 'forcedfumbles', 'forcedfumblespergame')) {
+      out.forcedFumbles = n(value);
+      seen.add('forcedFumbles');
+    }
     else if (['totalpenaltiesyards', 'penaltiesyards'].includes(key)) { [out.pens, out.penYards] = parsePair(value); seen.add('penalties'); }
     else if (matchesCategory('possessiontime', 'timeofpossession') || (categoryKeys.includes('possession') && categoryKeys.some((field) => ['time', 'timeofpossession', 'possessiontime'].includes(field)))) { out.possessionSeconds = parseClockSeconds(value); seen.add('possessionTime'); }
     else if (['sacksyardslost', 'sacks'].includes(key)) {
