@@ -112,6 +112,7 @@ export function validateCFBTeamDefense(stats, {
   team = 'team', timeframe = 'season', gameIds = null, totals = {},
 } = {}) {
   const errors = [];
+  const warnings = [];
   const defense = stats?.defense || {};
   const offense = stats?.offense || {};
   const games = Number(stats?.games);
@@ -139,6 +140,10 @@ export function validateCFBTeamDefense(stats, {
   if (pointsAllowed != null) compare(firstFinite(defense, ['pointsAllowedPerGame']), pointsAllowed / games, 0.11, 'points allowed/game', errors);
   if (passYards != null && rushYards != null && totalYards != null) {
     compare(totalYards, passYards + rushYards, 0.01, 'passing yards allowed + rushing yards allowed = total yards allowed', errors);
+    const reportedTotalYards = firstFinite(totals, ['reportedTotalYardsAllowed']);
+    if (reportedTotalYards != null && Math.abs(reportedTotalYards - (passYards + rushYards)) > 0.01) {
+      warnings.push(`CFBD reported total yards allowed (${reportedTotalYards}) differs from passing + rushing yards (${passYards + rushYards}); using the component sum.`);
+    }
     compare(firstFinite(defense, ['yardsAllowedPerGame']), totalYards / games, 0.11, 'yards allowed/game', errors);
     compare(firstFinite(defense, ['passingYardsAllowed', 'passingYardsAllowedPerGame']), passYards / games, 0.11, 'passing yards allowed/game', errors);
     compare(firstFinite(defense, ['rushingYardsAllowed', 'rushingYardsAllowedPerGame']), rushYards / games, 0.11, 'rushing yards allowed/game', errors);
@@ -239,6 +244,7 @@ export function validateCFBTeamDefense(stats, {
       'passing-efficiency-allowed', 'rushing-efficiency-allowed', 'defensive-sack-rate',
       'down-conversion-rates', 'turnover-reconciliation', 'red-zone-score-and-touchdown-rates',
     ],
+    warnings,
     unavailable: [
       sacksMade == null ? 'defensive sacks and sack rate' : null,
       qbHurriesMade == null ? 'defensive pressure rate and QB hurries/game' : null,

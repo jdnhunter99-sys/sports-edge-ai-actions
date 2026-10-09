@@ -20,6 +20,7 @@ const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
   pointsPerGame: 'Official completed-game team points divided by selected games.',
   yardsPerGame: 'CFBD net passing yards plus rushing yards, divided by the same selected games.',
+  yardsAllowedPerGame: 'CFBD opponent net passing yards plus rushing yards, divided by the same selected games; differences from the provider total-yards row are diagnostic warnings.',
   playsPerGame: 'Official passing attempts plus rushing attempts, divided by selected games; must reconcile to the source total plays.',
   completionPct: 'Aggregate completions divided by aggregate passing attempts; not an average of game percentages.',
   yardsPerAttempt: 'Aggregate CFBD net passing yards divided by aggregate pass attempts.',
@@ -241,6 +242,7 @@ function finiteOrNull(value: any, decimals = 3): number | null {
 
 interface BoxTotals {
   totalYards: number;
+  reportedTotalYards: number;
   netPassingYards: number;
   rushingYards: number;
   rushingAttempts: number;
@@ -292,7 +294,7 @@ interface BoxTotals {
 
 function emptyTotals(): BoxTotals {
   return {
-    totalYards: 0, netPassingYards: 0, rushingYards: 0, rushingAttempts: 0,
+    totalYards: 0, reportedTotalYards: 0, netPassingYards: 0, rushingYards: 0, rushingAttempts: 0,
     firstDowns: 0, thirdConv: 0, thirdAtt: 0, fourthConv: 0, fourthAtt: 0,
     comp: 0, passAtt: 0, passingTouchdowns: 0, rushingTouchdowns: 0,
     turnovers: 0, fumblesLost: 0, interceptions: 0, tacklesForLoss: 0,
@@ -316,7 +318,7 @@ function teamBoxTotals(team: any): BoxTotals {
     const value = item?.stat ?? item?.value ?? item?.displayValue;
     if (!key) continue;
 
-    if (['totalyards', 'totaloffense', 'totaloffenseyards', 'nettotalyards'].includes(key)) { out.totalYards = n(value); seen.add('totalYards'); }
+    if (['totalyards', 'totaloffense', 'totaloffenseyards', 'nettotalyards'].includes(key)) { out.reportedTotalYards = n(value); seen.add('totalYards'); }
     else if (['netpassingyards', 'passingyards', 'passyards'].includes(key)) { out.netPassingYards = n(value); seen.add('netPassingYards'); }
     else if (['rushingyards', 'rushyards'].includes(key)) { out.rushingYards = n(value); seen.add('rushingYards'); }
     else if (['rushingattempts', 'rushattempts', 'carries'].includes(key)) { out.rushingAttempts = n(value); seen.add('rushingAttempts'); }
@@ -414,12 +416,10 @@ function teamBoxTotals(team: any): BoxTotals {
     throw new Error(`CFBD box score for ${team?.team || 'unknown team'} is missing required offense fields: ${missingCore.join(', ')}`);
   }
 
-  // Some box-score feeds omit an explicit total-offense row, but still give
-  // passing and rushing totals. Preserve the total yards used by yards/game
-  // and yards/play instead of publishing a misleading zero.
-  if (!out.totalYards && (out.netPassingYards || out.rushingYards)) {
-    out.totalYards = out.netPassingYards + out.rushingYards;
-  }
+  // Use one internally consistent total for all per-game and per-play stats.
+  // Keep CFBD's reported total separately so source discrepancies can be
+  // surfaced as diagnostics without blocking publication.
+  out.totalYards = out.netPassingYards + out.rushingYards;
 
   // Some feeds omit an explicit turnover total.
   if (!seen.has('turnovers') && seen.has('fumblesLost') && seen.has('interceptions')) {
@@ -1676,6 +1676,7 @@ function computeStats(log: TeamGame[]) {
   const defenseAggregate = {
     pointsAllowed: pointsAgainst,
     totalYardsAllowed: opp.totalYards,
+    reportedTotalYardsAllowed: hasReported('opp', ['totalYards']) ? opp.reportedTotalYards : null,
     passingYardsAllowed: opp.netPassingYards,
     rushingYardsAllowed: opp.rushingYards,
     passingAttemptsFaced: opp.passAtt,
@@ -2751,6 +2752,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           mergedStats.integrity = {
             ...offenseIntegrity,
             checks: [...offenseIntegrity.checks, ...defenseIntegrity.checks],
+            warnings: defenseIntegrity.warnings,
             defense: defenseIntegrity,
             unavailableDefenseMetrics: defenseIntegrity.unavailable,
           };
@@ -2794,6 +2796,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
             source: 'CFBD game box scores plus complete drive/play coverage where required; aggregate and rank use the same selected game IDs',
             games: stats.games,
             checks: stats.integrity?.checks || [],
+            warnings: stats.integrity?.warnings || [],
             unavailableDefenseMetrics: stats.integrity?.unavailableDefenseMetrics || [],
           },
         };

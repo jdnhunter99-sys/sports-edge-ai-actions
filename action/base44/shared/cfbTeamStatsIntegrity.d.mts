@@ -11,7 +11,7 @@ export function validateCFBTeamDefense(
     gameIds?: Array<string | number> | null;
     totals?: Record<string, number | null | undefined>;
   },
-): { ok: boolean; team: string; timeframe: string; games: number | null; checks: string[]; unavailable: string[]; errors: string[] };
+): { ok: boolean; team: string; timeframe: string; games: number | null; checks: string[]; unavailable: string[]; warnings: string[]; errors: string[] };
 
 export function validateCFBGameCoverage(
   expectedGameIds: Array<string | number>,
