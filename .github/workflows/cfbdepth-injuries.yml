@@ -28,10 +28,11 @@ jobs:
           name: cfbdepth-injuries
           path: data/cfbdepth/
           if-no-files-found: warn
-      - name: Commit only a complete refresh
+      - name: Commit complete coverage; retain prior team rows on fetch errors
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python -c 'import json,sys; d=json.load(open("data/cfbdepth/injuries.json")); sys.exit(0 if d.get("complete") is True and int(d.get("refreshed_teams", 0)) > 0 else 1)' || { echo 'Skipping publish: no refreshed teams or league coverage is incomplete.'; exit 0; }
           git add data/cfbdepth/
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'Refresh CFBDepth injury reports'

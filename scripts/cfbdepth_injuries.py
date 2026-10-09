@@ -3,7 +3,7 @@
 Run: python3 cfbdepth_injuries.py --out cfbdepth-data
 Optional: --teams usa alabama --workers 4
 Outputs registry.json, injuries.json, injuries.csv and raw response files.
-Nonzero exit means incomplete coverage. Never treats a failed request as no injuries.
+Failed team requests are recorded; last-known team data is retained when available.
 """
 import argparse, concurrent.futures, csv, datetime as dt, json, pathlib, re, time
 import urllib.request, urllib.error
@@ -175,20 +175,52 @@ def main():
         result['page_url'] = BASE + '/' + slug + '/injury-status'
         write(raw / (slug + '.json'), payload)
         return result
-    teams, errors = [], []
+    # Keep the last published snapshot available so one team outage cannot erase
+    # that team's data or make the complete league file unusable.
+    previous_by_slug = {}
+    previous_path = out / 'injuries.json'
+    try:
+        previous_payload = json.loads(previous_path.read_text(encoding='utf-8'))
+        previous_by_slug = {
+            str(team.get('team_slug') or '').lower(): team
+            for team in previous_payload.get('teams', [])
+            if isinstance(team, dict) and team.get('team_slug')
+        }
+    except (OSError, json.JSONDecodeError, AttributeError):
+        pass
+
+    registry_slugs = {str(team['slug']).lower() for team in registry}
+    teams_by_slug = {slug: team for slug, team in previous_by_slug.items() if slug in registry_slugs}
+    errors, refreshed_slugs, stale_slugs = [], set(), set()
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(args.workers, 8))) as pool:
         futures = {pool.submit(collect, t): t for t in selected}
         for future in concurrent.futures.as_completed(futures):
             t = futures[future]
             try:
-                result = future.result(); teams.append(result)
+                result = future.result()
+                teams_by_slug[t['slug'].lower()] = result
+                refreshed_slugs.add(t['slug'].lower())
                 print(f"OK {t['slug']}: {len(result['active'])} active, {len(result['cleared_history'])} cleared", flush=True)
             except Exception as e:
-                errors.append({'team_slug':t['slug'], 'error':str(e)})
-                print(f"ERROR {t['slug']}: {e}", flush=True)
-    teams.sort(key=lambda t: t['team_slug'])
-    result = dict(fetched_at=now(), complete=not errors, registry_team_count=len(registry),
-                  requested_teams=len(selected), successful_teams=len(teams), errors=errors, teams=teams)
+                slug = t['slug'].lower()
+                has_previous = slug in teams_by_slug
+                errors.append({'team_slug': t['slug'], 'error': str(e), 'using_last_known_data': has_previous})
+                if has_previous:
+                    teams_by_slug[slug] = {
+                        **teams_by_slug[slug],
+                        'data_stale': True,
+                        'last_fetch_error': str(e),
+                    }
+                    stale_slugs.add(slug)
+                    print(f"STALE {t['slug']}: retaining last published report after fetch error: {e}", flush=True)
+                else:
+                    print(f"ERROR {t['slug']}: {e}; no prior report is available", flush=True)
+    teams = sorted(teams_by_slug.values(), key=lambda team: str(team.get('team_slug') or ''))
+    coverage_complete = registry_slugs.issubset(teams_by_slug.keys())
+    result = dict(fetched_at=now(), complete=coverage_complete, registry_team_count=len(registry),
+                  requested_teams=len(selected), successful_teams=len(refreshed_slugs),
+                  refreshed_teams=len(refreshed_slugs), stale_teams=len(stale_slugs),
+                  errors=errors, teams=teams)
     write(out / 'injuries.json', result)
     fields = ['team_slug','team_name','section','player','status','position','is_new','rating','impact','update_date','notes','lw_raw','injury_type','confirmed','return_timeframe','original_injury_date','projected_return']
     with (out / 'injuries.csv').open('w', newline='', encoding='utf-8') as f:
@@ -197,8 +229,13 @@ def main():
             for section in ['active','cleared_history']:
                 for r in t[section]:
                     writer.writerow(dict(r, team_slug=t['team_slug'], team_name=t['team_name'], section=section))
-    print(f"Finished: {len(teams)}/{len(selected)} teams; {sum(len(t['active']) for t in teams)} active rows; {len(errors)} errors")
-    return 1 if errors else 0
+    print(f"Finished: refreshed {len(refreshed_slugs)}/{len(selected)} requested teams; "
+          f"published coverage {len(teams)}/{len(registry)} teams; "
+          f"{sum(len(t.get('active', [])) for t in teams)} active rows; "
+          f"{len(errors)} errors ({len(stale_slugs)} using last-known data)")
+    # Individual team failures are diagnostic, not workflow-fatal. Global setup,
+    # registry, or serialization errors still raise and fail the workflow.
+    return 0
 
 if __name__ == '__main__':
     raise SystemExit(main())
