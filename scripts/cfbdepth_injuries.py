@@ -13,18 +13,24 @@ def now():
     return dt.datetime.now(dt.timezone.utc).isoformat()
 
 def fetch(url):
-    for attempt in range(3):
+    # CFBDepth intermittently returns 502s during larger refreshes. Retry
+    # transient HTTP failures with bounded backoff before marking a team failed.
+    for attempt in range(5):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'CFBInjuryCollector/1.0', 'Accept': 'application/json,text/javascript,*/*'})
             with urllib.request.urlopen(req, timeout=45) as r:
                 return r.read().decode('utf-8-sig')
         except urllib.error.HTTPError as e:
-            if e.code not in (429, 500, 502, 503, 504) or attempt == 2:
+            if e.code not in (429, 500, 502, 503, 504) or attempt == 4:
                 raise
             delay = e.headers.get('Retry-After', '')
-            time.sleep(min(60, float(delay)) if delay.isdigit() else 2 ** (attempt + 1))
+            try:
+                wait = float(delay)
+            except (TypeError, ValueError):
+                wait = 2 ** (attempt + 1)
+            time.sleep(min(60, max(1, wait)))
         except (urllib.error.URLError, TimeoutError):
-            if attempt == 2:
+            if attempt == 4:
                 raise
             time.sleep(2 ** (attempt + 1))
 
@@ -93,7 +99,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--out', default='cfbdepth-data')
     ap.add_argument('--teams', nargs='+', help='Team slugs; default all teams')
-    ap.add_argument('--workers', type=int, default=4)
+    ap.add_argument('--workers', type=int, default=2)
     args = ap.parse_args()
     out = pathlib.Path(args.out); out.mkdir(parents=True, exist_ok=True)
     raw = out / 'raw'; raw.mkdir(exist_ok=True)
