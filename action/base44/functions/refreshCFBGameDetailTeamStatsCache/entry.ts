@@ -14,7 +14,7 @@ import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateC
 const CFBD_BASE = 'https://api.collegefootballdata.com';
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 25;
+const CACHE_VERSION = 27;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
@@ -66,8 +66,9 @@ function teamKey(value: any): string {
   return normalizeCFBSourceTeam(value);
 }
 
-const INVERSE_STAT_KEYS = new Set([
-  // Shared NFL/CFB stats whose NFL cache explicitly ranks lower values better.
+const LOWER_IS_BETTER_STAT_KEYS = new Set([
+  // Explicit lower-is-better metrics. All other metrics, including the user's
+  // neutral context stats, rank higher values first.
   'interceptionRate',
   'sackRateAllowed',
   'pressureRateAllowed',
@@ -161,15 +162,6 @@ const INVERSE_STAT_KEYS = new Set([
   'passingTouchdownsAllowedPerGame',
   'passYardsPerAttemptAllowed',
   'qbHurriesAllowedPerGame',
-]);
-
-const NEUTRAL_RANK_KEYS = new Set([
-  'playsPerGame', 'playsFacedPerGame', 'passAttemptsPerGame', 'passingAttemptsPerGame', 'rushAttemptsPerGame',
-  'rushingAttemptsPerGame', 'rushAttemptsFaced', 'rushingAttemptsFaced', 'penaltiesPerGame', 'penaltyYardsPerGame',
-  'possessionMinutesPerGame', 'possessionTime', 'timeOfPossession',
-  'passRate', 'passingPlayRate', 'rushRate', 'rushingPlayRate', 'secondsPerPlay',
-  'fourthDownAttemptsPerGame', 'redZoneAttempts', 'redZoneAttemptsPerGame', 'redZoneTripsPerGame',
-  'earlyDownPassRate',
 ]);
 
 function safeJsonParse(value: string) {
@@ -314,24 +306,32 @@ function teamBoxTotals(team: any): BoxTotals {
   const stats = Array.isArray(team?.stats) ? team.stats : [];
   const seen = new Set<string>();
   for (const item of stats) {
-    const key = normalizeCategory(item?.category || item?.name || item?.label || item?.statName);
+    // CFBD normally puts the exact stat key in `category`. Some responses use
+    // a broad group there (for example `passing`) and put the specific field
+    // in `name`/`label`. Consider every available identifier so those rows do
+    // not silently disappear from aggregate metrics.
+    const categoryKeys = [item?.category, item?.name, item?.label, item?.statName]
+      .map(normalizeCategory)
+      .filter(Boolean);
+    const key = categoryKeys[0] || '';
+    const matchesCategory = (...aliases: string[]) => aliases.some((alias) => categoryKeys.includes(alias));
     const value = item?.stat ?? item?.value ?? item?.displayValue;
     if (!key) continue;
 
-    if (['totalyards', 'totaloffense', 'totaloffenseyards', 'nettotalyards'].includes(key)) { out.reportedTotalYards = n(value); seen.add('totalYards'); }
-    else if (['netpassingyards', 'passingyards', 'passyards'].includes(key)) { out.netPassingYards = n(value); seen.add('netPassingYards'); }
-    else if (['rushingyards', 'rushyards'].includes(key)) { out.rushingYards = n(value); seen.add('rushingYards'); }
-    else if (['rushingattempts', 'rushattempts', 'carries'].includes(key)) { out.rushingAttempts = n(value); seen.add('rushingAttempts'); }
+    if (matchesCategory('totalyards', 'totaloffense', 'totaloffenseyards', 'nettotalyards') || (categoryKeys.includes('offense') && categoryKeys.includes('yards'))) { out.reportedTotalYards = n(value); seen.add('totalYards'); }
+    else if (matchesCategory('netpassingyards', 'passingyards', 'passyards') || (categoryKeys.includes('passing') && categoryKeys.includes('yards'))) { out.netPassingYards = n(value); seen.add('netPassingYards'); }
+    else if (matchesCategory('rushingyards', 'rushyards') || (categoryKeys.includes('rushing') && categoryKeys.includes('yards'))) { out.rushingYards = n(value); seen.add('rushingYards'); }
+    else if (matchesCategory('rushingattempts', 'rushattempts', 'carries') || (categoryKeys.includes('rushing') && categoryKeys.includes('attempts'))) { out.rushingAttempts = n(value); seen.add('rushingAttempts'); }
     else if (['firstdowns', 'totalfirstdowns'].includes(key)) { out.firstDowns = n(value); seen.add('firstDowns'); }
     else if (['thirddowneff', 'thirddownefficiency', '3rddownefficiency'].includes(key)) { [out.thirdConv, out.thirdAtt] = parsePair(value); seen.add('thirdDown'); }
     else if (['fourthdowneff', 'fourthdownefficiency', '4thdownefficiency'].includes(key)) { [out.fourthConv, out.fourthAtt] = parsePair(value); seen.add('fourthDown'); }
-    else if (['completionattempts', 'completionsattempts', 'compatt'].includes(key)) {
+    else if (matchesCategory('completionattempts', 'completionsattempts', 'compatt')) {
       [out.comp, out.passAtt] = parsePair(value);
       seen.add('completions');
       seen.add('passAttempts');
     }
     else if (['completions', 'passescompleted'].includes(key)) { out.comp = n(value); seen.add('completions'); }
-    else if (['passingattempts', 'passattempts', 'attempts'].includes(key)) { out.passAtt = n(value); seen.add('passAttempts'); }
+    else if (matchesCategory('passingattempts', 'passattempts', 'attempts') || (categoryKeys.includes('passing') && categoryKeys.includes('attempts'))) { out.passAtt = n(value); seen.add('passAttempts'); }
     else if (['passingtouchdowns', 'passingtds', 'passtds'].includes(key)) { out.passingTouchdowns = n(value); seen.add('passingTouchdowns'); }
     else if (['rushingtouchdowns', 'rushingtds', 'rushtds'].includes(key)) { out.rushingTouchdowns = n(value); seen.add('rushingTouchdowns'); }
     else if (['turnovers', 'totalturnovers'].includes(key)) { out.turnovers = n(value); seen.add('turnovers'); }
@@ -342,7 +342,7 @@ function teamBoxTotals(team: any): BoxTotals {
     else if (['passesdeflected', 'passbreakups', 'pbus'].includes(key)) { out.passesDeflected = n(value); seen.add('passesDeflected'); }
     else if (['fumblesforced', 'forcedfumbles'].includes(key)) { out.forcedFumbles = n(value); seen.add('forcedFumbles'); }
     else if (['totalpenaltiesyards', 'penaltiesyards'].includes(key)) { [out.pens, out.penYards] = parsePair(value); seen.add('penalties'); }
-    else if (['possessiontime', 'timeofpossession'].includes(key)) { out.possessionSeconds = parseClockSeconds(value); seen.add('possessionTime'); }
+    else if (matchesCategory('possessiontime', 'timeofpossession') || (categoryKeys.includes('possession') && categoryKeys.some((field) => ['time', 'timeofpossession', 'possessiontime'].includes(field)))) { out.possessionSeconds = parseClockSeconds(value); seen.add('possessionTime'); }
     else if (['sacksyardslost', 'sacks'].includes(key)) {
       const pair = parsePair(value);
       if (pair[1] || String(value).includes('-')) { out.sacks = pair[0]; out.sackYards = pair[1]; }
@@ -2116,9 +2116,7 @@ function rankLeague(statsByTeam: Map<string, any>) {
       // direction changes by side: lower for offense, higher for defense.
       const higherIsBetter = side === 'defense' && key === 'stuffRate'
         ? true
-        : NEUTRAL_RANK_KEYS.has(key)
-          ? true
-          : !INVERSE_STAT_KEYS.has(key);
+        : !LOWER_IS_BETTER_STAT_KEYS.has(key);
       ranks[side][key] = rankCFBRows(rows, { higherIsBetter });
     }
   }

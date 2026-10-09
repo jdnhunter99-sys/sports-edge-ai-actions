@@ -5,7 +5,7 @@ const outputRoot = Deno.env.get('CFB_STATS_OUTPUT_DIR')?.trim();
 if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 if (!Deno.env.get('CFBD_API_KEY')?.trim()) throw new Error('CFBD_API_KEY is required');
 
-const CACHE_VERSION = 25;
+const CACHE_VERSION = 27;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
 const TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
