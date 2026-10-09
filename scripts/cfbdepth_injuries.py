@@ -95,6 +95,58 @@ def write(path, value):
     tmp.write_text(json.dumps(value, indent=2, ensure_ascii=False), encoding='utf-8')
     tmp.replace(path)
 
+def validate_registry(value):
+    if isinstance(value, dict):
+        value = value.get('teams') or value.get('CFB_TEAMS')
+    if not isinstance(value, list) or not value:
+        raise ValueError('Team registry is not a non-empty list')
+    required = ('slug', 'schoolName', 'spreadsheetId', 'injuryReport')
+    invalid = [i for i, team in enumerate(value) if not isinstance(team, dict) or any(not team.get(k) for k in required)]
+    if invalid:
+        raise ValueError(f'Team registry entries are missing required fields (first invalid index: {invalid[0]})')
+    return value
+
+def parse_registry(text):
+    # The endpoint has served both JSON and JavaScript assignment formats.
+    try:
+        return validate_registry(json.loads(text))
+    except (json.JSONDecodeError, ValueError):
+        pass
+
+    patterns = (
+        r'(?:window\.)?CFB_TEAMS\s*=\s*',
+        r'(?:const|let|var)\s+(?:window\.)?CFB_TEAMS\s*=\s*',
+        r'(?:window\.)?CFB_TEAM_CONFIG\s*=\s*',
+    )
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if not match:
+            continue
+        try:
+            value, _ = json.JSONDecoder().raw_decode(text[match.end():])
+            return validate_registry(value)
+        except (json.JSONDecodeError, ValueError):
+            continue
+    raise ValueError('Unrecognized CFBDepth team registry format')
+
+def load_registry(out):
+    registry_path = out / 'registry.json'
+    live_error = None
+    try:
+        registry = parse_registry(fetch(BASE + '/team-pages/team-config.js?v=1'))
+        write(registry_path, registry)
+        print(f'Loaded live team registry: {len(registry)} teams', flush=True)
+        return registry
+    except Exception as error:
+        live_error = error
+
+    try:
+        registry = validate_registry(json.loads(registry_path.read_text(encoding='utf-8')))
+        print(f'WARNING: using checked-in team registry ({len(registry)} teams); live registry unavailable: {live_error}', flush=True)
+        return registry
+    except Exception as cache_error:
+        raise ValueError(f'Could not load live team registry ({live_error}); no valid cached registry ({cache_error})') from live_error
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--out', default='cfbdepth-data')
@@ -103,14 +155,7 @@ def main():
     args = ap.parse_args()
     out = pathlib.Path(args.out); out.mkdir(parents=True, exist_ok=True)
     raw = out / 'raw'; raw.mkdir(exist_ok=True)
-    text = fetch(BASE + '/team-pages/team-config.js?v=1')
-    match = re.search(r'window\.CFB_TEAMS\s*=\s*', text)
-    if not match:
-        raise ValueError('Public team registry format changed')
-    registry = json.JSONDecoder().raw_decode(text[match.end():])[0]
-    if not isinstance(registry, list) or not registry:
-        raise ValueError('Empty team registry')
-    write(out / 'registry.json', registry)
+    registry = load_registry(out)
     if args.teams:
         unknown = set(args.teams) - {t['slug'] for t in registry}
         if unknown:
