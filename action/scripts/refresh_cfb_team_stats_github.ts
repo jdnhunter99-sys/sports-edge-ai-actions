@@ -15,6 +15,7 @@ const currentSeason = (() => {
 })();
 const previousSeason = currentSeason - 1;
 const refreshPrevious = Deno.env.get('CFB_REFRESH_PREVIOUS_SEASON') === 'true';
+const integrityDiscrepancies: string[] = [];
 
 type TeamRecord = Record<string, any>;
 type FrameManifest = { path: string; teams: number; scraped_at: string };
@@ -114,6 +115,9 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   if (!response.ok || result?.ok !== true) {
     throw new Error(`CFB stats refresh failed for ${season} (HTTP ${response.status}): ${JSON.stringify(result).slice(0, 1600)}`);
   }
+  for (const discrepancy of Array.isArray(result?.discrepancies) ? result.discrepancies : []) {
+    integrityDiscrepancies.push(`${season}: ${String(discrepancy)}`);
+  }
 
   if (result?.gameLogs?.teams && Number(result?.gameLogs?.season) === season) {
     await Deno.mkdir(`${cacheRoot}/${season}`, { recursive: true });
@@ -133,8 +137,8 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       try { payload = typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload; }
       catch { continue; }
       if (!payload?.stats || Number(payload?.cacheVersion) !== Number(result.cacheVersion)) continue;
-      if (payload?.integrity?.status !== 'passed') {
-        throw new Error(`${payload?.team || row.team_abbr} ${timeframe} has no successful offense integrity validation; refusing to publish.`);
+      if (!['passed', 'completed_with_discrepancies'].includes(String(payload?.integrity?.status || ''))) {
+        throw new Error(`${payload?.team || row.team_abbr} ${timeframe} has no completed integrity validation; refusing to publish.`);
       }
       if (Number(payload?.teamsRanked) !== Number(result.fbsTeamCount)) {
         throw new Error(`${payload?.team || row.team_abbr} ${timeframe} was ranked against ${payload?.teamsRanked} teams, expected ${result.fbsTeamCount}.`);
@@ -210,17 +214,27 @@ async function refreshUnlessQuotaExceeded(season: number, isPrevious: boolean) {
     refreshedSeasonCount++;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    if (!/monthly call quota exceeded/i.test(message)) throw error;
+    if (!/monthly call quota exceeded/i.test(message)) {
+      if (isPrevious) {
+        integrityDiscrepancies.push(`${season}: previous-season refresh could not complete: ${message}`);
+        console.warn(`Previous-season refresh failed for ${season}; retaining any existing cache and continuing with ${currentSeason}: ${message}`);
+        return;
+      }
+      throw error;
+    }
     quotaExhausted = true;
     console.warn(`CFBD monthly quota is exhausted; keeping the last published cache for ${season}.`);
   }
 }
-if (refreshPrevious || !historicalAlreadyPresent) {
+// Current-season stats are the primary output, so spend quota on them first.
+// A prior-season integrity error can no longer prevent this season from being
+// materialized; it is logged as a warning above and any existing cache remains.
+await refreshUnlessQuotaExceeded(currentSeason, false);
+if (!quotaExhausted && (refreshPrevious || !historicalAlreadyPresent)) {
   await refreshUnlessQuotaExceeded(previousSeason, true);
-} else {
+} else if (!refreshPrevious && historicalAlreadyPresent) {
   console.info(`Keeping existing previous-season (${previousSeason}) materialization; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
 }
-if (!quotaExhausted) await refreshUnlessQuotaExceeded(currentSeason, false);
 
 const finalIndex = {
   sport: 'cfb',
@@ -231,4 +245,21 @@ const finalIndex = {
 };
 await Deno.mkdir(`${outputRoot.replace(/\/$/, '')}/cfb-team-stats`, { recursive: true });
 await Deno.writeTextFile(indexPath, `${JSON.stringify(finalIndex, null, 2)}\n`);
+const discrepancyReport = {
+  sport: 'cfb',
+  cacheVersion: CACHE_VERSION,
+  generated_at: new Date().toISOString(),
+  discrepancy_count: integrityDiscrepancies.length,
+  discrepancies: integrityDiscrepancies,
+};
+await Deno.writeTextFile(
+  `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/integrity-discrepancies.json`,
+  `${JSON.stringify(discrepancyReport, null, 2)}\n`,
+);
 console.info(`Published CFB stats cache index for seasons ${Object.keys(seasons).sort().join(', ')}.`);
+if (integrityDiscrepancies.length) {
+  console.warn(`CFB integrity discrepancies (${integrityDiscrepancies.length}):`);
+  for (const discrepancy of integrityDiscrepancies) console.warn(`- ${discrepancy}`);
+} else {
+  console.info('CFB integrity discrepancies: none.');
+}

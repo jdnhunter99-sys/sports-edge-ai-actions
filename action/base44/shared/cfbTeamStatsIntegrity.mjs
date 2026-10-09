@@ -26,6 +26,9 @@ function compare(actual, expected, tolerance, label, errors) {
 export function validateCFBTeamOffense(stats, { team = 'team', timeframe = 'season', gameIds = null } = {}) {
   const errors = [];
   const offense = stats?.offense || {};
+  const exactOffense = stats?.rankValues?.offense || {};
+  const aggregateValue = (exactKey, displayKeys) =>
+    firstFinite(exactOffense, [exactKey]) ?? firstFinite(offense, displayKeys);
   const games = Number(stats?.games);
   if (!Number.isInteger(games) || games < 1) errors.push(`game count is invalid (${stats?.games ?? 'missing'})`);
 
@@ -37,20 +40,21 @@ export function validateCFBTeamOffense(stats, { team = 'team', timeframe = 'seas
   }
 
   const totalYards = firstFinite(offense, ['yardsPerGame', 'totalYardsPerGame']);
-  const passYards = firstFinite(offense, ['passingYardsPerGame', 'passingYards']);
-  const rushYards = firstFinite(offense, ['rushingYardsPerGame', 'rushingYards']);
+  const passYards = aggregateValue('passingYardsPerGame', ['passingYardsPerGame', 'passingYards']);
+  const rushYards = aggregateValue('rushingYardsPerGame', ['rushingYardsPerGame', 'rushingYards']);
+  const exactTotalYards = aggregateValue('yardsPerGame', ['yardsPerGame', 'totalYardsPerGame']);
   if (totalYards != null && passYards != null && rushYards != null) {
-    compare(totalYards, passYards + rushYards, 0.2, 'passing yards/game + rushing yards/game = total yards/game', errors);
+    compare(totalYards, passYards + rushYards, 0.11, 'passing yards/game + rushing yards/game = total yards/game', errors);
   }
 
-  const passAttempts = firstFinite(offense, ['passingAttemptsPerGame', 'passAttemptsPerGame']);
-  const rushAttempts = firstFinite(offense, ['rushingAttemptsPerGame', 'rushAttemptsPerGame']);
+  const passAttempts = aggregateValue('passingAttemptsPerGame', ['passingAttemptsPerGame', 'passAttemptsPerGame']);
+  const rushAttempts = aggregateValue('rushingAttemptsPerGame', ['rushingAttemptsPerGame', 'rushAttemptsPerGame']);
   const plays = firstFinite(offense, ['playsPerGame', 'offensivePlays', 'totalPlays']);
   if (plays != null && passAttempts != null && rushAttempts != null) {
-    compare(plays, passAttempts + rushAttempts, 0.2, 'pass attempts/game + rush attempts/game = plays/game', errors);
+    compare(plays, passAttempts + rushAttempts, 0.11, 'pass attempts/game + rush attempts/game = plays/game', errors);
   }
 
-  const completions = firstFinite(offense, ['completionsPerGame', 'completions']);
+  const completions = aggregateValue('completionsPerGame', ['completionsPerGame', 'completions']);
   const completionPct = firstFinite(offense, ['completionPct', 'completionPercentage']);
   if (completions != null && passAttempts > 0 && completionPct != null) {
     compare(completionPct, completions / passAttempts * 100, 0.5, 'completion percentage', errors);
@@ -61,7 +65,7 @@ export function validateCFBTeamOffense(stats, { team = 'team', timeframe = 'seas
     compare(yardsPerAttempt, passYards / passAttempts, 0.03, 'passing yards/attempt', errors);
   }
 
-  const sacksAllowed = firstFinite(offense, ['sacksAllowedPerGame']);
+  const sacksAllowed = aggregateValue('sacksAllowedPerGame', ['sacksAllowedPerGame']);
   const sackRateAllowed = firstFinite(offense, ['sackRateAllowed']);
   const netYardsPerAttempt = firstFinite(offense, ['netYardsPerAttempt']);
   if (sacksAllowed != null && passAttempts > 0 && sackRateAllowed != null) {
@@ -71,7 +75,7 @@ export function validateCFBTeamOffense(stats, { team = 'team', timeframe = 'seas
     compare(netYardsPerAttempt, passYards / (passAttempts + sacksAllowed), 0.12, 'net passing yards/attempt', errors);
   }
 
-  const hurriesAllowed = firstFinite(offense, ['qbHurriesAllowedPerGame']);
+  const hurriesAllowed = aggregateValue('qbHurriesAllowedPerGame', ['qbHurriesAllowedPerGame']);
   const pressureRateAllowed = firstFinite(offense, ['pressureRateAllowed', 'pressurePctAllowed']);
   const pressureAvoidancePct = firstFinite(offense, ['pressureAvoidancePct']);
   if (sacksAllowed != null && hurriesAllowed != null && passAttempts > 0 && pressureRateAllowed != null) {
@@ -87,11 +91,11 @@ export function validateCFBTeamOffense(stats, { team = 'team', timeframe = 'seas
   }
 
   const yardsPerPlay = firstFinite(offense, ['yardsPerPlay']);
-  if (totalYards != null && plays > 0 && yardsPerPlay != null) {
-    compare(yardsPerPlay, totalYards / plays, 0.03, 'yards/play', errors);
+  if (exactTotalYards != null && plays > 0 && yardsPerPlay != null) {
+    compare(yardsPerPlay, exactTotalYards / (passAttempts + rushAttempts), 0.03, 'yards/play', errors);
   }
 
-  const firstDowns = firstFinite(offense, ['firstDownsPerGame', 'firstDowns']);
+  const firstDowns = aggregateValue('firstDownsPerGame', ['firstDownsPerGame', 'firstDowns']);
   const firstDownRate = firstFinite(offense, ['firstDownRate']);
   if (firstDowns != null && plays > 0 && firstDownRate != null) {
     compare(firstDownRate, firstDowns / plays * 100, 0.5, 'first-down rate', errors);

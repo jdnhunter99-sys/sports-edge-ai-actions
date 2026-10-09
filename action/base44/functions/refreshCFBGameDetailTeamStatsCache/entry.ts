@@ -2413,6 +2413,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     let allTeamKeys: string[] = [];
     let completedGameCount = 0;
     let boxGameCount = 0;
+    const integrityDiscrepancies: string[] = [];
+    const boxCoverageDiscrepancies: string[] = [];
 
     if (boxSource?.logs && Array.isArray(boxSource?.completedWeeks)) {
       completedWeeks = boxSource.completedWeeks.map((week: any) => n(week, 0)).filter((week: number) => week > 0);
@@ -2421,6 +2423,18 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       allTeamKeys = Array.isArray(boxSource.allTeamKeys) ? boxSource.allTeamKeys : [...logs.keys()].sort();
       completedGameCount = n(boxSource.completedGameCount, 0);
       boxGameCount = n(boxSource.boxGameCount, 0);
+      const cachedSourceDiscrepancies = Array.isArray(boxSource.sourceDiscrepancies)
+        ? boxSource.sourceDiscrepancies.map(String)
+        : [];
+      if (cachedSourceDiscrepancies.length) {
+        integrityDiscrepancies.push(...cachedSourceDiscrepancies);
+      }
+      if (Array.isArray(boxSource.coverageDiscrepancies)) {
+        boxCoverageDiscrepancies.push(...boxSource.coverageDiscrepancies.map(String));
+      } else if (completedGameCount !== boxGameCount) {
+        boxCoverageDiscrepancies.push(`CFBD box-score game coverage: expected ${completedGameCount}, got ${boxGameCount}.`);
+      }
+      if (!cachedSourceDiscrepancies.length) integrityDiscrepancies.push(...boxCoverageDiscrepancies);
     } else {
       const schedule = await cfbdGet('/games', {
         year: season,
@@ -2495,8 +2509,20 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         boxGames.map((game: any) => game?.id),
       );
       if (!gameCoverage.ok) {
-        throw new Error(`CFBD box-score game coverage failed: expected ${gameCoverage.expected}, got ${gameCoverage.actual}; missing=${gameCoverage.missing.slice(0, 12).join(',')}; duplicates=${gameCoverage.duplicates.slice(0, 12).join(',')}; unexpected=${gameCoverage.unexpected.slice(0, 12).join(',')}`);
+        boxCoverageDiscrepancies.push(`CFBD box-score game coverage: expected ${gameCoverage.expected}, got ${gameCoverage.actual}; missing=${gameCoverage.missing.join(',')}; duplicates=${gameCoverage.duplicates.join(',')}; unexpected=${gameCoverage.unexpected.join(',')}.`);
+        integrityDiscrepancies.push(...boxCoverageDiscrepancies);
       }
+      // Duplicate feed rows should be reported once and excluded from the
+      // aggregates so they cannot inflate a team's stats or game count.
+      const uniqueBoxGames: any[] = [];
+      const seenBoxGameIds = new Set<string>();
+      for (const game of boxGames) {
+        const gameId = String(game?.id ?? '');
+        if (!gameId || seenBoxGameIds.has(gameId)) continue;
+        seenBoxGameIds.add(gameId);
+        uniqueBoxGames.push(game);
+      }
+      boxGames.splice(0, boxGames.length, ...uniqueBoxGames);
       const expectedGamesByTeam = new Map<string, number>();
       for (const game of completed) {
         for (const sourceName of [game?.homeTeam, game?.awayTeam]) {
@@ -2574,12 +2600,13 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           actualGames.map((game) => game.gameId),
         );
         if (actualGames.length !== expectedGames || !coverage.ok) {
-          throw new Error(`CFBD team game coverage failed for ${key}: expected ${expectedGames}, got ${actualGames.length}; missing=${coverage.missing.slice(0, 12).join(',')}; duplicates=${coverage.duplicates.slice(0, 12).join(',')}`);
+          integrityDiscrepancies.push(`CFBD team game coverage for ${key}: expected ${expectedGames}, got ${actualGames.length}; missing=${coverage.missing.join(',')}; duplicates=${coverage.duplicates.join(',')}.`);
         }
       }
       allTeamKeys = [...fbsTeamKeys].filter((key) => (logs.get(key)?.length || 0) > 0).sort();
       if (allTeamKeys.length !== expectedGamesByTeam.size) {
-        throw new Error(`FBS team mapping is incomplete: ${allTeamKeys.length} teams have box logs but ${expectedGamesByTeam.size} FBS teams appear in the completed schedule.`);
+        const teamsWithoutLogs = [...expectedGamesByTeam.keys()].filter((key) => !allTeamKeys.includes(key));
+        integrityDiscrepancies.push(`FBS team coverage: ${allTeamKeys.length} teams have box logs but ${expectedGamesByTeam.size} FBS teams appear in the completed schedule; missing=${teamsWithoutLogs.join(',')}.`);
       }
       completedGameCount = completed.length;
       boxGameCount = boxGames.length;
@@ -2589,6 +2616,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         completedGameCount,
         boxGameCount,
         allTeamKeys,
+        coverageDiscrepancies: boxCoverageDiscrepancies,
+        sourceDiscrepancies: integrityDiscrepancies.slice(),
         teamNames: Object.fromEntries(teamNames),
         logs: Object.fromEntries(logs),
         sourceWarnings,
@@ -2607,6 +2636,33 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         source: 'cfbd-games+games-teams+drives+plays+passing-teams-games',
         last_error: sourceWarnings.join(' | '),
       });
+    }
+
+    // Cached source rows from earlier runs may contain duplicate game logs.
+    // Deduplicate them before calculation while retaining each issue in the
+    // final discrepancy report.
+    for (const [key, teamGames] of logs.entries()) {
+      const seenIds = new Set<string>();
+      const deduplicated: TeamGame[] = [];
+      const duplicateIds = new Set<string>();
+      for (const game of teamGames || []) {
+        const gameId = String(game?.gameId ?? '');
+        if (!gameId || seenIds.has(gameId)) {
+          if (gameId) duplicateIds.add(gameId);
+          continue;
+        }
+        seenIds.add(gameId);
+        deduplicated.push(game);
+      }
+      if (duplicateIds.size) {
+        integrityDiscrepancies.push(`CFBD cached game logs for ${key} contain duplicate game IDs: ${[...duplicateIds].join(',')}; duplicate rows were ignored.`);
+      }
+      logs.set(key, deduplicated.sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId)));
+    }
+    const teamsWithoutUsableLogs = allTeamKeys.filter((key) => !(logs.get(key)?.length));
+    if (teamsWithoutUsableLogs.length) {
+      integrityDiscrepancies.push(`CFB teams have no usable game logs: ${teamsWithoutUsableLogs.join(',')}.`);
+      allTeamKeys = allTeamKeys.filter((key) => Boolean(logs.get(key)?.length));
     }
 
     if (!completedWeeks.length || !allTeamKeys.length) throw new Error(`CFB source cache contains no completed team data for ${season}`);
@@ -2741,18 +2797,25 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           const teamName = teamNames.get(key) || cfbDisplayName(key);
           const gameIds = selected.map((game) => game.gameId);
           const offenseIntegrity = validateCFBTeamOffense(mergedStats, { team: teamName, timeframe, gameIds });
-          if (!offenseIntegrity.ok) throw new Error(`CFB offense integrity failed for ${teamName} ${timeframe}: ${offenseIntegrity.errors.join('; ')}`);
           const defenseIntegrity = validateCFBTeamDefense(mergedStats, {
             team: teamName,
             timeframe,
             gameIds,
             totals: mergedStats.aggregates?.defense || {},
           });
-          if (!defenseIntegrity.ok) throw new Error(`CFB defense integrity failed for ${teamName} ${timeframe}: ${defenseIntegrity.errors.join('; ')}`);
+          const teamDiscrepancies = [
+            ...offenseIntegrity.errors.map((message: string) => `${teamName} ${timeframe} offense: ${message}`),
+            ...defenseIntegrity.errors.map((message: string) => `${teamName} ${timeframe} defense: ${message}`),
+            ...defenseIntegrity.warnings.map((message: string) => `${teamName} ${timeframe} defense warning: ${message}`),
+          ];
+          integrityDiscrepancies.push(...teamDiscrepancies);
           mergedStats.integrity = {
             ...offenseIntegrity,
             checks: [...offenseIntegrity.checks, ...defenseIntegrity.checks],
+            status: teamDiscrepancies.length ? 'completed_with_discrepancies' : 'passed',
+            errors: [...offenseIntegrity.errors, ...defenseIntegrity.errors],
             warnings: defenseIntegrity.warnings,
+            discrepancies: teamDiscrepancies,
             defense: defenseIntegrity,
             unavailableDefenseMetrics: defenseIntegrity.unavailable,
           };
@@ -2792,11 +2855,13 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           rankPopulation: 'FBS teams with at least one completed game in the selected timeframe',
           rankPolicy: 'Competition ranks use unrounded aggregates. Lower values are better for explicit defensive efficiency metrics; higher values are better for turnover, disruption, and stop-rate metrics. Plays faced, attempts faced, penalties, penalty yards, and pace are ordinal context rankings, not defense grades.',
           integrity: {
-            status: 'passed',
+            status: stats.integrity?.status || 'passed',
             source: 'CFBD game box scores plus complete drive/play coverage where required; aggregate and rank use the same selected game IDs',
             games: stats.games,
             checks: stats.integrity?.checks || [],
+            errors: stats.integrity?.errors || [],
             warnings: stats.integrity?.warnings || [],
+            discrepancies: stats.integrity?.discrepancies || [],
             unavailableDefenseMetrics: stats.integrity?.unavailableDefenseMetrics || [],
           },
         };
@@ -2813,7 +2878,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           team_abbr: key,
           teams_ranked: statsByTeam.size,
           rank_population: 'eligible FBS teams with at least one completed game in timeframe',
-          integrity_status: 'passed',
+          integrity_status: payload.integrity.status,
           opponent_abbr: '',
           side: 'team',
           payload: JSON.stringify(payload),
@@ -2823,9 +2888,9 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       }
     }
 
-    // Validate every team and timeframe before mutating the materialized
-    // cache. The GitHub publisher writes files only after this function has
-    // completed successfully, so an invalid frame never becomes publishable.
+    // Collect integrity discrepancies across every team and timeframe before
+    // writing records. Differences remain visible in the row payload and final
+    // response, but do not stop other teams from being materialized.
     for (const item of pendingRecords) {
       try {
         await upsert(base44, item.record);
@@ -2844,7 +2909,12 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       completedWeeks,
       completedGameCount,
       boxGameCount,
-      gameCoverage: { expected: completedGameCount, actual: boxGameCount, status: completedGameCount === boxGameCount ? 'passed' : 'failed' },
+      gameCoverage: {
+        expected: completedGameCount,
+        actual: boxGameCount,
+        status: boxCoverageDiscrepancies.length ? 'completed_with_discrepancies' : 'passed',
+        discrepancies: boxCoverageDiscrepancies,
+      },
       fbsTeamCount: allTeamKeys.length,
       requestedTeamCount: requestedTeams.length || sliceKeys.length,
       materializedTeamCount: sliceKeys.length,
@@ -2852,6 +2922,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       results,
       errors,
       warnings,
+      discrepancyCount: integrityDiscrepancies.length,
+      discrepancies: integrityDiscrepancies,
       scrapedAt,
     };
     if (body?.includeGameLogs === true) {
