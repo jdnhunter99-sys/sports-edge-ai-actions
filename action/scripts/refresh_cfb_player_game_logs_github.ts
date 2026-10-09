@@ -39,6 +39,10 @@ function normalizeTeam(value: unknown) {
   return canonical?.abbr || String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
+function normalizePlayerName(value: unknown) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
 function sameTeam(a: unknown, b: unknown) {
   const left = normalizeTeam(a);
   const right = normalizeTeam(b);
@@ -96,6 +100,8 @@ async function buildSeason(season: number, group: keyof typeof groups) {
   }
 
   const gamesByPlayerGame = new Map<string, Game>();
+  const playerGameByIdentity = new Map<string, string>();
+  const playerGameByGameName = new Map<string, string>();
   for (const row of boxRows) {
     const category = value(row, 'category').toLowerCase();
     if (!groups[group].has(category)) continue;
@@ -106,6 +112,11 @@ async function buildSeason(season: number, group: keyof typeof groups) {
     const playerId = value(row, 'athlete_id', 'player_id', 'id');
     const idKey = playerId || playerName.toLowerCase().replace(/[^a-z0-9]/g, '');
     const key = `${idKey}|${gameId}`;
+    const identityKey = `${gameId}|${value(row, 'team_id')}|${normalizePlayerName(playerName)}`;
+    playerGameByIdentity.set(identityKey, key);
+    const gameNameKey = `${gameId}|${normalizePlayerName(playerName)}`;
+    if (!playerGameByGameName.has(gameNameKey)) playerGameByGameName.set(gameNameKey, key);
+    else if (playerGameByGameName.get(gameNameKey) !== key) playerGameByGameName.set(gameNameKey, '');
     const schedule = scheduleByGame.get(gameId);
     if (!gamesByPlayerGame.has(key)) {
       const rowTeam = value(row, 'team', 'team_name', 'school');
@@ -171,6 +182,36 @@ async function buildSeason(season: number, group: keyof typeof groups) {
     }
   }
 
+  // ESPN's box-score release does not consistently include targets. Join the
+  // per-game receiver target totals from SportsDataverse's advanced receiving
+  // release by game, ESPN team id, and normalized player name.
+  const targetPath = `${outputRoot.replace(/\/$/, '')}/cfb-player-targets/${season}.json`;
+  const targetPayload = JSON.parse(await Deno.readTextFile(targetPath)) as {
+    available: boolean;
+    targets: Array<{ gameId: string; teamId: string; playerName: string; targets: number }>;
+  };
+  const targetRows = Array.isArray(targetPayload.targets) ? targetPayload.targets : [];
+  let matchedTargetRows = 0;
+  for (const targetRow of targetRows) {
+    const identityKey = `${targetRow.gameId}|${targetRow.teamId}|${normalizePlayerName(targetRow.playerName)}`;
+    const gameNameKey = `${targetRow.gameId}|${normalizePlayerName(targetRow.playerName)}`;
+    const playerGameKey = playerGameByIdentity.get(identityKey) || playerGameByGameName.get(gameNameKey);
+    if (!playerGameKey) continue;
+    matchedTargetRows++;
+    const game = gamesByPlayerGame.get(playerGameKey)!;
+    if (!game.receiving) game.receiving = { rec: 0, yards: 0, tds: 0, targets: targetRow.targets };
+    else if (game.receiving.targets == null) game.receiving.targets = targetRow.targets;
+  }
+  if (targetPayload.available && group !== 'qb') {
+    for (const game of gamesByPlayerGame.values()) {
+      if (!game.receiving) game.receiving = { rec: 0, yards: 0, tds: 0, targets: 0 };
+      else if (game.receiving.targets == null) game.receiving.targets = 0;
+    }
+  }
+  if (targetRows.length) {
+    console.info(`Joined ${matchedTargetRows}/${targetRows.length} ${season} ${group} receiver target totals.`);
+  }
+
   const games = [...gamesByPlayerGame.values()]
     .filter((game) => game.passing || game.rushing || game.receiving)
     .sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
@@ -204,7 +245,7 @@ for (const season of seasons) {
         season,
         positionGroup: group,
         updatedAt,
-        source: 'sportsdataverse-espn-player-box-plus-cfbfastR-schedule',
+        source: 'sportsdataverse-espn-player-box-plus-advanced-receiving-plus-cfbfastR-schedule',
         sourceRows,
         scheduleGames,
         gameCount: games.length,
@@ -231,7 +272,7 @@ for (const season of seasons) {
         await Deno.writeTextFile(path, `${JSON.stringify({
           sport: 'cfb', schemaVersion: 1, cacheVersion: 1, season,
           positionGroup: group, updatedAt: new Date().toISOString(),
-          source: 'sportsdataverse-espn-player-box-plus-cfbfastR-schedule',
+          source: 'sportsdataverse-espn-player-box-plus-advanced-receiving-plus-cfbfastR-schedule',
           sourceRows: 0, scheduleGames: 0, gameCount: 0, joinedOpponentCount: 0, games: [],
         })}\n`);
         seasonGamesByGroup[group] = [];

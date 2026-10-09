@@ -26,6 +26,17 @@ jobs:
         with:
           deno-version: v2.x
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Prepare CFB receiving target data
+        env:
+          CFB_PLAYER_LOGS_OUTPUT_DIR: ${{ github.workspace }}/data
+        run: |
+          python -m pip install --disable-pip-version-check pyarrow
+          python action/scripts/export_cfb_player_targets.py
+
       - name: Prepare the player-log data branch
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
