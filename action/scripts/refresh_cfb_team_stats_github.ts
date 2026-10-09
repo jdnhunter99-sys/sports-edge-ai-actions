@@ -5,7 +5,7 @@ const outputRoot = Deno.env.get('CFB_STATS_OUTPUT_DIR')?.trim();
 if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 if (!Deno.env.get('CFBD_API_KEY')?.trim()) throw new Error('CFBD_API_KEY is required');
 
-const CACHE_VERSION = 23;
+const CACHE_VERSION = 24;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
 const TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
@@ -123,6 +123,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   }
 
   const writtenFrames: Record<string, FrameManifest> = {};
+  let snapshotId = '';
   for (const timeframe of TIMEFRAMES) {
     const teamPayloads: Record<string, TeamRecord> = {};
     let latest = '';
@@ -132,6 +133,18 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       try { payload = typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload; }
       catch { continue; }
       if (!payload?.stats || Number(payload?.cacheVersion) !== Number(result.cacheVersion)) continue;
+      if (payload?.integrity?.status !== 'passed') {
+        throw new Error(`${payload?.team || row.team_abbr} ${timeframe} has no successful offense integrity validation; refusing to publish.`);
+      }
+      if (Number(payload?.teamsRanked) !== Number(result.fbsTeamCount)) {
+        throw new Error(`${payload?.team || row.team_abbr} ${timeframe} was ranked against ${payload?.teamsRanked} teams, expected ${result.fbsTeamCount}.`);
+      }
+      const rowSnapshotId = String(payload?.snapshotId || '');
+      if (!rowSnapshotId) throw new Error(`${payload?.team || row.team_abbr} ${timeframe} is missing its source snapshot ID.`);
+      if (snapshotId && rowSnapshotId !== snapshotId) {
+        throw new Error(`Mixed source snapshots detected while materializing ${season} ${timeframe}.`);
+      }
+      snapshotId ||= rowSnapshotId;
       // Treat the full source team name as authoritative. Cached abbreviations
       // can collide across providers or divisions; a trustworthy name lets us
       // canonicalize the team without carrying a stale/wrong key forward.
@@ -141,6 +154,9 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       if (String(row.scraped_at || '') > latest) latest = String(row.scraped_at);
     }
     if (!Object.keys(teamPayloads).length) throw new Error(`No team records were materialized for ${season} ${timeframe}`);
+    if (Object.keys(teamPayloads).length !== Number(result.fbsTeamCount)) {
+      throw new Error(`Refusing to publish incomplete ${season} ${timeframe}: ${Object.keys(teamPayloads).length}/${result.fbsTeamCount} eligible FBS teams.`);
+    }
     const virginiaTechKey = normalizeCFBSchool('VT');
     if (!teamPayloads[virginiaTechKey]) {
       const likelyVirginiaTechRows = Object.entries(teamPayloads)
@@ -160,6 +176,9 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       season,
       timeframe,
       updated_at: latest || result.scrapedAt || new Date().toISOString(),
+      snapshot_id: snapshotId,
+      rank_population: 'eligible FBS teams with at least one completed game in the selected timeframe',
+      metric_definitions: result.metricDefinitions || {},
       team_count: Object.keys(teamPayloads).length,
       teams: teamPayloads,
     })}\n`);

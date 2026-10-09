@@ -10,13 +10,32 @@
 
 import { normalizeCFBSchool, cfbDisplayName } from '../../shared/cfbTeamIdentity.ts';
 import { canonicalCfbTeam } from '../../shared/cfbOddsTeams.ts';
+import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamOffense } from '../../shared/cfbTeamStatsIntegrity.mjs';
 
 const CFBD_BASE = 'https://api.collegefootballdata.com';
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 23;
+const CACHE_VERSION = 24;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+const METRIC_DEFINITIONS = {
+  pointsPerGame: 'Official completed-game team points divided by selected games.',
+  yardsPerGame: 'CFBD net passing yards plus rushing yards, divided by the same selected games.',
+  playsPerGame: 'Official passing attempts plus rushing attempts, divided by selected games; must reconcile to the source total plays.',
+  completionPct: 'Aggregate completions divided by aggregate passing attempts; not an average of game percentages.',
+  yardsPerAttempt: 'Aggregate CFBD net passing yards divided by aggregate pass attempts.',
+  netYardsPerAttempt: 'Aggregate CFBD net passing yards divided by pass attempts plus sacks allowed; sack yards are already netted and are not subtracted twice.',
+  yardsPerCarry: 'Aggregate rushing yards divided by aggregate rushing attempts.',
+  yardsPerPlay: 'Aggregate total offensive yards divided by aggregate official offensive plays.',
+  firstDownRate: 'Aggregate first downs divided by official offensive plays.',
+  sackRateAllowed: 'Opponent defensive sacks divided by team pass attempts plus opponent sacks.',
+  pressureRateAllowed: 'Opponent defensive sacks and QB hurries divided by team pass attempts plus opponent sacks.',
+  ncaaPasserRating: 'NCAA passing-efficiency formula, not NFL passer rating.',
+  explosivePlays: 'CFBD play-by-play: pass gains of 20+ yards and rush gains of 10+ yards, divided by eligible pass/rush plays.',
+  advancedLineStats: 'CFBD season-advanced fields; unavailable for a rolling window unless its selected game logs contain the required play coverage.',
+  redZone: 'Drive-derived red-zone entries; scoring rate includes any points, while touchdown rate counts touchdowns only.',
+  ranking: 'FBS teams with at least one completed game in the selected timeframe; competition ranking, exact ties share a rank, missing values are excluded. Volume and pace ranks are ordinal, not performance grades.',
+};
 
 
 function teamKey(value: any): string {
@@ -120,6 +139,14 @@ const INVERSE_STAT_KEYS = new Set([
   'passingTouchdownsAllowedPerGame',
   'passYardsPerAttemptAllowed',
   'qbHurriesAllowedPerGame',
+]);
+
+const NEUTRAL_RANK_KEYS = new Set([
+  'playsPerGame', 'passAttemptsPerGame', 'passingAttemptsPerGame', 'rushAttemptsPerGame',
+  'rushingAttemptsPerGame', 'possessionMinutesPerGame', 'possessionTime', 'timeOfPossession',
+  'passRate', 'passingPlayRate', 'rushRate', 'rushingPlayRate', 'secondsPerPlay',
+  'fourthDownAttemptsPerGame', 'redZoneAttempts', 'redZoneAttemptsPerGame', 'redZoneTripsPerGame',
+  'earlyDownPassRate',
 ]);
 
 function safeJsonParse(value: string) {
@@ -260,19 +287,26 @@ function emptyTotals(): BoxTotals {
 function teamBoxTotals(team: any): BoxTotals {
   const out = emptyTotals();
   const stats = Array.isArray(team?.stats) ? team.stats : [];
+  const seen = new Set<string>();
   for (const item of stats) {
     const key = normalizeCategory(item?.category || item?.name || item?.label || item?.statName);
     const value = item?.stat ?? item?.value ?? item?.displayValue;
     if (!key) continue;
 
-    if (['totalyards', 'totaloffense', 'totaloffenseyards', 'nettotalyards'].includes(key)) out.totalYards = n(value);
-    else if (['netpassingyards', 'passingyards', 'passyards'].includes(key)) out.netPassingYards = n(value);
-    else if (['rushingyards', 'rushyards'].includes(key)) out.rushingYards = n(value);
-    else if (['rushingattempts', 'rushattempts', 'carries'].includes(key)) out.rushingAttempts = n(value);
+    if (['totalyards', 'totaloffense', 'totaloffenseyards', 'nettotalyards'].includes(key)) { out.totalYards = n(value); seen.add('totalYards'); }
+    else if (['netpassingyards', 'passingyards', 'passyards'].includes(key)) { out.netPassingYards = n(value); seen.add('netPassingYards'); }
+    else if (['rushingyards', 'rushyards'].includes(key)) { out.rushingYards = n(value); seen.add('rushingYards'); }
+    else if (['rushingattempts', 'rushattempts', 'carries'].includes(key)) { out.rushingAttempts = n(value); seen.add('rushingAttempts'); }
     else if (['firstdowns', 'totalfirstdowns'].includes(key)) out.firstDowns = n(value);
     else if (['thirddowneff', 'thirddownefficiency', '3rddownefficiency'].includes(key)) [out.thirdConv, out.thirdAtt] = parsePair(value);
     else if (['fourthdowneff', 'fourthdownefficiency', '4thdownefficiency'].includes(key)) [out.fourthConv, out.fourthAtt] = parsePair(value);
-    else if (['completionattempts', 'completionsattempts', 'compatt'].includes(key)) [out.comp, out.passAtt] = parsePair(value);
+    else if (['completionattempts', 'completionsattempts', 'compatt'].includes(key)) {
+      [out.comp, out.passAtt] = parsePair(value);
+      seen.add('completions');
+      seen.add('passAttempts');
+    }
+    else if (['completions', 'passescompleted'].includes(key)) { out.comp = n(value); seen.add('completions'); }
+    else if (['passingattempts', 'passattempts', 'attempts'].includes(key)) { out.passAtt = n(value); seen.add('passAttempts'); }
     else if (['passingtouchdowns', 'passingtds', 'passtds'].includes(key)) out.passingTouchdowns = n(value);
     else if (['rushingtouchdowns', 'rushingtds', 'rushtds'].includes(key)) out.rushingTouchdowns = n(value);
     else if (key === 'turnovers') out.turnovers = n(value);
@@ -347,6 +381,13 @@ function teamBoxTotals(team: any): BoxTotals {
     else if (['puntreturnyards'].includes(key)) out.puntReturnYards = n(value);
     else if (['kickreturntouchdowns', 'kickreturntds'].includes(key)) out.kickReturnTouchdowns = n(value);
     else if (['puntreturntouchdowns', 'puntreturntds'].includes(key)) out.puntReturnTouchdowns = n(value);
+  }
+
+  const missingCore = ['netPassingYards', 'rushingYards', 'rushingAttempts', 'completions', 'passAttempts']
+    .filter((key) => !seen.has(key));
+  if (!seen.has('totalYards') && !(seen.has('netPassingYards') && seen.has('rushingYards'))) missingCore.push('totalYards');
+  if (missingCore.length) {
+    throw new Error(`CFBD box score for ${team?.team || 'unknown team'} is missing required offense fields: ${missingCore.join(', ')}`);
   }
 
   // Some box-score feeds omit an explicit total-offense row, but still give
@@ -1069,12 +1110,14 @@ function computeStats(log: TeamGame[]) {
   const ncaaPasserRating = own.passAtt
     ? round((8.4 * own.netPassingYards + 330 * own.passingTouchdowns + 100 * own.comp - 200 * own.interceptions) / own.passAtt, 1)
     : null;
-  const pressureEventsAllowed = own.sacks + opp.qbHurries;
-  const pressureRateAllowed = pct(pressureEventsAllowed, own.passAtt + own.sacks);
-  const defensivePressureEvents = opp.sacks + own.qbHurries;
-  const defensivePressureRate = own.qbHurries > 0
-    ? pct(defensivePressureEvents, opp.passAtt + opp.sacks)
-    : null;
+  // In CFBD team box scores, sacks and QB hurries belong to that team's
+  // defense. For the offense, the opponent's defensive events are sacks and
+  // hurries allowed. Keep those sides separate throughout the rates.
+  const sacksAllowed = opp.sacks;
+  const pressureEventsAllowed = sacksAllowed + opp.qbHurries;
+  const pressureRateAllowed = pct(pressureEventsAllowed, own.passAtt + sacksAllowed);
+  const defensivePressureEvents = own.sacks + own.qbHurries;
+  const defensivePressureRate = pct(defensivePressureEvents, opp.passAtt + own.sacks);
 
   const offense: any = {
     pointsPerGame: perGame(pointsFor),
@@ -1097,7 +1140,9 @@ function computeStats(log: TeamGame[]) {
     yardsPerAttempt: round(safeDiv(own.netPassingYards, own.passAtt), 2),
     passYardsPerAttempt: round(safeDiv(own.netPassingYards, own.passAtt), 2),
     ypa: round(safeDiv(own.netPassingYards, own.passAtt), 2),
-    netYardsPerAttempt: round(safeDiv(own.netPassingYards - own.sackYards, own.passAtt + own.sacks), 2),
+    // CFBD's team-box-score passing yards are net of sacks. Do not subtract
+    // sack yards a second time when calculating net yards per pass attempt.
+    netYardsPerAttempt: round(safeDiv(own.netPassingYards, own.passAtt + sacksAllowed), 2),
     yardsPerRush: round(safeDiv(own.rushingYards, own.rushingAttempts), 2),
     yardsPerCarry: round(safeDiv(own.rushingYards, own.rushingAttempts), 2),
     rushYardsPerAttempt: round(safeDiv(own.rushingYards, own.rushingAttempts), 2),
@@ -1122,8 +1167,8 @@ function computeStats(log: TeamGame[]) {
     possessionMinutesPerGame: round(own.possessionSeconds / games / 60, 1),
     possessionTime: round(own.possessionSeconds / games / 60, 1),
     timeOfPossession: round(own.possessionSeconds / games / 60, 1),
-    sacksAllowedPerGame: perGame(own.sacks),
-    sackRateAllowed: pct(own.sacks, own.passAtt + own.sacks),
+    sacksAllowedPerGame: perGame(sacksAllowed),
+    sackRateAllowed: pct(sacksAllowed, own.passAtt + sacksAllowed),
     qbRating: ncaaPasserRating,
     passerRating: ncaaPasserRating,
     pressureRateAllowed,
@@ -1239,8 +1284,8 @@ function computeStats(log: TeamGame[]) {
     ypcAllowed: round(safeDiv(opp.rushingYards, opp.rushingAttempts), 2),
     rushAttemptsFaced: perGame(opp.rushingAttempts),
     rushingAttemptsFaced: perGame(opp.rushingAttempts),
-    sacksPerGame: perGame(opp.sacks),
-    sackRate: pct(opp.sacks, opp.passAtt + opp.sacks),
+    sacksPerGame: perGame(own.sacks),
+    sackRate: pct(own.sacks, opp.passAtt + own.sacks),
     pressureRate: defensivePressureRate,
     defensivePressureRate,
     tackleForLossPct: pct(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts),
@@ -1377,7 +1422,128 @@ function computeStats(log: TeamGame[]) {
     special_teams.stEPA = special_teams.specialTeamsPpaPerPlay;
   }
 
-  return { games, offense, defense, special_teams };
+  const perGameExact = (value: number) => value / games;
+  const percentExact = (made: number, attempts: number) => attempts ? (made / attempts) * 100 : null;
+  const exactNetYardsPerAttempt = own.passAtt + sacksAllowed
+    ? own.netPassingYards / (own.passAtt + sacksAllowed)
+    : null;
+  const exactPressureRateAllowed = own.passAtt + sacksAllowed
+    ? pressureEventsAllowed / (own.passAtt + sacksAllowed)
+    : null;
+  const exactOffenseRankValues: Record<string, number | null> = {
+    pointsPerGame: perGameExact(pointsFor),
+    yardsPerGame: perGameExact(own.totalYards),
+    passingYards: perGameExact(own.netPassingYards),
+    passingYardsPerGame: perGameExact(own.netPassingYards),
+    rushingYards: perGameExact(own.rushingYards),
+    rushingYardsPerGame: perGameExact(own.rushingYards),
+    turnovers: perGameExact(own.turnovers),
+    turnoverRate: percentExact(own.turnovers, own.passAtt + own.rushingAttempts),
+    firstDownsPerGame: perGameExact(own.firstDowns),
+    firstDownRate: percentExact(own.firstDowns, own.passAtt + own.rushingAttempts),
+    thirdDownPct: percentExact(own.thirdConv, own.thirdAtt),
+    thirdDownConversionPct: percentExact(own.thirdConv, own.thirdAtt),
+    fourthDownPct: percentExact(own.fourthConv, own.fourthAtt),
+    fourthDownConversionPct: percentExact(own.fourthConv, own.fourthAtt),
+    completionPct: percentExact(own.comp, own.passAtt),
+    completionPercentage: percentExact(own.comp, own.passAtt),
+    yardsPerPass: own.passAtt ? own.netPassingYards / own.passAtt : null,
+    yardsPerAttempt: own.passAtt ? own.netPassingYards / own.passAtt : null,
+    passYardsPerAttempt: own.passAtt ? own.netPassingYards / own.passAtt : null,
+    ypa: own.passAtt ? own.netPassingYards / own.passAtt : null,
+    netYardsPerAttempt: exactNetYardsPerAttempt,
+    yardsPerRush: own.rushingAttempts ? own.rushingYards / own.rushingAttempts : null,
+    yardsPerCarry: own.rushingAttempts ? own.rushingYards / own.rushingAttempts : null,
+    rushYardsPerAttempt: own.rushingAttempts ? own.rushingYards / own.rushingAttempts : null,
+    ypc: own.rushingAttempts ? own.rushingYards / own.rushingAttempts : null,
+    passAttemptsPerGame: perGameExact(own.passAtt),
+    passingAttemptsPerGame: perGameExact(own.passAtt),
+    completionsPerGame: perGameExact(own.comp),
+    passingTouchdownsPerGame: perGameExact(own.passingTouchdowns),
+    passingTDsPerGame: perGameExact(own.passingTouchdowns),
+    passingTouchdowns: perGameExact(own.passingTouchdowns),
+    interceptionRate: percentExact(own.interceptions, own.passAtt),
+    intRate: percentExact(own.interceptions, own.passAtt),
+    rushAttemptsPerGame: perGameExact(own.rushingAttempts),
+    rushingAttemptsPerGame: perGameExact(own.rushingAttempts),
+    rushingTouchdownsPerGame: perGameExact(own.rushingTouchdowns),
+    rushTDsPerGame: perGameExact(own.rushingTouchdowns),
+    rushingTouchdowns: perGameExact(own.rushingTouchdowns),
+    playsPerGame: perGameExact(own.passAtt + own.rushingAttempts),
+    yardsPerPlay: safeDiv(own.totalYards, own.passAtt + own.rushingAttempts),
+    penaltiesPerGame: perGameExact(own.pens),
+    penaltyYardsPerGame: perGameExact(own.penYards),
+    possessionMinutesPerGame: own.possessionSeconds / games / 60,
+    possessionTime: own.possessionSeconds / games / 60,
+    timeOfPossession: own.possessionSeconds / games / 60,
+    sacksAllowedPerGame: perGameExact(sacksAllowed),
+    sackRateAllowed: percentExact(sacksAllowed, own.passAtt + sacksAllowed),
+    qbRating: own.passAtt
+      ? (8.4 * own.netPassingYards + 330 * own.passingTouchdowns + 100 * own.comp - 200 * own.interceptions) / own.passAtt
+      : null,
+    passerRating: own.passAtt
+      ? (8.4 * own.netPassingYards + 330 * own.passingTouchdowns + 100 * own.comp - 200 * own.interceptions) / own.passAtt
+      : null,
+    pressureRateAllowed: exactPressureRateAllowed == null ? null : exactPressureRateAllowed * 100,
+    pressurePctAllowed: exactPressureRateAllowed == null ? null : exactPressureRateAllowed * 100,
+    pressurePct: exactPressureRateAllowed == null ? null : exactPressureRateAllowed * 100,
+    qbHurriesAllowedPerGame: perGameExact(opp.qbHurries),
+    pressureAvoidancePct: exactPressureRateAllowed == null ? null : 100 - exactPressureRateAllowed * 100,
+    driveSuccessRate: drives ? scoringDrives / drives * 100 : null,
+    pointsPerDrive: drives ? offensiveDrivePoints / drives : null,
+    tdsPerDrive: drives ? touchdownDrives / drives : null,
+    touchdownsPerDrive: drives ? touchdownDrives / drives : null,
+    redZoneAttempts: redZoneTrips,
+    redZoneAttemptsPerGame: driveCoverageGames ? redZoneTrips / driveCoverageGames : null,
+    redZoneTripsPerGame: driveCoverageGames ? redZoneTrips / driveCoverageGames : null,
+    redZoneEfficiency: percentExact(redZoneScores, redZoneTrips),
+    redZoneScorePct: percentExact(redZoneScores, redZoneTrips),
+    redZoneTdPct: percentExact(redZoneTouchdowns, redZoneTrips),
+    redZoneTouchdownPct: percentExact(redZoneTouchdowns, redZoneTrips),
+    goalToGoTdPct: percentExact(goalToGoTouchdowns, goalToGoTrips),
+    goalToGoTouchdownPct: percentExact(goalToGoTouchdowns, goalToGoTrips),
+    openingDriveScorePct: percentExact(openingDriveScores, driveCoverageGames),
+    openingDriveTdPct: percentExact(openingDriveTouchdowns, driveCoverageGames),
+    secondsPerPlay: drivePlays ? driveElapsedSeconds / drivePlays : null,
+    epaPerPlay: scrimmagePpaPlays ? scrimmagePpaSum / scrimmagePpaPlays : null,
+    offensiveEpaPerPlay: scrimmagePpaPlays ? scrimmagePpaSum / scrimmagePpaPlays : null,
+    successRate: percentExact(successfulScrimmagePlays, scrimmagePlays),
+    offensiveSuccessRate: percentExact(successfulScrimmagePlays, scrimmagePlays),
+    passEpaPerPlay: passPpaPlays ? passPpaSum / passPpaPlays : null,
+    passingEpaPerPlay: passPpaPlays ? passPpaSum / passPpaPlays : null,
+    passSuccessRate: percentExact(successfulPassPlays, passLikePlays),
+    passingSuccessRate: percentExact(successfulPassPlays, passLikePlays),
+    rushEpaPerPlay: rushPpaPlays ? rushPpaSum / rushPpaPlays : null,
+    rushingEpaPerPlay: rushPpaPlays ? rushPpaSum / rushPpaPlays : null,
+    rushSuccessRate: percentExact(successfulRushAttempts, situationalRushAttempts),
+    rushingSuccessRate: percentExact(successfulRushAttempts, situationalRushAttempts),
+    goalToGoSuccessRate: percentExact(goalToGoSuccesses, goalToGoPlays),
+    thirdDownEpa: thirdDownPpaPlays ? thirdDownPpaSum / thirdDownPpaPlays : null,
+    thirdDownEpaPerPlay: thirdDownPpaPlays ? thirdDownPpaSum / thirdDownPpaPlays : null,
+    thirdDownPpa: thirdDownPpaPlays ? thirdDownPpaSum / thirdDownPpaPlays : null,
+    fourthDownAttemptsPerGame: playCoverageGames ? fourthDownAttempts / playCoverageGames : null,
+    explosivePassRate: percentExact(explosivePasses, situationalPassAttempts),
+    explosivePassPct: percentExact(explosivePasses, situationalPassAttempts),
+    explosiveRunRate: percentExact(explosiveRushes, situationalRushAttempts),
+    explosiveRushRate: percentExact(explosiveRushes, situationalRushAttempts),
+    runSuccessRate: percentExact(successfulRushAttempts, situationalRushAttempts),
+    shortYardageSuccess: percentExact(shortYardageRushConversions, shortYardageRushAttempts),
+    shortYardageSuccessRate: percentExact(shortYardageRushConversions, shortYardageRushAttempts),
+    earlyDownPassRate: percentExact(earlyDownPassPlays, earlyDownScrimmagePlays),
+    twoMinuteOffensePpa: twoMinutePpaPlays ? twoMinutePpaSum / twoMinutePpaPlays : null,
+    twoMinuteOffenseEpa: twoMinutePpaPlays ? twoMinutePpaSum / twoMinutePpaPlays : null,
+    firstHalfPoints: lineScoreGames ? firstHalfPoints / lineScoreGames : null,
+    secondHalfPoints: lineScoreGames ? secondHalfPoints / lineScoreGames : null,
+    fourthQuarterPoints: lineScoreGames ? fourthQuarterPoints / lineScoreGames : null,
+    averageDepthOfTarget: passingAirYardsAttempts ? passingTotalAirYards / passingAirYardsAttempts : null,
+    aDOT: passingAirYardsAttempts ? passingTotalAirYards / passingAirYardsAttempts : null,
+    adot: passingAirYardsAttempts ? passingTotalAirYards / passingAirYardsAttempts : null,
+    passPpaTotal: passingPpaAttempts ? passingTotalPpa : null,
+    totalPassPpa: passingPpaAttempts ? passingTotalPpa : null,
+    expectedPointsGenerated: passingPpaAttempts ? passingTotalPpa : null,
+  };
+
+  return { games, offense, defense, special_teams, rankValues: { offense: exactOffenseRankValues } };
 }
 
 
@@ -1423,6 +1589,49 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     openFieldYardsPerRush: finiteOrNull(offense?.openFieldYards, 2),
     pointsPerOpportunity: finiteOrNull(offense?.pointsPerOpportunity, 2),
     scoringOpportunities: finiteOrNull(offense?.totalOpportunies ?? offense?.totalOpportunities, 0),
+  });
+
+  const unrounded = (value: any): number | null => {
+    const parsed = Number(value);
+    return value == null || value === '' || !Number.isFinite(parsed) ? null : parsed;
+  };
+  const unroundedPct = (value: any): number | null => {
+    const parsed = unrounded(value);
+    return parsed == null ? null : (Math.abs(parsed) <= 1.000001 ? parsed * 100 : parsed);
+  };
+  stats.rankValues ||= { offense: {}, defense: {} };
+  stats.rankValues.offense ||= {};
+  Object.assign(stats.rankValues.offense, {
+    epaPerPlay: unrounded(offense?.ppa),
+    offensiveEpaPerPlay: unrounded(offense?.ppa),
+    successRate: unroundedPct(offense?.successRate),
+    offensiveSuccessRate: unroundedPct(offense?.successRate),
+    passEpaPerPlay: unrounded(offPass?.ppa),
+    passingEpaPerPlay: unrounded(offPass?.ppa),
+    passSuccessRate: unroundedPct(offPass?.successRate),
+    passingSuccessRate: unroundedPct(offPass?.successRate),
+    rushEpaPerPlay: unrounded(offRush?.ppa),
+    rushingEpaPerPlay: unrounded(offRush?.ppa),
+    rushSuccessRate: unroundedPct(offRush?.successRate),
+    rushingSuccessRate: unroundedPct(offRush?.successRate),
+    passRate: unroundedPct(offPass?.rate),
+    passingPlayRate: unroundedPct(offPass?.rate),
+    rushRate: unroundedPct(offRush?.rate),
+    rushingPlayRate: unroundedPct(offRush?.rate),
+    stuffRate: unroundedPct(offense?.stuffRate),
+    stuffRateAllowed: unroundedPct(offense?.stuffRate),
+    powerSuccessRate: unroundedPct(offense?.powerSuccess),
+    adjustedLineYards: unrounded(offense?.lineYards),
+    lineYardsPerRush: unrounded(offense?.lineYards),
+    explosiveness: unrounded(offense?.explosiveness),
+    rushingExplosiveness: unrounded(offRush?.explosiveness),
+    passingExplosiveness: unrounded(offPass?.explosiveness),
+    secondLevelYards: unrounded(offense?.secondLevelYards),
+    secondLevelYardsPerRush: unrounded(offense?.secondLevelYards),
+    openFieldYards: unrounded(offense?.openFieldYards),
+    openFieldYardsPerRush: unrounded(offense?.openFieldYards),
+    pointsPerOpportunity: unrounded(offense?.pointsPerOpportunity),
+    scoringOpportunities: unrounded(offense?.totalOpportunies ?? offense?.totalOpportunities),
   });
 
   // Do not overwrite drive-derived metrics with play success rate. The previous
@@ -1472,6 +1681,34 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     dbHavocRate: asPct(defense?.havoc?.db),
     pointsAllowedPerOpportunity: finiteOrNull(defense?.pointsPerOpportunity, 2),
     scoringOpportunitiesAllowed: finiteOrNull(defense?.totalOpportunies ?? defense?.totalOpportunities, 0),
+  });
+  stats.rankValues.defense ||= {};
+  Object.assign(stats.rankValues.defense, {
+    defensiveEpaPerPlay: unrounded(defense?.ppa),
+    epaAllowedPerPlay: unrounded(defense?.ppa),
+    defensiveSuccessRate: unroundedPct(defense?.successRate),
+    successRateAllowed: unroundedPct(defense?.successRate),
+    passEpaAllowed: unrounded(defPass?.ppa),
+    passEpaAllowedPerPlay: unrounded(defPass?.ppa),
+    passingEpaAllowed: unrounded(defPass?.ppa),
+    passSuccessRateAllowed: unroundedPct(defPass?.successRate),
+    passingSuccessRateAllowed: unroundedPct(defPass?.successRate),
+    rushEpaAllowed: unrounded(defRush?.ppa),
+    rushEpaAllowedPerPlay: unrounded(defRush?.ppa),
+    rushingEpaAllowed: unrounded(defRush?.ppa),
+    rushSuccessRateAllowed: unroundedPct(defRush?.successRate),
+    rushingSuccessRateAllowed: unroundedPct(defRush?.successRate),
+    stuffRate: unroundedPct(defense?.stuffRate),
+    defStuffRate: unroundedPct(defense?.stuffRate),
+    adjustedLineYardsAllowed: unrounded(defense?.lineYards),
+    explosivenessAllowed: unrounded(defense?.explosiveness),
+    rushingExplosivenessAllowed: unrounded(defRush?.explosiveness),
+    passingExplosivenessAllowed: unrounded(defPass?.explosiveness),
+    havocRate: unroundedPct(defense?.havoc?.total ?? defense?.havoc),
+    frontSevenHavocRate: unroundedPct(defense?.havoc?.frontSeven),
+    dbHavocRate: unroundedPct(defense?.havoc?.db),
+    pointsAllowedPerOpportunity: unrounded(defense?.pointsPerOpportunity),
+    scoringOpportunitiesAllowed: unrounded(defense?.totalOpportunies ?? defense?.totalOpportunities),
   });
 
   // Prefer the actual opponent-drive aggregation from /drives. Advanced season
@@ -1707,44 +1944,6 @@ function supplementMissingStats(stats: any, standard: Record<string, any> | unde
   return fillMissingStats(stats, supplemental);
 }
 
-function reconcileCoreOffenseStats(stats: any) {
-  const offense = stats?.offense;
-  if (!offense) return stats;
-  const repairWhenInconsistent = (keys: string[], expected: number | null, tolerance = 0.2) => {
-    if (expected == null || !Number.isFinite(expected) || expected <= 0) return;
-    const current = Number(offense[keys[0]]);
-    if (!Number.isFinite(current) || current <= 0 || Math.abs(current - expected) / expected > tolerance) {
-      for (const key of keys) offense[key] = round(expected, 1);
-    }
-  };
-
-  // Base rates and per-game totals must describe the same selected game set.
-  // Repair stale/zero cache fields when their corresponding rate and volume
-  // fields make the intended value unambiguous.
-  repairWhenInconsistent(
-    ['passingYardsPerGame', 'passingYards'],
-    Number(offense.passingAttemptsPerGame) > 0 && Number(offense.yardsPerAttempt) > 0
-      ? Number(offense.passingAttemptsPerGame) * Number(offense.yardsPerAttempt)
-      : null,
-  );
-  repairWhenInconsistent(
-    ['rushingAttemptsPerGame', 'rushAttemptsPerGame'],
-    Number(offense.rushingYardsPerGame) > 0 && Number(offense.yardsPerCarry) > 0
-      ? Number(offense.rushingYardsPerGame) / Number(offense.yardsPerCarry)
-      : null,
-  );
-  repairWhenInconsistent(
-    ['firstDownsPerGame'],
-    Number(offense.firstDownRate) > 0 && Number(offense.playsPerGame) > 0
-      ? Number(offense.firstDownRate) * Number(offense.playsPerGame) / 100
-      : null,
-  );
-
-  const expectedTotalYards = Number(offense.playsPerGame) * Number(offense.yardsPerPlay);
-  repairWhenInconsistent(['yardsPerGame', 'totalYardsPerGame'], expectedTotalYards);
-  return stats;
-}
-
 function rankLeague(statsByTeam: Map<string, any>) {
   const sides = ['offense', 'defense', 'special_teams'] as const;
   const ranks: Record<string, Record<string, Record<string, number>>> = {
@@ -1755,7 +1954,10 @@ function rankLeague(statsByTeam: Map<string, any>) {
     const byStat = new Map<string, Array<{ team: string; value: number }>>();
     for (const [team, stats] of statsByTeam.entries()) {
       for (const [key, value] of Object.entries(stats?.[side] || {})) {
-        const valueNum = typeof value === 'number' ? value : Number(value);
+        const rankValue = stats?.rankValues?.[side]?.[key];
+        const chosenValue = rankValue !== undefined ? rankValue : value;
+        if (chosenValue == null || chosenValue === '') continue;
+        const valueNum = typeof chosenValue === 'number' ? chosenValue : Number(chosenValue);
         if (!Number.isFinite(valueNum)) continue;
         if (!byStat.has(key)) byStat.set(key, []);
         byStat.get(key)!.push({ team, value: valueNum });
@@ -1768,15 +1970,10 @@ function rankLeague(statsByTeam: Map<string, any>) {
       // direction changes by side: lower for offense, higher for defense.
       const higherIsBetter = side === 'defense' && key === 'stuffRate'
         ? true
-        : !INVERSE_STAT_KEYS.has(key);
-      rows.sort((a, b) => higherIsBetter ? b.value - a.value : a.value - b.value);
-      const rankMap: Record<string, number> = {};
-      let rank = 1;
-      rows.forEach((row, index) => {
-        if (index > 0 && row.value !== rows[index - 1].value) rank = index + 1;
-        rankMap[row.team] = rank;
-      });
-      ranks[side][key] = rankMap;
+        : NEUTRAL_RANK_KEYS.has(key)
+          ? true
+          : !INVERSE_STAT_KEYS.has(key);
+      ranks[side][key] = rankCFBRows(rows, { higherIsBetter });
     }
   }
   return ranks;
@@ -1789,7 +1986,7 @@ async function fetchPriorSeasonLogs(season: number, apiKey: string) {
   const fbsTeamKeys = await fetchFbsTeamKeys(season, apiKey);
   const schedule = await cfbdGet('/games', {
     year: season,
-    seasonType: 'regular',
+    seasonType: 'both',
     classification: 'fbs',
   }, apiKey);
   const completed = schedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
@@ -1800,7 +1997,7 @@ async function fetchPriorSeasonLogs(season: number, apiKey: string) {
   const playRows: any[] = [];
   const passingRows: any[] = [];
   for (const week of weeks) {
-    const params = { year: season, week, seasonType: 'regular', classification: 'fbs' };
+    const params = { year: season, week, seasonType: 'both', classification: 'fbs' };
     boxGames.push(...await cfbdGet('/games/teams', params, apiKey));
     await pause(250);
     driveRows.push(...await cfbdGet('/drives', params, apiKey).catch(() => []));
@@ -2081,11 +2278,16 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     } else {
       const schedule = await cfbdGet('/games', {
         year: season,
-        seasonType: 'regular',
+        seasonType: 'both',
         classification: 'fbs',
       }, apiKey);
 
-      const completed = schedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
+      const completedById = new Map<string, any>();
+      for (const game of schedule) {
+        if (game?.completed !== true || game?.homePoints == null || game?.awayPoints == null || game?.id == null) continue;
+        completedById.set(String(game.id), game);
+      }
+      const completed = [...completedById.values()];
       if (!completed.length) throw new Error(`No completed FBS games returned by CFBD for ${season}`);
       // The FBS schedule can contain FCS opponents and may omit a side's
       // classification. Use CFBD's season-specific FBS directory as the
@@ -2098,7 +2300,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const passingGameRows: any[] = [];
       const sourceWarnings: string[] = [];
       for (const week of completedWeeks) {
-        const params = { year: season, week, seasonType: 'regular', classification: 'fbs' };
+        const params = { year: season, week, seasonType: 'both', classification: 'fbs' };
 
         // These are large endpoints, especially /plays. Stagger them instead of
         // firing four concurrent requests per week, which can trigger upstream
@@ -2142,6 +2344,20 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const passingMap = passingGameByTeam(passingGameRows);
       const specialTeamsMap = specialTeamsByGameTeam(playRows);
       const scheduleById = new Map(completed.map((game: any) => [String(game.id), game]));
+      const gameCoverage = validateCFBGameCoverage(
+        completed.map((game: any) => game.id),
+        boxGames.map((game: any) => game?.id),
+      );
+      if (!gameCoverage.ok) {
+        throw new Error(`CFBD box-score game coverage failed: expected ${gameCoverage.expected}, got ${gameCoverage.actual}; missing=${gameCoverage.missing.slice(0, 12).join(',')}; duplicates=${gameCoverage.duplicates.slice(0, 12).join(',')}; unexpected=${gameCoverage.unexpected.slice(0, 12).join(',')}`);
+      }
+      const expectedGamesByTeam = new Map<string, number>();
+      for (const game of completed) {
+        for (const sourceName of [game?.homeTeam, game?.awayTeam]) {
+          const key = teamKey(sourceName);
+          if (fbsTeamKeys.has(key)) expectedGamesByTeam.set(key, (expectedGamesByTeam.get(key) || 0) + 1);
+        }
+      }
       for (const game of boxGames) {
         const scheduleGame: any = scheduleById.get(String(game?.id));
         if (!scheduleGame) continue;
@@ -2151,9 +2367,14 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const away = teams.find((team: any) => String(team?.homeAway || '').toLowerCase() === 'away') || teams[1];
         if (!home || !away) continue;
 
+        const scheduledHomeKey = teamKey(scheduleGame.homeTeam);
+        const scheduledAwayKey = teamKey(scheduleGame.awayTeam);
         const homeKey = teamKey(home.team || scheduleGame.homeTeam);
         const awayKey = teamKey(away.team || scheduleGame.awayTeam);
         if (!homeKey || !awayKey) continue;
+        if (homeKey !== scheduledHomeKey || awayKey !== scheduledAwayKey) {
+          throw new Error(`Team identity mismatch for CFBD game ${game.id}: schedule=${scheduledAwayKey}/${scheduledHomeKey}, box=${awayKey}/${homeKey}`);
+        }
         teamNames.set(homeKey, String(home.team || scheduleGame.homeTeam || homeKey));
         teamNames.set(awayKey, String(away.team || scheduleGame.awayTeam || awayKey));
 
@@ -2195,7 +2416,22 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       }
 
       for (const log of logs.values()) log.sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId));
+      for (const key of fbsTeamKeys) {
+        const expectedGames = expectedGamesByTeam.get(key) || 0;
+        if (!expectedGames) continue;
+        const actualGames = logs.get(key) || [];
+        const coverage = validateCFBGameCoverage(
+          completed.filter((game: any) => teamKey(game.homeTeam) === key || teamKey(game.awayTeam) === key).map((game: any) => game.id),
+          actualGames.map((game) => game.gameId),
+        );
+        if (actualGames.length !== expectedGames || !coverage.ok) {
+          throw new Error(`CFBD team game coverage failed for ${key}: expected ${expectedGames}, got ${actualGames.length}; missing=${coverage.missing.slice(0, 12).join(',')}; duplicates=${coverage.duplicates.slice(0, 12).join(',')}`);
+        }
+      }
       allTeamKeys = [...fbsTeamKeys].filter((key) => (logs.get(key)?.length || 0) > 0).sort();
+      if (allTeamKeys.length !== expectedGamesByTeam.size) {
+        throw new Error(`FBS team mapping is incomplete: ${allTeamKeys.length} teams have box logs but ${expectedGamesByTeam.size} FBS teams appear in the completed schedule.`);
+      }
       completedGameCount = completed.length;
       boxGameCount = boxGames.length;
 
@@ -2263,6 +2499,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     const scrapedAt = new Date().toISOString();
     const results: any[] = [];
     const errors: string[] = [];
+    const pendingRecords: Array<{ record: any; team: string; key: string; timeframe: string; games: number }> = [];
     const advancedWindowCache = new Map<string, Map<string, any>>();
     const standardWindowCache = new Map<string, Map<string, Record<string, any>>>();
     const maxCompletedWeek = Math.max(...completedWeeks);
@@ -2272,68 +2509,64 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const windowSize = upper === 'SEASON' ? 0 : n(upper.replace(/^L/, ''), 0);
       const startWeek = windowSize ? Math.max(1, maxCompletedWeek - windowSize + 1) : 1;
       const advancedWindowKey = `${startWeek}-${maxCompletedWeek}`;
-      let advancedMap = advancedWindowCache.get(advancedWindowKey);
-      if (!advancedMap) {
-        const advancedSourceKey = `cfb_game_detail_source_v${CACHE_VERSION}_advanced_${season}_${startWeek}_${maxCompletedWeek}_${cacheDate}`;
-        const cachedAdvanced = !force ? await readSourceCache(base44, advancedSourceKey, sourceMaxAgeMs) : null;
-        if (cachedAdvanced?.teams) {
-          advancedMap = new Map(Object.entries(cachedAdvanced.teams));
-        } else {
-          try {
-            const advancedRows = await cfbdGet('/stats/season/advanced', {
-              year: season,
-              startWeek,
-              endWeek: maxCompletedWeek,
-              classification: 'fbs',
-            }, apiKey);
-            advancedMap = advancedByTeam(advancedRows);
-            await writeSourceCache(base44, {
-              cache_key: advancedSourceKey,
-              cache_date: cacheDate,
-              season,
-              source_type: 'advanced',
-              start_week: startWeek,
-              end_week: maxCompletedWeek,
-              scraped_at: new Date().toISOString(),
-              status: 'ready',
-              cache_version: CACHE_VERSION,
-              payload: JSON.stringify({ teams: Object.fromEntries(advancedMap) }),
-              source: 'cfbd-stats-season-advanced',
-              last_error: '',
-            });
-          } catch (error: any) {
-            advancedMap = new Map();
-            warnings.push(`advanced ${timeframe}: ${error?.message || String(error)}`);
+      let advancedMap = new Map<string, any>();
+      let standardMap = new Map<string, Record<string, any>>();
+      if (!windowSize) {
+        advancedMap = advancedWindowCache.get(advancedWindowKey) || new Map();
+        if (!advancedWindowCache.has(advancedWindowKey)) {
+          const advancedSourceKey = `cfb_game_detail_source_v${CACHE_VERSION}_advanced_${season}_${startWeek}_${maxCompletedWeek}_${cacheDate}`;
+          const cachedAdvanced = !force ? await readSourceCache(base44, advancedSourceKey, sourceMaxAgeMs) : null;
+          if (cachedAdvanced?.teams) advancedMap = new Map(Object.entries(cachedAdvanced.teams));
+          else {
+            try {
+              const advancedRows = await cfbdGet('/stats/season/advanced', {
+                year: season,
+                startWeek,
+                endWeek: maxCompletedWeek,
+                seasonType: 'both',
+                classification: 'fbs',
+              }, apiKey);
+              advancedMap = advancedByTeam(advancedRows);
+              await writeSourceCache(base44, {
+                cache_key: advancedSourceKey, cache_date: cacheDate, season, source_type: 'advanced',
+                start_week: startWeek, end_week: maxCompletedWeek, scraped_at: new Date().toISOString(),
+                status: 'ready', cache_version: CACHE_VERSION,
+                payload: JSON.stringify({ teams: Object.fromEntries(advancedMap) }),
+                source: 'cfbd-stats-season-advanced', last_error: '',
+              });
+            } catch (error: any) {
+              advancedMap = new Map();
+              warnings.push(`advanced ${timeframe}: ${error?.message || String(error)}`);
+            }
           }
+          advancedWindowCache.set(advancedWindowKey, advancedMap);
         }
-        advancedWindowCache.set(advancedWindowKey, advancedMap);
-      }
 
-      let standardMap = standardWindowCache.get(advancedWindowKey);
-      if (!standardMap) {
-        const standardSourceKey = `cfb_game_detail_source_v${CACHE_VERSION}_standard_${season}_${startWeek}_${maxCompletedWeek}_${cacheDate}`;
-        const cachedStandard = !force ? await readSourceCache(base44, standardSourceKey, sourceMaxAgeMs) : null;
-        if (cachedStandard?.teams) {
-          standardMap = new Map(Object.entries(cachedStandard.teams));
-        } else {
-          try {
-            const standardRows = await cfbdGet('/stats/season', {
-              year: season, startWeek, endWeek: maxCompletedWeek, classification: 'fbs',
-            }, apiKey);
-            standardMap = standardByTeam(standardRows);
-            await writeSourceCache(base44, {
-              cache_key: standardSourceKey, cache_date: cacheDate, season, source_type: 'standard',
-              start_week: startWeek, end_week: maxCompletedWeek, scraped_at: new Date().toISOString(),
-              status: 'ready', cache_version: CACHE_VERSION,
-              payload: JSON.stringify({ teams: Object.fromEntries(standardMap) }),
-              source: 'cfbd-stats-season', last_error: '',
-            });
-          } catch (error: any) {
-            standardMap = new Map();
-            warnings.push(`standard ${timeframe}: ${error?.message || String(error)}`);
+        standardMap = standardWindowCache.get(advancedWindowKey) || new Map();
+        if (!standardWindowCache.has(advancedWindowKey)) {
+          const standardSourceKey = `cfb_game_detail_source_v${CACHE_VERSION}_standard_${season}_${startWeek}_${maxCompletedWeek}_${cacheDate}`;
+          const cachedStandard = !force ? await readSourceCache(base44, standardSourceKey, sourceMaxAgeMs) : null;
+          if (cachedStandard?.teams) standardMap = new Map(Object.entries(cachedStandard.teams));
+          else {
+            try {
+              const standardRows = await cfbdGet('/stats/season', {
+                year: season, startWeek, endWeek: maxCompletedWeek, seasonType: 'both', classification: 'fbs',
+              }, apiKey);
+              standardMap = standardByTeam(standardRows);
+              await writeSourceCache(base44, {
+                cache_key: standardSourceKey, cache_date: cacheDate, season, source_type: 'standard',
+                start_week: startWeek, end_week: maxCompletedWeek, scraped_at: new Date().toISOString(),
+                status: 'ready', cache_version: CACHE_VERSION,
+                payload: JSON.stringify({ teams: Object.fromEntries(standardMap) }),
+                source: 'cfbd-stats-season', last_error: '',
+              });
+            } catch (error: any) {
+              standardMap = new Map();
+              warnings.push(`standard ${timeframe}: ${error?.message || String(error)}`);
+            }
           }
+          standardWindowCache.set(advancedWindowKey, standardMap);
         }
-        standardWindowCache.set(advancedWindowKey, standardMap);
       }
 
       const statsByTeam = new Map<string, any>();
@@ -2346,18 +2579,28 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const selected = windowSize ? allGames.slice(-windowSize) : allGames;
         const stats = computeStats(selected);
         if (stats) {
-          // Standard and advanced season endpoints are aggregated by week,
-          // not by each team's last N games. Applying them to L5/L10/L15
-          // overwrites the exact game-log window and can make multiple rolling
-          // timeframes identical (especially early in a season). Preserve the
-          // exact selected-game calculations and borrow aggregate values only
-          // for stats unavailable in game logs (for example advanced EPA).
-          // Season totals continue to use the source's season endpoints.
+          // Keep every standard value on the same exact game sample. CFBD's
+          // season summary may cover a different set of completed weeks than
+          // the box scores used to count games; use it only to fill unavailable
+          // fields, never to overwrite the game-log aggregate.
+          // Rolling windows must derive from their exact selected game logs.
+          // Season summaries cannot supplement L5/L10/L15 without reusing a
+          // different sample, so unavailable rolling metrics stay null.
           const mergedStats = windowSize > 0
-            ? supplementMissingStats(stats, standardMap?.get(key), advancedMap?.get(key))
-            : mergeAdvancedStats(mergeStandardStats(stats, standardMap?.get(key)), advancedMap?.get(key));
-          statsByTeam.set(key, reconcileCoreOffenseStats(mergedStats));
+            ? stats
+            : supplementMissingStats(stats, standardMap?.get(key), advancedMap?.get(key));
+          const integrity = validateCFBTeamOffense(mergedStats, {
+            team: teamNames.get(key) || cfbDisplayName(key),
+            timeframe,
+            gameIds: selected.map((game) => game.gameId),
+          });
+          if (!integrity.ok) throw new Error(`CFB offense integrity failed: ${integrity.errors.join('; ')}`);
+          mergedStats.integrity = integrity;
+          statsByTeam.set(key, mergedStats);
         }
+      }
+      if (statsByTeam.size !== allTeamKeys.length) {
+        throw new Error(`CFB ${timeframe} frame is incomplete: ${statsByTeam.size}/${allTeamKeys.length} eligible FBS teams calculated.`);
       }
       const ranks = rankLeague(statsByTeam);
 
@@ -2372,11 +2615,13 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
 
         const payload = {
           cacheVersion: CACHE_VERSION,
+          snapshotId: scrapedAt,
           team: teamName,
           teamKey: key,
           season,
           timeframe,
           games: stats.games,
+          metricDefinitions: METRIC_DEFINITIONS,
           stats: {
             offense: stats.offense,
             defense: stats.defense,
@@ -2384,27 +2629,47 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           },
           ranks: rankPayload,
           teamsRanked: statsByTeam.size,
+          rankPopulation: 'FBS teams with at least one completed game in the selected timeframe',
+          rankPolicy: 'Competition ranks use unrounded aggregates. Lower values are better for the explicit lower-is-better metrics in the cache builder; all other metrics are ranked higher-first. Volume and pace metrics are ordinal rankings only, not performance grades.',
+          integrity: {
+            status: 'passed',
+            source: 'CFBD game box scores; aggregate and rank use the same selected game IDs',
+            games: stats.games,
+            checks: stats.integrity?.checks || [],
+          },
         };
         const record = {
           cache_key: `cfb_team_v${CACHE_VERSION}_${season}_${timeframe}_${key}`,
           cache_date: cacheDate,
           scraped_at: scrapedAt,
+          snapshot_id: scrapedAt,
+          cache_version: CACHE_VERSION,
           season,
           week: maxCompletedWeek,
           timeframe,
           game_id: '',
           team_abbr: key,
+          teams_ranked: statsByTeam.size,
+          rank_population: 'eligible FBS teams with at least one completed game in timeframe',
+          integrity_status: 'passed',
           opponent_abbr: '',
           side: 'team',
           payload: JSON.stringify(payload),
           source: `cfbd-games-teams+drives+plays+passing+season-standard+advanced-v${CACHE_VERSION}`,
         };
-        try {
-          await upsert(base44, record);
-          results.push({ team: teamName, key, timeframe, games: stats.games });
-        } catch (error: any) {
-          errors.push(`${key} ${timeframe}: ${error?.message || String(error)}`);
-        }
+        pendingRecords.push({ record, team: teamName, key, timeframe, games: stats.games });
+      }
+    }
+
+    // Validate every team and timeframe before mutating the materialized
+    // cache. The GitHub publisher writes files only after this function has
+    // completed successfully, so an invalid frame never becomes publishable.
+    for (const item of pendingRecords) {
+      try {
+        await upsert(base44, item.record);
+        results.push({ team: item.team, key: item.key, timeframe: item.timeframe, games: item.games });
+      } catch (error: any) {
+        errors.push(`${item.key} ${item.timeframe}: ${error?.message || String(error)}`);
       }
     }
 
@@ -2412,10 +2677,12 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       ok: errors.length === 0,
       cacheVersion: CACHE_VERSION,
       source: 'cfbd-games+games-teams+drives+plays+passing-teams-games+season-standard+season-advanced',
+      metricDefinitions: METRIC_DEFINITIONS,
       season,
       completedWeeks,
       completedGameCount,
       boxGameCount,
+      gameCoverage: { expected: completedGameCount, actual: boxGameCount, status: completedGameCount === boxGameCount ? 'passed' : 'failed' },
       fbsTeamCount: allTeamKeys.length,
       requestedTeamCount: requestedTeams.length || sliceKeys.length,
       materializedTeamCount: sliceKeys.length,
