@@ -276,6 +276,37 @@ for (const season of seasons) {
       await Deno.writeTextFile(`${opponentDirectory}/${key}.json`, `${JSON.stringify(payload)}\n`);
     }
     console.info(`Built ${season} ${group} opponent shards: ${gamesByOpponent.size}.`);
+
+    // Player detail pages need one player's full-season chart logs. Publish
+    // team shards so the Base44 reader downloads only a small team file instead
+    // of the full position-group payload on a cold request.
+    const gamesByTeam = new Map<string, { team: string; games: Game[] }>();
+    for (const game of games) {
+      const team = String(game?.team || '').trim();
+      if (!team) continue;
+      const teamKey = normalizeTeam(team).toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!teamKey) continue;
+      if (!gamesByTeam.has(teamKey)) gamesByTeam.set(teamKey, { team, games: [] });
+      gamesByTeam.get(teamKey)!.games.push(game);
+    }
+
+    const teamDirectory = `${cacheRoot}/${season}/teams/${group}`;
+    await Deno.mkdir(teamDirectory, { recursive: true });
+    for (const [key, value] of gamesByTeam) {
+      const payload = {
+        sport: 'cfb',
+        schemaVersion: 1,
+        cacheVersion: 1,
+        season,
+        positionGroup: group,
+        team: value.team,
+        updatedAt: new Date().toISOString(),
+        gameCount: value.games.length,
+        games: value.games,
+      };
+      await Deno.writeTextFile(`${teamDirectory}/${key}.json`, `${JSON.stringify(payload)}\n`);
+    }
+    console.info(`Built ${season} ${group} team shards: ${gamesByTeam.size}.`);
   }
 }
 
