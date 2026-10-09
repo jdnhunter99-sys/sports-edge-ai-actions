@@ -25,6 +25,49 @@ export function normalizeCFBSchool(value: unknown): string {
   return normalizeCFBTeamKey(raw);
 }
 
+/**
+ * Normalize team labels from source feeds without allowing the crosswalk's
+ * fuzzy substring fallback to collapse distinct schools (for example,
+ * Delaware State into Delaware). Exact aliases still use the shared FBS
+ * crosswalk; unrecognized labels keep their own normalized identity.
+ */
+export function normalizeCFBSourceTeam(value: unknown): string {
+  const candidates = value && typeof value === 'object'
+    ? [
+      (value as any).school,
+      (value as any).name,
+      (value as any).displayName,
+      (value as any).shortDisplayName,
+      (value as any).shortName,
+      (value as any).abbr,
+      (value as any).abbreviation,
+    ]
+    : [value];
+
+  const normalizeLabel = (label: unknown) => String(label ?? '')
+    .trim()
+    .replace(/\s*\(\s*\d+\s*\)\s*$/, '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+
+  for (const candidate of candidates) {
+    const raw = String(candidate ?? '').trim();
+    if (!raw) continue;
+    const canonical = canonicalCfbTeam(raw);
+    if (!canonical?.abbr) continue;
+    const rawLabel = normalizeLabel(raw);
+    const exactLabels = [canonical.abbr, canonical.name, ...canonical.aliases];
+    if (exactLabels.some((label) => normalizeLabel(label) === rawLabel)) {
+      return normalizeCFBSchool(canonical.abbr);
+    }
+  }
+
+  const fallback = candidates.find((candidate) => String(candidate ?? '').trim());
+  return normalizeCFBTeamKey(fallback ?? '');
+}
+
 export function normalizeCFBTeamKey(value: unknown): string {
   const key = String(value ?? '')
     .toLowerCase()
@@ -92,6 +135,9 @@ export const CFB_KEY_ALIASES: Record<string, string> = {
   'williammarycollege': 'williammary',
   'collegeofwilliammary': 'williammary',
   'tribe': 'williammary',
+  'delawarestate': 'delawarestate',
+  'delawarestatehornets': 'delawarestate',
+  'delst': 'delawarestate',
   'kstate': 'kansasstate',
   'kansasstate': 'kansasstate',
   'michst': 'michiganstate',

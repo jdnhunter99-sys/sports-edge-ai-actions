@@ -8,14 +8,13 @@
 //
 // Required secret: CFBD_API_KEY
 
-import { normalizeCFBSchool, cfbDisplayName } from '../../shared/cfbTeamIdentity.ts';
-import { canonicalCfbTeam } from '../../shared/cfbOddsTeams.ts';
-import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamOffense } from '../../shared/cfbTeamStatsIntegrity.mjs';
+import { normalizeCFBSchool, normalizeCFBSourceTeam, cfbDisplayName } from '../../shared/cfbTeamIdentity.ts';
+import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateCFBTeamOffense } from '../../shared/cfbTeamStatsIntegrity.mjs';
 
 const CFBD_BASE = 'https://api.collegefootballdata.com';
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 24;
+const CACHE_VERSION = 25;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
@@ -28,8 +27,32 @@ const METRIC_DEFINITIONS = {
   yardsPerCarry: 'Aggregate rushing yards divided by aggregate rushing attempts.',
   yardsPerPlay: 'Aggregate total offensive yards divided by aggregate official offensive plays.',
   firstDownRate: 'Aggregate first downs divided by official offensive plays.',
-  sackRateAllowed: 'Opponent defensive sacks divided by team pass attempts plus opponent sacks.',
-  pressureRateAllowed: 'Opponent defensive sacks and QB hurries divided by team pass attempts plus opponent sacks.',
+  pointsPerDrive: 'Official offense-drive point changes divided by offense drives; excludes defensive and special-teams scores.',
+  pointsAllowedPerDrive: 'Opponent offense-drive point changes divided by opponent drives; excludes defensive and special-teams scores.',
+  sackRateAllowed: 'Offense sacks allowed divided by pass attempts plus sacks allowed; sacks allowed are read from the offense team box-score row.',
+  sackRate: 'Defensive sacks credited from the opponent offense box-score sacks-lost total, divided by opponent pass attempts plus defensive sacks.',
+  pressureRateAllowed: 'Sacks allowed plus opponent defensive QB hurries divided by team pass attempts plus sacks allowed; null if either event source is incomplete.',
+  pressureRate: 'Defensive sacks plus defensive QB hurries divided by opponent pass attempts plus defensive sacks; null if either event source is incomplete.',
+  fumblesForced: 'CFBD forced-fumble count by the defense; never substituted with fumbles recovered.',
+  turnoversForced: 'Opponent interceptions thrown plus opponent fumbles lost, or the explicit opponent box-score turnover total when present.',
+  takeawayRate: 'Turnovers forced divided by opponent passing attempts plus rushing attempts.',
+  tackleForLossPct: 'Defensive tackles for loss divided by opponent passing attempts plus rushing attempts.',
+  defensiveEpaPerPlay: 'CFBD predicted points added (PPA) allowed per opponent scrimmage play; sourced from complete /plays coverage or the CFBD season-advanced defense field.',
+  passEpaAllowedPerPlay: 'CFBD predicted points added (PPA) allowed per opponent pass or sack play; lower is better.',
+  rushEpaAllowedPerPlay: 'CFBD predicted points added (PPA) allowed per opponent rushing play; lower is better.',
+  defensiveSuccessRate: 'Share of opponent scrimmage plays meeting CFBD success criteria; source-derived from complete /plays coverage or season advanced defense.',
+  passSuccessRateAllowed: 'Share of opponent pass and sack plays meeting CFBD success criteria; lower is better.',
+  rushSuccessRateAllowed: 'Share of opponent rush plays meeting CFBD success criteria; lower is better.',
+  explosivePassRateAllowed: 'Opponent pass plays gaining at least 20 yards divided by opponent pass plays.',
+  explosiveRunRateAllowed: 'Opponent rushes gaining at least 10 yards divided by opponent rush attempts.',
+  redZoneScorePctAllowed: 'Opponent scoring red-zone drives divided by opponent drives that had a scrimmage play inside the 20-yard line.',
+  redZoneTdPctAllowed: 'Opponent touchdown red-zone drives divided by opponent drives that had a scrimmage play inside the 20-yard line.',
+  goalToGoTdPctAllowed: 'Opponent touchdown drives among drives with a goal-to-go scrimmage play (within 10 yards and distance to go reaches the goal line).',
+  twoMinuteDefensePpa: 'CFBD play PPA average allowed on scrimmage plays in the final two minutes of the second and fourth quarters; lower is better.',
+  stuffRate: 'CFBD season-advanced defensive stuff rate; kept separate from offensive stuff rate.',
+  adjustedLineYardsAllowed: 'CFBD season-advanced defensive lineYards; source-defined adjusted line yards allowed.',
+  havocRate: 'CFBD season-advanced defense.havoc.total, using CFBD source definition; no event count is reconstructed locally.',
+  passesDeflectedPerGame: 'CFBD team box-score passesDeflected per completed game; reported as supplied, without adding interceptions.',
   ncaaPasserRating: 'NCAA passing-efficiency formula, not NFL passer rating.',
   explosivePlays: 'CFBD play-by-play: pass gains of 20+ yards and rush gains of 10+ yards, divided by eligible pass/rush plays.',
   advancedLineStats: 'CFBD season-advanced fields; unavailable for a rolling window unless its selected game logs contain the required play coverage.',
@@ -39,9 +62,7 @@ const METRIC_DEFINITIONS = {
 
 
 function teamKey(value: any): string {
-  const canonical = canonicalCfbTeam(value);
-  if (canonical?.abbr) return normalizeCFBSchool(canonical.abbr);
-  return normalizeCFBSchool(value);
+  return normalizeCFBSourceTeam(value);
 }
 
 const INVERSE_STAT_KEYS = new Set([
@@ -142,8 +163,9 @@ const INVERSE_STAT_KEYS = new Set([
 ]);
 
 const NEUTRAL_RANK_KEYS = new Set([
-  'playsPerGame', 'passAttemptsPerGame', 'passingAttemptsPerGame', 'rushAttemptsPerGame',
-  'rushingAttemptsPerGame', 'possessionMinutesPerGame', 'possessionTime', 'timeOfPossession',
+  'playsPerGame', 'playsFacedPerGame', 'passAttemptsPerGame', 'passingAttemptsPerGame', 'rushAttemptsPerGame',
+  'rushingAttemptsPerGame', 'rushAttemptsFaced', 'rushingAttemptsFaced', 'penaltiesPerGame', 'penaltyYardsPerGame',
+  'possessionMinutesPerGame', 'possessionTime', 'timeOfPossession',
   'passRate', 'passingPlayRate', 'rushRate', 'rushingPlayRate', 'secondsPerPlay',
   'fourthDownAttemptsPerGame', 'redZoneAttempts', 'redZoneAttemptsPerGame', 'redZoneTripsPerGame',
   'earlyDownPassRate',
@@ -265,6 +287,7 @@ interface BoxTotals {
   netPuntYards: number;
   kickoffs: number;
   kickoffTouchbacks: number;
+  reported: string[];
 }
 
 function emptyTotals(): BoxTotals {
@@ -280,7 +303,7 @@ function emptyTotals(): BoxTotals {
     kickReturnYards: 0, kickReturnTouchdowns: 0, puntReturns: 0,
     puntReturnYards: 0, puntReturnTouchdowns: 0, redZoneAttempts: 0,
     redZoneScores: 0, redZoneTouchdowns: 0, puntsInside20: 0,
-    puntTouchbacks: 0, netPuntYards: 0, kickoffs: 0, kickoffTouchbacks: 0,
+    puntTouchbacks: 0, netPuntYards: 0, kickoffs: 0, kickoffTouchbacks: 0, reported: [],
   };
 }
 
@@ -297,9 +320,9 @@ function teamBoxTotals(team: any): BoxTotals {
     else if (['netpassingyards', 'passingyards', 'passyards'].includes(key)) { out.netPassingYards = n(value); seen.add('netPassingYards'); }
     else if (['rushingyards', 'rushyards'].includes(key)) { out.rushingYards = n(value); seen.add('rushingYards'); }
     else if (['rushingattempts', 'rushattempts', 'carries'].includes(key)) { out.rushingAttempts = n(value); seen.add('rushingAttempts'); }
-    else if (['firstdowns', 'totalfirstdowns'].includes(key)) out.firstDowns = n(value);
-    else if (['thirddowneff', 'thirddownefficiency', '3rddownefficiency'].includes(key)) [out.thirdConv, out.thirdAtt] = parsePair(value);
-    else if (['fourthdowneff', 'fourthdownefficiency', '4thdownefficiency'].includes(key)) [out.fourthConv, out.fourthAtt] = parsePair(value);
+    else if (['firstdowns', 'totalfirstdowns'].includes(key)) { out.firstDowns = n(value); seen.add('firstDowns'); }
+    else if (['thirddowneff', 'thirddownefficiency', '3rddownefficiency'].includes(key)) { [out.thirdConv, out.thirdAtt] = parsePair(value); seen.add('thirdDown'); }
+    else if (['fourthdowneff', 'fourthdownefficiency', '4thdownefficiency'].includes(key)) { [out.fourthConv, out.fourthAtt] = parsePair(value); seen.add('fourthDown'); }
     else if (['completionattempts', 'completionsattempts', 'compatt'].includes(key)) {
       [out.comp, out.passAtt] = parsePair(value);
       seen.add('completions');
@@ -307,26 +330,27 @@ function teamBoxTotals(team: any): BoxTotals {
     }
     else if (['completions', 'passescompleted'].includes(key)) { out.comp = n(value); seen.add('completions'); }
     else if (['passingattempts', 'passattempts', 'attempts'].includes(key)) { out.passAtt = n(value); seen.add('passAttempts'); }
-    else if (['passingtouchdowns', 'passingtds', 'passtds'].includes(key)) out.passingTouchdowns = n(value);
-    else if (['rushingtouchdowns', 'rushingtds', 'rushtds'].includes(key)) out.rushingTouchdowns = n(value);
-    else if (key === 'turnovers') out.turnovers = n(value);
-    else if (['fumbleslost', 'lostfumbles'].includes(key)) out.fumblesLost = n(value);
-    else if (['interceptions', 'interceptionsthrown'].includes(key)) out.interceptions = n(value);
-    else if (['tacklesforloss', 'tfl'].includes(key)) out.tacklesForLoss = n(value);
-    else if (['qbhurries', 'quarterbackhurries'].includes(key)) out.qbHurries = n(value);
-    else if (['passesdeflected', 'passbreakups', 'pbus'].includes(key)) out.passesDeflected = n(value);
-    else if (['fumblesforced', 'forcedfumbles'].includes(key)) out.forcedFumbles = n(value);
-    else if (['totalpenaltiesyards', 'penaltiesyards'].includes(key)) [out.pens, out.penYards] = parsePair(value);
-    else if (['possessiontime', 'timeofpossession'].includes(key)) out.possessionSeconds = parseClockSeconds(value);
+    else if (['passingtouchdowns', 'passingtds', 'passtds'].includes(key)) { out.passingTouchdowns = n(value); seen.add('passingTouchdowns'); }
+    else if (['rushingtouchdowns', 'rushingtds', 'rushtds'].includes(key)) { out.rushingTouchdowns = n(value); seen.add('rushingTouchdowns'); }
+    else if (['turnovers', 'totalturnovers'].includes(key)) { out.turnovers = n(value); seen.add('turnovers'); }
+    else if (['fumbleslost', 'lostfumbles'].includes(key)) { out.fumblesLost = n(value); seen.add('fumblesLost'); }
+    else if (['interceptions', 'interceptionsthrown'].includes(key)) { out.interceptions = n(value); seen.add('interceptions'); }
+    else if (['tacklesforloss', 'tfl'].includes(key)) { out.tacklesForLoss = n(value); seen.add('tacklesForLoss'); }
+    else if (['qbhurries', 'quarterbackhurries'].includes(key)) { out.qbHurries = n(value); seen.add('qbHurries'); }
+    else if (['passesdeflected', 'passbreakups', 'pbus'].includes(key)) { out.passesDeflected = n(value); seen.add('passesDeflected'); }
+    else if (['fumblesforced', 'forcedfumbles'].includes(key)) { out.forcedFumbles = n(value); seen.add('forcedFumbles'); }
+    else if (['totalpenaltiesyards', 'penaltiesyards'].includes(key)) { [out.pens, out.penYards] = parsePair(value); seen.add('penalties'); }
+    else if (['possessiontime', 'timeofpossession'].includes(key)) { out.possessionSeconds = parseClockSeconds(value); seen.add('possessionTime'); }
     else if (['sacksyardslost', 'sacks'].includes(key)) {
       const pair = parsePair(value);
       if (pair[1] || String(value).includes('-')) { out.sacks = pair[0]; out.sackYards = pair[1]; }
       else out.sacks = n(value);
+      seen.add('sacks');
     }
-    else if (['redzoneeff', 'redzoneefficiency', 'redzone'].includes(key)) [out.redZoneScores, out.redZoneAttempts] = parsePair(value);
-    else if (['redzoneattempts', 'redzoneatt'].includes(key)) out.redZoneAttempts = n(value);
-    else if (['redzonescores', 'redzonescoring'].includes(key)) out.redZoneScores = n(value);
-    else if (['redzonetouchdowns', 'redzonetds'].includes(key)) out.redZoneTouchdowns = n(value);
+    else if (['redzoneeff', 'redzoneefficiency', 'redzone'].includes(key)) { [out.redZoneScores, out.redZoneAttempts] = parsePair(value); seen.add('redZoneScores'); seen.add('redZoneAttempts'); }
+    else if (['redzoneattempts', 'redzoneatt'].includes(key)) { out.redZoneAttempts = n(value); seen.add('redZoneAttempts'); }
+    else if (['redzonescores', 'redzonescoring'].includes(key)) { out.redZoneScores = n(value); seen.add('redZoneScores'); }
+    else if (['redzonetouchdowns', 'redzonetds'].includes(key)) { out.redZoneTouchdowns = n(value); seen.add('redZoneTouchdowns'); }
     else if (['fieldgoalsmadefieldgoalsattempted', 'fieldgoalsmadeattempted', 'fieldgoals'].includes(key)) {
       const pair = parsePair(value);
       if (pair[1] || /[-/]/.test(String(value))) [out.fieldGoalsMade, out.fieldGoalsAttempted] = pair;
@@ -398,7 +422,11 @@ function teamBoxTotals(team: any): BoxTotals {
   }
 
   // Some feeds omit an explicit turnover total.
-  if (!out.turnovers && (out.fumblesLost || out.interceptions)) out.turnovers = out.fumblesLost + out.interceptions;
+  if (!seen.has('turnovers') && seen.has('fumblesLost') && seen.has('interceptions')) {
+    out.turnovers = out.fumblesLost + out.interceptions;
+    seen.add('turnovers');
+  }
+  out.reported = [...seen];
   return out;
 }
 
@@ -955,13 +983,18 @@ function computeStats(log: TeamGame[]) {
 
   const add = (target: BoxTotals, source: BoxTotals) => {
     for (const key of Object.keys(target) as Array<keyof BoxTotals>) {
-      if (key === 'extraPointsMadeReported' || key === 'extraPointsAttemptedReported') {
+      if (key === 'reported') {
+        target.reported = [...new Set([...(target.reported || []), ...(source.reported || [])])];
+      } else if (key === 'extraPointsMadeReported' || key === 'extraPointsAttemptedReported') {
         (target as any)[key] = Boolean(target[key] || source[key]);
       } else {
         (target as any)[key] += (source as any)[key];
       }
     }
   };
+  const hasReported = (side: 'own' | 'opp', fields: string[]) => log.every((game) =>
+    fields.every((field) => Array.isArray(game?.[side]?.reported) && game[side].reported.includes(field))
+  );
 
   for (const game of log) {
     pointsFor += game.pointsFor;
@@ -970,7 +1003,7 @@ function computeStats(log: TeamGame[]) {
     add(opp, game.opp);
 
     const lineScores = Array.isArray(game.lineScores) ? game.lineScores.map((value) => n(value, 0)) : [];
-    if (lineScores.length >= 2) {
+    if (lineScores.length >= 4) {
       lineScoreGames += 1;
       firstHalfPoints += n(lineScores[0], 0) + n(lineScores[1], 0);
       secondHalfPoints += n(lineScores[2], 0) + n(lineScores[3], 0);
@@ -978,7 +1011,7 @@ function computeStats(log: TeamGame[]) {
     }
 
     const opponentLineScores = Array.isArray(game.opponentLineScores) ? game.opponentLineScores.map((value) => n(value, 0)) : [];
-    if (opponentLineScores.length >= 2) {
+    if (opponentLineScores.length >= 4) {
       opponentLineScoreGames += 1;
       firstHalfPointsAllowed += n(opponentLineScores[0], 0) + n(opponentLineScores[1], 0);
       secondHalfPointsAllowed += n(opponentLineScores[2], 0) + n(opponentLineScores[3], 0);
@@ -1110,14 +1143,21 @@ function computeStats(log: TeamGame[]) {
   const ncaaPasserRating = own.passAtt
     ? round((8.4 * own.netPassingYards + 330 * own.passingTouchdowns + 100 * own.comp - 200 * own.interceptions) / own.passAtt, 1)
     : null;
-  // In CFBD team box scores, sacks and QB hurries belong to that team's
-  // defense. For the offense, the opponent's defensive events are sacks and
-  // hurries allowed. Keep those sides separate throughout the rates.
-  const sacksAllowed = opp.sacks;
-  const pressureEventsAllowed = sacksAllowed + opp.qbHurries;
-  const pressureRateAllowed = pct(pressureEventsAllowed, own.passAtt + sacksAllowed);
-  const defensivePressureEvents = own.sacks + own.qbHurries;
-  const defensivePressureRate = pct(defensivePressureEvents, opp.passAtt + own.sacks);
+  // CFBD's team-game "Sacks-Yards Lost" row belongs to the offense shown in
+  // that row: own.sacks are sacks allowed by this team's offense, while
+  // opp.sacks are sacks allowed by the opponent offense (credited to this
+  // team's defense). QB hurries, TFL, pass breakups, and forced fumbles are
+  // defensive events recorded for the team itself.
+  const sacksAllowed = own.sacks;
+  const pressureEventsAllowed = own.sacks + opp.qbHurries;
+  const pressureRateAllowed = hasReported('own', ['sacks']) && hasReported('opp', ['qbHurries'])
+    ? pct(pressureEventsAllowed, own.passAtt + sacksAllowed)
+    : null;
+  const defensiveSacks = opp.sacks;
+  const defensivePressureEvents = opp.sacks + own.qbHurries;
+  const defensivePressureRate = hasReported('opp', ['sacks']) && hasReported('own', ['qbHurries'])
+    ? pct(defensivePressureEvents, opp.passAtt + defensiveSacks)
+    : null;
 
   const offense: any = {
     pointsPerGame: perGame(pointsFor),
@@ -1167,20 +1207,20 @@ function computeStats(log: TeamGame[]) {
     possessionMinutesPerGame: round(own.possessionSeconds / games / 60, 1),
     possessionTime: round(own.possessionSeconds / games / 60, 1),
     timeOfPossession: round(own.possessionSeconds / games / 60, 1),
-    sacksAllowedPerGame: perGame(sacksAllowed),
-    sackRateAllowed: pct(sacksAllowed, own.passAtt + sacksAllowed),
+    sacksAllowedPerGame: hasReported('own', ['sacks']) ? perGame(sacksAllowed) : null,
+    sackRateAllowed: hasReported('own', ['sacks']) ? pct(sacksAllowed, own.passAtt + sacksAllowed) : null,
     qbRating: ncaaPasserRating,
     passerRating: ncaaPasserRating,
     pressureRateAllowed,
     pressurePctAllowed: pressureRateAllowed,
     pressurePct: pressureRateAllowed,
-    qbHurriesAllowedPerGame: perGame(opp.qbHurries),
+    qbHurriesAllowedPerGame: hasReported('opp', ['qbHurries']) ? perGame(opp.qbHurries) : null,
     pressureAvoidancePct: pressureRateAllowed == null ? null : round(100 - pressureRateAllowed, 1),
   };
 
   // Only expose situational metrics when the underlying drive/play feed had coverage.
   // This prevents missing source data from becoming fake zeroes and fake #1 ranks.
-  if (driveCoverageGames > 0) {
+  if (driveCoverageGames === games) {
     offense.driveSuccessRate = pct(scoringDrives, drives);
     offense.pointsPerDrive = drives ? round(offensiveDrivePoints / drives, 2) : null;
     offense.tdsPerDrive = drives ? round(touchdownDrives / drives, 2) : null;
@@ -1198,7 +1238,7 @@ function computeStats(log: TeamGame[]) {
     offense.openingDriveTdPct = pct(openingDriveTouchdowns, driveCoverageGames);
     offense.secondsPerPlay = drivePlays ? round(driveElapsedSeconds / drivePlays, 1) : null;
   }
-  if (playCoverageGames > 0) {
+  if (playCoverageGames === games) {
     offense.epaPerPlay = scrimmagePpaPlays ? round(scrimmagePpaSum / scrimmagePpaPlays, 3) : null;
     offense.offensiveEpaPerPlay = offense.epaPerPlay;
     offense.successRate = pct(successfulScrimmagePlays, scrimmagePlays);
@@ -1228,7 +1268,7 @@ function computeStats(log: TeamGame[]) {
     offense.twoMinuteOffensePpa = twoMinutePpaPlays ? round(twoMinutePpaSum / twoMinutePpaPlays, 3) : null;
     offense.twoMinuteOffenseEpa = offense.twoMinuteOffensePpa;
   }
-  if (lineScoreGames > 0) {
+  if (lineScoreGames === games) {
     offense.firstHalfPoints = round(firstHalfPoints / lineScoreGames, 1);
     offense.secondHalfPoints = round(secondHalfPoints / lineScoreGames, 1);
     offense.fourthQuarterPoints = round(fourthQuarterPoints / lineScoreGames, 1);
@@ -1253,27 +1293,27 @@ function computeStats(log: TeamGame[]) {
     passingYardsAllowedPerGame: perGame(opp.netPassingYards),
     rushingYardsAllowed: perGame(opp.rushingYards),
     rushingYardsAllowedPerGame: perGame(opp.rushingYards),
-    turnoversForced: perGame(opp.turnovers),
-    takeawayRate: pct(opp.turnovers, opp.passAtt + opp.rushingAttempts),
-    interceptions: perGame(opp.interceptions),
-    forcedInterceptionsPerGame: perGame(opp.interceptions),
-    fumblesForced: perGame(own.forcedFumbles || opp.fumblesLost),
-    forcedFumbles: perGame(own.forcedFumbles || opp.fumblesLost),
-    forcedFumblesPerGame: perGame(own.forcedFumbles || opp.fumblesLost),
-    tacklesForLoss: perGame(own.tacklesForLoss),
-    tfl: perGame(own.tacklesForLoss),
-    qbHurriesPerGame: perGame(own.qbHurries),
-    passesDeflectedPerGame: perGame(own.passesDeflected),
-    firstDownsAllowedPerGame: perGame(opp.firstDowns),
-    thirdDownPctAllowed: pct(opp.thirdConv, opp.thirdAtt),
-    thirdDownConversionPctAllowed: pct(opp.thirdConv, opp.thirdAtt),
-    fourthDownPctAllowed: pct(opp.fourthConv, opp.fourthAtt),
-    fourthDownConversionPctAllowed: pct(opp.fourthConv, opp.fourthAtt),
+    turnoversForced: hasReported('opp', ['turnovers']) ? perGame(opp.turnovers) : null,
+    takeawayRate: hasReported('opp', ['turnovers']) ? pct(opp.turnovers, opp.passAtt + opp.rushingAttempts) : null,
+    interceptions: hasReported('opp', ['interceptions']) ? perGame(opp.interceptions) : null,
+    forcedInterceptionsPerGame: hasReported('opp', ['interceptions']) ? perGame(opp.interceptions) : null,
+    fumblesForced: hasReported('own', ['forcedFumbles']) ? perGame(own.forcedFumbles) : null,
+    forcedFumbles: hasReported('own', ['forcedFumbles']) ? perGame(own.forcedFumbles) : null,
+    forcedFumblesPerGame: hasReported('own', ['forcedFumbles']) ? perGame(own.forcedFumbles) : null,
+    tacklesForLoss: hasReported('own', ['tacklesForLoss']) ? perGame(own.tacklesForLoss) : null,
+    tfl: hasReported('own', ['tacklesForLoss']) ? perGame(own.tacklesForLoss) : null,
+    qbHurriesPerGame: hasReported('own', ['qbHurries']) ? perGame(own.qbHurries) : null,
+    passesDeflectedPerGame: hasReported('own', ['passesDeflected']) ? perGame(own.passesDeflected) : null,
+    firstDownsAllowedPerGame: hasReported('opp', ['firstDowns']) ? perGame(opp.firstDowns) : null,
+    thirdDownPctAllowed: hasReported('opp', ['thirdDown']) ? pct(opp.thirdConv, opp.thirdAtt) : null,
+    thirdDownConversionPctAllowed: hasReported('opp', ['thirdDown']) ? pct(opp.thirdConv, opp.thirdAtt) : null,
+    fourthDownPctAllowed: hasReported('opp', ['fourthDown']) ? pct(opp.fourthConv, opp.fourthAtt) : null,
+    fourthDownConversionPctAllowed: hasReported('opp', ['fourthDown']) ? pct(opp.fourthConv, opp.fourthAtt) : null,
     completionPctAllowed: pct(opp.comp, opp.passAtt),
     completionPercentageAllowed: pct(opp.comp, opp.passAtt),
-    passingTouchdownsAllowed: perGame(opp.passingTouchdowns),
-    passingTDsAllowed: perGame(opp.passingTouchdowns),
-    passingTouchdownsAllowedPerGame: perGame(opp.passingTouchdowns),
+    passingTouchdownsAllowed: hasReported('opp', ['passingTouchdowns']) ? perGame(opp.passingTouchdowns) : null,
+    passingTDsAllowed: hasReported('opp', ['passingTouchdowns']) ? perGame(opp.passingTouchdowns) : null,
+    passingTouchdownsAllowedPerGame: hasReported('opp', ['passingTouchdowns']) ? perGame(opp.passingTouchdowns) : null,
     yardsPerPassAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
     yardsPerAttemptAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
     passYardsPerAttemptAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
@@ -1284,17 +1324,17 @@ function computeStats(log: TeamGame[]) {
     ypcAllowed: round(safeDiv(opp.rushingYards, opp.rushingAttempts), 2),
     rushAttemptsFaced: perGame(opp.rushingAttempts),
     rushingAttemptsFaced: perGame(opp.rushingAttempts),
-    sacksPerGame: perGame(own.sacks),
-    sackRate: pct(own.sacks, opp.passAtt + own.sacks),
+    sacksPerGame: hasReported('opp', ['sacks']) ? perGame(defensiveSacks) : null,
+    sackRate: hasReported('opp', ['sacks']) ? pct(defensiveSacks, opp.passAtt + defensiveSacks) : null,
     pressureRate: defensivePressureRate,
     defensivePressureRate,
-    tackleForLossPct: pct(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts),
-    tflPct: pct(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts),
-    penaltiesPerGame: perGame(own.pens),
-    penaltyYardsPerGame: perGame(own.penYards),
+    tackleForLossPct: hasReported('own', ['tacklesForLoss']) ? pct(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts) : null,
+    tflPct: hasReported('own', ['tacklesForLoss']) ? pct(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts) : null,
+    penaltiesPerGame: hasReported('own', ['penalties']) ? perGame(own.pens) : null,
+    penaltyYardsPerGame: hasReported('own', ['penalties']) ? perGame(own.penYards) : null,
   };
 
-  if (defensiveDriveCoverageGames > 0) {
+  if (defensiveDriveCoverageGames === games) {
     defense.pointsAllowedPerDrive = defensiveDrives ? round(defensiveDrivePoints / defensiveDrives, 2) : null;
     defense.redZoneEfficiencyAllowed = pct(defensiveRedZoneScores, defensiveRedZoneTrips);
     defense.redZoneScorePctAllowed = defense.redZoneEfficiencyAllowed;
@@ -1305,7 +1345,7 @@ function computeStats(log: TeamGame[]) {
     defense.openingDriveScorePctAllowed = pct(defensiveOpeningDriveScores, defensiveDriveCoverageGames);
     defense.openingDriveScoringPctAllowed = defense.openingDriveScorePctAllowed;
   }
-  if (defensivePlayCoverageGames > 0) {
+  if (defensivePlayCoverageGames === games) {
     const opponentScrimmagePpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaSum || 0), 0);
     const opponentScrimmagePpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaPlays || 0), 0);
     const opponentSuccessfulScrimmagePlays = log.reduce((sum, game) => sum + (game.oppSituational?.successfulScrimmagePlays || 0), 0);
@@ -1341,7 +1381,7 @@ function computeStats(log: TeamGame[]) {
     defense.twoMinuteDefenseEpa = defense.twoMinuteDefensePpa;
     defense.twoMinuteEpaAllowed = defense.twoMinuteDefensePpa;
   }
-  if (opponentLineScoreGames > 0) {
+  if (opponentLineScoreGames === games) {
     defense.firstHalfPointsAllowed = round(firstHalfPointsAllowed / opponentLineScoreGames, 1);
     defense.firstHalfPointsAllowedPerGame = defense.firstHalfPointsAllowed;
     defense.secondHalfPointsAllowed = round(secondHalfPointsAllowed / opponentLineScoreGames, 1);
@@ -1430,6 +1470,17 @@ function computeStats(log: TeamGame[]) {
   const exactPressureRateAllowed = own.passAtt + sacksAllowed
     ? pressureEventsAllowed / (own.passAtt + sacksAllowed)
     : null;
+  const exactOpponentScrimmagePpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaSum || 0), 0);
+  const exactOpponentScrimmagePpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaPlays || 0), 0);
+  const exactOpponentSuccessfulScrimmagePlays = log.reduce((sum, game) => sum + (game.oppSituational?.successfulScrimmagePlays || 0), 0);
+  const exactOpponentPassPpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.passPpaSum || 0), 0);
+  const exactOpponentPassPpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.passPpaPlays || 0), 0);
+  const exactOpponentSuccessfulPassPlays = log.reduce((sum, game) => sum + (game.oppSituational?.successfulPassPlays || 0), 0);
+  const exactOpponentRushPpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.rushPpaSum || 0), 0);
+  const exactOpponentRushPpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.rushPpaPlays || 0), 0);
+  const exactOpponentSuccessfulRushPlays = log.reduce((sum, game) => sum + (game.oppSituational?.successfulRushAttempts || 0), 0);
+  const exactOpponentScrimmagePlays = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePlays || 0), 0);
+  const exactOpponentPassLikePlays = log.reduce((sum, game) => sum + (game.oppSituational?.passLikePlays || 0), 0);
   const exactOffenseRankValues: Record<string, number | null> = {
     pointsPerGame: perGameExact(pointsFor),
     yardsPerGame: perGameExact(own.totalYards),
@@ -1476,8 +1527,8 @@ function computeStats(log: TeamGame[]) {
     possessionMinutesPerGame: own.possessionSeconds / games / 60,
     possessionTime: own.possessionSeconds / games / 60,
     timeOfPossession: own.possessionSeconds / games / 60,
-    sacksAllowedPerGame: perGameExact(sacksAllowed),
-    sackRateAllowed: percentExact(sacksAllowed, own.passAtt + sacksAllowed),
+    sacksAllowedPerGame: hasReported('own', ['sacks']) ? perGameExact(sacksAllowed) : null,
+    sackRateAllowed: hasReported('own', ['sacks']) ? percentExact(sacksAllowed, own.passAtt + sacksAllowed) : null,
     qbRating: own.passAtt
       ? (8.4 * own.netPassingYards + 330 * own.passingTouchdowns + 100 * own.comp - 200 * own.interceptions) / own.passAtt
       : null,
@@ -1487,7 +1538,7 @@ function computeStats(log: TeamGame[]) {
     pressureRateAllowed: exactPressureRateAllowed == null ? null : exactPressureRateAllowed * 100,
     pressurePctAllowed: exactPressureRateAllowed == null ? null : exactPressureRateAllowed * 100,
     pressurePct: exactPressureRateAllowed == null ? null : exactPressureRateAllowed * 100,
-    qbHurriesAllowedPerGame: perGameExact(opp.qbHurries),
+    qbHurriesAllowedPerGame: hasReported('opp', ['qbHurries']) ? perGameExact(opp.qbHurries) : null,
     pressureAvoidancePct: exactPressureRateAllowed == null ? null : 100 - exactPressureRateAllowed * 100,
     driveSuccessRate: drives ? scoringDrives / drives * 100 : null,
     pointsPerDrive: drives ? offensiveDrivePoints / drives : null,
@@ -1543,7 +1594,123 @@ function computeStats(log: TeamGame[]) {
     expectedPointsGenerated: passingPpaAttempts ? passingTotalPpa : null,
   };
 
-  return { games, offense, defense, special_teams, rankValues: { offense: exactOffenseRankValues } };
+  const exactDefenseRankValues: Record<string, number | null> = {
+    pointsAllowedPerGame: perGameExact(pointsAgainst),
+    yardsAllowedPerGame: perGameExact(opp.totalYards),
+    playsFacedPerGame: perGameExact(opp.passAtt + opp.rushingAttempts),
+    yardsPerPlayAllowed: safeDiv(opp.totalYards, opp.passAtt + opp.rushingAttempts),
+    passingYardsAllowed: perGameExact(opp.netPassingYards),
+    passingYardsAllowedPerGame: perGameExact(opp.netPassingYards),
+    completionPctAllowed: percentExact(opp.comp, opp.passAtt),
+    completionPercentageAllowed: percentExact(opp.comp, opp.passAtt),
+    passingTouchdownsAllowed: hasReported('opp', ['passingTouchdowns']) ? perGameExact(opp.passingTouchdowns) : null,
+    passingTDsAllowed: hasReported('opp', ['passingTouchdowns']) ? perGameExact(opp.passingTouchdowns) : null,
+    passingTouchdownsAllowedPerGame: hasReported('opp', ['passingTouchdowns']) ? perGameExact(opp.passingTouchdowns) : null,
+    yardsPerPassAllowed: opp.passAtt ? opp.netPassingYards / opp.passAtt : null,
+    yardsPerAttemptAllowed: opp.passAtt ? opp.netPassingYards / opp.passAtt : null,
+    passYardsPerAttemptAllowed: opp.passAtt ? opp.netPassingYards / opp.passAtt : null,
+    ypaAllowed: opp.passAtt ? opp.netPassingYards / opp.passAtt : null,
+    rushingYardsAllowed: perGameExact(opp.rushingYards),
+    rushingYardsAllowedPerGame: perGameExact(opp.rushingYards),
+    yardsPerRushAllowed: opp.rushingAttempts ? opp.rushingYards / opp.rushingAttempts : null,
+    yardsPerCarryAllowed: opp.rushingAttempts ? opp.rushingYards / opp.rushingAttempts : null,
+    rushYardsPerAttemptAllowed: opp.rushingAttempts ? opp.rushingYards / opp.rushingAttempts : null,
+    ypcAllowed: opp.rushingAttempts ? opp.rushingYards / opp.rushingAttempts : null,
+    rushAttemptsFaced: perGameExact(opp.rushingAttempts),
+    rushingAttemptsFaced: perGameExact(opp.rushingAttempts),
+    turnoversForced: hasReported('opp', ['turnovers']) ? perGameExact(opp.turnovers) : null,
+    takeawayRate: hasReported('opp', ['turnovers']) ? percentExact(opp.turnovers, opp.passAtt + opp.rushingAttempts) : null,
+    interceptions: hasReported('opp', ['interceptions']) ? perGameExact(opp.interceptions) : null,
+    forcedInterceptionsPerGame: hasReported('opp', ['interceptions']) ? perGameExact(opp.interceptions) : null,
+    fumblesForced: hasReported('own', ['forcedFumbles']) ? perGameExact(own.forcedFumbles) : null,
+    forcedFumbles: hasReported('own', ['forcedFumbles']) ? perGameExact(own.forcedFumbles) : null,
+    forcedFumblesPerGame: hasReported('own', ['forcedFumbles']) ? perGameExact(own.forcedFumbles) : null,
+    tacklesForLoss: hasReported('own', ['tacklesForLoss']) ? perGameExact(own.tacklesForLoss) : null,
+    tfl: hasReported('own', ['tacklesForLoss']) ? perGameExact(own.tacklesForLoss) : null,
+    tackleForLossPct: hasReported('own', ['tacklesForLoss']) ? percentExact(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts) : null,
+    tflPct: hasReported('own', ['tacklesForLoss']) ? percentExact(own.tacklesForLoss, opp.passAtt + opp.rushingAttempts) : null,
+    qbHurriesPerGame: hasReported('own', ['qbHurries']) ? perGameExact(own.qbHurries) : null,
+    passesDeflectedPerGame: hasReported('own', ['passesDeflected']) ? perGameExact(own.passesDeflected) : null,
+    sacksPerGame: hasReported('opp', ['sacks']) ? perGameExact(defensiveSacks) : null,
+    sackRate: hasReported('opp', ['sacks']) ? percentExact(defensiveSacks, opp.passAtt + defensiveSacks) : null,
+    pressureRate: hasReported('opp', ['sacks']) && hasReported('own', ['qbHurries'])
+      ? (defensivePressureEvents / (opp.passAtt + defensiveSacks)) * 100
+      : null,
+    defensivePressureRate: hasReported('opp', ['sacks']) && hasReported('own', ['qbHurries'])
+      ? (defensivePressureEvents / (opp.passAtt + defensiveSacks)) * 100
+      : null,
+    sacksAllowedPerGame: hasReported('own', ['sacks']) ? perGameExact(sacksAllowed) : null,
+    thirdDownPctAllowed: hasReported('opp', ['thirdDown']) ? percentExact(opp.thirdConv, opp.thirdAtt) : null,
+    thirdDownConversionPctAllowed: hasReported('opp', ['thirdDown']) ? percentExact(opp.thirdConv, opp.thirdAtt) : null,
+    fourthDownPctAllowed: hasReported('opp', ['fourthDown']) ? percentExact(opp.fourthConv, opp.fourthAtt) : null,
+    fourthDownConversionPctAllowed: hasReported('opp', ['fourthDown']) ? percentExact(opp.fourthConv, opp.fourthAtt) : null,
+    firstDownsAllowedPerGame: hasReported('opp', ['firstDowns']) ? perGameExact(opp.firstDowns) : null,
+    penaltiesPerGame: hasReported('own', ['penalties']) ? perGameExact(own.pens) : null,
+    penaltyYardsPerGame: hasReported('own', ['penalties']) ? perGameExact(own.penYards) : null,
+    pointsAllowedPerDrive: defensiveDriveCoverageGames === games && defensiveDrives ? defensiveDrivePoints / defensiveDrives : null,
+    redZoneEfficiencyAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveRedZoneScores, defensiveRedZoneTrips) : null,
+    redZoneScorePctAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveRedZoneScores, defensiveRedZoneTrips) : null,
+    redZoneTdPctAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveRedZoneTouchdowns, defensiveRedZoneTrips) : null,
+    redZoneTouchdownPctAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveRedZoneTouchdowns, defensiveRedZoneTrips) : null,
+    goalToGoTdPctAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveGoalToGoTouchdowns, defensiveGoalToGoTrips) : null,
+    goalToGoTouchdownPctAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveGoalToGoTouchdowns, defensiveGoalToGoTrips) : null,
+    openingDriveScorePctAllowed: defensiveDriveCoverageGames === games ? percentExact(defensiveOpeningDriveScores, defensiveDriveCoverageGames) : null,
+    firstHalfPointsAllowed: opponentLineScoreGames === games ? firstHalfPointsAllowed / games : null,
+    secondHalfPointsAllowed: opponentLineScoreGames === games ? secondHalfPointsAllowed / games : null,
+    fourthQuarterPointsAllowed: opponentLineScoreGames === games ? fourthQuarterPointsAllowed / games : null,
+    defensiveEpaPerPlay: defensivePlayCoverageGames === games && exactOpponentScrimmagePpaPlays ? exactOpponentScrimmagePpaSum / exactOpponentScrimmagePpaPlays : null,
+    epaAllowedPerPlay: defensivePlayCoverageGames === games && exactOpponentScrimmagePpaPlays ? exactOpponentScrimmagePpaSum / exactOpponentScrimmagePpaPlays : null,
+    defensiveSuccessRate: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulScrimmagePlays, exactOpponentScrimmagePlays) : null,
+    successRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulScrimmagePlays, exactOpponentScrimmagePlays) : null,
+    passEpaAllowedPerPlay: defensivePlayCoverageGames === games && exactOpponentPassPpaPlays ? exactOpponentPassPpaSum / exactOpponentPassPpaPlays : null,
+    passEpaAllowed: defensivePlayCoverageGames === games && exactOpponentPassPpaPlays ? exactOpponentPassPpaSum / exactOpponentPassPpaPlays : null,
+    passSuccessRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulPassPlays, exactOpponentPassLikePlays) : null,
+    passingSuccessRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulPassPlays, exactOpponentPassLikePlays) : null,
+    rushEpaAllowedPerPlay: defensivePlayCoverageGames === games && exactOpponentRushPpaPlays ? exactOpponentRushPpaSum / exactOpponentRushPpaPlays : null,
+    rushEpaAllowed: defensivePlayCoverageGames === games && exactOpponentRushPpaPlays ? exactOpponentRushPpaSum / exactOpponentRushPpaPlays : null,
+    rushSuccessRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulRushPlays, defensiveRushAttempts) : null,
+    explosivePassRateAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosivePasses, defensivePassAttempts) : null,
+    explosiveRunRateAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosiveRushes, defensiveRushAttempts) : null,
+    twoMinuteDefensePpa: defensivePlayCoverageGames === games && twoMinuteDefensePpaPlays ? twoMinuteDefensePpaSum / twoMinuteDefensePpaPlays : null,
+  };
+  const defenseAggregate = {
+    pointsAllowed: pointsAgainst,
+    totalYardsAllowed: opp.totalYards,
+    passingYardsAllowed: opp.netPassingYards,
+    rushingYardsAllowed: opp.rushingYards,
+    passingAttemptsFaced: opp.passAtt,
+    completionsAllowed: opp.comp,
+    rushingAttemptsFaced: opp.rushingAttempts,
+    sacksAllowed: hasReported('own', ['sacks']) ? own.sacks : null,
+    sacksMade: hasReported('opp', ['sacks']) ? opp.sacks : null,
+    teamPassingAttempts: own.passAtt,
+    qbHurriesMade: hasReported('own', ['qbHurries']) ? own.qbHurries : null,
+    qbHurriesAllowed: hasReported('opp', ['qbHurries']) ? opp.qbHurries : null,
+    forcedFumbles: hasReported('own', ['forcedFumbles']) ? own.forcedFumbles : null,
+    tacklesForLoss: hasReported('own', ['tacklesForLoss']) ? own.tacklesForLoss : null,
+    passesDeflected: hasReported('own', ['passesDeflected']) ? own.passesDeflected : null,
+    penalties: hasReported('own', ['penalties']) ? own.pens : null,
+    penaltyYards: hasReported('own', ['penalties']) ? own.penYards : null,
+    interceptionsForced: hasReported('opp', ['interceptions']) ? opp.interceptions : null,
+    fumblesLostByOpponents: hasReported('opp', ['fumblesLost']) ? opp.fumblesLost : null,
+    turnoversForced: hasReported('opp', ['turnovers']) ? opp.turnovers : null,
+    thirdDownConversionsAllowed: hasReported('opp', ['thirdDown']) ? opp.thirdConv : null,
+    thirdDownAttemptsFaced: hasReported('opp', ['thirdDown']) ? opp.thirdAtt : null,
+    fourthDownConversionsAllowed: hasReported('opp', ['fourthDown']) ? opp.fourthConv : null,
+    fourthDownAttemptsFaced: hasReported('opp', ['fourthDown']) ? opp.fourthAtt : null,
+    redZoneTripsAllowed: defensiveDriveCoverageGames === games ? defensiveRedZoneTrips : null,
+    redZoneScoresAllowed: defensiveDriveCoverageGames === games ? defensiveRedZoneScores : null,
+    redZoneTouchdownsAllowed: defensiveDriveCoverageGames === games ? defensiveRedZoneTouchdowns : null,
+  };
+
+  return {
+    games,
+    offense,
+    defense,
+    special_teams,
+    rankValues: { offense: exactOffenseRankValues, defense: exactDefenseRankValues },
+    aggregates: { defense: defenseAggregate },
+  };
 }
 
 
@@ -1634,13 +1801,8 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     scoringOpportunities: unrounded(offense?.totalOpportunies ?? offense?.totalOpportunities),
   });
 
-  // Do not overwrite drive-derived metrics with play success rate. The previous
-  // implementation made Drive Success Rate identical to Success Rate. Use the
-  // season-advanced drive count only as a fallback when drive history was not
-  // available for the selected window.
-  if (stats.offense.pointsPerDrive == null && Number(offense?.drives) > 0) {
-    stats.offense.pointsPerDrive = round((stats.offense.pointsPerGame || 0) * stats.games / Number(offense.drives), 2);
-  }
+  // Drive-based scoring stays unavailable when /drives is missing; total team
+  // points can include defensive and special-teams scores.
   const advancedPassTotalPpa = finiteOrNull(offPass?.totalPPA ?? offPass?.totalPpa, 2);
   if (stats.offense.passPpaTotal == null && advancedPassTotalPpa != null) {
     stats.offense.passPpaTotal = advancedPassTotalPpa;
@@ -1710,13 +1872,6 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     pointsAllowedPerOpportunity: unrounded(defense?.pointsPerOpportunity),
     scoringOpportunitiesAllowed: unrounded(defense?.totalOpportunies ?? defense?.totalOpportunities),
   });
-
-  // Prefer the actual opponent-drive aggregation from /drives. Advanced season
-  // stats are only a fallback when the selected window does not have drive
-  // coverage, so a real drive-derived number is never overwritten.
-  if (stats.defense.pointsAllowedPerDrive == null && Number(defense?.drives) > 0) {
-    stats.defense.pointsAllowedPerDrive = round((stats.defense.pointsAllowedPerGame || 0) * stats.games / Number(defense.drives), 2);
-  }
 
   // The CFB panel expects the same defense alias used by the matchup table.
   // CFBD publishes this as defense.stuffRate.
@@ -1851,20 +2006,10 @@ function mergeStandardStats(stats: any, raw: Record<string, any> | undefined) {
   if (firstDowns != null) stats.offense.firstDownsPerGame = perGame(firstDowns);
   if (firstDowns != null && plays) stats.offense.firstDownRate = percent(firstDowns, plays);
 
-  const tfl = standardValue(raw, ['tacklesForLoss', 'tfl']);
-  const sacks = standardValue(raw, ['sacks']);
-  const qbHurries = standardValue(raw, ['qbHurries', 'quarterbackHurries']);
-  const forcedFumbles = standardValue(raw, ['fumblesForced', 'forcedFumbles']);
-  const passesDeflected = standardValue(raw, ['passesDeflected', 'passBreakups']);
-  if (tfl != null) { stats.defense.tacklesForLoss = perGame(tfl); stats.defense.tfl = perGame(tfl); }
-  if (sacks != null) stats.defense.sacksPerGame = perGame(sacks);
-  if (forcedFumbles != null) {
-    stats.defense.fumblesForced = perGame(forcedFumbles);
-    stats.defense.forcedFumbles = perGame(forcedFumbles);
-    stats.defense.forcedFumblesPerGame = perGame(forcedFumbles);
-  }
-  if (qbHurries != null) stats.defense.qbHurriesPerGame = perGame(qbHurries);
-  if (passesDeflected != null) stats.defense.passesDeflectedPerGame = perGame(passesDeflected);
+  // Deliberately do not supplement defensive event totals from /stats/season.
+  // It is a season summary, not a per-game sample, so it cannot prove that
+  // sacks, TFL, hurries, takeaways, or PBUs match the selected box-score game IDs.
+  // Those fields stay null if the full game-box sample does not report them.
 
   const fgPair = standardPair(raw, ['fieldGoals', 'fieldGoalsMadeFieldGoalsAttempted']);
   const fgMade = standardValue(raw, ['fieldGoalsMade', 'fgMade']) ?? fgPair?.[0] ?? null;
@@ -2372,6 +2517,9 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const homeKey = teamKey(home.team || scheduleGame.homeTeam);
         const awayKey = teamKey(away.team || scheduleGame.awayTeam);
         if (!homeKey || !awayKey) continue;
+        if (homeKey === awayKey) {
+          throw new Error(`CFBD team identity collision for game ${game.id}: ${String(home.team || scheduleGame.homeTeam)} (teamId=${home.teamId ?? 'missing'}) and ${String(away.team || scheduleGame.awayTeam)} (teamId=${away.teamId ?? 'missing'}) both normalized to ${homeKey}`);
+        }
         if (homeKey !== scheduledHomeKey || awayKey !== scheduledAwayKey) {
           throw new Error(`Team identity mismatch for CFBD game ${game.id}: schedule=${scheduledAwayKey}/${scheduledHomeKey}, box=${awayKey}/${homeKey}`);
         }
@@ -2589,13 +2737,23 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           const mergedStats = windowSize > 0
             ? stats
             : supplementMissingStats(stats, standardMap?.get(key), advancedMap?.get(key));
-          const integrity = validateCFBTeamOffense(mergedStats, {
-            team: teamNames.get(key) || cfbDisplayName(key),
+          const teamName = teamNames.get(key) || cfbDisplayName(key);
+          const gameIds = selected.map((game) => game.gameId);
+          const offenseIntegrity = validateCFBTeamOffense(mergedStats, { team: teamName, timeframe, gameIds });
+          if (!offenseIntegrity.ok) throw new Error(`CFB offense integrity failed for ${teamName} ${timeframe}: ${offenseIntegrity.errors.join('; ')}`);
+          const defenseIntegrity = validateCFBTeamDefense(mergedStats, {
+            team: teamName,
             timeframe,
-            gameIds: selected.map((game) => game.gameId),
+            gameIds,
+            totals: mergedStats.aggregates?.defense || {},
           });
-          if (!integrity.ok) throw new Error(`CFB offense integrity failed: ${integrity.errors.join('; ')}`);
-          mergedStats.integrity = integrity;
+          if (!defenseIntegrity.ok) throw new Error(`CFB defense integrity failed for ${teamName} ${timeframe}: ${defenseIntegrity.errors.join('; ')}`);
+          mergedStats.integrity = {
+            ...offenseIntegrity,
+            checks: [...offenseIntegrity.checks, ...defenseIntegrity.checks],
+            defense: defenseIntegrity,
+            unavailableDefenseMetrics: defenseIntegrity.unavailable,
+          };
           statsByTeam.set(key, mergedStats);
         }
       }
@@ -2630,12 +2788,13 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           ranks: rankPayload,
           teamsRanked: statsByTeam.size,
           rankPopulation: 'FBS teams with at least one completed game in the selected timeframe',
-          rankPolicy: 'Competition ranks use unrounded aggregates. Lower values are better for the explicit lower-is-better metrics in the cache builder; all other metrics are ranked higher-first. Volume and pace metrics are ordinal rankings only, not performance grades.',
+          rankPolicy: 'Competition ranks use unrounded aggregates. Lower values are better for explicit defensive efficiency metrics; higher values are better for turnover, disruption, and stop-rate metrics. Plays faced, attempts faced, penalties, penalty yards, and pace are ordinal context rankings, not defense grades.',
           integrity: {
             status: 'passed',
-            source: 'CFBD game box scores; aggregate and rank use the same selected game IDs',
+            source: 'CFBD game box scores plus complete drive/play coverage where required; aggregate and rank use the same selected game IDs',
             games: stats.games,
             checks: stats.integrity?.checks || [],
+            unavailableDefenseMetrics: stats.integrity?.unavailableDefenseMetrics || [],
           },
         };
         const record = {

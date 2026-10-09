@@ -107,6 +107,154 @@ export function validateCFBTeamOffense(stats, { team = 'team', timeframe = 'seas
   };
 }
 
+/** Verify defense fields against one matching, completed-game sample. */
+export function validateCFBTeamDefense(stats, {
+  team = 'team', timeframe = 'season', gameIds = null, totals = {},
+} = {}) {
+  const errors = [];
+  const defense = stats?.defense || {};
+  const offense = stats?.offense || {};
+  const games = Number(stats?.games);
+  if (!Number.isInteger(games) || games < 1) errors.push(`game count is invalid (${stats?.games ?? 'missing'})`);
+
+  if (Array.isArray(gameIds)) {
+    const ids = gameIds.map(String);
+    const unique = new Set(ids);
+    if (unique.size !== ids.length) errors.push(`duplicate game IDs (${ids.length} rows, ${unique.size} unique)`);
+    if (Number.isInteger(games) && games !== unique.size) errors.push(`game count ${games} does not match ${unique.size} unique game IDs`);
+  }
+
+  const requiredTotals = [
+    'pointsAllowed', 'totalYardsAllowed', 'passingYardsAllowed', 'rushingYardsAllowed',
+    'passingAttemptsFaced', 'completionsAllowed', 'rushingAttemptsFaced',
+  ];
+  for (const key of requiredTotals) {
+    if (!finite(totals[key])) errors.push(`required defensive source total ${key} is missing`);
+  }
+
+  const passYards = firstFinite(totals, ['passingYardsAllowed']);
+  const rushYards = firstFinite(totals, ['rushingYardsAllowed']);
+  const totalYards = firstFinite(totals, ['totalYardsAllowed']);
+  const pointsAllowed = firstFinite(totals, ['pointsAllowed']);
+  if (pointsAllowed != null) compare(firstFinite(defense, ['pointsAllowedPerGame']), pointsAllowed / games, 0.11, 'points allowed/game', errors);
+  if (passYards != null && rushYards != null && totalYards != null) {
+    compare(totalYards, passYards + rushYards, 0.01, 'passing yards allowed + rushing yards allowed = total yards allowed', errors);
+    compare(firstFinite(defense, ['yardsAllowedPerGame']), totalYards / games, 0.11, 'yards allowed/game', errors);
+    compare(firstFinite(defense, ['passingYardsAllowed', 'passingYardsAllowedPerGame']), passYards / games, 0.11, 'passing yards allowed/game', errors);
+    compare(firstFinite(defense, ['rushingYardsAllowed', 'rushingYardsAllowedPerGame']), rushYards / games, 0.11, 'rushing yards allowed/game', errors);
+  }
+
+  const passAttempts = firstFinite(totals, ['passingAttemptsFaced']);
+  const completions = firstFinite(totals, ['completionsAllowed']);
+  const rushAttempts = firstFinite(totals, ['rushingAttemptsFaced']);
+  const plays = passAttempts != null && rushAttempts != null ? passAttempts + rushAttempts : null;
+  if (plays != null) {
+    compare(firstFinite(defense, ['playsFacedPerGame']), plays / games, 0.11, 'plays faced/game', errors);
+    if (totalYards != null) compare(firstFinite(defense, ['yardsPerPlayAllowed']), totalYards / plays, 0.011, 'yards/play allowed', errors);
+  }
+  if (completions != null && passAttempts > 0) {
+    compare(firstFinite(defense, ['completionPctAllowed', 'completionPercentageAllowed']), completions / passAttempts * 100, 0.11, 'completion percentage allowed', errors);
+    if (passYards != null) compare(firstFinite(defense, ['yardsPerAttemptAllowed', 'yardsPerPassAllowed', 'passYardsPerAttemptAllowed']), passYards / passAttempts, 0.011, 'passing yards/attempt allowed', errors);
+  }
+  if (rushYards != null && rushAttempts > 0) {
+    compare(firstFinite(defense, ['yardsPerCarryAllowed', 'yardsPerRushAllowed', 'rushYardsPerAttemptAllowed']), rushYards / rushAttempts, 0.011, 'yards/carry allowed', errors);
+  }
+
+  const sacksMade = firstFinite(totals, ['sacksMade']);
+  const interceptions = firstFinite(totals, ['interceptionsForced']);
+  if (sacksMade != null && passAttempts != null) {
+    compare(firstFinite(defense, ['sacksPerGame']), sacksMade / games, 0.11, 'defensive sacks/game', errors);
+    compare(firstFinite(defense, ['sackRate']), sacksMade / (passAttempts + sacksMade) * 100, 0.11, 'defensive sack rate', errors);
+  }
+  const sacksAllowed = firstFinite(totals, ['sacksAllowed']);
+  const teamPassAttempts = firstFinite(totals, ['teamPassingAttempts']);
+  if (sacksAllowed != null && teamPassAttempts != null) {
+    compare(firstFinite(offense, ['sacksAllowedPerGame']), sacksAllowed / games, 0.11, 'sacks allowed/game', errors);
+    compare(firstFinite(offense, ['sackRateAllowed']), sacksAllowed / (teamPassAttempts + sacksAllowed) * 100, 0.11, 'sack rate allowed', errors);
+  }
+  const qbHurriesMade = firstFinite(totals, ['qbHurriesMade']);
+  if (sacksMade != null && qbHurriesMade != null && passAttempts != null) {
+    compare(firstFinite(defense, ['pressureRate', 'defensivePressureRate']), (sacksMade + qbHurriesMade) / (passAttempts + sacksMade) * 100, 0.11, 'defensive pressure rate', errors);
+  }
+  const qbHurriesAllowed = firstFinite(totals, ['qbHurriesAllowed']);
+  if (sacksAllowed != null && qbHurriesAllowed != null && teamPassAttempts != null) {
+    compare(firstFinite(offense, ['pressureRateAllowed', 'pressurePctAllowed']), (sacksAllowed + qbHurriesAllowed) / (teamPassAttempts + sacksAllowed) * 100, 0.11, 'pressure rate allowed', errors);
+  }
+  const tacklesForLoss = firstFinite(totals, ['tacklesForLoss']);
+  if (tacklesForLoss != null) {
+    compare(firstFinite(defense, ['tacklesForLoss', 'tfl']), tacklesForLoss / games, 0.11, 'tackles for loss/game', errors);
+    if (plays != null && plays > 0) compare(firstFinite(defense, ['tackleForLossPct', 'tflPct']), tacklesForLoss / plays * 100, 0.11, 'tackle for loss percentage', errors);
+  }
+  const forcedFumbles = firstFinite(totals, ['forcedFumbles']);
+  if (forcedFumbles != null) {
+    compare(firstFinite(defense, ['fumblesForced', 'forcedFumblesPerGame', 'forcedFumbles']), forcedFumbles / games, 0.11, 'forced fumbles/game', errors);
+  }
+  const penalties = firstFinite(totals, ['penalties']);
+  const penaltyYards = firstFinite(totals, ['penaltyYards']);
+  if (penalties != null) compare(firstFinite(defense, ['penaltiesPerGame']), penalties / games, 0.11, 'penalties/game', errors);
+  if (penaltyYards != null) compare(firstFinite(defense, ['penaltyYardsPerGame']), penaltyYards / games, 0.11, 'penalty yards/game', errors);
+  if (interceptions != null) {
+    compare(firstFinite(defense, ['interceptions', 'forcedInterceptionsPerGame']), interceptions / games, 0.11, 'interceptions forced/game', errors);
+  }
+
+  const thirdMade = firstFinite(totals, ['thirdDownConversionsAllowed']);
+  const thirdAttempts = firstFinite(totals, ['thirdDownAttemptsFaced']);
+  if (thirdMade != null && thirdAttempts > 0) {
+    compare(firstFinite(defense, ['thirdDownPctAllowed', 'thirdDownConversionPctAllowed']), thirdMade / thirdAttempts * 100, 0.11, 'third-down percentage allowed', errors);
+  }
+  const fourthMade = firstFinite(totals, ['fourthDownConversionsAllowed']);
+  const fourthAttempts = firstFinite(totals, ['fourthDownAttemptsFaced']);
+  if (fourthMade != null && fourthAttempts > 0) {
+    compare(firstFinite(defense, ['fourthDownPctAllowed', 'fourthDownConversionPctAllowed']), fourthMade / fourthAttempts * 100, 0.11, 'fourth-down percentage allowed', errors);
+  }
+
+  const fumblesLost = firstFinite(totals, ['fumblesLostByOpponents']);
+  const turnovers = firstFinite(totals, ['turnoversForced']);
+  const passesDeflected = firstFinite(totals, ['passesDeflected']);
+  if (passesDeflected != null) {
+    compare(firstFinite(defense, ['passesDeflectedPerGame']), passesDeflected / games, 0.11, 'passes deflected/game', errors);
+  }
+  if (interceptions != null && fumblesLost != null && turnovers != null) {
+    compare(turnovers, interceptions + fumblesLost, 0.01, 'turnovers forced = interceptions + opponent fumbles lost', errors);
+    compare(firstFinite(defense, ['turnoversForced']), turnovers / games, 0.11, 'turnovers forced/game', errors);
+  }
+
+  const rzTrips = firstFinite(totals, ['redZoneTripsAllowed']);
+  const rzScores = firstFinite(totals, ['redZoneScoresAllowed']);
+  const rzTouchdowns = firstFinite(totals, ['redZoneTouchdownsAllowed']);
+  if (rzTrips > 0 && rzScores != null) {
+    compare(firstFinite(defense, ['redZoneScorePctAllowed', 'redZoneEfficiencyAllowed']), rzScores / rzTrips * 100, 0.11, 'red-zone scoring percentage allowed', errors);
+  }
+  if (rzTrips > 0 && rzTouchdowns != null) {
+    compare(firstFinite(defense, ['redZoneTdPctAllowed', 'redZoneTouchdownPctAllowed']), rzTouchdowns / rzTrips * 100, 0.11, 'red-zone touchdown percentage allowed', errors);
+  }
+
+  return {
+    ok: errors.length === 0,
+    team,
+    timeframe,
+    games: Number.isInteger(games) ? games : null,
+    checks: [
+      'game-coverage', 'yards-splits', 'plays-faced', 'completion-rate-allowed',
+      'passing-efficiency-allowed', 'rushing-efficiency-allowed', 'defensive-sack-rate',
+      'down-conversion-rates', 'turnover-reconciliation', 'red-zone-score-and-touchdown-rates',
+    ],
+    unavailable: [
+      sacksMade == null ? 'defensive sacks and sack rate' : null,
+      qbHurriesMade == null ? 'defensive pressure rate and QB hurries/game' : null,
+      tacklesForLoss == null ? 'tackles for loss/game and TFL rate' : null,
+      forcedFumbles == null ? 'forced fumbles/game' : null,
+      passesDeflected == null ? 'passes deflected/game' : null,
+      interceptions == null ? 'interceptions forced/game' : null,
+      turnovers == null ? 'turnovers forced' : null,
+      thirdMade == null || thirdAttempts == null ? 'third-down conversion rate allowed' : null,
+      fourthMade == null || fourthAttempts == null ? 'fourth-down conversion rate allowed' : null,
+      rzTrips == null ? 'drive-based red-zone, goal-to-go, and opening-drive rates' : null,
+    ].filter(Boolean),
+    errors,
+  };
+}
+
 /** Compare the source schedule and game-box-score game-ID sets. */
 export function validateCFBGameCoverage(expectedGameIds, actualGameIds) {
   const expected = (expectedGameIds || []).map(String);
