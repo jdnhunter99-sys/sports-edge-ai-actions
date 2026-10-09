@@ -178,16 +178,24 @@ async function buildSeason(season: number, group: keyof typeof groups) {
   if (games.length && joinedOpponentCount < Math.ceil(games.length * 0.9)) {
     throw new Error(`Only ${joinedOpponentCount}/${games.length} ${season} ${group} logs joined to a schedule opponent; refusing to publish incomplete logs.`);
   }
-  return { games, sourceRows: boxRows.length, scheduleGames: scheduleByGame.size };
+  const scheduledTeams = [...new Set(scheduleRows
+    .flatMap((schedule) => [value(schedule, 'home_team'), value(schedule, 'away_team')])
+    .map(normalizeTeam)
+    .filter(Boolean))];
+  return { games, sourceRows: boxRows.length, scheduleGames: scheduleByGame.size, scheduledTeams };
 }
 
 for (const season of seasons) {
+  const seasonGamesByGroup: Record<string, Game[]> = {};
+  const scheduledTeamsByGroup: Record<string, string[]> = {};
   for (const group of Object.keys(groups)) {
     const directory = `${cacheRoot}/${season}`;
     await Deno.mkdir(directory, { recursive: true });
     const path = `${directory}/${group}.json`;
     try {
-      const { games, sourceRows, scheduleGames } = await buildSeason(season, group);
+      const { games, sourceRows, scheduleGames, scheduledTeams } = await buildSeason(season, group);
+      seasonGamesByGroup[group] = games;
+      scheduledTeamsByGroup[group] = scheduledTeams;
       const updatedAt = new Date().toISOString();
       const payload = {
         sport: 'cfb',
@@ -216,6 +224,9 @@ for (const season of seasons) {
       const existing = await Deno.stat(path).then(() => true).catch(() => false);
       if (existing) {
         console.warn(`Keeping the previous ${season} ${group} cache: ${message}`);
+        const previous = JSON.parse(await Deno.readTextFile(path));
+        seasonGamesByGroup[group] = Array.isArray(previous?.games) ? previous.games : [];
+        scheduledTeamsByGroup[group] = [...new Set(seasonGamesByGroup[group].flatMap((game) => [game.team, game.opponent]).filter(Boolean).map(normalizeTeam))];
       } else {
         await Deno.writeTextFile(path, `${JSON.stringify({
           sport: 'cfb', schemaVersion: 1, cacheVersion: 1, season,
@@ -223,9 +234,48 @@ for (const season of seasons) {
           source: 'sportsdataverse-espn-player-box-plus-cfbfastR-schedule',
           sourceRows: 0, scheduleGames: 0, gameCount: 0, joinedOpponentCount: 0, games: [],
         })}\n`);
+        seasonGamesByGroup[group] = [];
+        scheduledTeamsByGroup[group] = [];
         console.warn(`Published an empty ${season} ${group} cache because source data is not available yet.`);
       }
     }
+  }
+
+  // Detail pages request matchup history for one opponent. Publish small
+  // opponent shards so Base44 does not download and scan the full position
+  // season file on every cold request.
+  for (const [group, games] of Object.entries(seasonGamesByGroup)) {
+    const gamesByOpponent = new Map<string, { opponent: string; games: Game[] }>();
+    for (const opponent of scheduledTeamsByGroup[group] || []) {
+      const key = opponent.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (key) gamesByOpponent.set(key, { opponent, games: [] });
+    }
+    for (const game of games) {
+      if (!game.opponent) continue;
+      const opponent = normalizeTeam(game.opponent);
+      const key = opponent.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!key) continue;
+      if (!gamesByOpponent.has(key)) gamesByOpponent.set(key, { opponent, games: [] });
+      gamesByOpponent.get(key)!.games.push(game);
+    }
+
+    const opponentDirectory = `${cacheRoot}/${season}/opponents/${group}`;
+    await Deno.mkdir(opponentDirectory, { recursive: true });
+    for (const [key, value] of gamesByOpponent) {
+      const payload = {
+        sport: 'cfb',
+        schemaVersion: 1,
+        cacheVersion: 1,
+        season,
+        positionGroup: group,
+        opponent: value.opponent,
+        updatedAt: new Date().toISOString(),
+        gameCount: value.games.length,
+        games: value.games,
+      };
+      await Deno.writeTextFile(`${opponentDirectory}/${key}.json`, `${JSON.stringify(payload)}\n`);
+    }
+    console.info(`Built ${season} ${group} opponent shards: ${gamesByOpponent.size}.`);
   }
 }
 
@@ -233,6 +283,7 @@ const index = {
   sport: 'cfb',
   schemaVersion: 1,
   cacheVersion: 1,
+  opponentCacheVersion: 1,
   updatedAt: new Date().toISOString(),
   seasons: Object.fromEntries(seasons.map((season) => [String(season), {
     season,
