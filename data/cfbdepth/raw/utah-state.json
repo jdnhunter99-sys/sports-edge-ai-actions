@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "",
+  "sheetTitle": "Status Update",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "18",
+      "Col2": "15",
       "Col3": "# New:",
-      "Col4": "8",
+      "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "33",
+      "Col6": "29",
       "Col7": "Impact Avg:",
-      "Col8": "1.8",
+      "Col8": "1.9",
       "Col9": "Impact Rank:",
-      "Col10": "3",
+      "Col10": "14",
       "Col11": ""
     },
     {
@@ -177,7 +177,7 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "ILB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "5.9",
       "Col8": "0",
       "Col9": "10/8/2026",
@@ -190,7 +190,7 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "WR",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "8.9",
       "Col8": "3",
       "Col9": "10/8/2026",
@@ -203,7 +203,7 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "TE",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "8.7",
       "Col8": "3",
       "Col9": "10/8/2026",
@@ -211,40 +211,14 @@
       "Col11": "9"
     },
     {
-      "Col1": "Tyler Masdea",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "P",
-      "Col5": "TE",
-      "Col6": "TRUE",
-      "Col7": "6.8",
-      "Col8": "0",
-      "Col9": "10/8/2026",
-      "Col10": "Official report 2026-10-08: probable. Game 2026-10-09. Previous context: Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
-      "Col11": "0"
-    },
-    {
-      "Col1": "Chapman Lewis",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "S",
-      "Col6": "TRUE",
-      "Col7": "12.2",
-      "Col8": "1",
-      "Col9": "10/6/2026",
-      "Col10": "Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
-      "Col11": "43"
-    },
-    {
       "Col1": "James Jennette",
       "Col2": "",
       "Col3": "",
       "Col4": "O",
       "Col5": "OLB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "13.2",
-      "Col8": "5",
+      "Col8": "4",
       "Col9": "10/8/2026",
       "Col10": "Official report 2026-10-08: out. Game 2026-10-09. Previous context: Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
       "Col11": "8"
@@ -255,7 +229,7 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "RB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "5.5",
       "Col8": "2",
       "Col9": "10/8/2026",
@@ -263,30 +237,56 @@
       "Col11": "4"
     },
     {
-      "Col1": "John Randle Jr.",
+      "Col1": "Chapman Lewis",
       "Col2": "",
       "Col3": "",
-      "Col4": "P",
-      "Col5": "OL",
+      "Col4": "GTD",
+      "Col5": "S",
       "Col6": "FALSE",
-      "Col7": "9.6",
+      "Col7": "12.2",
       "Col8": "0",
-      "Col9": "10/7/2026",
-      "Col10": "Added to the week five availability report as 'out' ahead of the week five game against Boise State. Updated to 'questionable' for week six. Upgraded to 'probable' on update.",
-      "Col11": "0"
+      "Col9": "10/9/2026",
+      "Col10": "Official report 2026-10-09: game time decision. Game 2026-10-09. Previous context: Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
+      "Col11": "43"
     },
     {
-      "Col1": "Brycen Edwards",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "P",
-      "Col5": "ILB",
-      "Col6": "TRUE",
-      "Col7": "13.8",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "10/6/2026",
-      "Col10": "Listed 'probable' on the week six initial availability report.",
-      "Col11": "0"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,45 @@
       "Col11": ""
     },
     {
+      "Col1": "Brycen Edwards",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "ILB",
+      "Col6": "",
+      "Col7": "13.8",
+      "Col8": "0",
+      "Col9": "10/10/2026",
+      "Col10": "Cleared from the injury/status report on 10/10/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "John Randle Jr.",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "9.6",
+      "Col8": "0",
+      "Col9": "10/10/2026",
+      "Col10": "Cleared from the injury/status report on 10/10/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Tyler Masdea",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "TE",
+      "Col6": "",
+      "Col7": "6.8",
+      "Col8": "0",
+      "Col9": "10/10/2026",
+      "Col10": "Cleared from the injury/status report on 10/10/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Dakota Howell",
       "Col2": "",
       "Col3": "",
@@ -995,41 +1034,23 @@
     [
       "",
       "#00263a",
-      "Utah State",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "Utah State"
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "INJURY / STATUS UPDATE SHEET"
     ],
     [
       "#:",
-      "18",
+      "15",
       "# New:",
-      "8",
+      "0",
       "Impact:",
-      "33",
+      "29",
       "Impact Avg:",
-      "1.8",
+      "1.9",
       "Impact Rank:",
-      "3",
-      ""
+      "14"
     ],
     [
       "Player Name",
@@ -1154,7 +1175,7 @@
       "",
       "O",
       "ILB",
-      "TRUE",
+      "FALSE",
       "5.9",
       "0",
       "10/8/2026",
@@ -1167,7 +1188,7 @@
       "",
       "O",
       "WR",
-      "TRUE",
+      "FALSE",
       "8.9",
       "3",
       "10/8/2026",
@@ -1180,7 +1201,7 @@
       "",
       "O",
       "TE",
-      "TRUE",
+      "FALSE",
       "8.7",
       "3",
       "10/8/2026",
@@ -1188,40 +1209,14 @@
       "9"
     ],
     [
-      "Tyler Masdea",
-      "",
-      "",
-      "P",
-      "TE",
-      "TRUE",
-      "6.8",
-      "0",
-      "10/8/2026",
-      "Official report 2026-10-08: probable. Game 2026-10-09. Previous context: Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
-      "0"
-    ],
-    [
-      "Chapman Lewis",
-      "",
-      "",
-      "Q",
-      "S",
-      "TRUE",
-      "12.2",
-      "1",
-      "10/6/2026",
-      "Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
-      "43"
-    ],
-    [
       "James Jennette",
       "",
       "",
       "O",
       "OLB",
-      "TRUE",
+      "FALSE",
       "13.2",
-      "5",
+      "4",
       "10/8/2026",
       "Official report 2026-10-08: out. Game 2026-10-09. Previous context: Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
       "8"
@@ -1232,7 +1227,7 @@
       "",
       "O",
       "RB",
-      "TRUE",
+      "FALSE",
       "5.5",
       "2",
       "10/8/2026",
@@ -1240,29 +1235,46 @@
       "4"
     ],
     [
-      "John Randle Jr.",
+      "Chapman Lewis",
       "",
       "",
-      "P",
-      "OL",
+      "GTD",
+      "S",
       "FALSE",
-      "9.6",
+      "12.2",
       "0",
-      "10/7/2026",
-      "Added to the week five availability report as 'out' ahead of the week five game against Boise State. Updated to 'questionable' for week six. Upgraded to 'probable' on update.",
+      "10/9/2026",
+      "Official report 2026-10-09: game time decision. Game 2026-10-09. Previous context: Added to the week six initial availability report as 'questionable' ahead of the Washington State game.",
+      "43"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       "0"
     ],
     [
-      "Brycen Edwards",
       "",
       "",
-      "P",
-      "ILB",
-      "TRUE",
-      "13.8",
-      "0",
-      "10/6/2026",
-      "Listed 'probable' on the week six initial availability report.",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       "0"
     ],
     [
@@ -1273,10 +1285,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1286,10 +1295,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1299,10 +1305,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1312,10 +1315,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1325,10 +1325,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1338,10 +1335,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1351,10 +1345,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1364,10 +1355,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1377,10 +1365,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1390,10 +1375,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1403,10 +1385,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1416,10 +1395,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1429,10 +1405,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1442,10 +1415,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1455,10 +1425,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1468,10 +1435,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1481,10 +1445,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1494,10 +1455,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1507,10 +1465,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1520,10 +1475,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1533,10 +1485,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1546,10 +1495,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1559,10 +1505,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1572,10 +1515,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1585,10 +1525,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1598,10 +1535,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1611,10 +1545,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1624,10 +1555,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1637,10 +1565,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1650,10 +1575,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1663,10 +1585,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1676,10 +1595,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1689,10 +1605,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1702,10 +1615,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1715,10 +1625,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1728,10 +1635,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1741,10 +1645,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1754,10 +1655,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1767,10 +1665,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1780,10 +1675,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1793,10 +1685,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1806,10 +1695,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1819,10 +1705,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1832,10 +1715,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "0",
@@ -1845,10 +1725,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "Player Name",
@@ -1860,8 +1737,43 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes",
-      ""
+      "Update Notes"
+    ],
+    [
+      "Brycen Edwards",
+      "",
+      "",
+      "Cleared",
+      "ILB",
+      "",
+      "13.8",
+      "0",
+      "10/10/2026",
+      "Cleared from the injury/status report on 10/10/2026"
+    ],
+    [
+      "John Randle Jr.",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "9.6",
+      "0",
+      "10/10/2026",
+      "Cleared from the injury/status report on 10/10/2026"
+    ],
+    [
+      "Tyler Masdea",
+      "",
+      "",
+      "Cleared",
+      "TE",
+      "",
+      "6.8",
+      "0",
+      "10/10/2026",
+      "Cleared from the injury/status report on 10/10/2026"
     ],
     [
       "Dakota Howell",
@@ -1873,8 +1785,7 @@
       "5.9",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "John McClellan",
@@ -1886,8 +1797,7 @@
       "",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Brycen Edwards",
@@ -1899,8 +1809,7 @@
       "13.8",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Asher Cunningham",
@@ -1912,8 +1821,7 @@
       "12.6",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Tevita Tuha",
@@ -1925,8 +1833,7 @@
       "10.4",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "McCae Hillstead",
@@ -1938,8 +1845,7 @@
       "10.0",
       "0",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Asher Cunningham",
@@ -1951,8 +1857,7 @@
       "12.6",
       "1",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026",
-      ""
+      "Cleared from the injury/status report on 09/27/2026"
     ],
     [
       "Ronnie Mageo",
@@ -1964,10 +1869,9 @@
       "9.8",
       "1",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026",
-      ""
+      "Cleared from the injury/status report on 09/27/2026"
     ]
   ],
-  "count": 75,
-  "timestamp": "2026-10-09T20:04:34.786Z"
+  "count": 78,
+  "timestamp": "2026-10-11T02:02:15.038Z"
 }
