@@ -250,6 +250,14 @@ def market_quote_rows(player):
    'selection':row.get('selection'),'line':row.get('line'),'price':row.get('price'),
    'bookmaker':row.get('bookmaker'),'bookmakerTitle':row.get('bookmaker_title'),
    'lastUpdate':row.get('market_last_update') or row.get('bookmaker_last_update'),
+   'opening_line':row.get('opening_line'),
+   'opening_price':row.get('opening_price'),
+   'opening_at':row.get('opening_at'),
+   'opening_age_seconds':row.get('opening_age_seconds'),
+   'closing_line':row.get('closing_line'),
+   'closing_price':row.get('closing_price'),
+   'closing_at':row.get('closing_at'),
+   'closing_is_final':row.get('closing_is_final'),
   } for row in rows if isinstance(row,dict)]
  return output
 
@@ -279,10 +287,11 @@ def prop_quote_fields(market_quotes):
    'underOdds':under.get('price') if under else None,
    'bestOverBook':over.get('bookmakerTitle') or over.get('bookmaker') if over else None,
    'bestUnderBook':under.get('bookmakerTitle') or under.get('bookmaker') if under else None,
-   'selectedLineOdds':[row for row in group['over']+group['under']]})
- # Select the line with the most book quotes; break ties by the newest update.
- line_rows.sort(key=lambda row:(-len(row['selectedLineOdds']),str(row.get('line') or '')))
+   'oddsCount':len(group['over'])+len(group['under'])})
+ # Select the line with the most book quotes; break ties by line value.
+ line_rows.sort(key=lambda row:(-row['oddsCount'],str(row.get('line') or '')))
  selected=line_rows[0] if line_rows else None
+ selected_quotes = (by_line[selected.get('line')]['over'] + by_line[selected.get('line')]['under']) if selected else []
  over=american_best([row for row in quotes if norm(row.get('selection')) in {'over','o','yes'}])
  under=american_best([row for row in quotes if norm(row.get('selection')) in {'under','u','no'}])
  return {
@@ -291,7 +300,7 @@ def prop_quote_fields(market_quotes):
   'bestOverOdds':over.get('price') if over else None,'bestUnderOdds':under.get('price') if under else None,
   'bestOverBook':(over.get('bookmakerTitle') or over.get('bookmaker')) if over else None,
   'bestUnderBook':(under.get('bookmakerTitle') or under.get('bookmaker')) if under else None,
-  'lineOptions':line_rows,'selectedLineOdds':selected.get('selectedLineOdds',[]) if selected else [],
+  'lineOptions':line_rows,'selectedLineOdds':selected_quotes,
   'allOdds':all_odds,
  }
 
@@ -420,7 +429,11 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
    'commence_time':ev.get('commence_time'),
   })
  write_json(root/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':event_index,'players':index})
- return {'players':count,'events':len(events)}
+ quotes=[quote for player in index for market_rows in (player.get('market_quotes') or {}).values() for quote in market_rows]
+ books=sorted({str(quote.get('bookmakerTitle') or quote.get('bookmaker') or '').strip() for quote in quotes if quote.get('bookmakerTitle') or quote.get('bookmaker')})
+ opening_quotes=sum(quote.get('opening_line') is not None or quote.get('opening_price') is not None for quote in quotes)
+ print(f"{sport}: odds integrity: {len(quotes)} quote rows across {len(books)} books ({', '.join(books)}); {opening_quotes} quotes have opening history",flush=True)
+ return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),'opening_quote_rows':opening_quotes}
 
 def build_player_list(sport,screen,index,stamp,source_events=None):
  # This compact index is derived from the same PropLine response that produced
@@ -516,23 +529,18 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   if game_player is None:
    game_player={'playerId':player.get('playerId'),'name':player.get('name'),'team':entry.get('team') or player.get('team') or qualifier,
     'opponent':entry.get('opponent') or player.get('opponent'),'position':entry.get('position'),
-    'isHome':entry.get('is_home'),'markets':[],'props':[]}
+    'isHome':entry.get('is_home'),'markets':[]}
    game['players'].append(game_player)
   game_player['markets']=sorted(set(game_player['markets'])|set(PLAYER_MARKETS.get(sport,{}).get(m,m) for m in (entry.get('markets') or [])))
-  for prop in player['props']:
-   if str(prop.get('gameId') or '')!=event_id: continue
-   if not any(row.get('gameId')==prop.get('gameId') and row.get('market')==prop.get('market') for row in game_player['props']):
-    game_player['props'].append(prop)
  for game in games.values():
   game['playerCount']=len(game['players'])
-  game['propCount']=sum(len(player['props']) for player in game['players'])
+  game['propCount']=sum(len(player['markets']) for player in game['players'])
  games_list=sorted(games.values(),key=lambda game:(str(game.get('commenceTime') or ''),game.get('id') or ''))
  return {
   'ok':True, 'sport':sport, 'screen':screen, 'updated_at':stamp,
   'status':'ready' if by_key else 'empty', 'source':'PropLine',
   'player_count':len(by_key), 'prop_count':sum(len(p['props']) for p in by_key.values()),
   'game_count':len(games_list),'games':games_list,'players':list(by_key.values()),
-  'props':[prop for player in by_key.values() for prop in player['props']],
  }
 
 def publish_player_lists(root,stamp):
@@ -549,9 +557,14 @@ def publish_player_lists(root,stamp):
   for screen in screens:
    source_events=index_data.get('events') if isinstance(index_data,dict) else []
    payload=build_player_list(sport,screen,entries,stamp,source_events)
-   write_json(root/'player-lists'/sport/f'{screen}.json',payload)
+   output_path=root/'player-lists'/sport/f'{screen}.json'
+   write_json(output_path,payload)
    team_count=sum(bool(player.get('team')) for player in payload['players'])
-   print(f"Published candidate player-lists/{sport}/{screen}.json: {payload['game_count']} games / {payload['player_count']} unique PropLine players ({team_count} with team metadata) / {payload['prop_count']} player-market rows",flush=True)
+   size_bytes=output_path.stat().st_size
+   size_mb=size_bytes/(1024*1024)
+   print(f"Published candidate player-lists/{sport}/{screen}.json: {payload['game_count']} games / {payload['player_count']} unique PropLine players ({team_count} with team metadata) / {payload['prop_count']} player-market rows / {size_mb:.1f} MiB",flush=True)
+   if size_bytes >= 95*1024*1024:
+    raise ValueError(f"player-lists/{sport}/{screen}.json is {size_mb:.1f} MiB; must remain below 95 MiB to preserve GitHub's per-file size limit")
 
 def retain_previous_sport_cache(sport,out,root):
  manifest_path=out/'manifest.json'
