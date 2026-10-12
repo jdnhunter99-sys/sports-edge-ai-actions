@@ -20,6 +20,7 @@ SPORTS = {
     'nfl': 'football_nfl',
     'mlb': 'baseball_mlb',
     'wnba': 'basketball_wnba',
+    'nba': 'basketball_nba',
     'cfb': 'football_ncaaf',
 }
 PREFERRED_BOOKS = ['pinnacle', 'draftkings', 'fanduel', 'betmgm', 'caesars', 'betrivers', 'fanatics']
