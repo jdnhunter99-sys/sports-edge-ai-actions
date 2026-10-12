@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fetch PropLine bulk odds and publish per-player JSON to the private data branch."""
-import json, os, re, time, urllib.request, urllib.error, unicodedata
+import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -75,6 +75,56 @@ def player_identity(value,name,team=None):
   if raw.lower().startswith('espn:'): raw=raw.split(':',1)[1].strip()
   return 'id:'+raw.casefold()
  return 'name:'+norm(name)+'|team:'+norm(team)
+
+PLAYER_SUFFIXES={'jr','junior','sr','senior','ii','iii','iv','v','2nd','3rd'}
+def player_name_tokens(value):
+ name=str(value or '').strip()
+ # Provider feeds sometimes include a school/team qualifier in parentheses.
+ name=re.sub(r'\s*\([^)]*\)\s*$', '', name)
+ tokens=re.sub(r'[^a-z0-9]+',' ',norm(name)).split()
+ while len(tokens)>1 and tokens[-1] in PLAYER_SUFFIXES: tokens.pop()
+ return tokens
+
+def player_name_similarity(left,right):
+ a=player_name_tokens(left); b=player_name_tokens(right)
+ if not a or not b: return 0.0
+ used=set(); matched=0.0
+ for token in a:
+  options=[]
+  for i,other in enumerate(b):
+   if i in used: continue
+   if token==other: score=1.0
+   elif len(token)==1 and other.startswith(token) or len(other)==1 and token.startswith(other): score=0.72
+   elif min(len(token),len(other))>3:
+    from difflib import SequenceMatcher
+    score=SequenceMatcher(None,token,other).ratio()
+   else: score=0.0
+   options.append((score,i))
+  score,i=max(options,default=(0.0,-1))
+  minimum=0.72 if i>=0 and min(len(token),len(b[i]))==1 else 0.78
+  if i>=0 and score>=minimum:
+   used.add(i); matched+=score
+ similarity=matched/max(len(a),len(b))
+ threshold=0.82 if max(len(a),len(b))==1 else 0.66
+ return similarity if similarity>=threshold else 0.0
+
+def match_existing_player(players,name,team,player_id):
+ team_key=norm(team)
+ best=None; best_score=0.0
+ for identity,player in players.items():
+  existing_team=norm(player.get('team'))
+  if team_key and existing_team and team_key!=existing_team: continue
+  old_id=str(player.get('player_id') or '').strip()
+  new_id=str(player_id or '').strip()
+  if not team_key and not existing_team and old_id and new_id and old_id!=new_id: continue
+  score=player_name_similarity(name,player.get('player'))
+  if score>best_score:
+   best=identity; best_score=score
+ return best
+
+def player_name_quality(value):
+ tokens=player_name_tokens(value)
+ return (len(tokens),sum(len(token) for token in tokens))
 
 def cfb_name_parts(value):
  name=str(value or '').strip()
@@ -356,7 +406,7 @@ def is_home_for(team_info,event,roster_index):
 
 def build_sport(sport,events,root,stamp,key,roster_index=None):
  roster_index=roster_index or {'by_id':{},'by_name':{},'event_teams':{},'by_abbr':{}}
- index=[]; count=0
+ index=[]; count=0; board_props=[]
  for ev in events:
   if not isinstance(ev,dict) or ev.get('id') is None: continue
   eid=str(ev['id']); players={}
@@ -378,7 +428,13 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      if is_non_player(sport,raw_name): continue
      player_id=outcome.get('player_id') or outcome.get('athlete_id')
      team_info=roster_team_for(sport,outcome,raw_name,ev,roster_index)
-     identity=player_identity(player_id,name,team_info.get('team') or team_suffix)
+     player_team=team_info.get('team') or team_suffix
+     # Name + team is the stable identity in quote feeds; upstream IDs can be
+     # absent or vary between books. Fuzzy joining here keeps every book and
+     # market for an athlete together in one published file.
+     identity='name:'+' '.join(player_name_tokens(name))+'|team:'+norm(player_team)
+     if identity not in players:
+      identity=match_existing_player(players,name,player_team,player_id) or identity
      p=players.get(identity)
      if p is None:
       p={'player':name,'sport':sport,'event_id':eid,
@@ -386,9 +442,11 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
        'commence_time':ev.get('commence_time'),'fetched_at':stamp,'markets':{},
        'player_id':player_id,'team':team_info.get('team'),'team_id':team_info.get('id'),'position':team_info.get('position')}
       players[identity]=p
-     elif len(name)<len(p.get('player') or ''):
+     elif player_name_quality(name)>player_name_quality(p.get('player')):
       p['player']=name
+     if p.get('player_id') in (None,'') and player_id: p['player_id']=player_id
      if p.get('team') in (None,'') and team_info.get('team'): p['team']=team_info.get('team')
+     if p.get('team_id') in (None,'') and team_info.get('id'): p['team_id']=team_info.get('id')
      if p.get('position') in (None,'') and team_info.get('position'): p['position']=team_info.get('position')
      row={
        'bookmaker':book.get('key') or book.get('title'),
@@ -402,16 +460,29 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
       # Keep live line/price authoritative. Opening/closing fields are metadata.
       row.update(opening)
      p['markets'].setdefault(market['key'],[]).append(row)
-  for player in players.values():
+  for identity,player in players.items():
    name=player['player']
-   rel=f'{sport}/events/{slug(eid)}/players/{slug(name)}.json'
+   identity_hash=hashlib.sha256(identity.encode('utf-8')).hexdigest()[:12]
+   rel=f'Player Odds/{sport}/events/{slug(eid)}/players/{slug(name)}-{identity_hash}.json'
    write_json(root/rel,player)
    opponent=opponent_for({'id':player.get('team_id'),'team':player.get('team'),'team_name':None},ev,roster_index) if player.get('team') else None
    home_flag=is_home_for({'id':player.get('team_id'),'team':player.get('team')},ev,roster_index) if player.get('team') else None
    index.append({'player':name,'player_id':player.get('player_id'),'event_id':eid,'path':rel,'commence_time':ev.get('commence_time'),
      'home_team':ev.get('home_team'),'away_team':ev.get('away_team'),
-     'team':player.get('team'),'opponent':opponent,'position':player.get('position'),'is_home':home_flag,'markets':list(player['markets']),
-     'market_quotes':market_quote_rows(player)})
+     'team':player.get('team'),'opponent':opponent,'position':player.get('position'),'is_home':home_flag,'markets':list(player['markets'])})
+   for provider_market,quotes in market_quote_rows(player).items():
+    compact=prop_quote_fields(quotes)
+    # Every quoted price remains in Player Odds. Omit the duplicated copy of
+    # the selected line's quotes; the UI can derive it from allOdds.
+    compact.pop('selectedLineOdds',None)
+    board_props.append({
+     'player':name,'playerId':player.get('player_id'),'team':player.get('team'),
+     'opponent':opponent,'gameId':eid,'homeTeam':ev.get('home_team'),
+     'awayTeam':ev.get('away_team'),'commenceTime':ev.get('commence_time'),
+     'position':player.get('position'),'isHome':home_flag,
+     'market':PLAYER_MARKETS.get(sport,{}).get(provider_market,provider_market),
+     'rawMarket':provider_market,'source':'PropLine','projection':None,**compact,
+    })
    count+=1
  if not count:
   describe_empty_response(sport,events)
@@ -428,8 +499,14 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
    'home_team':ev.get('home_team'),'away_team':ev.get('away_team'),
    'commence_time':ev.get('commence_time'),
   })
- write_json(root/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':event_index,'players':index})
- quotes=[quote for player in index for market_rows in (player.get('market_quotes') or {}).values() for quote in market_rows]
+ write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':event_index,'players':index})
+ board_path=root/'Player Odds'/sport/'board.json'
+ write_json(board_path,{'sport':sport,'updated_at':stamp,'player_count':len(index),'props':board_props})
+ board_mb=board_path.stat().st_size/(1024*1024)
+ print(f'{sport}: Player Odds board / {len(board_props)} player-market rows / {board_mb:.1f} MiB',flush=True)
+ if board_path.stat().st_size >= 95*1024*1024:
+  raise ValueError(f'Player Odds/{sport}/board.json is {board_mb:.1f} MiB; must remain below 95 MiB to preserve GitHub\'s per-file size limit')
+ quotes=[quote for prop in board_props for quote in (prop.get('allOdds') or [])]
  books=sorted({str(quote.get('bookmakerTitle') or quote.get('bookmaker') or '').strip() for quote in quotes if quote.get('bookmakerTitle') or quote.get('bookmaker')})
  opening_quotes=sum(quote.get('opening_line') is not None or quote.get('opening_price') is not None for quote in quotes)
  print(f"{sport}: odds integrity: {len(quotes)} quote rows across {len(books)} books ({', '.join(books)}); {opening_quotes} quotes have opening history",flush=True)
@@ -492,13 +569,13 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
    prop_key=(str(entry.get('event_id') or ''),market)
    if prop_key in seen_props: continue
    seen_props.add(prop_key)
-   quote_fields=prop_quote_fields((entry.get('market_quotes') or {}).get(provider_market,[]))
    player['props'].append({
     'player':player['name'], 'playerId':player.get('playerId'), 'team':player.get('team'),
     'opponent':entry.get('opponent'), 'gameId':str(entry.get('event_id') or ''),
     'homeTeam':entry.get('home_team'),'awayTeam':entry.get('away_team'),
     'commenceTime':entry.get('commence_time'),'position':entry.get('position'),'isHome':entry.get('is_home'),
-    **quote_fields,'market':market, 'source':'PropLine', 'projection':None,
+    'eventId':str(entry.get('event_id') or ''),'market':market,
+    'oddsFile':entry.get('path'),'hasOdds':True,'source':'PropLine',
    })
  # Normalize props again after merging name variants so every row uses the
  # canonical player display name/team, including rows added before a rename.
@@ -529,7 +606,7 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   if game_player is None:
    game_player={'playerId':player.get('playerId'),'name':player.get('name'),'team':entry.get('team') or player.get('team') or qualifier,
     'opponent':entry.get('opponent') or player.get('opponent'),'position':entry.get('position'),
-    'isHome':entry.get('is_home'),'markets':[]}
+    'isHome':entry.get('is_home'),'oddsFile':entry.get('path'),'markets':[]}
    game['players'].append(game_player)
   game_player['markets']=sorted(set(game_player['markets'])|set(PLAYER_MARKETS.get(sport,{}).get(m,m) for m in (entry.get('markets') or [])))
  for game in games.values():
@@ -545,7 +622,7 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
 
 def publish_player_lists(root,stamp):
  for sport in SPORTS:
-  index_path=root/sport/'index.json'
+  index_path=root/'Player Odds'/sport/'index.json'
   try:
    index_data=json.loads(index_path.read_text(encoding='utf-8'))
   except (OSError,json.JSONDecodeError):
@@ -557,34 +634,77 @@ def publish_player_lists(root,stamp):
   for screen in screens:
    source_events=index_data.get('events') if isinstance(index_data,dict) else []
    payload=build_player_list(sport,screen,entries,stamp,source_events)
-   output_path=root/'player-lists'/sport/f'{screen}.json'
+   output_path=root/'Player Lists'/sport/f'{screen}.json'
    write_json(output_path,payload)
    team_count=sum(bool(player.get('team')) for player in payload['players'])
    size_bytes=output_path.stat().st_size
    size_mb=size_bytes/(1024*1024)
-   print(f"Published candidate player-lists/{sport}/{screen}.json: {payload['game_count']} games / {payload['player_count']} unique PropLine players ({team_count} with team metadata) / {payload['prop_count']} player-market rows / {size_mb:.1f} MiB",flush=True)
+   print(f"Published candidate Player Lists/{sport}/{screen}.json: {payload['game_count']} games / {payload['player_count']} unique PropLine players ({team_count} with team metadata) / {payload['prop_count']} player-market pointers / {size_mb:.1f} MiB",flush=True)
    if size_bytes >= 95*1024*1024:
-    raise ValueError(f"player-lists/{sport}/{screen}.json is {size_mb:.1f} MiB; must remain below 95 MiB to preserve GitHub's per-file size limit")
+    raise ValueError(f"Player Lists/{sport}/{screen}.json is {size_mb:.1f} MiB; must remain below 95 MiB to preserve GitHub's per-file size limit")
 
 def retain_previous_sport_cache(sport,out,root):
  manifest_path=out/'manifest.json'
+ current=out/'Player Odds'/sport
+ try:
+  current_index=json.loads((current/'index.json').read_text(encoding='utf-8'))
+  players=current_index.get('players')
+  if isinstance(players,list) and players:
+   import shutil
+   shutil.copytree(current,root/'Player Odds'/sport,dirs_exist_ok=True)
+   return len(players)
+ except (OSError,ValueError,TypeError,json.JSONDecodeError):
+  pass
  try:
   manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
   base=Path(str(manifest.get('base_path') or ''))
   if base.is_absolute() or '..' in base.parts: return None
-  previous=out/base/sport
+  old_root=out/base
+  previous=old_root/sport
   previous_index=json.loads((previous/'index.json').read_text(encoding='utf-8'))
   players=previous_index.get('players')
   if not isinstance(players,list) or not players: return None
-  import shutil
-  shutil.copytree(previous,root/sport,dirs_exist_ok=True)
-  return len(players)
+  migrated=[]; board_props=[]
+  for entry in players:
+   if not isinstance(entry,dict) or not entry.get('player'): continue
+   old_path=Path(str(entry.get('path') or ''))
+   if old_path.is_absolute() or '..' in old_path.parts: continue
+   source=old_root/old_path
+   try: player_data=json.loads(source.read_text(encoding='utf-8'))
+   except (OSError,ValueError,json.JSONDecodeError): continue
+   identity=player_identity(entry.get('player_id'),entry.get('player'),entry.get('team'))
+   identity_hash=hashlib.sha256(identity.encode('utf-8')).hexdigest()[:12]
+   relative=f"Player Odds/{sport}/events/{slug(entry.get('event_id'))}/players/{slug(entry.get('player'))}-{identity_hash}.json"
+   write_json(root/relative,player_data)
+   migrated_entry={key:value for key,value in entry.items() if key not in {'market_quotes','marketQuotes'}}
+   migrated_entry['path']=relative
+   migrated.append(migrated_entry)
+   quotes_by_market=entry.get('market_quotes') or entry.get('marketQuotes') or market_quote_rows(player_data)
+   for provider_market,quotes in quotes_by_market.items():
+    compact=prop_quote_fields(quotes if isinstance(quotes,list) else [])
+    compact.pop('selectedLineOdds',None)
+    board_props.append({
+     'player':entry.get('player'),'playerId':entry.get('player_id'),'team':entry.get('team'),
+     'opponent':entry.get('opponent'),'gameId':str(entry.get('event_id') or ''),
+     'homeTeam':entry.get('home_team'),'awayTeam':entry.get('away_team'),
+     'commenceTime':entry.get('commence_time'),'position':entry.get('position'),
+     'isHome':entry.get('is_home'),'market':PLAYER_MARKETS.get(sport,{}).get(provider_market,provider_market),
+     'rawMarket':provider_market,'source':'PropLine','projection':None,**compact,
+    })
+  if not migrated: return None
+  write_json(root/'Player Odds'/sport/'index.json',{
+   'sport':sport,'fetched_at':previous_index.get('fetched_at'),'events':previous_index.get('events') or [],'players':migrated,
+  })
+  write_json(root/'Player Odds'/sport/'board.json',{
+   'sport':sport,'updated_at':previous_index.get('fetched_at'),'player_count':len(migrated),'props':board_props,
+  })
+  return len(migrated)
  except (OSError,ValueError,TypeError,json.JSONDecodeError):
   return None
 
 def main():
  key=os.environ['PROPLINE_API_KEY'].strip(); out=Path(os.environ['PROPLINE_OUTPUT_DIR'])
- stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'); root=out/'versions'/stamp
+ stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'); root=out/f'.propline-stage-{stamp}'
  root.mkdir(parents=True,exist_ok=False)
  stats={}
  try:
@@ -598,7 +718,8 @@ def main():
      stats[sport]={'players':retained,'events':len(events),'reused_previous_cache':True,'fetched_players':0}
      print(f'cfb: upstream returned no player outcomes; retained previous cache ({retained} players)',flush=True)
     else:
-     write_json(root/sport/'index.json',{'sport':sport,'fetched_at':stamp,'players':[],'warning':'Upstream returned no described player outcomes; see workflow diagnostics.'})
+     write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':[],'players':[],'warning':'Upstream returned no described player outcomes; see workflow diagnostics.'})
+     write_json(root/'Player Odds'/sport/'board.json',{'sport':sport,'updated_at':stamp,'player_count':0,'props':[]})
      stats[sport]={'players':0,'events':len(events),'empty_response':True}
      print('cfb: no prior player-prop cache exists; publishing an empty CFB index while other sports continue',flush=True)
    print(f'{sport}: {stats[sport]}',flush=True)
@@ -607,11 +728,18 @@ def main():
   import shutil
   shutil.rmtree(root,ignore_errors=True)
   raise
- manifest={'version':stamp,'updated_at':datetime.now(timezone.utc).isoformat(),
-   'sports':stats,'base_path':f'versions/{stamp}'}
- write_json(out/'manifest.json',manifest)
  import shutil
- versions=sorted(p for p in (out/'versions').iterdir() if p.is_dir())
- for old in versions[:-2]: shutil.rmtree(old)
+ for directory in ('Player Odds','Player Lists'):
+  target=out/directory
+  if target.exists(): shutil.rmtree(target)
+  os.replace(root/directory,target)
+ manifest={'version':stamp,'updated_at':datetime.now(timezone.utc).isoformat(),
+   'sports':stats,'player_odds_path':'Player Odds','player_lists_path':'Player Lists'}
+ write_json(out/'manifest.json',manifest)
+ shutil.rmtree(root,ignore_errors=True)
+ # Remove the old generation layout after the new directories and manifest
+ # have been fully built. Other data-branch workflows do not use these paths.
+ for legacy in (out/'versions',out/'player-lists'):
+  if legacy.exists(): shutil.rmtree(legacy)
  print('Published',stamp,flush=True)
 if __name__=='__main__':main()
