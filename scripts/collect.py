@@ -16,6 +16,10 @@ BASE = 'https://prod-website.pikkit.app'
 MARKETS = {'moneyline': ('home', 'away'), 'spread': ('home', 'away'), 'total': ('over', 'under')}
 
 
+class NoCommunityData(Exception):
+    pass
+
+
 def fetch_json(path, token, attempts=4):
     url = BASE + path
     req = Request(url, headers={'Authorization': token, 'Accept': 'application/json', 'Origin': 'https://app.pikkit.com', 'User-Agent': 'SportsEdgeAI-consensus-collector/1.0'})
@@ -72,7 +76,7 @@ def discover(date, token, request=fetch_json):
 
 def extract(event_id, listing, payload, timestamp):
     if not isinstance(payload, dict) or not isinstance(payload.get('community'), dict):
-        raise ValueError('Missing community data')
+        raise NoCommunityData('Missing community data')
     info = payload.get('info') or listing
     evt_info = info.get('event_info') or listing.get('event_info') or {}
     community = payload['community']
@@ -121,12 +125,12 @@ def extract(event_id, listing, payload, timestamp):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--start-date', default=os.getenv('START_DATE', dt.datetime.now(dt.timezone.utc).date().isoformat()))
-    parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '5')))
+    parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '1')))
     parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAFB,MLB,NFL')
     parser.add_argument('--out', default='data')
     parser.add_argument('--delay', type=float, default=float(os.getenv('REQUEST_DELAY_SECONDS', '0.7')))
-    parser.add_argument('--event-delay-min', type=float, default=float(os.getenv('EVENT_DELAY_MIN_SECONDS', '7')))
-    parser.add_argument('--event-delay-max', type=float, default=float(os.getenv('EVENT_DELAY_MAX_SECONDS', '15')))
+    parser.add_argument('--event-delay-min', type=float, default=float(os.getenv('EVENT_DELAY_MIN_SECONDS', '5')))
+    parser.add_argument('--event-delay-max', type=float, default=float(os.getenv('EVENT_DELAY_MAX_SECONDS', '10')))
     args = parser.parse_args()
     token = os.getenv('PIKKIT_AUTH_TOKEN', '').strip()
     if not token:
@@ -156,6 +160,10 @@ def main():
             result = extract(event_id, listing, payload, captured_at)
             by_league.setdefault(result['league'] or 'UNKNOWN', []).append(result)
             print(f'[{count}/{len(selected)}] OK {event_id}', flush=True)
+        except NoCommunityData as exc:
+            listing_league = ((listing.get('event_info') or {}).get('league') or {}).get('short') or 'UNKNOWN'
+            by_league.setdefault(listing_league, [])
+            print(f'[{count}/{len(selected)}] SKIP {event_id}: {exc}', flush=True)
         except Exception as exc:
             errors.append({'event_id': event_id, 'reason': str(exc)})
             print(f'[{count}/{len(selected)}] ERROR {event_id}: {exc}', file=sys.stderr, flush=True)

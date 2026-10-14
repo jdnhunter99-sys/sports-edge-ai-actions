@@ -8,7 +8,7 @@ on:
         required: false
       days:
         description: 'Days to check, starting today (1-14)'
-        default: '5'
+        default: '1'
         required: false
   schedule:
     - cron: '7,37 * * * *'
@@ -23,9 +23,9 @@ jobs:
     timeout-minutes: 55
     env:
       LEAGUES: ${{ inputs.leagues || 'all' }}
-      DAYS_AHEAD: ${{ inputs.days || '5' }}
-      EVENT_DELAY_MIN_SECONDS: '7'
-      EVENT_DELAY_MAX_SECONDS: '15'
+      DAYS_AHEAD: ${{ inputs.days || '1' }}
+      EVENT_DELAY_MIN_SECONDS: '5'
+      EVENT_DELAY_MAX_SECONDS: '10'
       PUBLISH_BRANCH: 'Pikkit-Consensus'
     steps:
       - uses: actions/checkout@v6
