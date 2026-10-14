@@ -14,7 +14,7 @@ import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateC
 const CFBD_BASE = 'https://api.collegefootballdata.com';
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 27;
+const CACHE_VERSION = 28;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
@@ -944,6 +944,8 @@ function computeStats(log: TeamGame[]) {
   let defensiveDriveCoverageGames = 0;
   let defensivePlayCoverageGames = 0;
   let defensiveDrives = 0;
+  let defensiveScoringDrives = 0;
+  let defensiveTouchdownDrives = 0;
   let defensiveDrivePoints = 0;
   let defensiveRedZoneTrips = 0;
   let defensiveRedZoneScores = 0;
@@ -951,6 +953,9 @@ function computeStats(log: TeamGame[]) {
   let defensiveGoalToGoTrips = 0;
   let defensiveGoalToGoTouchdowns = 0;
   let defensiveOpeningDriveScores = 0;
+  let defensiveOpeningDriveTouchdowns = 0;
+  let defensiveThirdDownPpaSum = 0;
+  let defensiveThirdDownPpaPlays = 0;
   let defensiveExplosivePasses = 0;
   let defensivePassAttempts = 0;
   let defensiveExplosiveRushes = 0;
@@ -1080,6 +1085,8 @@ function computeStats(log: TeamGame[]) {
     if (oppSit?.driveCoverage) {
       defensiveDriveCoverageGames += 1;
       defensiveDrives += oppSit.drives;
+      defensiveScoringDrives += oppSit.scoringDrives;
+      defensiveTouchdownDrives += oppSit.touchdownDrives;
       defensiveDrivePoints += oppSit.offensiveDrivePoints;
       defensiveRedZoneTrips += oppSit.redZoneTrips;
       defensiveRedZoneScores += oppSit.redZoneScores;
@@ -1087,9 +1094,12 @@ function computeStats(log: TeamGame[]) {
       defensiveGoalToGoTrips += oppSit.goalToGoTrips;
       defensiveGoalToGoTouchdowns += oppSit.goalToGoTouchdowns;
       defensiveOpeningDriveScores += oppSit.openingDriveScore;
+      defensiveOpeningDriveTouchdowns += oppSit.openingDriveTouchdown;
     }
     if (oppSit?.playCoverage) {
       defensivePlayCoverageGames += 1;
+      defensiveThirdDownPpaSum += oppSit.thirdDownPpaSum;
+      defensiveThirdDownPpaPlays += oppSit.thirdDownPpaPlays;
       defensiveExplosivePasses += oppSit.explosivePasses;
       defensivePassAttempts += oppSit.passAttempts;
       defensiveExplosiveRushes += oppSit.explosiveRushes;
@@ -1170,6 +1180,7 @@ function computeStats(log: TeamGame[]) {
     rushingYards: perGame(own.rushingYards),
     rushingYardsPerGame: perGame(own.rushingYards),
     turnovers: perGame(own.turnovers),
+    interceptionsPerGame: perGame(own.interceptions),
     turnoverRate: pct(own.turnovers, own.passAtt + own.rushingAttempts),
     firstDownsPerGame: perGame(own.firstDowns),
     firstDownRate: pct(own.firstDowns, own.passAtt + own.rushingAttempts),
@@ -1219,6 +1230,10 @@ function computeStats(log: TeamGame[]) {
     pressurePct: pressureRateAllowed,
     qbHurriesAllowedPerGame: hasReported('opp', ['qbHurries']) ? perGame(opp.qbHurries) : null,
     pressureAvoidancePct: pressureRateAllowed == null ? null : round(100 - pressureRateAllowed, 1),
+    tacklesForLossAllowedPerGame: hasReported('opp', ['tacklesForLoss']) ? perGame(opp.tacklesForLoss) : null,
+    tacklesForLossAllowedPct: hasReported('opp', ['tacklesForLoss'])
+      ? pct(opp.tacklesForLoss, own.passAtt + own.rushingAttempts)
+      : null,
   };
 
   // Only expose situational metrics when the underlying drive/play feed had coverage.
@@ -1292,12 +1307,16 @@ function computeStats(log: TeamGame[]) {
     yardsAllowedPerGame: perGame(opp.totalYards),
     playsFacedPerGame: perGame(opp.passAtt + opp.rushingAttempts),
     yardsPerPlayAllowed: round(safeDiv(opp.totalYards, opp.passAtt + opp.rushingAttempts), 2),
+    firstDownRateAllowed: hasReported('opp', ['firstDowns']) ? pct(opp.firstDowns, opp.passAtt + opp.rushingAttempts) : null,
     passingYardsAllowed: perGame(opp.netPassingYards),
     passingYardsAllowedPerGame: perGame(opp.netPassingYards),
+    passingAttemptsFacedPerGame: perGame(opp.passAtt),
+    completionsAllowedPerGame: perGame(opp.comp),
     rushingYardsAllowed: perGame(opp.rushingYards),
     rushingYardsAllowedPerGame: perGame(opp.rushingYards),
     turnoversForced: hasReported('opp', ['turnovers']) ? perGame(opp.turnovers) : null,
     takeawayRate: hasReported('opp', ['turnovers']) ? pct(opp.turnovers, opp.passAtt + opp.rushingAttempts) : null,
+    interceptionRateForced: hasReported('opp', ['interceptions']) ? pct(opp.interceptions, opp.passAtt) : null,
     interceptions: hasReported('opp', ['interceptions']) ? perGame(opp.interceptions) : null,
     forcedInterceptionsPerGame: hasReported('opp', ['interceptions']) ? perGame(opp.interceptions) : null,
     fumblesForced: hasReported('own', ['forcedFumbles']) ? perGame(own.forcedFumbles) : null,
@@ -1317,16 +1336,21 @@ function computeStats(log: TeamGame[]) {
     passingTouchdownsAllowed: hasReported('opp', ['passingTouchdowns']) ? perGame(opp.passingTouchdowns) : null,
     passingTDsAllowed: hasReported('opp', ['passingTouchdowns']) ? perGame(opp.passingTouchdowns) : null,
     passingTouchdownsAllowedPerGame: hasReported('opp', ['passingTouchdowns']) ? perGame(opp.passingTouchdowns) : null,
+    rushingTouchdownsAllowedPerGame: hasReported('opp', ['rushingTouchdowns']) ? perGame(opp.rushingTouchdowns) : null,
     yardsPerPassAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
     yardsPerAttemptAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
     passYardsPerAttemptAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
     ypaAllowed: round(safeDiv(opp.netPassingYards, opp.passAtt), 2),
+    netYardsPerAttemptAllowed: hasReported('opp', ['sacks'])
+      ? round(safeDiv(opp.netPassingYards, opp.passAtt + defensiveSacks), 2)
+      : null,
     yardsPerRushAllowed: round(safeDiv(opp.rushingYards, opp.rushingAttempts), 2),
     yardsPerCarryAllowed: round(safeDiv(opp.rushingYards, opp.rushingAttempts), 2),
     rushYardsPerAttemptAllowed: round(safeDiv(opp.rushingYards, opp.rushingAttempts), 2),
     ypcAllowed: round(safeDiv(opp.rushingYards, opp.rushingAttempts), 2),
     rushAttemptsFaced: perGame(opp.rushingAttempts),
     rushingAttemptsFaced: perGame(opp.rushingAttempts),
+    fourthDownAttemptsFacedPerGame: hasReported('opp', ['fourthDown']) ? perGame(opp.fourthAtt) : null,
     sacksPerGame: hasReported('opp', ['sacks']) ? perGame(defensiveSacks) : null,
     sackRate: hasReported('opp', ['sacks']) ? pct(defensiveSacks, opp.passAtt + defensiveSacks) : null,
     pressureRate: defensivePressureRate,
@@ -1337,8 +1361,20 @@ function computeStats(log: TeamGame[]) {
     penaltyYardsPerGame: hasReported('own', ['penalties']) ? perGame(own.penYards) : null,
   };
 
+  defense.qbRatingAllowed = opp.passAtt
+    ? round((8.4 * opp.netPassingYards + 330 * opp.passingTouchdowns + 100 * opp.comp - 200 * opp.interceptions) / opp.passAtt, 1)
+    : null;
+  defense.passPpaTotalAllowed = opponentPassingAirYardsAttempts > 0 ? round(opponentPassingTotalPpa, 2) : null;
+  defense.totalPassPpaAllowed = defense.passPpaTotalAllowed;
+  defense.pressureAvoidancePct = defensivePressureRate == null ? null : round(100 - defensivePressureRate, 1);
+  defense.timeOnFieldPerGame = round(Math.max(0, 60 - n(offense.possessionMinutesPerGame, 0)), 1);
+
   if (defensiveDriveCoverageGames === games) {
     defense.pointsAllowedPerDrive = defensiveDrives ? round(defensiveDrivePoints / defensiveDrives, 2) : null;
+    defense.driveSuccessRateAllowed = pct(defensiveScoringDrives, defensiveDrives);
+    defense.scoringDriveRateAllowed = defense.driveSuccessRateAllowed;
+    defense.touchdownsPerDriveAllowed = defensiveDrives ? round(defensiveTouchdownDrives / defensiveDrives, 2) : null;
+    defense.redZoneTripsAllowedPerGame = round(defensiveRedZoneTrips / games, 1);
     defense.redZoneEfficiencyAllowed = pct(defensiveRedZoneScores, defensiveRedZoneTrips);
     defense.redZoneScorePctAllowed = defense.redZoneEfficiencyAllowed;
     defense.redZoneTdPctAllowed = pct(defensiveRedZoneTouchdowns, defensiveRedZoneTrips);
@@ -1347,6 +1383,23 @@ function computeStats(log: TeamGame[]) {
     defense.goalToGoTouchdownPctAllowed = defense.goalToGoTdPctAllowed;
     defense.openingDriveScorePctAllowed = pct(defensiveOpeningDriveScores, defensiveDriveCoverageGames);
     defense.openingDriveScoringPctAllowed = defense.openingDriveScorePctAllowed;
+    defense.openingDriveTdPctAllowed = pct(defensiveOpeningDriveTouchdowns, defensiveDriveCoverageGames);
+    defense.openingDriveTouchdownPctAllowed = defense.openingDriveTdPctAllowed;
+    defense.goalToGoSuccessRateAllowed = pct(
+      log.reduce((sum, game) => sum + (game.oppSituational?.goalToGoSuccesses || 0), 0),
+      log.reduce((sum, game) => sum + (game.oppSituational?.goalToGoPlays || 0), 0),
+    );
+    defense.secondsPerPlayAllowed = log.reduce((sum, game) => sum + (game.oppSituational?.drivePlays || 0), 0)
+      ? round(
+        log.reduce((sum, game) => sum + (game.oppSituational?.driveElapsedSeconds || 0), 0) /
+          log.reduce((sum, game) => sum + (game.oppSituational?.drivePlays || 0), 0),
+        1,
+      )
+      : null;
+    defense.earlyDownPassRateAllowed = pct(
+      log.reduce((sum, game) => sum + (game.oppSituational?.earlyDownPassPlays || 0), 0),
+      log.reduce((sum, game) => sum + (game.oppSituational?.earlyDownScrimmagePlays || 0), 0),
+    );
   }
   if (defensivePlayCoverageGames === games) {
     const opponentScrimmagePpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaSum || 0), 0);
@@ -1383,6 +1436,9 @@ function computeStats(log: TeamGame[]) {
     defense.twoMinuteDefensePpa = twoMinuteDefensePpaPlays ? round(twoMinuteDefensePpaSum / twoMinuteDefensePpaPlays, 3) : null;
     defense.twoMinuteDefenseEpa = defense.twoMinuteDefensePpa;
     defense.twoMinuteEpaAllowed = defense.twoMinuteDefensePpa;
+    defense.thirdDownPpaAllowed = defensiveThirdDownPpaPlays
+      ? round(defensiveThirdDownPpaSum / defensiveThirdDownPpaPlays, 3)
+      : null;
   }
   if (opponentLineScoreGames === games) {
     defense.firstHalfPointsAllowed = round(firstHalfPointsAllowed / opponentLineScoreGames, 1);
@@ -1516,6 +1572,7 @@ function computeStats(log: TeamGame[]) {
     passingTouchdownsPerGame: perGameExact(own.passingTouchdowns),
     passingTDsPerGame: perGameExact(own.passingTouchdowns),
     passingTouchdowns: perGameExact(own.passingTouchdowns),
+    interceptionsPerGame: perGameExact(own.interceptions),
     interceptionRate: percentExact(own.interceptions, own.passAtt),
     intRate: percentExact(own.interceptions, own.passAtt),
     rushAttemptsPerGame: perGameExact(own.rushingAttempts),
@@ -1838,7 +1895,12 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     rushingSuccessRateAllowed: asPct(defRush?.successRate),
     stuffRate: asPct(defense?.stuffRate),
     defStuffRate: asPct(defense?.stuffRate),
+    powerSuccessRateAllowed: asPct(defense?.powerSuccess),
     adjustedLineYardsAllowed: finiteOrNull(defense?.lineYards, 2),
+    secondLevelYardsAllowed: finiteOrNull(defense?.secondLevelYards, 2),
+    openFieldYardsAllowed: finiteOrNull(defense?.openFieldYards, 2),
+    passRateAllowed: asPct(defPass?.rate),
+    rushRateAllowed: asPct(defRush?.rate),
     explosivenessAllowed: finiteOrNull(defense?.explosiveness),
     rushingExplosivenessAllowed: finiteOrNull(defRush?.explosiveness),
     passingExplosivenessAllowed: finiteOrNull(defPass?.explosiveness),
@@ -1866,7 +1928,12 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     rushingSuccessRateAllowed: unroundedPct(defRush?.successRate),
     stuffRate: unroundedPct(defense?.stuffRate),
     defStuffRate: unroundedPct(defense?.stuffRate),
+    powerSuccessRateAllowed: unroundedPct(defense?.powerSuccess),
     adjustedLineYardsAllowed: unrounded(defense?.lineYards),
+    secondLevelYardsAllowed: unrounded(defense?.secondLevelYards),
+    openFieldYardsAllowed: unrounded(defense?.openFieldYards),
+    passRateAllowed: unroundedPct(defPass?.rate),
+    rushRateAllowed: unroundedPct(defRush?.rate),
     explosivenessAllowed: unrounded(defense?.explosiveness),
     rushingExplosivenessAllowed: unrounded(defRush?.explosiveness),
     passingExplosivenessAllowed: unrounded(defPass?.explosiveness),
@@ -2410,6 +2477,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     let boxSource: any = !force ? await readSourceCache(base44, boxSourceKey, sourceMaxAgeMs) : null;
     let completedWeeks: number[] = [];
     let logs = new Map<string, TeamGame[]>();
+    let opponentsByTeam = new Map<string, string[]>();
     let teamNames = new Map<string, string>();
     let allTeamKeys: string[] = [];
     let completedGameCount = 0;
@@ -2420,6 +2488,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     if (boxSource?.logs && Array.isArray(boxSource?.completedWeeks)) {
       completedWeeks = boxSource.completedWeeks.map((week: any) => n(week, 0)).filter((week: number) => week > 0);
       logs = new Map(Object.entries(boxSource.logs || {}) as Array<[string, TeamGame[]]>);
+      opponentsByTeam = new Map<string, string[]>(Object.entries(boxSource.opponentsByTeam || {})
+        .map(([key, values]: [string, any]) => [key, Array.isArray(values) ? values.map(String) : []] as [string, string[]]));
       teamNames = new Map(Object.entries(boxSource.teamNames || {}) as Array<[string, string]>);
       allTeamKeys = Array.isArray(boxSource.allTeamKeys) ? boxSource.allTeamKeys : [...logs.keys()].sort();
       completedGameCount = n(boxSource.completedGameCount, 0);
@@ -2450,6 +2520,20 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       }
       const completed = [...completedById.values()];
       if (!completed.length) throw new Error(`No completed FBS games returned by CFBD for ${season}`);
+      const opponentSets = new Map<string, Set<string>>();
+      for (const game of completed) {
+        const homeName = String(game?.homeTeam || '').trim();
+        const awayName = String(game?.awayTeam || '').trim();
+        const homeKey = teamKey(homeName);
+        const awayKey = teamKey(awayName);
+        if (!homeKey || !awayKey) continue;
+        if (!opponentSets.has(homeKey)) opponentSets.set(homeKey, new Set());
+        if (!opponentSets.has(awayKey)) opponentSets.set(awayKey, new Set());
+        opponentSets.get(homeKey)!.add(awayName);
+        opponentSets.get(awayKey)!.add(homeName);
+      }
+      opponentsByTeam = new Map<string, string[]>([...opponentSets]
+        .map(([key, values]) => [key, [...values]] as [string, string[]]));
       // The FBS schedule can contain FCS opponents and may omit a side's
       // classification. Use CFBD's season-specific FBS directory as the
       // authoritative team set so FCS rows cannot crowd real FBS teams out.
@@ -2617,6 +2701,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         completedGameCount,
         boxGameCount,
         allTeamKeys,
+        opponentsByTeam: Object.fromEntries(opponentsByTeam),
         coverageDiscrepancies: boxCoverageDiscrepancies,
         sourceDiscrepancies: integrityDiscrepancies.slice(),
         teamNames: Object.fromEntries(teamNames),
@@ -2845,6 +2930,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           season,
           timeframe,
           games: stats.games,
+          opponents: opponentsByTeam.get(key) || [],
+          opponentCount: (opponentsByTeam.get(key) || []).length,
           metricDefinitions: METRIC_DEFINITIONS,
           stats: {
             offense: stats.offense,
