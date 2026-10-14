@@ -14,7 +14,11 @@ from urllib.error import HTTPError, URLError
 
 BASE = 'https://prod-website.pikkit.app'
 MARKETS = {'moneyline': ('home', 'away'), 'spread': ('home', 'away'), 'total': ('over', 'under')}
-SPORT_DAY_WINDOWS = {'MLB': 1, 'NBA': 1, 'WNBA': 1, 'NFL': 7, 'NCAAFB': 7}
+SPORT_DAY_WINDOWS = {'MLB': 1, 'NBA': 1, 'WNBA': 1}
+FOOTBALL_LEAGUES = ('NFL', 'NCAAFB')
+DEFAULT_LEAGUES = ('MLB', 'NCAAFB', 'NBA', 'NFL', 'WNBA')
+# Browser-confirmed 2026-10-14 week selectors. Both advance once every seven days.
+WEEK_ANCHORS = {'NFL': (dt.date(2026, 10, 14), 6), 'NCAAFB': (dt.date(2026, 10, 14), 7)}
 
 
 class NoCommunityData(Exception):
@@ -43,36 +47,71 @@ def fetch_json(path, token, attempts=4):
     raise RuntimeError('Request failed')
 
 
-def discover(date, token, request=fetch_json):
-    offset = 0
-    seen_offsets = set()
+def resolve_week(league, date, override=None):
+    if override is not None:
+        if override < 1 or override > 25:
+            raise ValueError(f'{league} week must be between 1 and 25')
+        return override
+    anchor_date, anchor_week = WEEK_ANCHORS[league]
+    week = anchor_week + (date - anchor_date).days // 7
+    if not 1 <= week <= 25:
+        raise ValueError(f'Cannot infer {league} week {week} from {date}; set --{league.lower()}-week or corresponding environment variable')
+    return week
+
+
+def discover_league(league, date_selector, token, utc_offset=-5, request=fetch_json):
+    """Discover the schedule from the sport's league page.
+
+    NFL/NCAAFB selectors are week numbers; other leagues use YYYY-MM-DD.
+    The browser-confirmed endpoints return a flat array containing 'date' and
+    'event' items. An explicit pagination token, if supplied, is followed.
+    """
+    from urllib.parse import urlencode
     events = {}
+    seen_offsets = set()
+    offset = 0
     pages = 0
     while True:
         if offset in seen_offsets or pages >= 30:
-            raise RuntimeError(f'Pagination loop or excessive pages for {date}: offset={offset}')
+            raise RuntimeError(f'{league} pagination loop/limit at {offset}')
         seen_offsets.add(offset)
+        path = '/league/events?' + urlencode({
+            'league': league.lower(), 'date': date_selector,
+            'offset': offset, 'utc_hour_offset': utc_offset,
+        })
+        response = request(path, token)
         pages += 1
-        response = request(f'/events/all?query_date={date}&league_offset={offset}', token)
-        if not isinstance(response, dict) or not isinstance(response.get('leagues'), list):
-            raise RuntimeError(f'Malformed event listing for {date} offset {offset}')
-        for group in response['leagues']:
-            if not isinstance(group, list):
-                raise RuntimeError('Malformed league group')
-            for item in group:
-                if not isinstance(item, dict) or item.get('type') != 'event':
-                    continue
-                event = item.get('value') or {}
-                event_id = event.get('_id')
-                if event_id:
-                    events[event_id] = event
-        nxt = response.get('league_offset')
-        if nxt is None:
+        if isinstance(response, list):
+            items = response
+            next_offset = None
+        elif isinstance(response, dict) and isinstance(response.get('events'), list):
+            items = response['events']
+            next_offset = response.get('next_offset', response.get('nextOffset'))
+            if next_offset is None and response.get('has_more') is True:
+                raise RuntimeError(f'{league} indicates further pages but has no next offset')
+        else:
+            raise RuntimeError(f'Unexpected {league} schedule response ({type(response).__name__})')
+        for item in items:
+            if not isinstance(item, dict) or item.get('type') != 'event':
+                continue
+            event = item.get('value')
+            if not isinstance(event, dict) or not event.get('_id'):
+                continue
+            reported = str(((event.get('event_info') or {}).get('league') or {}).get('short') or '').upper()
+            if reported and reported != league:
+                raise RuntimeError(f'{league} schedule contains {reported} event')
+            events[event['_id']] = event
+        if next_offset is None:
             break
-        if not isinstance(nxt, int) or isinstance(nxt, bool) or nxt <= offset:
-            raise RuntimeError(f'Invalid pagination offset {nxt!r} after {offset}')
-        offset = nxt
+        if not isinstance(next_offset, int) or isinstance(next_offset, bool) or next_offset <= offset:
+            raise RuntimeError(f'{league} invalid next offset {next_offset!r}')
+        offset = next_offset
     return events, pages
+
+
+# Keep the previous function name as a compatibility alias for scripts importing it.
+def discover_football(league, week, token, utc_offset=-5, request=fetch_json):
+    return discover_league(league, week, token, utc_offset, request)
 
 
 def extract(event_id, listing, payload, timestamp):
@@ -127,9 +166,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--start-date', default=os.getenv('START_DATE', dt.datetime.now(dt.timezone.utc).date().isoformat()))
     parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '7')),
-                        help='Maximum date window; per-sport limits are 1 day for MLB/NBA/WNBA and 7 days for NFL/NCAAFB (default: 7)')
+                        help='Date window for non-football leagues; football uses its selected week')
     parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAFB,MLB,NFL')
     parser.add_argument('--out', default='data')
+    parser.add_argument('--nfl-week', type=int, default=int(os.environ['NFL_WEEK']) if os.environ.get('NFL_WEEK') else None)
+    parser.add_argument('--ncaafb-week', type=int, default=int(os.environ['NCAAFB_WEEK']) if os.environ.get('NCAAFB_WEEK') else None)
+    parser.add_argument('--utc-offset', type=int, default=int(os.getenv('PIKKIT_UTC_OFFSET', '-5')))
     parser.add_argument('--delay', type=float, default=float(os.getenv('REQUEST_DELAY_SECONDS', '0.7')))
     parser.add_argument('--event-delay-min', type=float, default=float(os.getenv('EVENT_DELAY_MIN_SECONDS', '5')))
     parser.add_argument('--event-delay-max', type=float, default=float(os.getenv('EVENT_DELAY_MAX_SECONDS', '10')))
@@ -146,25 +188,24 @@ def main():
     }
     captured_at = dt.datetime.now(dt.timezone.utc).isoformat()
     all_events = {}
-    requested_leagues = set(SPORT_DAY_WINDOWS) if leagues_filter is None else leagues_filter
-    scan_days = max(
-        (min(args.days, SPORT_DAY_WINDOWS.get(league, args.days)) for league in requested_leagues),
-        default=args.days,
-    )
-    for k in range(scan_days):
-        date = (start + dt.timedelta(days=k)).isoformat()
-        events, pages = discover(date, token)
-        retained = 0
-        for event_id, event in events.items():
-            league = str(((event.get('event_info') or {}).get('league') or {}).get('short') or '').upper()
-            if league not in requested_leagues:
-                continue
-            sport_days = min(args.days, SPORT_DAY_WINDOWS.get(league, args.days))
-            if k < sport_days:
-                all_events[event_id] = event
-                retained += 1
-        print(f'{date}: {len(events)} discovered, {retained} selected across {pages} listing pages', flush=True)
-        time.sleep(args.delay)
+    requested_leagues = set(DEFAULT_LEAGUES) if leagues_filter is None else leagues_filter
+    for league in sorted(requested_leagues):
+        if league in FOOTBALL_LEAGUES:
+            override = args.nfl_week if league == 'NFL' else args.ncaafb_week
+            selector = resolve_week(league, start, override)
+            selectors = [selector]
+        else:
+            scan_days = min(args.days, SPORT_DAY_WINDOWS.get(league, args.days))
+            selectors = [(start + dt.timedelta(days=i)).isoformat() for i in range(scan_days)]
+        discovered = 0
+        for selector in selectors:
+            events, pages = discover_league(league, selector, token, args.utc_offset)
+            discovered += len(events)
+            all_events.update(events)
+            print(f'{league} selector={selector}: {len(events)} games over {pages} league page(s)', flush=True)
+            time.sleep(args.delay)
+        if discovered == 0:
+            print(f'{league}: no events for requested schedule; leaving previous feed untouched', flush=True)
     selected = all_events
     if not selected:
         print('No events discovered for selected leagues; not overwriting feeds', file=sys.stderr)
