@@ -10,6 +10,7 @@ import sys
 import time
 from pathlib import Path
 from urllib.request import Request, urlopen
+from urllib.parse import urlencode
 from urllib.error import HTTPError, URLError
 
 BASE = 'https://prod-website.pikkit.app'
@@ -74,6 +75,73 @@ def discover(date, token, request=fetch_json):
     return events, pages
 
 
+
+LEAGUE_PAGE_CODES = {'MLB': 'mlb', 'NCAAFB': 'ncaafb', 'NBA': 'nba', 'NFL': 'nfl', 'WNBA': 'wnba'}
+
+
+def _find_events_in_league_response(obj):
+    """Support flat /events lists and grouped/card-style listings without guessing IDs."""
+    found = {}
+    def walk(value):
+        if isinstance(value, list):
+            for child in value:
+                walk(child)
+        elif isinstance(value, dict):
+            # Common card wrapper: {type: 'event', value: {...}}
+            candidate = value.get('value') if value.get('type') == 'event' else value
+            if isinstance(candidate, dict) and candidate.get('_id') and isinstance(candidate.get('event_info'), dict):
+                info = candidate['event_info']
+                if isinstance(info.get('home'), dict) and isinstance(info.get('away'), dict):
+                    found[candidate['_id']] = candidate
+                    return
+            # Other API variants: a card wraps its event as event={...}
+            for key, child in value.items():
+                if key not in ('odds', 'payload', 'popular_prop_markets', 'filters'):
+                    walk(child)
+    walk(obj)
+    return found
+
+
+def discover_league(league, date, token, request=fetch_json, utc_offset=-5):
+    """Discover the league's schedule (e.g. NFL full week), not today's mixed feed."""
+    code = LEAGUE_PAGE_CODES[league]
+    offset = 0
+    visited = set()
+    events = {}
+    pages = 0
+    while True:
+        if offset in visited or pages >= 30:
+            raise RuntimeError(f'League pagination loop: {league} offset={offset}')
+        visited.add(offset)
+        params = urlencode({'league': code, 'date': date, 'offset': offset,
+                            'utc_hour_offset': utc_offset})
+        response = request(f'/events?{params}', token)
+        if not isinstance(response, (dict, list)):
+            raise RuntimeError(f'Unexpected league response: {league}, page {pages + 1}')
+        page_events = _find_events_in_league_response(response)
+        # Treat unexpected empty initial response as a configuration error, not a successful empty feed.
+        if pages == 0 and not page_events:
+            raise RuntimeError(f'No event records found for {league}; inspect league endpoint response shape')
+        events.update(page_events)
+        pages += 1
+        if not isinstance(response, dict):
+            break
+        nxt = response.get('next_offset', response.get('offset'))
+        if nxt is None:
+            break
+        if isinstance(nxt, bool) or not isinstance(nxt, int) or nxt <= offset:
+            # A response may echo the requested offset, meaning no cursor was provided.
+            if nxt == offset:
+                break
+            raise RuntimeError(f'Invalid {league} offset {nxt!r}')
+        offset = nxt
+    # Prevent cross-league leakage if wrapper data includes unrelated games.
+    filtered = {eid: e for eid, e in events.items()
+                if ((e.get('event_info') or {}).get('league') or {}).get('short', '').upper() == league}
+    if not filtered:
+        raise RuntimeError(f'{league} league response contained no matching league events')
+    return filtered, pages
+
 def extract(event_id, listing, payload, timestamp):
     if not isinstance(payload, dict) or not isinstance(payload.get('community'), dict):
         raise NoCommunityData('Missing community data')
@@ -128,6 +196,7 @@ def main():
     parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '1')))
     parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAFB,MLB,NFL')
     parser.add_argument('--out', default='data')
+    parser.add_argument('--utc-hour-offset', type=int, default=int(os.getenv('UTC_HOUR_OFFSET', '-5')))
     parser.add_argument('--delay', type=float, default=float(os.getenv('REQUEST_DELAY_SECONDS', '0.7')))
     parser.add_argument('--event-delay-min', type=float, default=float(os.getenv('EVENT_DELAY_MIN_SECONDS', '5')))
     parser.add_argument('--event-delay-max', type=float, default=float(os.getenv('EVENT_DELAY_MAX_SECONDS', '10')))
@@ -136,19 +205,39 @@ def main():
     if not token:
         print('Missing PIKKIT_AUTH_TOKEN environment variable', file=sys.stderr)
         return 2
+    if not -12 <= args.utc_hour_offset <= 14:
+        parser.error('--utc-hour-offset must be between -12 and 14')
     if not 1 <= args.days <= 14 or args.delay < 0 or args.event_delay_min < 0 or args.event_delay_max < args.event_delay_min:
         parser.error('--days must be 1–14; delays must be nonnegative and event-delay-max must be at least event-delay-min')
     start = dt.date.fromisoformat(args.start_date)
     leagues_filter = None if args.leagues.lower() == 'all' else {v.strip().upper() for v in args.leagues.split(',') if v.strip()}
     captured_at = dt.datetime.now(dt.timezone.utc).isoformat()
     all_events = {}
-    for k in range(args.days):
-        date = (start + dt.timedelta(days=k)).isoformat()
-        events, pages = discover(date, token)
+    if leagues_filter is None:
+        league_targets = set(LEAGUE_PAGE_CODES)
+        daily_targets = set()
+    else:
+        league_targets = set(LEAGUE_PAGE_CODES) & leagues_filter
+        daily_targets = leagues_filter - set(LEAGUE_PAGE_CODES)
+    # The frontend's five leagues use their Pikkit league schedules. Keep the
+    # daily listing endpoint only for explicitly requested, non-frontend leagues.
+    if daily_targets:
+        for k in range(args.days):
+            date = (start + dt.timedelta(days=k)).isoformat()
+            events, pages = discover(date, token)
+            for event_id, event in events.items():
+                lg = (((event.get('event_info') or {}).get('league') or {}).get('short') or '').upper()
+                if lg in daily_targets:
+                    all_events[event_id] = event
+            print(f'{date}: daily endpoint: {len(events)} discovered, {len(all_events)} applicable so far', flush=True)
+            time.sleep(args.delay)
+    for lg in sorted(league_targets):
+        events, pages = discover_league(lg, start.isoformat(), token,
+                                        utc_offset=args.utc_hour_offset)
         all_events.update(events)
-        print(f'{date}: {len(events)} events across {pages} listing pages', flush=True)
+        print(f'{lg}: league schedule: {len(events)} events across {pages} pages', flush=True)
         time.sleep(args.delay)
-    selected = {event_id: e for event_id, e in all_events.items() if leagues_filter is None or (e.get('event_info', {}).get('league', {}).get('short') or '').upper() in leagues_filter}
+    selected = all_events
     if not selected:
         print('No events discovered for selected leagues; not overwriting feeds', file=sys.stderr)
         return 1
@@ -164,6 +253,12 @@ def main():
             listing_league = ((listing.get('event_info') or {}).get('league') or {}).get('short') or 'UNKNOWN'
             by_league.setdefault(listing_league, [])
             print(f'[{count}/{len(selected)}] SKIP {event_id}: {exc}', flush=True)
+        except RuntimeError as exc:
+            if 'Authentication/access denied' in str(exc):
+                print(f'Access denied; stopping immediately: {exc}', file=sys.stderr, flush=True)
+                return 1
+            errors.append({'event_id': event_id, 'reason': str(exc)})
+            print(f'[{count}/{len(selected)}] ERROR {event_id}: {exc}', file=sys.stderr, flush=True)
         except Exception as exc:
             errors.append({'event_id': event_id, 'reason': str(exc)})
             print(f'[{count}/{len(selected)}] ERROR {event_id}: {exc}', file=sys.stderr, flush=True)
