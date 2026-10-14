@@ -20,7 +20,17 @@ does not delete source branches.
 - `CFBD_API_KEY` for the CFB team-stats publisher
 - `SHARP_API_KEY` for NCAAF SharpOdds
 - `PROPLINE_API_KEY` for both PropLine publishers
+- `PIKKIT_AUTH_TOKEN` for the authenticated Pikkit HTTP consensus collector
 - `PINNACLE_GUEST_API_KEY`, `NOVIG_CLIENT_ID`, `NOVIG_CLIENT_SECRET`, and `REBET_API_KEY` when configured for SharpOdds
 
 Set Actions' workflow permission to read and write repository contents. Base44
 continues to dispatch these workflows, including scheduled triggers.
+
+## Pikkit community consensus
+
+The **Pikkit Consensus HTTP Publisher** workflow reads authenticated community
+consensus endpoints and writes complete per-league snapshots to `data/*.json`.
+It runs twice hourly and defaults to all leagues across the next five UTC dates;
+use the manual workflow inputs to limit leagues or dates. This is Pikkit
+community betting data, not sportsbook-wide handle. See
+[`pikkit-consensus/README.md`](pikkit-consensus/README.md) for setup and limits.
