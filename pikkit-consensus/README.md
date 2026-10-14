@@ -7,7 +7,7 @@
 2. Add GitHub Actions secret `PIKKIT_AUTH_TOKEN` containing a fresh authorization header value. Do not commit it, publish it, or share it in chat.
 3. In Settings → Actions → General, enable **Read and write permissions** for workflows.
 4. Actions → **Pikkit Consensus HTTP Publisher** → **Run workflow**. For the first test choose `NCAAFB` and `2` days; after confirming the feed, choose the desired leagues and date window.
-5. Successful runs commit `data/<league>.json` (e.g., `data/ncaafb.json`) at the repository root; all timestamps are UTC. Cron runs at minute 7 and 37 of each hour (GitHub scheduling can be delayed).
+5. Successful runs publish `data/<league>.json` (e.g., `data/ncaafb.json`) to the `Pikkit-Consensus` branch; all timestamps are UTC. Cron runs at minute 7 and 37 of each hour (GitHub scheduling can be delayed).
 
 ## What is collected
 - `/events/all?query_date=YYYY-MM-DD&league_offset=<cursor>`, following the returned `league_offset` until missing; event IDs deduplicated across the chosen dates.

@@ -26,6 +26,7 @@ jobs:
       DAYS_AHEAD: ${{ inputs.days || '5' }}
       EVENT_DELAY_MIN_SECONDS: '7'
       EVENT_DELAY_MAX_SECONDS: '15'
+      PUBLISH_BRANCH: 'Pikkit-Consensus'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
@@ -34,19 +35,27 @@ jobs:
       - name: Collect consensus
         env:
           PIKKIT_AUTH_TOKEN: ${{ secrets.PIKKIT_AUTH_TOKEN }}
-        run: python3 scripts/collect.py
+        run: python3 scripts/collect.py --out /tmp/pikkit-consensus-data
       - name: Publish JSON feeds
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git fetch origin "refs/heads/$PUBLISH_BRANCH:refs/remotes/origin/$PUBLISH_BRANCH"; then
+            git checkout -B "$PUBLISH_BRANCH" "origin/$PUBLISH_BRANCH"
+          else
+            git checkout --orphan "$PUBLISH_BRANCH"
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p data
+          cp /tmp/pikkit-consensus-data/*.json data/
           git add data/*.json
           if ! git diff --staged --quiet; then
             git commit -m 'Refresh Pikkit community consensus'
-            git push
+            git push origin "HEAD:$PUBLISH_BRANCH"
           fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: pikkit-consensus-json
-          path: data/*.json
+          path: /tmp/pikkit-consensus-data/*.json
           if-no-files-found: warn
