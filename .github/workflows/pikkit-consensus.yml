@@ -46,9 +46,47 @@ jobs:
             git checkout --orphan "$PUBLISH_BRANCH"
             git rm -rf . >/dev/null 2>&1 || true
           fi
-          mkdir -p data
-          cp /tmp/pikkit-consensus-data/*.json data/
-          git add data/*.json
+          python3 - <<'PY'
+          import json, re, shutil
+          from pathlib import Path
+          source = Path('/tmp/pikkit-consensus-data')
+          destination = Path('data')
+          indexes = sorted(source.glob('*.json'))
+          if not indexes:
+              raise SystemExit('Collector produced no sport indexes')
+          for index in indexes:
+              doc = json.loads(index.read_text())
+              league = doc.get('league')
+              if not isinstance(league, str) or not re.fullmatch(r'[A-Za-z0-9_-]+', league):
+                  raise SystemExit(f'Invalid league in {index}')
+              slug = league.lower()
+              if index.name != f'{slug}.json' or doc.get('complete') is not True or not isinstance(doc.get('events'), list):
+                  raise SystemExit(f'Invalid sport index: {index}')
+              incoming = []
+              expected_names = set()
+              for event in doc['events']:
+                  event_id = event.get('event_id')
+                  if not isinstance(event_id, str) or not re.fullmatch(r'[A-Za-z0-9_-]+', event_id):
+                      raise SystemExit(f'Invalid event ID in {index}')
+                  filename = f'{event_id}.json'
+                  rel_path = f'events/{slug}/{filename}'
+                  if event.get('detail_path') != rel_path or filename in expected_names:
+                      raise SystemExit(f'Invalid or duplicate detail_path for {event_id}')
+                  detail_source = source / rel_path
+                  detail = json.loads(detail_source.read_text())
+                  if detail.get('complete') is not True or detail.get('event_id') != event_id:
+                      raise SystemExit(f'Invalid event detail file: {detail_source}')
+                  incoming.append((detail_source, filename))
+                  expected_names.add(filename)
+              target_events = destination / 'events' / slug
+              target_events.mkdir(parents=True, exist_ok=True)
+              for existing in target_events.glob('*.json'):
+                  if existing.name not in expected_names:
+                      existing.unlink()
+              for detail_source, filename in incoming:
+                  shutil.copy2(detail_source, target_events / filename)
+              shutil.copy2(index, destination / index.name)
+          git add -A data/
           if ! git diff --staged --quiet; then
             git commit -m 'Refresh Pikkit community consensus'
             git push origin "HEAD:$PUBLISH_BRANCH"
@@ -57,5 +95,7 @@ jobs:
         if: always()
         with:
           name: pikkit-consensus-json
-          path: /tmp/pikkit-consensus-data/*.json
+          path: |
+            /tmp/pikkit-consensus-data/*.json
+            /tmp/pikkit-consensus-data/events/**/*.json
           if-no-files-found: warn

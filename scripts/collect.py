@@ -5,6 +5,7 @@ import datetime as dt
 import json
 import os
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -169,12 +170,37 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     for lg, games in by_league.items():
         games.sort(key=lambda e: (e['start_time'] or '', e['event_id']))
-        doc = {'source': 'pikkit-community', 'generated_at': captured_at, 'complete': True, 'league': lg, 'events_count': len(games), 'events': games}
-        target = out_dir / (lg.lower() + '.json')
+        league_slug = lg.lower()
+        if not re.fullmatch(r'[a-z0-9_-]+', league_slug):
+            raise ValueError(f'Unsafe league code for output path: {lg!r}')
+        event_index = []
+        for game in games:
+            event_id = str(game['event_id'])
+            if not re.fullmatch(r'[A-Za-z0-9_-]+', event_id):
+                raise ValueError(f'Unsafe event ID for output path: {event_id!r}')
+            detail_path = f'events/{league_slug}/{event_id}.json'
+            detail = {**game, 'generated_at': captured_at, 'complete': True}
+            target = out_dir / detail_path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            tmp = target.with_suffix('.json.tmp')
+            tmp.write_text(json.dumps(detail, separators=(',', ':'), ensure_ascii=False) + '\n')
+            tmp.replace(target)
+            event_index.append({
+                key: game.get(key) for key in (
+                    'event_id', 'league', 'start_time', 'status', 'home', 'away',
+                    'name', 'source', 'captured_at'
+                )
+            } | {'detail_path': detail_path})
+        index_doc = {
+            'source': 'pikkit-community', 'generated_at': captured_at,
+            'complete': True, 'league': lg, 'events_count': len(games),
+            'events': event_index
+        }
+        target = out_dir / f'{league_slug}.json'
         tmp = target.with_suffix('.json.tmp')
-        tmp.write_text(json.dumps(doc, separators=(',', ':'), ensure_ascii=False) + '\n')
+        tmp.write_text(json.dumps(index_doc, separators=(',', ':'), ensure_ascii=False) + '\n')
         tmp.replace(target)
-        print(f'Wrote {target}: {len(games)} events')
+        print(f'Wrote {target}: index for {len(games)} events and {len(games)} event files')
     return 0
 
 if __name__ == '__main__':
