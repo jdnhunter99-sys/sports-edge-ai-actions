@@ -10,8 +10,6 @@ on:
         description: 'Days to check, starting today (1-14)'
         default: '1'
         required: false
-  schedule:
-    - cron: '7,37 * * * *'
 permissions:
   contents: write
 concurrency:

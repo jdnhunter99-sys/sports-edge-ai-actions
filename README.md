@@ -23,14 +23,15 @@ does not delete source branches.
 - `PIKKIT_AUTH_TOKEN` for the authenticated Pikkit HTTP consensus collector
 - `PINNACLE_GUEST_API_KEY`, `NOVIG_CLIENT_ID`, `NOVIG_CLIENT_SECRET`, and `REBET_API_KEY` when configured for SharpOdds
 
-Set Actions' workflow permission to read and write repository contents. Base44
-continues to dispatch these workflows, including scheduled triggers.
+Set Actions' workflow permission to read and write repository contents. The
+Base44 Pikkit workflow dispatches this action hourly; the action itself has no
+GitHub cron schedule.
 
 ## Pikkit community consensus
 
 The **Pikkit Consensus HTTP Publisher** workflow reads authenticated community
 consensus endpoints and writes complete per-league snapshots to `data/*.json`.
-It runs twice hourly and defaults to all leagues across the next five UTC dates;
-use the manual workflow inputs to limit leagues or dates. This is Pikkit
+The Base44 trigger requests MLB, NCAAFB, NBA, NFL, and WNBA for one UTC date per
+run. Manual workflow inputs remain available for diagnostics. This is Pikkit
 community betting data, not sportsbook-wide handle. See
 [`pikkit-consensus/README.md`](pikkit-consensus/README.md) for setup and limits.
