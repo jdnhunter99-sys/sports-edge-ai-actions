@@ -7,8 +7,8 @@ on:
         default: 'all'
         required: false
       days:
-        description: 'Days to check, starting today (1-14)'
-        default: '1'
+        description: 'Maximum date window: MLB/NBA/WNBA use 1 day; NFL/NCAAFB use up to 7 days'
+        default: '7'
         required: false
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 55
     env:
       LEAGUES: ${{ inputs.leagues || 'all' }}
-      DAYS_AHEAD: ${{ inputs.days || '1' }}
+      DAYS_AHEAD: ${{ inputs.days || '7' }}
       EVENT_DELAY_MIN_SECONDS: '5'
       EVENT_DELAY_MAX_SECONDS: '10'
       PUBLISH_BRANCH: 'Pikkit-Consensus'
