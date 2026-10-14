@@ -84,6 +84,7 @@ jobs:
               for detail_source, filename in incoming:
                   shutil.copy2(detail_source, target_events / filename)
               shutil.copy2(index, destination / index.name)
+          PY
           git add -A data/
           if ! git diff --staged --quiet; then
             git commit -m 'Refresh Pikkit community consensus'
