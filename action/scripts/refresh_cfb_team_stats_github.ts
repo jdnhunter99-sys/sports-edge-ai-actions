@@ -59,13 +59,13 @@ function matchesFilter(row: TeamRecord, filter: TeamRecord = {}) {
 const statsEntity = {
   filter: async (filter: TeamRecord = {}) => [...teamRows.values()].filter((row) => matchesFilter(row, filter)),
   create: async (row: TeamRecord) => {
-    const saved = { ...row, id: row.id || `cfb-stats-${++syntheticId}` };
+    const saved: TeamRecord = { ...row, id: row.id || `cfb-stats-${++syntheticId}` };
     teamRows.set(String(saved.cache_key), saved);
     return saved;
   },
   update: async (id: string, row: TeamRecord) => {
     const existing = [...teamRows.values()].find((item) => String(item.id) === String(id));
-    const saved = { ...existing, ...row, id: String(id) };
+    const saved: TeamRecord = { ...existing, ...row, id: String(id) };
     teamRows.set(String(saved.cache_key), saved);
     return saved;
   },

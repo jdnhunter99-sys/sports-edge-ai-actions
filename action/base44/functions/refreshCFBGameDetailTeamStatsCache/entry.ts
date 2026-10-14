@@ -967,6 +967,8 @@ function computeStats(log: TeamGame[]) {
   let twoMinuteDefensePpaPlays = 0;
   let opponentPassingAirYardsAttempts = 0;
   let opponentPassingTotalAirYards = 0;
+  let opponentPassingTotalPpa = 0;
+  let opponentPassingPpaAttempts = 0;
   let specialTeamsCoverageGames = 0;
   let stFieldGoalAttempts = 0;
   let stFieldGoalsMade = 0;
@@ -1115,6 +1117,8 @@ function computeStats(log: TeamGame[]) {
     if (oppPassing) {
       opponentPassingAirYardsAttempts += oppPassing.airYardsAttempts;
       opponentPassingTotalAirYards += oppPassing.totalAirYards;
+      opponentPassingTotalPpa += oppPassing.totalPpa;
+      opponentPassingPpaAttempts += oppPassing.ppaAttempts;
     }
 
     const st = game.specialTeams;
@@ -1364,7 +1368,7 @@ function computeStats(log: TeamGame[]) {
   defense.qbRatingAllowed = opp.passAtt
     ? round((8.4 * opp.netPassingYards + 330 * opp.passingTouchdowns + 100 * opp.comp - 200 * opp.interceptions) / opp.passAtt, 1)
     : null;
-  defense.passPpaTotalAllowed = opponentPassingAirYardsAttempts > 0 ? round(opponentPassingTotalPpa, 2) : null;
+  defense.passPpaTotalAllowed = opponentPassingPpaAttempts > 0 ? round(opponentPassingTotalPpa, 2) : null;
   defense.totalPassPpaAllowed = defense.passPpaTotalAllowed;
   defense.pressureAvoidancePct = defensivePressureRate == null ? null : round(100 - defensivePressureRate, 1);
   defense.timeOnFieldPerGame = round(Math.max(0, 60 - n(offense.possessionMinutesPerGame, 0)), 1);
