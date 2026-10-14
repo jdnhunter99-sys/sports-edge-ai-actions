@@ -124,13 +124,15 @@ def main():
     parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAFB,MLB,NFL')
     parser.add_argument('--out', default='data')
     parser.add_argument('--delay', type=float, default=float(os.getenv('REQUEST_DELAY_SECONDS', '0.7')))
+    parser.add_argument('--event-delay-min', type=float, default=float(os.getenv('EVENT_DELAY_MIN_SECONDS', '7')))
+    parser.add_argument('--event-delay-max', type=float, default=float(os.getenv('EVENT_DELAY_MAX_SECONDS', '15')))
     args = parser.parse_args()
     token = os.getenv('PIKKIT_AUTH_TOKEN', '').strip()
     if not token:
         print('Missing PIKKIT_AUTH_TOKEN environment variable', file=sys.stderr)
         return 2
-    if not 1 <= args.days <= 14 or args.delay < 0:
-        parser.error('--days must be 1–14 and --delay must be nonnegative')
+    if not 1 <= args.days <= 14 or args.delay < 0 or args.event_delay_min < 0 or args.event_delay_max < args.event_delay_min:
+        parser.error('--days must be 1–14; delays must be nonnegative and event-delay-max must be at least event-delay-min')
     start = dt.date.fromisoformat(args.start_date)
     leagues_filter = None if args.leagues.lower() == 'all' else {v.strip().upper() for v in args.leagues.split(',') if v.strip()}
     captured_at = dt.datetime.now(dt.timezone.utc).isoformat()
@@ -156,7 +158,10 @@ def main():
         except Exception as exc:
             errors.append({'event_id': event_id, 'reason': str(exc)})
             print(f'[{count}/{len(selected)}] ERROR {event_id}: {exc}', file=sys.stderr, flush=True)
-        time.sleep(args.delay)
+        if count < len(selected):
+            delay = random.uniform(args.event_delay_min, args.event_delay_max)
+            print(f'Waiting {delay:.1f}s before the next event scrape', flush=True)
+            time.sleep(delay)
     if errors:
         print(f'{len(errors)} event failures; refusing to publish incomplete files. First errors: {json.dumps(errors[:8])}', file=sys.stderr)
         return 1

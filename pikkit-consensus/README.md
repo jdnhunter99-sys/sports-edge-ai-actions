@@ -12,6 +12,7 @@
 ## What is collected
 - `/events/all?query_date=YYYY-MM-DD&league_offset=<cursor>`, following the returned `league_offset` until missing; event IDs deduplicated across the chosen dates.
 - `/event/foryou/<id>` per event; parses `community.breakdowns` for moneyline, spread, and total.
+- Waits a random 7–15 seconds between event detail scrapes to reduce rate limiting. The delay is applied only between events, not after the final event.
 - Each market has home/away or over/under with **bet_pct and money_pct in 0–100 percent units**, bet counts, dollar handles and labels. Additional fields include home/away teams, game UTC time, source, total event wagering and picks.
 - Events from the next five **UTC** dates by default; use inputs to adjust. A selected game with no splits is treated as an error, so a zero-data event cannot silently create false values.
 

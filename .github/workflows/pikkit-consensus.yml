@@ -24,6 +24,8 @@ jobs:
     env:
       LEAGUES: ${{ inputs.leagues || 'all' }}
       DAYS_AHEAD: ${{ inputs.days || '5' }}
+      EVENT_DELAY_MIN_SECONDS: '7'
+      EVENT_DELAY_MAX_SECONDS: '15'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
