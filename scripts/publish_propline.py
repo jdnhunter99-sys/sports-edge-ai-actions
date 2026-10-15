@@ -222,7 +222,7 @@ def espn_roster_index(sport,events,cache_root):
     for athlete in athletes:
      pid=str(athlete.get('id') or '').strip(); name=athlete.get('displayName') or athlete.get('fullName') or athlete.get('name')
      pos=athlete.get('position')
-     info={**team_data,'position':pos.get('abbreviation') if isinstance(pos,dict) else pos}
+     info={**team_data,'name':str(name or '').strip(),'position':pos.get('abbreviation') if isinstance(pos,dict) else pos}
      if pid: by_id[pid]=info
      if name: by_name[norm(name)].append(info)
  by_abbr={norm(team.get('abbreviation')):{'id':str(team.get('id')),'team':team.get('abbreviation'),'team_name':team.get('displayName') or team.get('name')} for team in unique.values() if team.get('abbreviation')}
@@ -230,17 +230,25 @@ def espn_roster_index(sport,events,cache_root):
 
 def roster_team_for(sport,outcome,name,event,roster_index):
  direct=outcome.get('team') or outcome.get('team_abbr') or outcome.get('team_abbreviation')
+ raw_id=str(outcome.get('player_id') or outcome.get('athlete_id') or '').strip()
+ pid=raw_id.split(':',1)[1] if raw_id.lower().startswith('espn:') else raw_id
+ candidate=roster_index.get('by_id',{}).get(pid)
+ allowed={str(team.get('id')) for team in roster_index.get('event_teams',{}).get(str(event.get('id') or ''),[])}
+ direct_team=roster_index.get('by_abbr',{}).get(norm(direct),{}) if direct else {}
+ # ESPN IDs carry the canonical athlete identity. Use that name/team/position
+ # when the ID belongs to this event and any provider team code agrees.
+ if candidate and (not allowed or str(candidate.get('id')) in allowed):
+  direct_team_id=str(direct_team.get('id') or '')
+  candidate_team_id=str(candidate.get('id') or '')
+  if not direct or not direct_team_id or direct_team_id==candidate_team_id:
+   return candidate
  if direct:
-  known=roster_index.get('by_abbr',{}).get(norm(direct),{})
+  known=direct_team or {}
   return {**known,'team':direct,'position':outcome.get('position')}
  clean,suffix=cfb_name_parts(name) if sport=='cfb' else (name,None)
  if suffix and sport=='cfb':
   return {**roster_index.get('by_abbr',{}).get(norm(suffix),{}),'team':roster_index.get('by_abbr',{}).get(norm(suffix),{}).get('team') or suffix,'position':outcome.get('position')}
  if sport not in ESPN_LEAGUES or not roster_index: return {'team':None,'position':outcome.get('position')}
- raw_id=str(outcome.get('player_id') or outcome.get('athlete_id') or '').strip()
- pid=raw_id.split(':',1)[1] if raw_id.lower().startswith('espn:') else raw_id
- candidate=roster_index.get('by_id',{}).get(pid)
- allowed={str(team.get('id')) for team in roster_index.get('event_teams',{}).get(str(event.get('id') or ''),[])}
  if candidate and (not allowed or str(candidate.get('id')) in allowed): return candidate
  name_key=norm(clean)
  candidates=[row for row in roster_index.get('by_name',{}).get(name_key,[]) if not allowed or str(row.get('id')) in allowed]
@@ -428,6 +436,7 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      if is_non_player(sport,raw_name): continue
      player_id=outcome.get('player_id') or outcome.get('athlete_id')
      team_info=roster_team_for(sport,outcome,raw_name,ev,roster_index)
+     name=team_info.get('name') or name
      player_team=team_info.get('team') or team_suffix
      # Name + team is the stable identity in quote feeds; upstream IDs can be
      # absent or vary between books. Fuzzy joining here keeps every book and
