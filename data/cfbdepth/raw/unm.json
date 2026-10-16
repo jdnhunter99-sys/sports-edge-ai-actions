@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "18",
+      "Col2": "16",
       "Col3": "# New:",
       "Col4": "5",
       "Col5": "Impact:",
-      "Col6": "30",
+      "Col6": "27",
       "Col7": "Impact Avg:",
       "Col8": "1.7",
       "Col9": "Impact Rank:",
-      "Col10": "7",
+      "Col10": "10",
       "Col11": ""
     },
     {
@@ -159,19 +159,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Keshawn Monroe",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "O",
-      "Col5": "S",
-      "Col6": "FALSE",
-      "Col7": "6.0",
-      "Col8": "1",
-      "Col9": "9/30/2026",
-      "Col10": "Added as 'out' on the initial week five report ahead of the UTEP game. Minimal impact.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Elvin Harris",
       "Col2": "",
       "Col3": "",
@@ -182,19 +169,6 @@
       "Col8": "2",
       "Col9": "10/14/2026",
       "Col10": "Official report 2026-10-14: season ending. Game 2026-10-18. Previous context: Added as 'out' on the initial week five report ahead of the UTEP game.",
-      "Col11": "0"
-    },
-    {
-      "Col1": "Tevin Shaw",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "O",
-      "Col5": "OL",
-      "Col6": "FALSE",
-      "Col7": "9.6",
-      "Col8": "2",
-      "Col9": "9/30/2026",
-      "Col10": "Added as 'out' on the initial week five report ahead of the UTEP game. Minimal impact.",
       "Col11": "0"
     },
     {
@@ -231,7 +205,7 @@
       "Col5": "S",
       "Col6": "TRUE",
       "Col7": "9.9",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "10/14/2026",
       "Col10": "Official report 2026-10-14: season ending. Game 2026-10-18.",
       "Col11": "20"
@@ -294,7 +268,33 @@
       "Col3": "",
       "Col4": "",
       "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
       "Col6": "FALSE",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
       "Col7": "",
       "Col8": "0",
       "Col9": "",
@@ -887,6 +887,32 @@
       "Col11": ""
     },
     {
+      "Col1": "Keshawn Monroe",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "S",
+      "Col6": "",
+      "Col7": "6.0",
+      "Col8": "1",
+      "Col9": "10/15/2026",
+      "Col10": "Cleared from the injury/status report on 10/15/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Tevin Shaw",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "9.6",
+      "Col8": "2",
+      "Col9": "10/15/2026",
+      "Col10": "Cleared from the injury/status report on 10/15/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Jake DeVos",
       "Col2": "",
       "Col3": "",
@@ -1111,15 +1137,15 @@
     ],
     [
       "#:",
-      "18",
+      "16",
       "# New:",
       "5",
       "Impact:",
-      "30",
+      "27",
       "Impact Avg:",
       "1.7",
       "Impact Rank:",
-      "7",
+      "10",
       ""
     ],
     [
@@ -1227,19 +1253,6 @@
       "0"
     ],
     [
-      "Keshawn Monroe",
-      "",
-      "",
-      "O",
-      "S",
-      "FALSE",
-      "6.0",
-      "1",
-      "9/30/2026",
-      "Added as 'out' on the initial week five report ahead of the UTEP game. Minimal impact.",
-      "0"
-    ],
-    [
       "Elvin Harris",
       "",
       "",
@@ -1250,19 +1263,6 @@
       "2",
       "10/14/2026",
       "Official report 2026-10-14: season ending. Game 2026-10-18. Previous context: Added as 'out' on the initial week five report ahead of the UTEP game.",
-      "0"
-    ],
-    [
-      "Tevin Shaw",
-      "",
-      "",
-      "O",
-      "OL",
-      "FALSE",
-      "9.6",
-      "2",
-      "9/30/2026",
-      "Added as 'out' on the initial week five report ahead of the UTEP game. Minimal impact.",
       "0"
     ],
     [
@@ -1299,7 +1299,7 @@
       "S",
       "TRUE",
       "9.9",
-      "4",
+      "3",
       "10/14/2026",
       "Official report 2026-10-14: season ending. Game 2026-10-18.",
       "20"
@@ -1362,7 +1362,33 @@
       "",
       "",
       "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
       "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       "",
       "0",
       "",
@@ -1955,6 +1981,32 @@
       ""
     ],
     [
+      "Keshawn Monroe",
+      "",
+      "",
+      "Cleared",
+      "S",
+      "",
+      "6.0",
+      "1",
+      "10/15/2026",
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
+    ],
+    [
+      "Tevin Shaw",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "9.6",
+      "2",
+      "10/15/2026",
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
+    ],
+    [
       "Jake DeVos",
       "",
       "",
@@ -2150,6 +2202,6 @@
       ""
     ]
   ],
-  "count": 82,
-  "timestamp": "2026-10-15T16:13:40.897Z"
+  "count": 84,
+  "timestamp": "2026-10-16T15:06:31.195Z"
 }
