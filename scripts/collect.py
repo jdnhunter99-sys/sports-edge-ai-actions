@@ -14,9 +14,9 @@ from urllib.error import HTTPError, URLError
 
 BASE = 'https://prod-website.pikkit.app'
 MARKETS = {'moneyline': ('home', 'away'), 'spread': ('home', 'away'), 'total': ('over', 'under')}
-SPORT_DAY_WINDOWS = {'MLB': 1, 'NBA': 1, 'WNBA': 1}
+SPORT_DAY_WINDOWS = {'MLB': 1, 'NBA': 1, 'WNBA': 1, 'NHL': 1}
 FOOTBALL_LEAGUES = ('NFL', 'NCAAFB')
-DEFAULT_LEAGUES = ('MLB', 'NCAAFB', 'NBA', 'NFL', 'WNBA')
+DEFAULT_LEAGUES = ('MLB', 'NCAAFB', 'NBA', 'NFL', 'WNBA', 'NHL')
 # Browser-confirmed 2026-10-14 week selectors. Both advance once every seven days.
 WEEK_ANCHORS = {'NFL': (dt.date(2026, 10, 14), 6), 'NCAAFB': (dt.date(2026, 10, 14), 7)}
 
@@ -167,7 +167,7 @@ def main():
     parser.add_argument('--start-date', default=os.getenv('START_DATE', dt.datetime.now(dt.timezone.utc).date().isoformat()))
     parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '7')),
                         help='Date window for non-football leagues; football uses its selected week')
-    parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAFB,MLB,NFL')
+    parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAFB,MLB,NFL,NHL')
     parser.add_argument('--out', default='data')
     parser.add_argument('--nfl-week', type=int, default=int(os.environ['NFL_WEEK']) if os.environ.get('NFL_WEEK') else None)
     parser.add_argument('--ncaafb-week', type=int, default=int(os.environ['NCAAFB_WEEK']) if os.environ.get('NCAAFB_WEEK') else None)

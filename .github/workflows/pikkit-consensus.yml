@@ -7,7 +7,7 @@ on:
         default: 'all'
         required: false
       days:
-        description: 'Maximum date window: MLB/NBA/WNBA use 1 day; NFL/NCAAFB use up to 7 days'
+        description: 'Maximum date window: MLB/NBA/WNBA/NHL use 1 day; NFL/NCAAFB use up to 7 days'
         default: '7'
         required: false
 permissions:
