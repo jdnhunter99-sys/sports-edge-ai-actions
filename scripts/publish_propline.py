@@ -14,6 +14,7 @@ OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
 NFL_PROP_WINDOW_DAYS=14
 NFL_INCLUDE_STARTED_HOURS=8
+NFL_MARKETS_PER_REQUEST=12
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
@@ -139,6 +140,16 @@ def _fetch_market_partitions(sport,markets,key,url_for_markets,context,timeout):
  ]
  return _merge_partition_payloads(payloads)
 
+def _fetch_market_batches(sport,markets,key,url_for_markets,context,timeout,batch_size):
+ batches=[markets[index:index+batch_size] for index in range(0,len(markets),batch_size)]
+ if len(batches)>1:
+  print(f'{context}: pre-splitting {len(markets)} markets into {len(batches)} requests of at most {batch_size}',flush=True)
+ payloads=[]
+ for index,batch in enumerate(batches,start=1):
+  batch_context=f'{context} market batch {index}/{len(batches)}'
+  payloads.append(_fetch_market_partitions(sport,batch,key,url_for_markets,batch_context,timeout))
+ return _merge_partition_payloads(payloads)
+
 def _event_start_utc(value):
  try:
   parsed=datetime.fromisoformat(str(value).replace('Z','+00:00'))
@@ -185,7 +196,7 @@ def fetch_nfl_events(provider,market_string,key):
   event_id=str(listed_event['id'])
   url_for_markets=lambda batch,eid=event_id:f'{API}/sports/{provider}/events/{quote(eid,safe="")}/odds?'+urlencode({'markets':','.join(batch)})
   context=f'nfl event {event_id} player odds [{index}/{len(candidates)}]'
-  body=_fetch_market_partitions('nfl',markets,key,url_for_markets,context,65)
+  body=_fetch_market_batches('nfl',markets,key,url_for_markets,context,65,NFL_MARKETS_PER_REQUEST)
   events.append(_event_odds_row(body,listed_event,event_id))
  return events
 
@@ -215,6 +226,10 @@ def fetch_closing(sport,event_id,key):
  url_for_markets=lambda batch:f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
    'markets':','.join(batch),'opening_window':OPENING_WINDOW_DAYS})
  try:
+  if sport=='nfl':
+   return _fetch_market_batches(
+    sport,markets,key,url_for_markets,
+    f'{sport} event {event_id} closing odds',45,NFL_MARKETS_PER_REQUEST)
   return _fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} event {event_id} closing odds',45)
  except urllib.error.HTTPError as e:
   # Opening history is enrichment only. Never destroy the live-odds publish
