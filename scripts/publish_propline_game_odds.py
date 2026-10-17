@@ -2,7 +2,8 @@
 """Publish per-game PropLine caches for SportsEdgeAI game-detail odds.
 
 Design:
-- Every run: one bulk current-odds request per sport (h2h, spreads, totals).
+- Every run: one bulk current-odds request per sport (h2h, spreads, totals),
+  except NFL, which fetches one event at a time for the next 14 days.
 - Never call PropLine /odds/history or /movement in the recurring publisher.
 - Append changed bulk quotes to each saved game cache every 10 minutes.
 The saved observations become the line-movement history used by the existing overlay.
@@ -12,7 +13,7 @@ from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from statistics import median
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 
 API = 'https://api.prop-line.com/v1'
 MARKETS = 'h2h,spreads,totals'
@@ -28,6 +29,8 @@ SPORTS = {
 PREFERRED_BOOKS = ['pinnacle', 'draftkings', 'fanduel', 'betmgm', 'caesars', 'betrivers', 'fanatics']
 KEEP_AFTER_HOURS = 72
 MAX_HISTORY_DAYS = 30
+NFL_ODDS_WINDOW_DAYS = 14
+NFL_INCLUDE_STARTED_HOURS = 8
 
 
 def iso_now():
@@ -150,19 +153,25 @@ def _merge_event_rows(rows):
 
 
 def _merge_market_payloads(payloads):
+    payloads = [payload for payload in payloads if isinstance(payload, (dict, list))]
+    if not payloads:
+        return None
     first = payloads[0]
     if isinstance(first, list):
         return _merge_event_rows([row for payload in payloads if isinstance(payload, list) for row in payload])
-    if isinstance(first, dict) and isinstance(first.get('events'), list):
+    if any(isinstance(payload, dict) and isinstance(payload.get('events'), list) for payload in payloads):
         events = _merge_event_rows([
             row for payload in payloads if isinstance(payload, dict) for row in payload.get('events', [])
         ])
         return {**first, 'events': events}
-    return first
+    return _merge_event_rows([payload for payload in payloads if isinstance(payload, dict)])[0]
 
 
-def _fetch_market_partitions(provider, markets, key, context='bulk current odds'):
-    url = f'{API}/sports/{provider}/odds?' + urlencode({'markets': ','.join(markets)})
+def _fetch_market_partitions(provider, markets, key, context='bulk current odds', event_id=None):
+    endpoint = f'{API}/sports/{provider}/odds'
+    if event_id is not None:
+        endpoint = f'{API}/sports/{provider}/events/{quote(str(event_id), safe="")}/odds'
+    url = endpoint + '?' + urlencode({'markets': ','.join(markets)})
     try:
         return request_json(
             url,
@@ -187,13 +196,88 @@ def _fetch_market_partitions(provider, markets, key, context='bulk current odds'
         f'{len(left)} + {len(right)}',
         flush=True,
     )
-    left_payload, left_requests = _fetch_market_partitions(provider, left, key, context)
-    right_payload, right_requests = _fetch_market_partitions(provider, right, key, context)
+    left_payload, left_requests = _fetch_market_partitions(provider, left, key, context, event_id)
+    right_payload, right_requests = _fetch_market_partitions(provider, right, key, context, event_id)
     return _merge_market_payloads([left_payload, right_payload]), left_requests + right_requests
+
+
+def _as_utc(value):
+    parsed = parse_ts(value)
+    if parsed is None:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _event_odds_row(body, listed_event, event_id):
+    row = None
+    if isinstance(body, list):
+        row = next((item for item in body if isinstance(item, dict) and str(item.get('id') or item.get('event_id')) == str(event_id)), None)
+        if row is None:
+            row = next((item for item in body if isinstance(item, dict)), None)
+    elif isinstance(body, dict):
+        if isinstance(body.get('events'), list):
+            row = next((item for item in body['events'] if isinstance(item, dict) and str(item.get('id') or item.get('event_id')) == str(event_id)), None)
+        elif isinstance(body.get('event'), dict):
+            row = body['event']
+        elif isinstance(body.get('data'), dict) and ('bookmakers' in body['data'] or isinstance(body['data'].get('event'), dict)):
+            row = body['data'].get('event') if isinstance(body['data'].get('event'), dict) else body['data']
+        else:
+            row = body
+    if not isinstance(row, dict):
+        row = {}
+    return {**listed_event, **row, 'id': row.get('id') or row.get('event_id') or listed_event.get('id') or str(event_id)}
+
+
+def _fetch_nfl_current(provider, key):
+    """Fetch event metadata once, then request game markets one NFL game at a time."""
+    listing_url = f'{API}/sports/{provider}/events'
+    listed = request_json(listing_url, key, timeout=65, context=f'{provider} events')
+    if isinstance(listed, dict) and isinstance(listed.get('events'), list):
+        listed = listed['events']
+    if not isinstance(listed, list):
+        raise ValueError(f'{provider}: unexpected events response')
+
+    now = datetime.now(timezone.utc)
+    start = now - timedelta(hours=NFL_INCLUDE_STARTED_HOURS)
+    end = now + timedelta(days=NFL_ODDS_WINDOW_DAYS)
+    candidates = []
+    for event in listed:
+        if not isinstance(event, dict) or event.get('id') is None:
+            continue
+        commence = _as_utc(event.get('commence_time'))
+        if commence is not None and start <= commence <= end:
+            candidates.append((commence, event))
+    candidates.sort(key=lambda item: item[0])
+
+    events = []
+    request_count = 1  # event-list request
+    markets = MARKETS.split(',')
+    print(
+        f'{provider}: fetching {len(candidates)} events from the last {NFL_INCLUDE_STARTED_HOURS}h '
+        f'through the next {NFL_ODDS_WINDOW_DAYS} days one game at a time',
+        flush=True,
+    )
+    for index, (_, listed_event) in enumerate(candidates, start=1):
+        event_id = str(listed_event['id'])
+        context = f'{provider} event {event_id} odds [{index}/{len(candidates)}]'
+        body, event_requests = _fetch_market_partitions(
+            provider, markets, key, context, event_id=event_id,
+        )
+        request_count += event_requests
+        events.append(_event_odds_row(body, listed_event, event_id))
+    return events, request_count
 
 
 def fetch_current(provider, key):
     markets = MARKETS.split(',')
+    if provider == SPORTS['nfl']:
+        print(f'Fetching PropLine current odds for {provider} per event ({len(markets)} markets)', flush=True)
+        try:
+            return _fetch_nfl_current(provider, key)
+        except Exception as exc:
+            raise RuntimeError(f'{provider}: per-event current odds request failed: {exc}') from exc
     print(f'Fetching PropLine current odds for {provider} ({len(markets)} markets)', flush=True)
     try:
         body, request_count = _fetch_market_partitions(provider, markets, key, f'{provider} bulk odds')

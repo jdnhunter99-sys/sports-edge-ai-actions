@@ -4,7 +4,7 @@ import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 API='https://api.prop-line.com/v1'
 # Opening-line enrichment is intentionally limited to the sports that currently
@@ -12,6 +12,8 @@ API='https://api.prop-line.com/v1'
 # Hobby plan (5,000 requests/day) inside quota while preserving all live odds.
 OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
+NFL_PROP_WINDOW_DAYS=14
+NFL_INCLUDE_STARTED_HOURS=8
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
@@ -137,9 +139,65 @@ def _fetch_market_partitions(sport,markets,key,url_for_markets,context,timeout):
  ]
  return _merge_partition_payloads(payloads)
 
+def _event_start_utc(value):
+ try:
+  parsed=datetime.fromisoformat(str(value).replace('Z','+00:00'))
+  if parsed.tzinfo is None: parsed=parsed.replace(tzinfo=timezone.utc)
+  return parsed.astimezone(timezone.utc)
+ except (TypeError,ValueError):
+  return None
+
+def _event_odds_row(body,listed_event,event_id):
+ row=None
+ if isinstance(body,list):
+  row=next((item for item in body if isinstance(item,dict) and str(item.get('id') or item.get('event_id'))==str(event_id)),None)
+  if row is None: row=next((item for item in body if isinstance(item,dict)),None)
+ elif isinstance(body,dict):
+  if isinstance(body.get('events'),list):
+   row=next((item for item in body['events'] if isinstance(item,dict) and str(item.get('id') or item.get('event_id'))==str(event_id)),None)
+  elif isinstance(body.get('event'),dict):
+   row=body['event']
+  elif isinstance(body.get('data'),dict) and ('bookmakers' in body['data'] or isinstance(body['data'].get('event'),dict)):
+   row=body['data'].get('event') if isinstance(body['data'].get('event'),dict) else body['data']
+  else:
+   row=body
+ if not isinstance(row,dict): row={}
+ return {**listed_event,**row,'id':row.get('id') or row.get('event_id') or listed_event.get('id') or str(event_id)}
+
+def fetch_nfl_events(provider,market_string,key):
+ from urllib.parse import quote,urlencode
+ listed=_request_json(f'{API}/sports/{provider}/events',key,65,'nfl events',1)
+ if isinstance(listed,dict) and isinstance(listed.get('events'),list): listed=listed['events']
+ if not isinstance(listed,list): raise ValueError('nfl: unexpected events response')
+ now=datetime.now(timezone.utc)
+ start=now-timedelta(hours=NFL_INCLUDE_STARTED_HOURS)
+ end=now+timedelta(days=NFL_PROP_WINDOW_DAYS)
+ candidates=[]
+ for event in listed:
+  if not isinstance(event,dict) or event.get('id') is None: continue
+  commence=_event_start_utc(event.get('commence_time'))
+  if commence is not None and start<=commence<=end: candidates.append((commence,event))
+ candidates.sort(key=lambda item:item[0])
+ markets=market_string.split()
+ events=[]
+ print(f'{provider}: fetching {len(candidates)} NFL events from the last {NFL_INCLUDE_STARTED_HOURS}h through the next {NFL_PROP_WINDOW_DAYS} days one game at a time',flush=True)
+ for index,(_,listed_event) in enumerate(candidates,start=1):
+  event_id=str(listed_event['id'])
+  url_for_markets=lambda batch,eid=event_id:f'{API}/sports/{provider}/events/{quote(eid,safe="")}/odds?'+urlencode({'markets':','.join(batch)})
+  context=f'nfl event {event_id} player odds [{index}/{len(candidates)}]'
+  body=_fetch_market_partitions('nfl',markets,key,url_for_markets,context,65)
+  events.append(_event_odds_row(body,listed_event,event_id))
+ return events
+
 def fetch(sport,key):
  from urllib.parse import urlencode
  provider,market_string=SPORTS[sport]
+ if sport=='nfl':
+  print(f'Fetching PropLine player odds for {sport} ({provider}) per event',flush=True)
+  try:
+   return fetch_nfl_events(provider,market_string,key)
+  except Exception as e:
+   raise RuntimeError(f'{sport}: PropLine per-event player odds fetch failed: {e}') from e
  markets=market_string.split()
  url_for_markets=lambda batch:f'{API}/sports/{provider}/odds?'+urlencode({'markets':','.join(batch)})
  print(f'Fetching PropLine player odds for {sport} ({provider})',flush=True)
