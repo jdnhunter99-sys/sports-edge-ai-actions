@@ -3,9 +3,9 @@
 
 Design:
 - Every run: one bulk current-odds request per sport (h2h, spreads, totals),
-  except NFL, which fetches one event at a time for the next 14 days.
+  except NFL and CFB, which fetch one event at a time for the next 14 days.
 - Never call PropLine /odds/history or /movement in the recurring publisher.
-- Append changed bulk quotes to each saved game cache every 10 minutes.
+- Append changed quotes to each saved game cache every 10 minutes.
 The saved observations become the line-movement history used by the existing overlay.
 """
 import json, os, re, shutil, tempfile, time, urllib.error, urllib.request, unicodedata
@@ -29,8 +29,9 @@ SPORTS = {
 PREFERRED_BOOKS = ['pinnacle', 'draftkings', 'fanduel', 'betmgm', 'caesars', 'betrivers', 'fanatics']
 KEEP_AFTER_HOURS = 72
 MAX_HISTORY_DAYS = 30
-NFL_ODDS_WINDOW_DAYS = 14
-NFL_INCLUDE_STARTED_HOURS = 8
+EVENT_ODDS_WINDOW_DAYS = 14
+EVENT_INCLUDE_STARTED_HOURS = 8
+EVENT_ODDS_SPORTS = {SPORTS['nfl'], SPORTS['cfb']}
 
 
 def iso_now():
@@ -230,8 +231,8 @@ def _event_odds_row(body, listed_event, event_id):
     return {**listed_event, **row, 'id': row.get('id') or row.get('event_id') or listed_event.get('id') or str(event_id)}
 
 
-def _fetch_nfl_current(provider, key):
-    """Fetch event metadata once, then request game markets one NFL game at a time."""
+def _fetch_event_window_current(provider, key):
+    """Fetch event metadata once, then request game markets one event at a time."""
     listing_url = f'{API}/sports/{provider}/events'
     listed = request_json(listing_url, key, timeout=65, context=f'{provider} events')
     if isinstance(listed, dict) and isinstance(listed.get('events'), list):
@@ -240,8 +241,8 @@ def _fetch_nfl_current(provider, key):
         raise ValueError(f'{provider}: unexpected events response')
 
     now = datetime.now(timezone.utc)
-    start = now - timedelta(hours=NFL_INCLUDE_STARTED_HOURS)
-    end = now + timedelta(days=NFL_ODDS_WINDOW_DAYS)
+    start = now - timedelta(hours=EVENT_INCLUDE_STARTED_HOURS)
+    end = now + timedelta(days=EVENT_ODDS_WINDOW_DAYS)
     candidates = []
     for event in listed:
         if not isinstance(event, dict) or event.get('id') is None:
@@ -255,8 +256,8 @@ def _fetch_nfl_current(provider, key):
     request_count = 1  # event-list request
     markets = MARKETS.split(',')
     print(
-        f'{provider}: fetching {len(candidates)} events from the last {NFL_INCLUDE_STARTED_HOURS}h '
-        f'through the next {NFL_ODDS_WINDOW_DAYS} days one game at a time',
+        f'{provider}: fetching {len(candidates)} events from the last {EVENT_INCLUDE_STARTED_HOURS}h '
+        f'through the next {EVENT_ODDS_WINDOW_DAYS} days one game at a time',
         flush=True,
     )
     for index, (_, listed_event) in enumerate(candidates, start=1):
@@ -272,10 +273,10 @@ def _fetch_nfl_current(provider, key):
 
 def fetch_current(provider, key):
     markets = MARKETS.split(',')
-    if provider == SPORTS['nfl']:
+    if provider in EVENT_ODDS_SPORTS:
         print(f'Fetching PropLine current odds for {provider} per event ({len(markets)} markets)', flush=True)
         try:
-            return _fetch_nfl_current(provider, key)
+            return _fetch_event_window_current(provider, key)
         except Exception as exc:
             raise RuntimeError(f'{provider}: per-event current odds request failed: {exc}') from exc
     print(f'Fetching PropLine current odds for {provider} ({len(markets)} markets)', flush=True)
