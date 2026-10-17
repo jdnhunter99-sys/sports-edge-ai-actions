@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch PropLine bulk odds and publish per-player JSON to the private data branch."""
+"""Fetch PropLine odds and publish per-player JSON to the private data branch."""
 import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -12,9 +12,10 @@ API='https://api.prop-line.com/v1'
 # Hobby plan (5,000 requests/day) inside quota while preserving all live odds.
 OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
-NFL_PROP_WINDOW_DAYS=14
-NFL_INCLUDE_STARTED_HOURS=8
-NFL_MARKETS_PER_REQUEST=12
+EVENT_PROP_WINDOW_DAYS=14
+EVENT_INCLUDE_STARTED_HOURS=8
+EVENT_MARKETS_PER_REQUEST=12
+EVENT_FETCH_SPORTS={'nfl','nhl','cfb'}
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
@@ -175,14 +176,14 @@ def _event_odds_row(body,listed_event,event_id):
  if not isinstance(row,dict): row={}
  return {**listed_event,**row,'id':row.get('id') or row.get('event_id') or listed_event.get('id') or str(event_id)}
 
-def fetch_nfl_events(provider,market_string,key):
+def fetch_event_window(provider,market_string,sport,key):
  from urllib.parse import quote,urlencode
- listed=_request_json(f'{API}/sports/{provider}/events',key,65,'nfl events',1)
+ listed=_request_json(f'{API}/sports/{provider}/events',key,65,f'{sport} events',1)
  if isinstance(listed,dict) and isinstance(listed.get('events'),list): listed=listed['events']
- if not isinstance(listed,list): raise ValueError('nfl: unexpected events response')
+ if not isinstance(listed,list): raise ValueError(f'{sport}: unexpected events response')
  now=datetime.now(timezone.utc)
- start=now-timedelta(hours=NFL_INCLUDE_STARTED_HOURS)
- end=now+timedelta(days=NFL_PROP_WINDOW_DAYS)
+ start=now-timedelta(hours=EVENT_INCLUDE_STARTED_HOURS)
+ end=now+timedelta(days=EVENT_PROP_WINDOW_DAYS)
  candidates=[]
  for event in listed:
   if not isinstance(event,dict) or event.get('id') is None: continue
@@ -191,22 +192,22 @@ def fetch_nfl_events(provider,market_string,key):
  candidates.sort(key=lambda item:item[0])
  markets=market_string.split()
  events=[]
- print(f'{provider}: fetching {len(candidates)} NFL events from the last {NFL_INCLUDE_STARTED_HOURS}h through the next {NFL_PROP_WINDOW_DAYS} days one game at a time',flush=True)
+ print(f'{provider}: fetching {len(candidates)} {sport.upper()} events from the last {EVENT_INCLUDE_STARTED_HOURS}h through the next {EVENT_PROP_WINDOW_DAYS} days one game at a time',flush=True)
  for index,(_,listed_event) in enumerate(candidates,start=1):
   event_id=str(listed_event['id'])
   url_for_markets=lambda batch,eid=event_id:f'{API}/sports/{provider}/events/{quote(eid,safe="")}/odds?'+urlencode({'markets':','.join(batch)})
-  context=f'nfl event {event_id} player odds [{index}/{len(candidates)}]'
-  body=_fetch_market_batches('nfl',markets,key,url_for_markets,context,65,NFL_MARKETS_PER_REQUEST)
+  context=f'{sport} event {event_id} player odds [{index}/{len(candidates)}]'
+  body=_fetch_market_batches(sport,markets,key,url_for_markets,context,65,EVENT_MARKETS_PER_REQUEST)
   events.append(_event_odds_row(body,listed_event,event_id))
  return events
 
 def fetch(sport,key):
  from urllib.parse import urlencode
  provider,market_string=SPORTS[sport]
- if sport=='nfl':
+ if sport in EVENT_FETCH_SPORTS:
   print(f'Fetching PropLine player odds for {sport} ({provider}) per event',flush=True)
   try:
-   return fetch_nfl_events(provider,market_string,key)
+   return fetch_event_window(provider,market_string,sport,key)
   except Exception as e:
    raise RuntimeError(f'{sport}: PropLine per-event player odds fetch failed: {e}') from e
  markets=market_string.split()
@@ -226,10 +227,10 @@ def fetch_closing(sport,event_id,key):
  url_for_markets=lambda batch:f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
    'markets':','.join(batch),'opening_window':OPENING_WINDOW_DAYS})
  try:
-  if sport=='nfl':
+  if sport in EVENT_FETCH_SPORTS:
    return _fetch_market_batches(
     sport,markets,key,url_for_markets,
-    f'{sport} event {event_id} closing odds',45,NFL_MARKETS_PER_REQUEST)
+    f'{sport} event {event_id} closing odds',45,EVENT_MARKETS_PER_REQUEST)
   return _fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} event {event_id} closing odds',45)
  except urllib.error.HTTPError as e:
   # Opening history is enrichment only. Never destroy the live-odds publish
@@ -907,29 +908,29 @@ def main():
       print(f'{sport}: no prior player-prop cache exists; publishing an empty {sport.upper()} index while other sports continue',flush=True)
     print(f'{sport}: {stats[sport]}',flush=True)
    except Exception as exc:
-    if sport!='nhl': raise
-    # The staged generation is atomic, so replace any partial NHL build with its
-    # last published snapshot before continuing through the remaining sports.
+    if sport not in ('nhl','cfb'): raise
+    # The staged generation is atomic, so discard any partial build and keep
+    # the previous cache for an upstream failure in these large-slate sports.
     import shutil
-    for relative in ('Player Odds/nhl','Player Lists/nhl'):
+    for relative in (f'Player Odds/{sport}',f'Player Lists/{sport}'):
      staged=root/relative
      if staged.exists(): shutil.rmtree(staged,ignore_errors=True)
     try:
-     retained=retain_previous_sport_cache('nhl',out,root)
+     retained=retain_previous_sport_cache(sport,out,root)
     except Exception as retain_error:
      retained=None
-     print(f'nhl: could not preserve previous Player Odds snapshot ({retain_error})',flush=True)
-    old_lists=out/'Player Lists'/'nhl'
+     print(f'{sport}: could not preserve previous Player Odds snapshot ({retain_error})',flush=True)
+    old_lists=out/'Player Lists'/sport
     lists_retained=False
     if old_lists.is_dir():
      try:
       (root/'Player Lists').mkdir(parents=True,exist_ok=True)
-      shutil.copytree(old_lists,root/'Player Lists'/'nhl',dirs_exist_ok=True)
+      shutil.copytree(old_lists,root/'Player Lists'/sport,dirs_exist_ok=True)
       lists_retained=True
      except OSError as copy_error:
-      print(f'nhl: could not preserve previous Player Lists snapshot ({copy_error})',flush=True)
-    failed_sports.add('nhl')
-    stats['nhl']={
+      print(f'{sport}: could not preserve previous Player Lists snapshot ({copy_error})',flush=True)
+    failed_sports.add(sport)
+    stats[sport]={
      'skipped':True,
      'retained_previous_cache':retained is not None,
      'players':retained,
@@ -937,7 +938,7 @@ def main():
      'error':str(exc),
     }
     print(
-     f'nhl: fetch/build failed ({exc}); retained the previous NHL cache '
+     f'{sport}: fetch/build failed ({exc}); retained the previous {sport.upper()} cache '
      f'({retained if retained is not None else 0} players) and continuing with remaining sports',
      flush=True,
     )
