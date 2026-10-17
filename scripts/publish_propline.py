@@ -33,21 +33,40 @@ PLAYER_MARKETS={
 def slug(s):
  s=unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode().lower()
  return re.sub(r'[^a-z0-9]+','-',s).strip('-') or 'unknown'
+def _retry_delay(attempt,retry_after=None):
+ if retry_after:
+  try: return min(30,max(1,float(retry_after)))
+  except (TypeError,ValueError): pass
+ return min(30,2**(attempt+1))
+
+RETRYABLE_HTTP_STATUSES={408,425,429,500,502,503,504}
+
 def fetch(sport,key):
  from urllib.parse import urlencode
  provider,markets=SPORTS[sport]
  url=f'{API}/sports/{provider}/odds?'+urlencode({'markets':','.join(markets.split())})
- for attempt in range(2):
+ retries=4
+ print(f'Fetching PropLine player odds for {sport} ({provider})',flush=True)
+ for attempt in range(retries+1):
   try:
    req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
    with urllib.request.urlopen(req,timeout=65) as res: body=json.load(res)
    if isinstance(body,list): return body
    if isinstance(body,dict) and isinstance(body.get('events'),list): return body['events']
    raise ValueError(f'{sport}: unexpected PropLine response shape')
-  except (urllib.error.URLError,TimeoutError) as e:
-   if attempt: raise
-   time.sleep(3)
- raise RuntimeError('unreachable')
+  except urllib.error.HTTPError as e:
+   if e.code not in RETRYABLE_HTTP_STATUSES or attempt>=retries:
+    raise RuntimeError(f'{sport}: PropLine player odds fetch failed after {attempt+1} attempt(s): HTTP {e.code} {e.reason}') from e
+   delay=_retry_delay(attempt,e.headers.get('Retry-After'))
+   print(f'{sport}: PropLine returned HTTP {e.code}; retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
+   time.sleep(delay)
+  except (urllib.error.URLError,TimeoutError,json.JSONDecodeError) as e:
+   if attempt>=retries:
+    raise RuntimeError(f'{sport}: PropLine player odds fetch failed after {attempt+1} attempt(s): {e}') from e
+   delay=_retry_delay(attempt)
+   print(f'{sport}: PropLine request failed ({e}); retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
+   time.sleep(delay)
+ raise RuntimeError(f'{sport}: PropLine player odds fetch exhausted retries')
 def fetch_closing(sport,event_id,key):
  from urllib.parse import urlencode
  provider,markets=SPORTS[sport]

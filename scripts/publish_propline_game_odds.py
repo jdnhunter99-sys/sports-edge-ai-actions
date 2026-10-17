@@ -41,7 +41,17 @@ def slug(v):
     return re.sub(r'[^a-z0-9]+', '-', norm(v)).strip('-') or 'unknown'
 
 
-def request_json(url, key, timeout=60, retries=2):
+def _retry_delay(attempt, retry_after=None):
+    if retry_after:
+        try:
+            return min(30, max(1, float(retry_after)))
+        except (TypeError, ValueError):
+            pass
+    return min(30, 2 ** (attempt + 1))
+
+
+def request_json(url, key, timeout=65, retries=4):
+    retryable_statuses = {408, 425, 429, 500, 502, 503, 504}
     for attempt in range(retries + 1):
         try:
             req = urllib.request.Request(url, headers={'X-API-Key': key, 'Accept': 'application/json'})
@@ -50,23 +60,35 @@ def request_json(url, key, timeout=60, retries=2):
         except urllib.error.HTTPError as exc:
             if exc.code in (400, 404, 409, 422):
                 return None
-            if exc.code == 429 and attempt < retries:
-                retry_after = int(exc.headers.get('Retry-After') or '2')
-                time.sleep(max(1, retry_after))
-                continue
+            if exc.code not in retryable_statuses or attempt >= retries:
+                raise
+            delay = _retry_delay(attempt, exc.headers.get('Retry-After'))
+            print(
+                f'PropLine returned HTTP {exc.code}; retry {attempt + 1}/{retries} '
+                f'in {delay:.0f}s',
+                flush=True,
+            )
+            time.sleep(delay)
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             if attempt >= retries:
                 raise
-            time.sleep(2)
-        except (urllib.error.URLError, TimeoutError):
-            if attempt >= retries:
-                raise
-            time.sleep(2)
+            delay = _retry_delay(attempt)
+            print(
+                f'PropLine request failed ({exc}); retry {attempt + 1}/{retries} '
+                f'in {delay:.0f}s',
+                flush=True,
+            )
+            time.sleep(delay)
     return None
 
 
 def fetch_current(provider, key):
     url = f'{API}/sports/{provider}/odds?' + urlencode({'markets': MARKETS})
-    body = request_json(url, key, timeout=65)
+    print(f'Fetching PropLine current odds for {provider}', flush=True)
+    try:
+        body = request_json(url, key, timeout=65, retries=4)
+    except Exception as exc:
+        raise RuntimeError(f'{provider}: bulk current odds request failed: {exc}') from exc
     if isinstance(body, list):
         return body
     if isinstance(body, dict) and isinstance(body.get('events'), list):
