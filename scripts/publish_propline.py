@@ -13,6 +13,7 @@ API='https://api.prop-line.com/v1'
 OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
 EVENT_PROP_WINDOW_DAYS={'nfl':7,'cfb':7,'nhl':14}
+EVENT_INCLUDE_STARTED_HOURS=8
 EVENT_MARKETS_PER_REQUEST=12
 EVENT_FETCH_SPORTS={'nfl','nhl','cfb'}
 SPORTS={
@@ -181,7 +182,7 @@ def fetch_event_window(provider,market_string,sport,key):
  if isinstance(listed,dict) and isinstance(listed.get('events'),list): listed=listed['events']
  if not isinstance(listed,list): raise ValueError(f'{sport}: unexpected events response')
  now=datetime.now(timezone.utc)
- start=now
+ start=now-timedelta(hours=EVENT_INCLUDE_STARTED_HOURS)
  window_days=EVENT_PROP_WINDOW_DAYS[sport]
  end=now+timedelta(days=window_days)
  candidates=[]
@@ -192,7 +193,7 @@ def fetch_event_window(provider,market_string,sport,key):
  candidates.sort(key=lambda item:item[0])
  markets=market_string.split()
  events=[]
- print(f'{provider}: fetching {len(candidates)} upcoming {sport.upper()} events through the next {window_days} days one game at a time',flush=True)
+ print(f'{provider}: fetching {len(candidates)} {sport.upper()} events from the last {EVENT_INCLUDE_STARTED_HOURS}h through the next {window_days} days one game at a time',flush=True)
  for index,(_,listed_event) in enumerate(candidates,start=1):
   event_id=str(listed_event['id'])
   url_for_markets=lambda batch,eid=event_id:f'{API}/sports/{provider}/events/{quote(eid,safe="")}/odds?'+urlencode({'markets':','.join(batch)})
