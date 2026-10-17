@@ -651,8 +651,9 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   'game_count':len(games_list),'games':games_list,'players':list(by_key.values()),
  }
 
-def publish_player_lists(root,stamp):
+def publish_player_lists(root,stamp,skip_sports=()):
  for sport in SPORTS:
+  if sport in skip_sports: continue
   index_path=root/'Player Odds'/sport/'index.json'
   try:
    index_data=json.loads(index_path.read_text(encoding='utf-8'))
@@ -737,24 +738,60 @@ def main():
  key=os.environ['PROPLINE_API_KEY'].strip(); out=Path(os.environ['PROPLINE_OUTPUT_DIR'])
  stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'); root=out/f'.propline-stage-{stamp}'
  root.mkdir(parents=True,exist_ok=False)
- stats={}
+ stats={}; failed_sports=set()
  try:
   for sport in SPORTS:
-   events=fetch(sport,key)
-   roster_index=espn_roster_index(sport,events,out)
-   stats[sport]=build_sport(sport,events,root,stamp,key,roster_index)
-   if sport in ('cfb','nhl') and stats[sport].get('empty_response'):
-    retained=retain_previous_sport_cache(sport,out,root)
-    if retained is not None:
-     stats[sport]={'players':retained,'events':len(events),'reused_previous_cache':True,'fetched_players':0}
-     print(f'{sport}: upstream returned no player outcomes; retained previous cache ({retained} players)',flush=True)
-    else:
-     write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':[],'players':[],'warning':'Upstream returned no described player outcomes; see workflow diagnostics.'})
-     write_json(root/'Player Odds'/sport/'board.json',{'sport':sport,'updated_at':stamp,'player_count':0,'props':[]})
-     stats[sport]={'players':0,'events':len(events),'empty_response':True}
-     print(f'{sport}: no prior player-prop cache exists; publishing an empty {sport.upper()} index while other sports continue',flush=True)
-   print(f'{sport}: {stats[sport]}',flush=True)
-  publish_player_lists(root,stamp)
+   try:
+    events=fetch(sport,key)
+    roster_index=espn_roster_index(sport,events,out)
+    stats[sport]=build_sport(sport,events,root,stamp,key,roster_index)
+    if sport in ('cfb','nhl') and stats[sport].get('empty_response'):
+     retained=retain_previous_sport_cache(sport,out,root)
+     if retained is not None:
+      stats[sport]={'players':retained,'events':len(events),'reused_previous_cache':True,'fetched_players':0}
+      print(f'{sport}: upstream returned no player outcomes; retained previous cache ({retained} players)',flush=True)
+     else:
+      write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':[],'players':[],'warning':'Upstream returned no described player outcomes; see workflow diagnostics.'})
+      write_json(root/'Player Odds'/sport/'board.json',{'sport':sport,'updated_at':stamp,'player_count':0,'props':[]})
+      stats[sport]={'players':0,'events':len(events),'empty_response':True}
+      print(f'{sport}: no prior player-prop cache exists; publishing an empty {sport.upper()} index while other sports continue',flush=True)
+    print(f'{sport}: {stats[sport]}',flush=True)
+   except Exception as exc:
+    if sport!='nhl': raise
+    # The staged generation is atomic, so replace any partial NHL build with its
+    # last published snapshot before continuing through the remaining sports.
+    import shutil
+    for relative in ('Player Odds/nhl','Player Lists/nhl'):
+     staged=root/relative
+     if staged.exists(): shutil.rmtree(staged,ignore_errors=True)
+    try:
+     retained=retain_previous_sport_cache('nhl',out,root)
+    except Exception as retain_error:
+     retained=None
+     print(f'nhl: could not preserve previous Player Odds snapshot ({retain_error})',flush=True)
+    old_lists=out/'Player Lists'/'nhl'
+    lists_retained=False
+    if old_lists.is_dir():
+     try:
+      (root/'Player Lists').mkdir(parents=True,exist_ok=True)
+      shutil.copytree(old_lists,root/'Player Lists'/'nhl',dirs_exist_ok=True)
+      lists_retained=True
+     except OSError as copy_error:
+      print(f'nhl: could not preserve previous Player Lists snapshot ({copy_error})',flush=True)
+    failed_sports.add('nhl')
+    stats['nhl']={
+     'skipped':True,
+     'retained_previous_cache':retained is not None,
+     'players':retained,
+     'retained_previous_player_list':lists_retained,
+     'error':str(exc),
+    }
+    print(
+     f'nhl: fetch/build failed ({exc}); retained the previous NHL cache '
+     f'({retained if retained is not None else 0} players) and continuing with remaining sports',
+     flush=True,
+    )
+  publish_player_lists(root,stamp,skip_sports=failed_sports)
  except Exception:
   import shutil
   shutil.rmtree(root,ignore_errors=True)

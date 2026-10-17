@@ -7,7 +7,7 @@ Design:
 - Append changed bulk quotes to each saved game cache every 10 minutes.
 The saved observations become the line-movement history used by the existing overlay.
 """
-import json, os, re, time, urllib.error, urllib.request, unicodedata
+import json, os, re, shutil, tempfile, time, urllib.error, urllib.request, unicodedata
 from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -597,31 +597,72 @@ def main():
     stamp = iso_now()
     summary = {}
     for sport, provider in SPORTS.items():
-        events = fetch_current(provider, key)
-        index_rows = []
-        for event in events:
-            if not isinstance(event, dict) or event.get('id') is None:
-                continue
-            eid = str(event['id'])
-            path = root / 'game-odds' / sport / 'events' / f'{slug(eid)}.json'
-            existing = read_json(path)
-            cache = build_cache(sport, event, existing or {}, stamp)
-            write_json(path, cache)
-            index_rows.append({
-                'event_id': eid, 'path': f'game-odds/{sport}/events/{slug(eid)}.json',
-                'home_team': event.get('home_team'), 'away_team': event.get('away_team'),
-                'commence_time': event.get('commence_time'), 'updated_at': stamp,
+        sport_dir = root / 'game-odds' / sport
+        backup_dir = None
+        backup_parent = None
+        had_previous_cache = sport_dir.exists()
+        try:
+            if sport == 'nhl' and had_previous_cache:
+                backup_parent = Path(tempfile.mkdtemp(prefix='propline-nhl-game-odds-'))
+                backup_candidate = backup_parent / 'nhl'
+                shutil.copytree(sport_dir, backup_candidate)
+                backup_dir = backup_candidate
+            events = fetch_current(provider, key)
+            index_rows = []
+            for event in events:
+                if not isinstance(event, dict) or event.get('id') is None:
+                    continue
+                eid = str(event['id'])
+                path = sport_dir / 'events' / f'{slug(eid)}.json'
+                existing = read_json(path)
+                cache = build_cache(sport, event, existing or {}, stamp)
+                write_json(path, cache)
+                index_rows.append({
+                    'event_id': eid, 'path': f'game-odds/{sport}/events/{slug(eid)}.json',
+                    'home_team': event.get('home_team'), 'away_team': event.get('away_team'),
+                    'commence_time': event.get('commence_time'), 'updated_at': stamp,
+                })
+            current_ids = {str(e.get('id')) for e in events if isinstance(e, dict) and e.get('id') is not None}
+            carry_recent_existing(root, sport, current_ids, index_rows)
+            # Stable ordering and de-duplication by event id.
+            by_id = {str(r['event_id']): r for r in index_rows if r.get('event_id')}
+            index_rows = sorted(by_id.values(), key=lambda r: str(r.get('commence_time') or ''))
+            write_json(sport_dir / 'index.json', {
+                'sport': sport, 'provider': provider, 'updated_at': stamp, 'events': index_rows,
             })
-        current_ids = {str(e.get('id')) for e in events if isinstance(e, dict) and e.get('id') is not None}
-        carry_recent_existing(root, sport, current_ids, index_rows)
-        # Stable ordering and de-duplication by event id.
-        by_id = {str(r['event_id']): r for r in index_rows if r.get('event_id')}
-        index_rows = sorted(by_id.values(), key=lambda r: str(r.get('commence_time') or ''))
-        write_json(root / 'game-odds' / sport / 'index.json', {
-            'sport': sport, 'provider': provider, 'updated_at': stamp, 'events': index_rows,
-        })
-        summary[sport] = {'current_events': len(events), 'cached_events': len(index_rows), 'bulk_requests': 1, 'history_requests': 0}
-        print(f'{sport}: {summary[sport]}', flush=True)
+            summary[sport] = {'current_events': len(events), 'cached_events': len(index_rows), 'bulk_requests': 1, 'history_requests': 0}
+            print(f'{sport}: {summary[sport]}', flush=True)
+        except Exception as exc:
+            if sport != 'nhl':
+                raise
+            # NHL is optional for this run. Roll back any partial NHL file writes,
+            # keep its last published index/data intact, and continue the other sports.
+            if backup_dir is not None and backup_dir.exists():
+                shutil.rmtree(sport_dir, ignore_errors=True)
+                sport_dir.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copytree(backup_dir, sport_dir)
+            elif not had_previous_cache:
+                shutil.rmtree(sport_dir, ignore_errors=True)
+            previous_index = read_json(sport_dir / 'index.json') or {}
+            previous_events = previous_index.get('events') if isinstance(previous_index, dict) else []
+            cached_events = len(previous_events) if isinstance(previous_events, list) else 0
+            summary[sport] = {
+                'current_events': None,
+                'cached_events': cached_events,
+                'bulk_requests': 1,
+                'history_requests': 0,
+                'skipped': True,
+                'retained_previous_cache': bool(cached_events),
+                'error': str(exc),
+            }
+            print(
+                f'{sport}: fetch/build failed ({exc}); retained the previous NHL cache '
+                f'({cached_events} events) and continuing with remaining sports',
+                flush=True,
+            )
+        finally:
+            if backup_parent is not None and backup_parent.exists():
+                shutil.rmtree(backup_parent, ignore_errors=True)
     write_json(root / 'game-odds' / 'manifest.json', {'updated_at': stamp, 'sports': summary, 'markets': ['h2h','spreads','totals']})
     print('Published PropLine game odds', stamp, flush=True)
 
