@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "12",
+      "Col2": "8",
       "Col3": "# New:",
       "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "14",
+      "Col6": "12",
       "Col7": "Impact Avg:",
-      "Col8": "1.2",
+      "Col8": "1.5",
       "Col9": "Impact Rank:",
-      "Col10": "84",
+      "Col10": "94",
       "Col11": ""
     },
     {
@@ -66,19 +66,6 @@
       "Col9": "Update Date",
       "Col10": "Update Notes:",
       "Col11": "LW"
-    },
-    {
-      "Col1": "Jamauri McClure",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "RB",
-      "Col6": "",
-      "Col7": "12.8",
-      "Col8": "1",
-      "Col9": "10/10/2026",
-      "Col10": "Official report 2026-10-10: questionable. Previous context: Injured his left foot early in summer camp and is utilizing a scooter. DNP week one, then rose to a game-time call pre-week two but also DNP. Remains out through week four.",
-      "Col11": "5"
     },
     {
       "Col1": "Antwaun Parham",
@@ -120,19 +107,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Maurice Turner",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "RB",
-      "Col6": "FALSE",
-      "Col7": "11.9",
-      "Col8": "1",
-      "Col9": "10/10/2026",
-      "Col10": "Official report 2026-10-10: questionable.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Ty Thompson",
       "Col2": "",
       "Col3": "",
@@ -162,13 +136,13 @@
       "Col1": "Orion Saunders",
       "Col2": "",
       "Col3": "",
-      "Col4": "O",
+      "Col4": "Q",
       "Col5": "CB",
       "Col6": "FALSE",
       "Col7": "9.5",
       "Col8": "0",
-      "Col9": "10/10/2026",
-      "Col10": "Official report 2026-10-10: out.",
+      "Col9": "10/16/2026",
+      "Col10": "Official report 2026-10-16: questionable. Previous context: Official report 2026-10-10: out.",
       "Col11": "0"
     },
     {
@@ -185,30 +159,56 @@
       "Col11": "-6"
     },
     {
-      "Col1": "KeyShaun Coleman",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
-      "Col5": "WR",
-      "Col6": "FALSE",
-      "Col7": "9.4",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "10/10/2026",
-      "Col10": "Official report 2026-10-10: questionable.",
-      "Col11": "0"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
-      "Col1": "Jackson Norwood",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
-      "Col5": "DL",
-      "Col6": "FALSE",
-      "Col7": "5.3",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "10/10/2026",
-      "Col10": "Official report 2026-10-10: questionable.",
-      "Col11": "0"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,58 @@
       "Col11": ""
     },
     {
+      "Col1": "Jackson Norwood",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DL",
+      "Col6": "",
+      "Col7": "5.3",
+      "Col8": "0",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Jamauri McClure",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "RB",
+      "Col6": "",
+      "Col7": "12.8",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Maurice Turner",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "RB",
+      "Col6": "",
+      "Col7": "11.9",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "KeyShaun Coleman",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "WR",
+      "Col6": "",
+      "Col7": "9.4",
+      "Col8": "0",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Ed Smith",
       "Col2": "",
       "Col3": "",
@@ -981,15 +1033,15 @@
     ],
     [
       "#:",
-      "12",
+      "8",
       "# New:",
       "0",
       "Impact:",
-      "14",
+      "12",
       "Impact Avg:",
-      "1.2",
+      "1.5",
       "Impact Rank:",
-      "84",
+      "94",
       ""
     ],
     [
@@ -1004,19 +1056,6 @@
       "Update Date",
       "Update Notes:",
       "LW"
-    ],
-    [
-      "Jamauri McClure",
-      "",
-      "",
-      "Q",
-      "RB",
-      "",
-      "12.8",
-      "1",
-      "10/10/2026",
-      "Official report 2026-10-10: questionable. Previous context: Injured his left foot early in summer camp and is utilizing a scooter. DNP week one, then rose to a game-time call pre-week two but also DNP. Remains out through week four.",
-      "5"
     ],
     [
       "Antwaun Parham",
@@ -1058,19 +1097,6 @@
       "0"
     ],
     [
-      "Maurice Turner",
-      "",
-      "",
-      "Q",
-      "RB",
-      "FALSE",
-      "11.9",
-      "1",
-      "10/10/2026",
-      "Official report 2026-10-10: questionable.",
-      "0"
-    ],
-    [
       "Ty Thompson",
       "",
       "",
@@ -1100,13 +1126,13 @@
       "Orion Saunders",
       "",
       "",
-      "O",
+      "Q",
       "CB",
       "FALSE",
       "9.5",
       "0",
-      "10/10/2026",
-      "Official report 2026-10-10: out.",
+      "10/16/2026",
+      "Official report 2026-10-16: questionable. Previous context: Official report 2026-10-10: out.",
       "0"
     ],
     [
@@ -1123,30 +1149,56 @@
       "-6"
     ],
     [
-      "KeyShaun Coleman",
       "",
       "",
-      "Q",
-      "WR",
-      "FALSE",
-      "9.4",
+      "",
+      "",
+      "",
+      "",
+      "",
       "0",
-      "10/10/2026",
-      "Official report 2026-10-10: questionable.",
-      "0"
+      "",
+      "",
+      ""
     ],
     [
-      "Jackson Norwood",
       "",
       "",
-      "Q",
-      "DL",
-      "FALSE",
-      "5.3",
+      "",
+      "",
+      "",
+      "",
+      "",
       "0",
-      "10/10/2026",
-      "Official report 2026-10-10: questionable.",
-      "0"
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1825,6 +1877,58 @@
       ""
     ],
     [
+      "Jackson Norwood",
+      "",
+      "",
+      "Cleared",
+      "DL",
+      "",
+      "5.3",
+      "0",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
+    ],
+    [
+      "Jamauri McClure",
+      "",
+      "",
+      "Cleared",
+      "RB",
+      "",
+      "12.8",
+      "1",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
+    ],
+    [
+      "Maurice Turner",
+      "",
+      "",
+      "Cleared",
+      "RB",
+      "",
+      "11.9",
+      "1",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
+    ],
+    [
+      "KeyShaun Coleman",
+      "",
+      "",
+      "Cleared",
+      "WR",
+      "",
+      "9.4",
+      "0",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
+    ],
+    [
       "Ed Smith",
       "",
       "",
@@ -1890,6 +1994,6 @@
       ""
     ]
   ],
-  "count": 72,
-  "timestamp": "2026-10-16T15:06:24.765Z"
+  "count": 76,
+  "timestamp": "2026-10-17T14:05:52.931Z"
 }

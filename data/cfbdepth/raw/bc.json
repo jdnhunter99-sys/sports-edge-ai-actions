@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "10",
+      "Col2": "8",
       "Col3": "# New:",
-      "Col4": "0",
+      "Col4": "1",
       "Col5": "Impact:",
-      "Col6": "9",
+      "Col6": "11",
       "Col7": "Impact Avg:",
-      "Col8": "0.9",
+      "Col8": "1.3",
       "Col9": "Impact Rank:",
-      "Col10": "110",
+      "Col10": "100",
       "Col11": ""
     },
     {
@@ -81,30 +81,17 @@
       "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Reed Swanson",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
-    },
-    {
-      "Col1": "Syair Torrence",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "DB",
-      "Col6": "FALSE",
-      "Col7": "11.1",
-      "Col8": "1",
-      "Col9": "10/14/2026",
-      "Col10": "Official report 2026-10-14: questionable. Previous context: Downgraded to out on the ACC injury report for Week 5 vs. SMU and did not play.",
-      "Col11": "0"
+      "Col4": "O",
+      "Col5": "WR",
+      "Col6": "TRUE",
+      "Col7": "12.7",
+      "Col8": "5",
+      "Col9": "10/16/2026",
+      "Col10": "Official report 2026-10-16: out.",
+      "Col11": "1"
     },
     {
       "Col1": "Isaiah Farris",
@@ -159,19 +146,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
-    },
-    {
       "Col1": "Pape Abdoulaye Sy",
       "Col2": "",
       "Col3": "",
@@ -185,30 +159,56 @@
       "Col11": "0"
     },
     {
-      "Col1": "Michael Crounse",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
-      "Col5": "OL",
-      "Col6": "FALSE",
-      "Col7": "12.6",
-      "Col8": "1",
-      "Col9": "10/14/2026",
-      "Col10": "Official report 2026-10-14: questionable. Previous context: Injured left knee in Week 1. DNP in Week 5 vs. SMU..",
-      "Col11": "0"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
-      "Col1": "Brady Clough",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
-      "Col5": "TE",
-      "Col6": "FALSE",
-      "Col7": "8.9",
-      "Col8": "1",
-      "Col9": "10/14/2026",
-      "Col10": "Official report 2026-10-14: questionable. Previous context: DNP in Week 5 vs. SMU.",
-      "Col11": "0"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,45 @@
       "Col11": ""
     },
     {
+      "Col1": "Brady Clough",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "TE",
+      "Col6": "",
+      "Col7": "8.9",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Michael Crounse",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "12.6",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Syair Torrence",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DB",
+      "Col6": "",
+      "Col7": "11.1",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Cleared from the injury/status report on 10/17/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "E'Lla Boykin",
       "Col2": "",
       "Col3": "",
@@ -1216,23 +1255,41 @@
     [
       "",
       "#8c2232",
-      "Boston College"
+      "Boston College",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET"
+      "INJURY / STATUS UPDATE SHEET",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "#:",
-      "10",
+      "8",
       "# New:",
-      "0",
+      "1",
       "Impact:",
-      "9",
+      "11",
       "Impact Avg:",
-      "0.9",
+      "1.3",
       "Impact Rank:",
-      "110"
+      "100",
+      ""
     ],
     [
       "Player Name",
@@ -1261,27 +1318,17 @@
       "0"
     ],
     [
+      "Reed Swanson",
       "",
       "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "Syair Torrence",
-      "",
-      "",
-      "Q",
-      "DB",
-      "FALSE",
-      "11.1",
-      "1",
-      "10/14/2026",
-      "Official report 2026-10-14: questionable. Previous context: Downgraded to out on the ACC injury report for Week 5 vs. SMU and did not play.",
-      "0"
+      "O",
+      "WR",
+      "TRUE",
+      "12.7",
+      "5",
+      "10/16/2026",
+      "Official report 2026-10-16: out.",
+      "1"
     ],
     [
       "Isaiah Farris",
@@ -1336,16 +1383,6 @@
       "0"
     ],
     [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
       "Pape Abdoulaye Sy",
       "",
       "",
@@ -1359,540 +1396,719 @@
       "0"
     ],
     [
-      "Michael Crounse",
       "",
       "",
-      "Q",
-      "OL",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
       "FALSE",
-      "12.6",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
       "1",
-      "10/14/2026",
-      "Official report 2026-10-14: questionable. Previous context: Injured left knee in Week 1. DNP in Week 5 vs. SMU..",
-      "0"
-    ],
-    [
-      "Brady Clough",
       "",
       "",
-      "Q",
-      "TE",
-      "FALSE",
-      "8.9",
-      "1",
-      "10/14/2026",
-      "Official report 2026-10-14: questionable. Previous context: DNP in Week 5 vs. SMU.",
-      "0"
-    ],
-    [
       "",
       "",
       "",
       "",
+      "0",
       "",
       "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "1",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
+      ""
     ],
     [
       "Player Name",
@@ -1904,7 +2120,47 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes"
+      "Update Notes",
+      ""
+    ],
+    [
+      "Brady Clough",
+      "",
+      "",
+      "Cleared",
+      "TE",
+      "",
+      "8.9",
+      "1",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
+    ],
+    [
+      "Michael Crounse",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "12.6",
+      "1",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
+    ],
+    [
+      "Syair Torrence",
+      "",
+      "",
+      "Cleared",
+      "DB",
+      "",
+      "11.1",
+      "1",
+      "10/17/2026",
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "E'Lla Boykin",
@@ -1916,7 +2172,8 @@
       "13.2",
       "4",
       "10/14/2026",
-      "Cleared from the injury/status report on 10/14/2026"
+      "Cleared from the injury/status report on 10/14/2026",
+      ""
     ],
     [
       "Bodie Kahoun",
@@ -1928,7 +2185,8 @@
       "11.4",
       "3",
       "10/14/2026",
-      "Cleared from the injury/status report on 10/14/2026"
+      "Cleared from the injury/status report on 10/14/2026",
+      ""
     ],
     [
       "Chris Marable Jr.",
@@ -1940,7 +2198,8 @@
       "11.5",
       "3",
       "10/14/2026",
-      "Cleared from the injury/status report on 10/14/2026"
+      "Cleared from the injury/status report on 10/14/2026",
+      ""
     ],
     [
       "Micah Amedee",
@@ -1952,7 +2211,8 @@
       "10.7",
       "1",
       "9/30/2026",
-      "Cleared from the injury/status report on 09/30/2026"
+      "Cleared from the injury/status report on 09/30/2026",
+      ""
     ],
     [
       "Cameron McGee",
@@ -1964,7 +2224,8 @@
       "10.5",
       "1",
       "9/30/2026",
-      "Cleared from the injury/status report on 09/30/2026"
+      "Cleared from the injury/status report on 09/30/2026",
+      ""
     ],
     [
       "Bryce Lewis",
@@ -1976,7 +2237,8 @@
       "9.5",
       "0",
       "9/30/2026",
-      "Cleared from the injury/status report on 09/30/2026"
+      "Cleared from the injury/status report on 09/30/2026",
+      ""
     ],
     [
       "Marek Jin",
@@ -1988,7 +2250,8 @@
       "10.2",
       "0",
       "9/30/2026",
-      "Cleared from the injury/status report on 09/30/2026"
+      "Cleared from the injury/status report on 09/30/2026",
+      ""
     ],
     [
       "Justin Medlock",
@@ -2000,7 +2263,8 @@
       "13.3",
       "4",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Sedric Addison",
@@ -2012,7 +2276,8 @@
       "9.6",
       "0",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Chris Marable Jr.",
@@ -2024,7 +2289,8 @@
       "11.6",
       "3",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Alex DeGrieck",
@@ -2036,7 +2302,8 @@
       "11.8",
       "0",
       "9/25/2026",
-      "Cleared from the injury/status report on 09/25/2026"
+      "Cleared from the injury/status report on 09/25/2026",
+      ""
     ],
     [
       "Onye Nwosisi",
@@ -2048,7 +2315,8 @@
       "12.5",
       "0",
       "9/25/2026",
-      "Cleared from the injury/status report on 09/25/2026"
+      "Cleared from the injury/status report on 09/25/2026",
+      ""
     ],
     [
       "Kris Jones",
@@ -2060,7 +2328,8 @@
       "12.2",
       "1",
       "9/25/2026",
-      "Cleared from the injury/status report on 09/25/2026"
+      "Cleared from the injury/status report on 09/25/2026",
+      ""
     ],
     [
       "Reed Swanson",
@@ -2072,7 +2341,8 @@
       "12.8",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Micah Amedee",
@@ -2084,7 +2354,8 @@
       "10.7",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Bo MacCormack III",
@@ -2096,7 +2367,8 @@
       "10.1",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Jonathan Hewitt",
@@ -2108,7 +2380,8 @@
       "10.5",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Demetrius Ballard",
@@ -2120,7 +2393,8 @@
       "12.4",
       "1",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Will Graves III",
@@ -2132,7 +2406,8 @@
       "4.9",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Bryce Dopson",
@@ -2144,7 +2419,8 @@
       "9.0",
       "0",
       "9/23/2026",
-      "Cleared from the injury/status report on 09/23/2026"
+      "Cleared from the injury/status report on 09/23/2026",
+      ""
     ],
     [
       "Onye Nwosisi",
@@ -2156,7 +2432,8 @@
       "12.5",
       "3",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Charlie Comella",
@@ -2168,7 +2445,8 @@
       "11.7",
       "1",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Max Tucker",
@@ -2180,7 +2458,8 @@
       "11.9",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Jaedn Skeete",
@@ -2192,7 +2471,8 @@
       "11.7",
       "0",
       "8/6/2026",
-      "Cleared from the injury/status report on 08/06/2026"
+      "Cleared from the injury/status report on 08/06/2026",
+      ""
     ],
     [
       "Veguer Jean-Jumeau",
@@ -2204,9 +2484,10 @@
       "10.2",
       "0",
       "9/11/2026",
-      "Cleared from the injury/status report on 09/12/2026"
+      "Cleared from the injury/status report on 09/12/2026",
+      ""
     ]
   ],
-  "count": 92,
-  "timestamp": "2026-10-16T15:05:57.375Z"
+  "count": 95,
+  "timestamp": "2026-10-17T14:05:02.829Z"
 }
