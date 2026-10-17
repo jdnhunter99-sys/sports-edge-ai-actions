@@ -19,8 +19,6 @@ SPORTS={
  'wnba':('basketball_wnba','player_assists player_blocks player_double_double player_first_basket player_first_field_goal player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes player_triple_double player_turnovers'),
  'nhl':('hockey_nhl','player_goals player_first_goal player_goals_2plus player_goals_3plus player_shots_on_goal player_points_1plus player_points_2plus player_points_3plus goalie_saves player_blocked_shots'),
  'cfb':('football_ncaaf','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_pass_tds player_pass_yds player_receptions player_reception_yds player_rush_yds'),
- 'tennis':('tennis','player_aces player_break_points_won player_games_won'),
- 'epl':('soccer_epl','anytime_goal_scorer player_shots_on_target'),
 }
 PLAYER_MARKETS={
  'nfl':{'player_pass_yds':'passing_yards','player_pass_tds':'passing_tds','player_pass_completions':'passing_completions','player_pass_attempts':'passing_attempts','player_pass_interceptions':'interceptions_thrown','player_rush_yds':'rushing_yards','player_rush_tds':'rushing_tds','player_rush_attempts':'rushing_attempts','player_reception_yds':'receiving_yards','player_receptions':'receptions','player_anytime_td':'anytime_touchdown','player_rush_reception_yds':'rush_rec_yards'},
@@ -40,52 +38,131 @@ def _retry_delay(attempt,retry_after=None):
  return min(30,2**(attempt+1))
 
 RETRYABLE_HTTP_STATUSES={408,425,429,500,502,503,504}
+MAX_PROP_LINE_RESPONSE_BYTES=8*1024*1024
 
-def fetch(sport,key):
- from urllib.parse import urlencode
- provider,markets=SPORTS[sport]
- url=f'{API}/sports/{provider}/odds?'+urlencode({'markets':','.join(markets.split())})
- retries=4
- print(f'Fetching PropLine player odds for {sport} ({provider})',flush=True)
+class PropLineResponseTooLarge(Exception): pass
+
+def _request_json(url,key,timeout,context,market_count,retries=4):
  for attempt in range(retries+1):
   try:
    req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
-   with urllib.request.urlopen(req,timeout=65) as res: body=json.load(res)
-   if isinstance(body,list): return body
-   if isinstance(body,dict) and isinstance(body.get('events'),list): return body['events']
-   raise ValueError(f'{sport}: unexpected PropLine response shape')
+   with urllib.request.urlopen(req,timeout=timeout) as res:
+    content_length=res.headers.get('Content-Length')
+    try: oversized=content_length is not None and int(content_length)>MAX_PROP_LINE_RESPONSE_BYTES
+    except (TypeError,ValueError): oversized=False
+    if oversized:
+     raise PropLineResponseTooLarge(f'Content-Length {content_length} exceeds {MAX_PROP_LINE_RESPONSE_BYTES} bytes')
+    body=res.read(MAX_PROP_LINE_RESPONSE_BYTES+1)
+    if len(body)>MAX_PROP_LINE_RESPONSE_BYTES:
+     raise PropLineResponseTooLarge(f'response exceeded {MAX_PROP_LINE_RESPONSE_BYTES} bytes while streaming')
+    return json.loads(body)
+  except PropLineResponseTooLarge:
+   raise
   except urllib.error.HTTPError as e:
    if e.code not in RETRYABLE_HTTP_STATUSES or attempt>=retries:
-    raise RuntimeError(f'{sport}: PropLine player odds fetch failed after {attempt+1} attempt(s): HTTP {e.code} {e.reason}') from e
+    raise
+   # Give a large market set one retry; if its gateway timeout repeats, split
+   # it immediately instead of retrying the same oversized request repeatedly.
+   if e.code==504 and market_count>1 and attempt>=1:
+    raise
    delay=_retry_delay(attempt,e.headers.get('Retry-After'))
-   print(f'{sport}: PropLine returned HTTP {e.code}; retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
+   print(f'{context}: PropLine returned HTTP {e.code}; retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
    time.sleep(delay)
   except (urllib.error.URLError,TimeoutError,json.JSONDecodeError) as e:
-   if attempt>=retries:
-    raise RuntimeError(f'{sport}: PropLine player odds fetch failed after {attempt+1} attempt(s): {e}') from e
+   if attempt>=retries: raise
    delay=_retry_delay(attempt)
-   print(f'{sport}: PropLine request failed ({e}); retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
+   print(f'{context}: PropLine request failed ({e}); retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
    time.sleep(delay)
- raise RuntimeError(f'{sport}: PropLine player odds fetch exhausted retries')
+
+def _merge_event_rows(rows):
+ merged={}; bookmaker_maps={}; market_sets={}
+ for row in rows:
+  if not isinstance(row,dict): continue
+  event_id=str(row.get('id') or row.get('event_id') or '__single__')
+  if event_id not in merged:
+   merged[event_id]={key:value for key,value in row.items() if key!='bookmakers'}
+   merged[event_id]['bookmakers']=[]
+   bookmaker_maps[event_id]={}; market_sets[event_id]={}
+  else:
+   for key,value in row.items():
+    if key!='bookmakers' and merged[event_id].get(key) in (None,'') and value not in (None,''):
+     merged[event_id][key]=value
+  for bookmaker in row.get('bookmakers') or []:
+   if not isinstance(bookmaker,dict): continue
+   book_key=str(bookmaker.get('key') or bookmaker.get('title') or f'book-{len(bookmaker_maps[event_id])}')
+   target=bookmaker_maps[event_id].get(book_key)
+   if target is None:
+    target={key:value for key,value in bookmaker.items() if key!='markets'}
+    target['markets']=[]
+    bookmaker_maps[event_id][book_key]=target
+    market_sets[event_id][book_key]=set()
+    merged[event_id]['bookmakers'].append(target)
+   for market in bookmaker.get('markets') or []:
+    if not isinstance(market,dict): continue
+    signature=tuple(str(market.get(field) or '') for field in ('key','description','line_type','period','team'))
+    if signature in market_sets[event_id][book_key]: continue
+    market_sets[event_id][book_key].add(signature)
+    target['markets'].append(market)
+ return list(merged.values())
+
+def _merge_partition_payloads(payloads):
+ first=payloads[0]
+ if isinstance(first,list):
+  return _merge_event_rows([row for payload in payloads if isinstance(payload,list) for row in payload])
+ if isinstance(first,dict) and isinstance(first.get('events'),list):
+  merged=_merge_event_rows([row for payload in payloads if isinstance(payload,dict) for row in payload.get('events',[])])
+  return {**first,'events':merged}
+ if isinstance(first,dict):
+  merged=_merge_event_rows([payload for payload in payloads if isinstance(payload,dict)])
+  return merged[0] if merged else first
+ return first
+
+def _fetch_market_partitions(sport,markets,key,url_for_markets,context,timeout):
+ try:
+  url=url_for_markets(markets)
+  return _request_json(url,key,timeout,context,len(markets))
+ except PropLineResponseTooLarge as exc:
+  reason=str(exc)
+ except urllib.error.HTTPError as exc:
+  if exc.code!=504 or len(markets)<=1: raise
+  reason=f'repeated HTTP {exc.code}'
+ if len(markets)<=1:
+  raise PropLineResponseTooLarge(f'{context}: one-market response is still too large ({reason})')
+ midpoint=(len(markets)+1)//2
+ left,right=markets[:midpoint],markets[midpoint:]
+ print(f'{context}: {reason}; splitting {len(markets)} markets into {len(left)} + {len(right)}',flush=True)
+ payloads=[
+  _fetch_market_partitions(sport,left,key,url_for_markets,context,timeout),
+  _fetch_market_partitions(sport,right,key,url_for_markets,context,timeout),
+ ]
+ return _merge_partition_payloads(payloads)
+
+def fetch(sport,key):
+ from urllib.parse import urlencode
+ provider,market_string=SPORTS[sport]
+ markets=market_string.split()
+ url_for_markets=lambda batch:f'{API}/sports/{provider}/odds?'+urlencode({'markets':','.join(batch)})
+ print(f'Fetching PropLine player odds for {sport} ({provider})',flush=True)
+ try:
+  body=_fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} bulk odds',65)
+ except Exception as e:
+  raise RuntimeError(f'{sport}: PropLine player odds fetch failed: {e}') from e
+ if isinstance(body,list): return body
+ if isinstance(body,dict) and isinstance(body.get('events'),list): return body['events']
+ raise ValueError(f'{sport}: unexpected PropLine response shape')
 def fetch_closing(sport,event_id,key):
  from urllib.parse import urlencode
- provider,markets=SPORTS[sport]
- url=f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
-   'markets':','.join(markets.split()),'opening_window':OPENING_WINDOW_DAYS})
- for attempt in range(2):
-  try:
-   req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
-   with urllib.request.urlopen(req,timeout=45) as res: return json.load(res)
-  except urllib.error.HTTPError as e:
-   # Opening history is enrichment only. Never destroy the live-odds publish
-   # because one event has no history yet or PropLine temporarily rejects it.
-   if e.code in (400,404,409,422): return None
-   if attempt: raise
-   time.sleep(2)
-  except (urllib.error.URLError,TimeoutError):
-   if attempt: raise
-   time.sleep(2)
- return None
+ provider,market_string=SPORTS[sport]
+ markets=market_string.split()
+ url_for_markets=lambda batch:f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
+   'markets':','.join(batch),'opening_window':OPENING_WINDOW_DAYS})
+ try:
+  return _fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} event {event_id} closing odds',45)
+ except urllib.error.HTTPError as e:
+  # Opening history is enrichment only. Never destroy the live-odds publish
+  # because one event has no history yet or PropLine temporarily rejects it.
+  if e.code in (400,404,409,422): return None
+  raise
 
 def norm(v):
  return unicodedata.normalize('NFKD',str(v or '')).encode('ascii','ignore').decode().lower().strip()
