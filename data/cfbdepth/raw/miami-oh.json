@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "13",
+      "Col2": "14",
       "Col3": "# New:",
-      "Col4": "1",
+      "Col4": "3",
       "Col5": "Impact:",
-      "Col6": "14",
+      "Col6": "18",
       "Col7": "Impact Avg:",
-      "Col8": "1.1",
+      "Col8": "1.3",
       "Col9": "Impact Rank:",
-      "Col10": "73",
+      "Col10": "56",
       "Col11": ""
     },
     {
@@ -211,29 +211,29 @@
       "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Greg Smith Jr.",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "OL",
+      "Col6": "TRUE",
+      "Col7": "10.1",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Official report 2026-10-17: questionable. Game 2026-10-17.",
+      "Col11": "58"
     },
     {
       "Col1": "Vito McConnell",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
+      "Col4": "O",
       "Col5": "LB",
-      "Col6": "FALSE",
+      "Col6": "TRUE",
       "Col7": "9.4",
-      "Col8": "1",
-      "Col9": "10/10/2026",
-      "Col10": "Official report 2026-10-10: questionable.",
+      "Col8": "3",
+      "Col9": "10/17/2026",
+      "Col10": "Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-10: questionable.",
       "Col11": "0"
     },
     {
@@ -1137,15 +1137,15 @@
     ],
     [
       "#:",
-      "13",
-      "# New:",
-      "1",
-      "Impact:",
       "14",
+      "# New:",
+      "3",
+      "Impact:",
+      "18",
       "Impact Avg:",
-      "1.1",
+      "1.3",
       "Impact Rank:",
-      "73",
+      "56",
       ""
     ],
     [
@@ -1305,29 +1305,29 @@
       "0"
     ],
     [
+      "Greg Smith Jr.",
       "",
       "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0",
-      "",
-      "",
-      ""
+      "Q",
+      "OL",
+      "TRUE",
+      "10.1",
+      "1",
+      "10/17/2026",
+      "Official report 2026-10-17: questionable. Game 2026-10-17.",
+      "58"
     ],
     [
       "Vito McConnell",
       "",
       "",
-      "Q",
+      "O",
       "LB",
-      "FALSE",
+      "TRUE",
       "9.4",
-      "1",
-      "10/10/2026",
-      "Official report 2026-10-10: questionable.",
+      "3",
+      "10/17/2026",
+      "Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-10: questionable.",
       "0"
     ],
     [
@@ -2203,5 +2203,5 @@
     ]
   ],
   "count": 84,
-  "timestamp": "2026-10-17T19:05:42.384Z"
+  "timestamp": "2026-10-17T23:05:06.558Z"
 }
