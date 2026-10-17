@@ -16,6 +16,7 @@ from urllib.parse import urlencode
 
 API = 'https://api.prop-line.com/v1'
 MARKETS = 'h2h,spreads,totals'
+MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 SPORTS = {
     'nfl': 'football_nfl',
     'mlb': 'baseball_mlb',
@@ -50,21 +51,45 @@ def _retry_delay(attempt, retry_after=None):
     return min(30, 2 ** (attempt + 1))
 
 
-def request_json(url, key, timeout=65, retries=4):
+class PropLineResponseTooLarge(Exception):
+    pass
+
+
+def request_json(url, key, timeout=65, retries=4, context='PropLine request', market_count=1):
     retryable_statuses = {408, 425, 429, 500, 502, 503, 504}
     for attempt in range(retries + 1):
         try:
             req = urllib.request.Request(url, headers={'X-API-Key': key, 'Accept': 'application/json'})
             with urllib.request.urlopen(req, timeout=timeout) as res:
-                return json.load(res)
+                content_length = res.headers.get('Content-Length')
+                try:
+                    oversized = content_length is not None and int(content_length) > MAX_RESPONSE_BYTES
+                except (TypeError, ValueError):
+                    oversized = False
+                if oversized:
+                    raise PropLineResponseTooLarge(
+                        f'Content-Length {content_length} exceeds {MAX_RESPONSE_BYTES} bytes'
+                    )
+                body = res.read(MAX_RESPONSE_BYTES + 1)
+                if len(body) > MAX_RESPONSE_BYTES:
+                    raise PropLineResponseTooLarge(
+                        f'response exceeded {MAX_RESPONSE_BYTES} bytes while streaming'
+                    )
+                return json.loads(body)
+        except PropLineResponseTooLarge:
+            raise
         except urllib.error.HTTPError as exc:
             if exc.code in (400, 404, 409, 422):
                 return None
             if exc.code not in retryable_statuses or attempt >= retries:
                 raise
+            # Split a multi-market request after a repeated gateway timeout instead
+            # of retrying the same large request for the full retry window.
+            if exc.code == 504 and market_count > 1 and attempt >= 1:
+                raise
             delay = _retry_delay(attempt, exc.headers.get('Retry-After'))
             print(
-                f'PropLine returned HTTP {exc.code}; retry {attempt + 1}/{retries} '
+                f'{context}: PropLine returned HTTP {exc.code}; retry {attempt + 1}/{retries} '
                 f'in {delay:.0f}s',
                 flush=True,
             )
@@ -74,7 +99,7 @@ def request_json(url, key, timeout=65, retries=4):
                 raise
             delay = _retry_delay(attempt)
             print(
-                f'PropLine request failed ({exc}); retry {attempt + 1}/{retries} '
+                f'{context}: PropLine request failed ({exc}); retry {attempt + 1}/{retries} '
                 f'in {delay:.0f}s',
                 flush=True,
             )
@@ -82,19 +107,103 @@ def request_json(url, key, timeout=65, retries=4):
     return None
 
 
-def fetch_current(provider, key):
-    url = f'{API}/sports/{provider}/odds?' + urlencode({'markets': MARKETS})
-    print(f'Fetching PropLine current odds for {provider}', flush=True)
+def _merge_event_rows(rows):
+    merged = {}
+    bookmaker_maps = {}
+    market_sets = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        event_id = str(row.get('id') or row.get('event_id') or '__single__')
+        if event_id not in merged:
+            merged[event_id] = {name: value for name, value in row.items() if name != 'bookmakers'}
+            merged[event_id]['bookmakers'] = []
+            bookmaker_maps[event_id] = {}
+            market_sets[event_id] = {}
+        else:
+            for name, value in row.items():
+                if name != 'bookmakers' and merged[event_id].get(name) in (None, '') and value not in (None, ''):
+                    merged[event_id][name] = value
+        for bookmaker in row.get('bookmakers') or []:
+            if not isinstance(bookmaker, dict):
+                continue
+            book_key = str(bookmaker.get('key') or bookmaker.get('title') or f'book-{len(bookmaker_maps[event_id])}')
+            target = bookmaker_maps[event_id].get(book_key)
+            if target is None:
+                target = {name: value for name, value in bookmaker.items() if name != 'markets'}
+                target['markets'] = []
+                bookmaker_maps[event_id][book_key] = target
+                market_sets[event_id][book_key] = set()
+                merged[event_id]['bookmakers'].append(target)
+            for market in bookmaker.get('markets') or []:
+                if not isinstance(market, dict):
+                    continue
+                signature = tuple(
+                    str(market.get(field) or '')
+                    for field in ('key', 'description', 'line_type', 'period', 'team')
+                )
+                if signature in market_sets[event_id][book_key]:
+                    continue
+                market_sets[event_id][book_key].add(signature)
+                target['markets'].append(market)
+    return list(merged.values())
+
+
+def _merge_market_payloads(payloads):
+    first = payloads[0]
+    if isinstance(first, list):
+        return _merge_event_rows([row for payload in payloads if isinstance(payload, list) for row in payload])
+    if isinstance(first, dict) and isinstance(first.get('events'), list):
+        events = _merge_event_rows([
+            row for payload in payloads if isinstance(payload, dict) for row in payload.get('events', [])
+        ])
+        return {**first, 'events': events}
+    return first
+
+
+def _fetch_market_partitions(provider, markets, key, context='bulk current odds'):
+    url = f'{API}/sports/{provider}/odds?' + urlencode({'markets': ','.join(markets)})
     try:
-        body = request_json(url, key, timeout=65, retries=4)
+        return request_json(
+            url,
+            key,
+            timeout=65,
+            retries=4 if len(markets) == 1 else 1,
+            context=context,
+            market_count=len(markets),
+        ), 1
+    except PropLineResponseTooLarge as exc:
+        reason = str(exc)
+    except urllib.error.HTTPError as exc:
+        if exc.code != 504 or len(markets) <= 1:
+            raise
+        reason = f'repeated HTTP {exc.code}'
+    if len(markets) <= 1:
+        raise PropLineResponseTooLarge(f'{context}: one-market response remains too large ({reason})')
+    midpoint = (len(markets) + 1) // 2
+    left, right = markets[:midpoint], markets[midpoint:]
+    print(
+        f'{context}: {reason}; splitting {len(markets)} markets into '
+        f'{len(left)} + {len(right)}',
+        flush=True,
+    )
+    left_payload, left_requests = _fetch_market_partitions(provider, left, key, context)
+    right_payload, right_requests = _fetch_market_partitions(provider, right, key, context)
+    return _merge_market_payloads([left_payload, right_payload]), left_requests + right_requests
+
+
+def fetch_current(provider, key):
+    markets = MARKETS.split(',')
+    print(f'Fetching PropLine current odds for {provider} ({len(markets)} markets)', flush=True)
+    try:
+        body, request_count = _fetch_market_partitions(provider, markets, key, f'{provider} bulk odds')
     except Exception as exc:
         raise RuntimeError(f'{provider}: bulk current odds request failed: {exc}') from exc
     if isinstance(body, list):
-        return body
+        return body, request_count
     if isinstance(body, dict) and isinstance(body.get('events'), list):
-        return body['events']
+        return body['events'], request_count
     raise ValueError(f'{provider}: unexpected bulk odds response')
-
 
 
 def read_json(path):
@@ -607,7 +716,7 @@ def main():
                 backup_candidate = backup_parent / 'nhl'
                 shutil.copytree(sport_dir, backup_candidate)
                 backup_dir = backup_candidate
-            events = fetch_current(provider, key)
+            events, bulk_requests = fetch_current(provider, key)
             index_rows = []
             for event in events:
                 if not isinstance(event, dict) or event.get('id') is None:
@@ -630,7 +739,10 @@ def main():
             write_json(sport_dir / 'index.json', {
                 'sport': sport, 'provider': provider, 'updated_at': stamp, 'events': index_rows,
             })
-            summary[sport] = {'current_events': len(events), 'cached_events': len(index_rows), 'bulk_requests': 1, 'history_requests': 0}
+            summary[sport] = {
+                'current_events': len(events), 'cached_events': len(index_rows),
+                'bulk_requests': bulk_requests, 'history_requests': 0,
+            }
             print(f'{sport}: {summary[sport]}', flush=True)
         except Exception as exc:
             if sport != 'nhl':
