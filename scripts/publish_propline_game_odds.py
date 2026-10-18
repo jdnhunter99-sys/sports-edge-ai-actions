@@ -19,6 +19,7 @@ MARKETS = 'h2h,spreads,totals'
 SPORTS = {
     'nfl': 'football_nfl',
     'mlb': 'baseball_mlb',
+    'nhl': 'hockey_nhl',
     'wnba': 'basketball_wnba',
     'nba': 'basketball_nba',
     'cfb': 'football_ncaaf',
