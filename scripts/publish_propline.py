@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Fetch PropLine odds and publish per-player JSON to the private data branch."""
+"""Fetch PropLine bulk odds and publish per-player JSON to the private data branch."""
 import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 
 API='https://api.prop-line.com/v1'
 # Opening-line enrichment is intentionally limited to the sports that currently
@@ -12,18 +12,14 @@ API='https://api.prop-line.com/v1'
 # Hobby plan (5,000 requests/day) inside quota while preserving all live odds.
 OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
-EVENT_PROP_WINDOW_DAYS={'nfl':7,'cfb':7,'nhl':14}
-EVENT_PROP_DEFAULT_WINDOW_DAYS=14
-EVENT_INCLUDE_STARTED_HOURS=8
-EVENT_MARKETS_PER_REQUEST=12
-EVENT_FETCH_SPORTS={'nfl','nhl','cfb'}
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
  'mlb':('baseball_mlb','batter_1plus_hits batter_1plus_rbis batter_2plus_hits batter_2plus_home_runs batter_2plus_rbis batter_3plus_hits batter_3plus_rbis batter_4plus_hits batter_doubles batter_hits batter_hits_runs_rbis batter_home_runs batter_rbis batter_runs batter_singles batter_stolen_bases batter_strikeouts batter_total_bases batter_triples batter_walks pitcher_earned_runs pitcher_hits_allowed pitcher_outs pitcher_strikeouts pitcher_walks'),
  'wnba':('basketball_wnba','player_assists player_blocks player_double_double player_first_basket player_first_field_goal player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes player_triple_double player_turnovers'),
- 'nhl':('hockey_nhl','player_goals player_first_goal player_goals_2plus player_goals_3plus player_shots_on_goal player_points_1plus player_points_2plus player_points_3plus goalie_saves player_blocked_shots'),
  'cfb':('football_ncaaf','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_pass_tds player_pass_yds player_receptions player_reception_yds player_rush_yds'),
+ 'tennis':('tennis','player_aces player_break_points_won player_games_won'),
+ 'epl':('soccer_epl','anytime_goal_scorer player_shots_on_target'),
 }
 PLAYER_MARKETS={
  'nfl':{'player_pass_yds':'passing_yards','player_pass_tds':'passing_tds','player_pass_completions':'passing_completions','player_pass_attempts':'passing_attempts','player_pass_interceptions':'interceptions_thrown','player_rush_yds':'rushing_yards','player_rush_tds':'rushing_tds','player_rush_attempts':'rushing_attempts','player_reception_yds':'receiving_yards','player_receptions':'receptions','player_anytime_td':'anytime_touchdown','player_rush_reception_yds':'rush_rec_yards'},
@@ -31,224 +27,44 @@ PLAYER_MARKETS={
  'mlb':{'batter_hits':'hits','batter_total_bases':'total_bases','batter_home_runs':'home_runs','batter_runs':'runs','batter_rbis':'rbi','batter_singles':'singles','batter_doubles':'doubles','batter_walks':'walks','pitcher_strikeouts':'strikeouts','batter_strikeouts':'strikeouts_batter','batter_stolen_bases':'stolen_bases','pitcher_outs':'pitcher_outs','pitcher_earned_runs':'earned_runs','pitcher_hits_allowed':'hits_allowed','pitcher_walks':'walks_allowed','batter_hits_runs_rbis':'hits_runs_rbis'},
  'wnba':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_blocks':'blocks','player_steals':'steals','player_turnovers':'turnovers','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists','player_rebounds_assists':'rebounds_assists','player_double_double':'double_double','player_triple_double':'triple_double','player_first_basket':'first_basket'},
  'nba':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists'},
- 'nhl':{'player_goals':'goals','player_first_goal':'first_goal','player_goals_2plus':'goals_2plus','player_goals_3plus':'goals_3plus','player_shots_on_goal':'shots_on_goal','player_points_1plus':'points_1plus','player_points_2plus':'points_2plus','player_points_3plus':'points_3plus','goalie_saves':'goalie_saves','player_blocked_shots':'blocked_shots'},
 }
 def slug(s):
  s=unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode().lower()
  return re.sub(r'[^a-z0-9]+','-',s).strip('-') or 'unknown'
-def _retry_delay(attempt,retry_after=None):
- if retry_after:
-  try: return min(30,max(1,float(retry_after)))
-  except (TypeError,ValueError): pass
- return min(30,2**(attempt+1))
-
-RETRYABLE_HTTP_STATUSES={408,425,429,500,502,503,504}
-MAX_PROP_LINE_RESPONSE_BYTES=8*1024*1024
-
-class PropLineResponseTooLarge(Exception): pass
-
-def _request_json(url,key,timeout,context,market_count,retries=4):
- for attempt in range(retries+1):
-  try:
-   req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
-   with urllib.request.urlopen(req,timeout=timeout) as res:
-    content_length=res.headers.get('Content-Length')
-    try: oversized=content_length is not None and int(content_length)>MAX_PROP_LINE_RESPONSE_BYTES
-    except (TypeError,ValueError): oversized=False
-    if oversized:
-     raise PropLineResponseTooLarge(f'Content-Length {content_length} exceeds {MAX_PROP_LINE_RESPONSE_BYTES} bytes')
-    body=res.read(MAX_PROP_LINE_RESPONSE_BYTES+1)
-    if len(body)>MAX_PROP_LINE_RESPONSE_BYTES:
-     raise PropLineResponseTooLarge(f'response exceeded {MAX_PROP_LINE_RESPONSE_BYTES} bytes while streaming')
-    return json.loads(body)
-  except PropLineResponseTooLarge:
-   raise
-  except urllib.error.HTTPError as e:
-   if e.code not in RETRYABLE_HTTP_STATUSES or attempt>=retries:
-    raise
-   # Give a large market set one retry; if its gateway timeout repeats, split
-   # it immediately instead of retrying the same oversized request repeatedly.
-   if e.code==504 and market_count>1 and attempt>=1:
-    raise
-   delay=_retry_delay(attempt,e.headers.get('Retry-After'))
-   print(f'{context}: PropLine returned HTTP {e.code}; retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
-   time.sleep(delay)
-  except (urllib.error.URLError,TimeoutError,json.JSONDecodeError) as e:
-   if attempt>=retries: raise
-   delay=_retry_delay(attempt)
-   print(f'{context}: PropLine request failed ({e}); retry {attempt+1}/{retries} in {delay:.0f}s',flush=True)
-   time.sleep(delay)
-
-def _merge_event_rows(rows):
- merged={}; bookmaker_maps={}; market_sets={}
- for row in rows:
-  if not isinstance(row,dict): continue
-  event_id=str(row.get('id') or row.get('event_id') or '__single__')
-  if event_id not in merged:
-   merged[event_id]={key:value for key,value in row.items() if key!='bookmakers'}
-   merged[event_id]['bookmakers']=[]
-   bookmaker_maps[event_id]={}; market_sets[event_id]={}
-  else:
-   for key,value in row.items():
-    if key!='bookmakers' and merged[event_id].get(key) in (None,'') and value not in (None,''):
-     merged[event_id][key]=value
-  for bookmaker in row.get('bookmakers') or []:
-   if not isinstance(bookmaker,dict): continue
-   book_key=str(bookmaker.get('key') or bookmaker.get('title') or f'book-{len(bookmaker_maps[event_id])}')
-   target=bookmaker_maps[event_id].get(book_key)
-   if target is None:
-    target={key:value for key,value in bookmaker.items() if key!='markets'}
-    target['markets']=[]
-    bookmaker_maps[event_id][book_key]=target
-    market_sets[event_id][book_key]=set()
-    merged[event_id]['bookmakers'].append(target)
-   for market in bookmaker.get('markets') or []:
-    if not isinstance(market,dict): continue
-    signature=tuple(str(market.get(field) or '') for field in ('key','description','line_type','period','team'))
-    if signature in market_sets[event_id][book_key]: continue
-    market_sets[event_id][book_key].add(signature)
-    target['markets'].append(market)
- return list(merged.values())
-
-def _merge_partition_payloads(payloads):
- first=payloads[0]
- if isinstance(first,list):
-  return _merge_event_rows([row for payload in payloads if isinstance(payload,list) for row in payload])
- if isinstance(first,dict) and isinstance(first.get('events'),list):
-  merged=_merge_event_rows([row for payload in payloads if isinstance(payload,dict) for row in payload.get('events',[])])
-  return {**first,'events':merged}
- if isinstance(first,dict):
-  merged=_merge_event_rows([payload for payload in payloads if isinstance(payload,dict)])
-  return merged[0] if merged else first
- return first
-
-def _fetch_market_partitions(sport,markets,key,url_for_markets,context,timeout):
- try:
-  url=url_for_markets(markets)
-  return _request_json(url,key,timeout,context,len(markets))
- except PropLineResponseTooLarge as exc:
-  reason=str(exc)
- except urllib.error.HTTPError as exc:
-  if exc.code!=504 or len(markets)<=1: raise
-  reason=f'repeated HTTP {exc.code}'
- if len(markets)<=1:
-  raise PropLineResponseTooLarge(f'{context}: one-market response is still too large ({reason})')
- midpoint=(len(markets)+1)//2
- left,right=markets[:midpoint],markets[midpoint:]
- print(f'{context}: {reason}; splitting {len(markets)} markets into {len(left)} + {len(right)}',flush=True)
- payloads=[
-  _fetch_market_partitions(sport,left,key,url_for_markets,context,timeout),
-  _fetch_market_partitions(sport,right,key,url_for_markets,context,timeout),
- ]
- return _merge_partition_payloads(payloads)
-
-def _fetch_market_batches(sport,markets,key,url_for_markets,context,timeout,batch_size):
- batches=[markets[index:index+batch_size] for index in range(0,len(markets),batch_size)]
- if len(batches)>1:
-  print(f'{context}: pre-splitting {len(markets)} markets into {len(batches)} requests of at most {batch_size}',flush=True)
- payloads=[]
- for index,batch in enumerate(batches,start=1):
-  batch_context=f'{context} market batch {index}/{len(batches)}'
-  payloads.append(_fetch_market_partitions(sport,batch,key,url_for_markets,batch_context,timeout))
- return _merge_partition_payloads(payloads)
-
-def _event_start_utc(value):
- try:
-  parsed=datetime.fromisoformat(str(value).replace('Z','+00:00'))
-  if parsed.tzinfo is None: parsed=parsed.replace(tzinfo=timezone.utc)
-  return parsed.astimezone(timezone.utc)
- except (TypeError,ValueError):
-  return None
-
-def _event_odds_row(body,listed_event,event_id):
- row=None
- if isinstance(body,list):
-  row=next((item for item in body if isinstance(item,dict) and str(item.get('id') or item.get('event_id'))==str(event_id)),None)
-  if row is None: row=next((item for item in body if isinstance(item,dict)),None)
- elif isinstance(body,dict):
-  if isinstance(body.get('events'),list):
-   row=next((item for item in body['events'] if isinstance(item,dict) and str(item.get('id') or item.get('event_id'))==str(event_id)),None)
-  elif isinstance(body.get('event'),dict):
-   row=body['event']
-  elif isinstance(body.get('data'),dict) and ('bookmakers' in body['data'] or isinstance(body['data'].get('event'),dict)):
-   row=body['data'].get('event') if isinstance(body['data'].get('event'),dict) else body['data']
-  else:
-   row=body
- if not isinstance(row,dict): row={}
- return {**listed_event,**row,'id':row.get('id') or row.get('event_id') or listed_event.get('id') or str(event_id)}
-
-def fetch_event_window(provider,market_string,sport,key):
- from urllib.parse import quote,urlencode
- listed=_request_json(f'{API}/sports/{provider}/events',key,65,f'{sport} events',1)
- if isinstance(listed,dict) and isinstance(listed.get('events'),list): listed=listed['events']
- if not isinstance(listed,list): raise ValueError(f'{sport}: unexpected events response')
- now=datetime.now(timezone.utc)
- start=now-timedelta(hours=EVENT_INCLUDE_STARTED_HOURS)
- window_days=EVENT_PROP_WINDOW_DAYS.get(sport,EVENT_PROP_DEFAULT_WINDOW_DAYS)
- end=now+timedelta(days=window_days)
- candidates=[]
- for event in listed:
-  if not isinstance(event,dict) or event.get('id') is None: continue
-  commence=_event_start_utc(event.get('commence_time'))
-  if commence is not None and start<=commence<=end: candidates.append((commence,event))
- candidates.sort(key=lambda item:item[0])
- markets=market_string.split()
- events=[]
- print(f'{provider}: fetching {len(candidates)} {sport.upper()} events from the last {EVENT_INCLUDE_STARTED_HOURS}h through the next {window_days} days one game at a time',flush=True)
- for index,(_,listed_event) in enumerate(candidates,start=1):
-  event_id=str(listed_event['id'])
-  url_for_markets=lambda batch,eid=event_id:f'{API}/sports/{provider}/events/{quote(eid,safe="")}/odds?'+urlencode({'markets':','.join(batch)})
-  context=f'{sport} event {event_id} player odds [{index}/{len(candidates)}]'
-  body=_fetch_market_batches(sport,markets,key,url_for_markets,context,65,EVENT_MARKETS_PER_REQUEST)
-  events.append(_event_odds_row(body,listed_event,event_id))
- return events
-
 def fetch(sport,key):
  from urllib.parse import urlencode
- provider,market_string=SPORTS[sport]
- if sport in EVENT_FETCH_SPORTS:
-  print(f'Fetching PropLine player odds for {sport} ({provider}) per event',flush=True)
+ provider,markets=SPORTS[sport]
+ url=f'{API}/sports/{provider}/odds?'+urlencode({'markets':','.join(markets.split())})
+ for attempt in range(2):
   try:
-   return fetch_event_window(provider,market_string,sport,key)
-  except Exception as e:
-   raise RuntimeError(f'{sport}: PropLine per-event player odds fetch failed: {e}') from e
- markets=market_string.split()
- url_for_markets=lambda batch:f'{API}/sports/{provider}/odds?'+urlencode({'markets':','.join(batch)})
- print(f'Fetching PropLine player odds for {sport} ({provider})',flush=True)
- try:
-  body=_fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} bulk odds',65)
- except (PropLineResponseTooLarge,urllib.error.HTTPError) as e:
-  # Recover oversized bulk responses for every sport with the same bounded
-  # per-event requests used by NFL/CFB/NHL. Keep normal-sized sports on the
-  # faster bulk path.
-  should_fetch_per_event=isinstance(e,PropLineResponseTooLarge) or e.code==504
-  if not should_fetch_per_event:
-   raise RuntimeError(f'{sport}: PropLine player odds fetch failed: {e}') from e
-  print(f'{sport}: bulk response is too large or timing out; falling back to per-event player odds fetch',flush=True)
-  try:
-   return fetch_event_window(provider,market_string,sport,key)
-  except Exception as fallback_error:
-   raise RuntimeError(f'{sport}: bulk request failed ({e}); per-event fallback failed: {fallback_error}') from fallback_error
- except Exception as e:
-  raise RuntimeError(f'{sport}: PropLine player odds fetch failed: {e}') from e
- if isinstance(body,list): return body
- if isinstance(body,dict) and isinstance(body.get('events'),list): return body['events']
- raise ValueError(f'{sport}: unexpected PropLine response shape')
+   req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
+   with urllib.request.urlopen(req,timeout=65) as res: body=json.load(res)
+   if isinstance(body,list): return body
+   if isinstance(body,dict) and isinstance(body.get('events'),list): return body['events']
+   raise ValueError(f'{sport}: unexpected PropLine response shape')
+  except (urllib.error.URLError,TimeoutError) as e:
+   if attempt: raise
+   time.sleep(3)
+ raise RuntimeError('unreachable')
 def fetch_closing(sport,event_id,key):
  from urllib.parse import urlencode
- provider,market_string=SPORTS[sport]
- markets=market_string.split()
- url_for_markets=lambda batch:f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
-   'markets':','.join(batch),'opening_window':OPENING_WINDOW_DAYS})
- try:
-  return _fetch_market_batches(
-   sport,markets,key,url_for_markets,
-   f'{sport} event {event_id} closing odds',45,EVENT_MARKETS_PER_REQUEST)
- except urllib.error.HTTPError as e:
-  # Opening history is enrichment only. Never destroy the live-odds publish
-  # because one event has no history yet or PropLine temporarily rejects it.
-  if e.code in (400,404,409,422): return None
-  raise
+ provider,markets=SPORTS[sport]
+ url=f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
+   'markets':','.join(markets.split()),'opening_window':OPENING_WINDOW_DAYS})
+ for attempt in range(2):
+  try:
+   req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
+   with urllib.request.urlopen(req,timeout=45) as res: return json.load(res)
+  except urllib.error.HTTPError as e:
+   # Opening history is enrichment only. Never destroy the live-odds publish
+   # because one event has no history yet or PropLine temporarily rejects it.
+   if e.code in (400,404,409,422): return None
+   if attempt: raise
+   time.sleep(2)
+  except (urllib.error.URLError,TimeoutError):
+   if attempt: raise
+   time.sleep(2)
+ return None
 
 def norm(v):
  return unicodedata.normalize('NFKD',str(v or '')).encode('ascii','ignore').decode().lower().strip()
@@ -324,7 +140,6 @@ def is_non_player(sport,name):
 ESPN_LEAGUES={
  'nfl':('football','nfl'),'cfb':('football','college-football'),
  'nba':('basketball','nba'),'wnba':('basketball','wnba'),
- 'nhl':('hockey','nhl'),
  'mlb':('baseball','mlb'),'epl':('soccer','eng.1'),
 }
 
@@ -680,9 +495,9 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
    count+=1
  if not count:
   describe_empty_response(sport,events)
-  if sport not in ('cfb','nhl'): raise ValueError(f'{sport}: zero described player outcomes; refusing empty publish')
-  # Temporary upstream CFB or NHL gaps must not prevent fresh data for every
-  # other sport from publishing. main() retains the prior cache when present.
+  if sport != 'cfb': raise ValueError(f'{sport}: zero described player outcomes; refusing empty publish')
+  # A temporary upstream CFB gap must not prevent fresh data for every other
+  # sport from publishing. main() will retain the prior CFB cache when present.
   return {'players':0,'events':len(events),'empty_response':True}
  event_index=[]
  for ev in events:
@@ -814,9 +629,8 @@ def build_player_list(sport,screen,index,stamp,source_events=None):
   'game_count':len(games_list),'games':games_list,'players':list(by_key.values()),
  }
 
-def publish_player_lists(root,stamp,skip_sports=()):
+def publish_player_lists(root,stamp):
  for sport in SPORTS:
-  if sport in skip_sports: continue
   index_path=root/'Player Odds'/sport/'index.json'
   try:
    index_data=json.loads(index_path.read_text(encoding='utf-8'))
@@ -901,60 +715,24 @@ def main():
  key=os.environ['PROPLINE_API_KEY'].strip(); out=Path(os.environ['PROPLINE_OUTPUT_DIR'])
  stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'); root=out/f'.propline-stage-{stamp}'
  root.mkdir(parents=True,exist_ok=False)
- stats={}; failed_sports=set()
+ stats={}
  try:
   for sport in SPORTS:
-   try:
-    events=fetch(sport,key)
-    roster_index=espn_roster_index(sport,events,out)
-    stats[sport]=build_sport(sport,events,root,stamp,key,roster_index)
-    if sport in ('cfb','nhl') and stats[sport].get('empty_response'):
-     retained=retain_previous_sport_cache(sport,out,root)
-     if retained is not None:
-      stats[sport]={'players':retained,'events':len(events),'reused_previous_cache':True,'fetched_players':0}
-      print(f'{sport}: upstream returned no player outcomes; retained previous cache ({retained} players)',flush=True)
-     else:
-      write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':[],'players':[],'warning':'Upstream returned no described player outcomes; see workflow diagnostics.'})
-      write_json(root/'Player Odds'/sport/'board.json',{'sport':sport,'updated_at':stamp,'player_count':0,'props':[]})
-      stats[sport]={'players':0,'events':len(events),'empty_response':True}
-      print(f'{sport}: no prior player-prop cache exists; publishing an empty {sport.upper()} index while other sports continue',flush=True)
-    print(f'{sport}: {stats[sport]}',flush=True)
-   except Exception as exc:
-    if sport not in ('nhl','cfb'): raise
-    # The staged generation is atomic, so discard any partial build and keep
-    # the previous cache for an upstream failure in these large-slate sports.
-    import shutil
-    for relative in (f'Player Odds/{sport}',f'Player Lists/{sport}'):
-     staged=root/relative
-     if staged.exists(): shutil.rmtree(staged,ignore_errors=True)
-    try:
-     retained=retain_previous_sport_cache(sport,out,root)
-    except Exception as retain_error:
-     retained=None
-     print(f'{sport}: could not preserve previous Player Odds snapshot ({retain_error})',flush=True)
-    old_lists=out/'Player Lists'/sport
-    lists_retained=False
-    if old_lists.is_dir():
-     try:
-      (root/'Player Lists').mkdir(parents=True,exist_ok=True)
-      shutil.copytree(old_lists,root/'Player Lists'/sport,dirs_exist_ok=True)
-      lists_retained=True
-     except OSError as copy_error:
-      print(f'{sport}: could not preserve previous Player Lists snapshot ({copy_error})',flush=True)
-    failed_sports.add(sport)
-    stats[sport]={
-     'skipped':True,
-     'retained_previous_cache':retained is not None,
-     'players':retained,
-     'retained_previous_player_list':lists_retained,
-     'error':str(exc),
-    }
-    print(
-     f'{sport}: fetch/build failed ({exc}); retained the previous {sport.upper()} cache '
-     f'({retained if retained is not None else 0} players) and continuing with remaining sports',
-     flush=True,
-    )
-  publish_player_lists(root,stamp,skip_sports=failed_sports)
+   events=fetch(sport,key)
+   roster_index=espn_roster_index(sport,events,out)
+   stats[sport]=build_sport(sport,events,root,stamp,key,roster_index)
+   if sport=='cfb' and stats[sport].get('empty_response'):
+    retained=retain_previous_sport_cache(sport,out,root)
+    if retained is not None:
+     stats[sport]={'players':retained,'events':len(events),'reused_previous_cache':True,'fetched_players':0}
+     print(f'cfb: upstream returned no player outcomes; retained previous cache ({retained} players)',flush=True)
+    else:
+     write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':[],'players':[],'warning':'Upstream returned no described player outcomes; see workflow diagnostics.'})
+     write_json(root/'Player Odds'/sport/'board.json',{'sport':sport,'updated_at':stamp,'player_count':0,'props':[]})
+     stats[sport]={'players':0,'events':len(events),'empty_response':True}
+     print('cfb: no prior player-prop cache exists; publishing an empty CFB index while other sports continue',flush=True)
+   print(f'{sport}: {stats[sport]}',flush=True)
+  publish_player_lists(root,stamp)
  except Exception:
   import shutil
   shutil.rmtree(root,ignore_errors=True)
