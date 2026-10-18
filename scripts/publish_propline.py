@@ -13,6 +13,7 @@ API='https://api.prop-line.com/v1'
 OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
 EVENT_PROP_WINDOW_DAYS={'nfl':7,'cfb':7,'nhl':14}
+EVENT_PROP_DEFAULT_WINDOW_DAYS=14
 EVENT_INCLUDE_STARTED_HOURS=8
 EVENT_MARKETS_PER_REQUEST=12
 EVENT_FETCH_SPORTS={'nfl','nhl','cfb'}
@@ -183,7 +184,7 @@ def fetch_event_window(provider,market_string,sport,key):
  if not isinstance(listed,list): raise ValueError(f'{sport}: unexpected events response')
  now=datetime.now(timezone.utc)
  start=now-timedelta(hours=EVENT_INCLUDE_STARTED_HOURS)
- window_days=EVENT_PROP_WINDOW_DAYS[sport]
+ window_days=EVENT_PROP_WINDOW_DAYS.get(sport,EVENT_PROP_DEFAULT_WINDOW_DAYS)
  end=now+timedelta(days=window_days)
  candidates=[]
  for event in listed:
@@ -216,6 +217,18 @@ def fetch(sport,key):
  print(f'Fetching PropLine player odds for {sport} ({provider})',flush=True)
  try:
   body=_fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} bulk odds',65)
+ except (PropLineResponseTooLarge,urllib.error.HTTPError) as e:
+  # Recover oversized bulk responses for every sport with the same bounded
+  # per-event requests used by NFL/CFB/NHL. Keep normal-sized sports on the
+  # faster bulk path.
+  should_fetch_per_event=isinstance(e,PropLineResponseTooLarge) or e.code==504
+  if not should_fetch_per_event:
+   raise RuntimeError(f'{sport}: PropLine player odds fetch failed: {e}') from e
+  print(f'{sport}: bulk response is too large or timing out; falling back to per-event player odds fetch',flush=True)
+  try:
+   return fetch_event_window(provider,market_string,sport,key)
+  except Exception as fallback_error:
+   raise RuntimeError(f'{sport}: bulk request failed ({e}); per-event fallback failed: {fallback_error}') from fallback_error
  except Exception as e:
   raise RuntimeError(f'{sport}: PropLine player odds fetch failed: {e}') from e
  if isinstance(body,list): return body
@@ -228,11 +241,9 @@ def fetch_closing(sport,event_id,key):
  url_for_markets=lambda batch:f'{API}/sports/{provider}/events/{event_id}/odds/closing?'+urlencode({
    'markets':','.join(batch),'opening_window':OPENING_WINDOW_DAYS})
  try:
-  if sport in EVENT_FETCH_SPORTS:
-   return _fetch_market_batches(
-    sport,markets,key,url_for_markets,
-    f'{sport} event {event_id} closing odds',45,EVENT_MARKETS_PER_REQUEST)
-  return _fetch_market_partitions(sport,markets,key,url_for_markets,f'{sport} event {event_id} closing odds',45)
+  return _fetch_market_batches(
+   sport,markets,key,url_for_markets,
+   f'{sport} event {event_id} closing odds',45,EVENT_MARKETS_PER_REQUEST)
  except urllib.error.HTTPError as e:
   # Opening history is enrichment only. Never destroy the live-odds publish
   # because one event has no history yet or PropLine temporarily rejects it.

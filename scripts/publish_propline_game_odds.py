@@ -282,6 +282,18 @@ def fetch_current(provider, key):
     print(f'Fetching PropLine current odds for {provider} ({len(markets)} markets)', flush=True)
     try:
         body, request_count = _fetch_market_partitions(provider, markets, key, f'{provider} bulk odds')
+    except (PropLineResponseTooLarge, urllib.error.HTTPError) as exc:
+        # Some sports exceed PropLine's response cap even after market
+        # partitioning. Retry the whole sport as one request per event, matching
+        # the safe path used for NFL/CFB and keeping each response bounded.
+        should_fetch_per_event = isinstance(exc, PropLineResponseTooLarge) or exc.code == 504
+        if not should_fetch_per_event:
+            raise RuntimeError(f'{provider}: bulk current odds request failed: {exc}') from exc
+        print(f'{provider}: bulk response is too large or timing out; falling back to per-event odds fetch', flush=True)
+        try:
+            return _fetch_event_window_current(provider, key)
+        except Exception as fallback_exc:
+            raise RuntimeError(f'{provider}: bulk request failed ({exc}); per-event fallback failed: {fallback_exc}') from fallback_exc
     except Exception as exc:
         raise RuntimeError(f'{provider}: bulk current odds request failed: {exc}') from exc
     if isinstance(body, list):
