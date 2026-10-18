@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "",
+  "sheetTitle": "Status Update",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "8",
+      "Col2": "9",
       "Col3": "# New:",
-      "Col4": "0",
+      "Col4": "2",
       "Col5": "Impact:",
-      "Col6": "5",
+      "Col6": "6",
       "Col7": "Impact Avg:",
-      "Col8": "0.6",
+      "Col8": "0.7",
       "Col9": "Impact Rank:",
-      "Col10": "131",
+      "Col10": "123",
       "Col11": ""
     },
     {
@@ -120,19 +120,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Chris Marshall",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "WR",
-      "Col6": "FALSE",
-      "Col7": "14.0",
-      "Col8": "1",
-      "Col9": "10/17/2026",
-      "Col10": "Update 2026-10-17: His game availability is questionable. He is dealing with a leg injury.",
-      "Col11": "8"
-    },
-    {
       "Col1": "Josiah Clemons",
       "Col2": "",
       "Col3": "",
@@ -159,17 +146,30 @@
       "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Chris Marshall",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "WR",
+      "Col6": "TRUE",
+      "Col7": "14.0",
+      "Col8": "2",
+      "Col9": "10/17/2026",
+      "Col10": "Suffered a leg injury in the week seven game and did not return. Getting checked out by doctors and we await word on the severity of this injury.",
+      "Col11": "8"
+    },
+    {
+      "Col1": "Kavion Broussard",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Q",
+      "Col5": "OL",
+      "Col6": "TRUE",
+      "Col7": "11.2",
+      "Col8": "1",
+      "Col9": "10/17/2026",
+      "Col10": "Injured in-game week seven against Vandy and did not return. Tracking for updates.",
+      "Col11": "72"
     },
     {
       "Col1": "",
@@ -1189,15 +1189,15 @@
     ],
     [
       "#:",
-      "8",
+      "9",
       "# New:",
-      "0",
+      "2",
       "Impact:",
-      "5",
+      "6",
       "Impact Avg:",
-      "0.6",
+      "0.7",
       "Impact Rank:",
-      "131",
+      "123",
       ""
     ],
     [
@@ -1266,19 +1266,6 @@
       "0"
     ],
     [
-      "Chris Marshall",
-      "",
-      "",
-      "Q",
-      "WR",
-      "FALSE",
-      "14.0",
-      "1",
-      "10/17/2026",
-      "Update 2026-10-17: His game availability is questionable. He is dealing with a leg injury.",
-      "8"
-    ],
-    [
       "Josiah Clemons",
       "",
       "",
@@ -1305,17 +1292,30 @@
       "0"
     ],
     [
+      "Chris Marshall",
       "",
       "",
+      "Q",
+      "WR",
+      "TRUE",
+      "14.0",
+      "2",
+      "10/17/2026",
+      "Suffered a leg injury in the week seven game and did not return. Getting checked out by doctors and we await word on the severity of this injury.",
+      "8"
+    ],
+    [
+      "Kavion Broussard",
       "",
       "",
-      "",
-      "",
-      "",
-      "0",
-      "",
-      "",
-      ""
+      "Q",
+      "OL",
+      "TRUE",
+      "11.2",
+      "1",
+      "10/17/2026",
+      "Injured in-game week seven against Vandy and did not return. Tracking for updates.",
+      "72"
     ],
     [
       "",
@@ -2307,5 +2307,5 @@
     ]
   ],
   "count": 88,
-  "timestamp": "2026-10-18T19:03:45.974Z"
+  "timestamp": "2026-10-18T21:02:48.393Z"
 }
