@@ -45,13 +45,13 @@
       "Col1": "#:",
       "Col2": "10",
       "Col3": "# New:",
-      "Col4": "4",
+      "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "29",
+      "Col6": "26",
       "Col7": "Impact Avg:",
-      "Col8": "2.9",
+      "Col8": "2.6",
       "Col9": "Impact Rank:",
-      "Col10": "10",
+      "Col10": "14",
       "Col11": ""
     },
     {
@@ -138,9 +138,9 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "WR",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "12.6",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "10/12/2026",
       "Col10": "Official report 2026-10-12: out. Game 2026-10-15.",
       "Col11": "0"
@@ -151,9 +151,9 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "RB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "11.4",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "10/12/2026",
       "Col10": "Official report 2026-10-12: out. Game 2026-10-15.",
       "Col11": "0"
@@ -164,11 +164,24 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "DB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "11.1",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "10/15/2026",
       "Col10": "Official report 2026-10-15: out. Game 2026-10-15. Previous context: Official report 2026-10-12: doubtful. Game 2026-10-15.",
+      "Col11": "0"
+    },
+    {
+      "Col1": "Caleb Ellis",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "O",
+      "Col5": "DL",
+      "Col6": "FALSE",
+      "Col7": "10.3",
+      "Col8": "3",
+      "Col9": "10/15/2026",
+      "Col10": "Official report 2026-10-15: out. Game 2026-10-15.",
       "Col11": "0"
     },
     {
@@ -183,19 +196,6 @@
       "Col9": "",
       "Col10": "",
       "Col11": ""
-    },
-    {
-      "Col1": "Caleb Ellis",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "O",
-      "Col5": "DL",
-      "Col6": "TRUE",
-      "Col7": "10.3",
-      "Col8": "4",
-      "Col9": "10/15/2026",
-      "Col10": "Official report 2026-10-15: out. Game 2026-10-15.",
-      "Col11": "0"
     },
     {
       "Col1": "",
@@ -1083,13 +1083,13 @@
       "#:",
       "10",
       "# New:",
-      "4",
+      "0",
       "Impact:",
-      "29",
+      "26",
       "Impact Avg:",
-      "2.9",
+      "2.6",
       "Impact Rank:",
-      "10"
+      "14"
     ],
     [
       "Player Name",
@@ -1175,9 +1175,9 @@
       "",
       "O",
       "WR",
-      "TRUE",
+      "FALSE",
       "12.6",
-      "4",
+      "3",
       "10/12/2026",
       "Official report 2026-10-12: out. Game 2026-10-15.",
       "0"
@@ -1188,9 +1188,9 @@
       "",
       "O",
       "RB",
-      "TRUE",
+      "FALSE",
       "11.4",
-      "4",
+      "3",
       "10/12/2026",
       "Official report 2026-10-12: out. Game 2026-10-15.",
       "0"
@@ -1201,21 +1201,11 @@
       "",
       "O",
       "DB",
-      "TRUE",
+      "FALSE",
       "11.1",
-      "4",
+      "3",
       "10/15/2026",
       "Official report 2026-10-15: out. Game 2026-10-15. Previous context: Official report 2026-10-12: doubtful. Game 2026-10-15.",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
       "0"
     ],
     [
@@ -1224,11 +1214,21 @@
       "",
       "O",
       "DL",
-      "TRUE",
+      "FALSE",
       "10.3",
-      "4",
+      "3",
       "10/15/2026",
       "Official report 2026-10-15: out. Game 2026-10-15.",
+      "0"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       "0"
     ],
     [
@@ -1926,5 +1926,5 @@
     ]
   ],
   "count": 81,
-  "timestamp": "2026-10-18T13:04:25.221Z"
+  "timestamp": "2026-10-18T14:07:18.155Z"
 }
