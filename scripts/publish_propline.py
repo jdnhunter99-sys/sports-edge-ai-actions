@@ -7,26 +7,26 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 API='https://api.prop-line.com/v1'
-# Opening-line enrichment is intentionally limited to the sports that currently
-# power SportsEdgeAI player-prop centers. At a 15-minute cadence this keeps the
-# Hobby plan (5,000 requests/day) inside quota while preserving all live odds.
-OPENING_SPORTS={'nfl','mlb','wnba'}
 OPENING_WINDOW_DAYS=14
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
  'mlb':('baseball_mlb','batter_1plus_hits batter_1plus_rbis batter_2plus_hits batter_2plus_home_runs batter_2plus_rbis batter_3plus_hits batter_3plus_rbis batter_4plus_hits batter_doubles batter_hits batter_hits_runs_rbis batter_home_runs batter_rbis batter_runs batter_singles batter_stolen_bases batter_strikeouts batter_total_bases batter_triples batter_walks pitcher_earned_runs pitcher_hits_allowed pitcher_outs pitcher_strikeouts pitcher_walks'),
  'wnba':('basketball_wnba','player_assists player_blocks player_double_double player_first_basket player_first_field_goal player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes player_triple_double player_turnovers'),
+ 'nhl':('hockey_nhl','player_goals player_first_goal player_goals_2plus player_goals_3plus player_shots_on_goal player_points_1plus player_points_2plus player_points_3plus goalie_saves player_blocked_shots'),
  'cfb':('football_ncaaf','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_pass_tds player_pass_yds player_receptions player_reception_yds player_rush_yds'),
  'tennis':('tennis','player_aces player_break_points_won player_games_won'),
  'epl':('soccer_epl','anytime_goal_scorer player_shots_on_target'),
 }
+# Run the same opening-line enrichment for every league fetched above.
+OPENING_SPORTS=set(SPORTS)
 PLAYER_MARKETS={
  'nfl':{'player_pass_yds':'passing_yards','player_pass_tds':'passing_tds','player_pass_completions':'passing_completions','player_pass_attempts':'passing_attempts','player_pass_interceptions':'interceptions_thrown','player_rush_yds':'rushing_yards','player_rush_tds':'rushing_tds','player_rush_attempts':'rushing_attempts','player_reception_yds':'receiving_yards','player_receptions':'receptions','player_anytime_td':'anytime_touchdown','player_rush_reception_yds':'rush_rec_yards'},
  'cfb':{'player_pass_yds':'passing_yards','player_pass_tds':'passing_tds','player_pass_completions':'passing_completions','player_rush_yds':'rushing_yards','player_rush_tds':'rushing_tds','player_reception_yds':'receiving_yards','player_receptions':'receptions','player_anytime_td':'anytime_touchdown'},
  'mlb':{'batter_hits':'hits','batter_total_bases':'total_bases','batter_home_runs':'home_runs','batter_runs':'runs','batter_rbis':'rbi','batter_singles':'singles','batter_doubles':'doubles','batter_walks':'walks','pitcher_strikeouts':'strikeouts','batter_strikeouts':'strikeouts_batter','batter_stolen_bases':'stolen_bases','pitcher_outs':'pitcher_outs','pitcher_earned_runs':'earned_runs','pitcher_hits_allowed':'hits_allowed','pitcher_walks':'walks_allowed','batter_hits_runs_rbis':'hits_runs_rbis'},
  'wnba':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_blocks':'blocks','player_steals':'steals','player_turnovers':'turnovers','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists','player_rebounds_assists':'rebounds_assists','player_double_double':'double_double','player_triple_double':'triple_double','player_first_basket':'first_basket'},
  'nba':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists'},
+ 'nhl':{'player_goals':'goals','player_first_goal':'first_goal','player_goals_2plus':'goals_2plus','player_goals_3plus':'goals_3plus','player_shots_on_goal':'shots_on_goal','player_points_1plus':'points_1plus','player_points_2plus':'points_2plus','player_points_3plus':'points_3plus','goalie_saves':'goalie_saves','player_blocked_shots':'blocked_shots'},
 }
 def slug(s):
  s=unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode().lower()
@@ -140,6 +140,7 @@ def is_non_player(sport,name):
 ESPN_LEAGUES={
  'nfl':('football','nfl'),'cfb':('football','college-football'),
  'nba':('basketball','nba'),'wnba':('basketball','wnba'),
+ 'nhl':('hockey','nhl'),
  'mlb':('baseball','mlb'),'epl':('soccer','eng.1'),
 }
 
