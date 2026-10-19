@@ -155,7 +155,33 @@ function completeTeamPayload(rows: RecordValue[], season: number, timeframe: str
 }
 
 const indexSeasons: Record<string, any> = {};
-for (const frame of refreshResult.frames || []) {
+const publishedFrames = refreshResult.frames || [];
+const seasonQbStatsBySeason: Record<string, Record<string, any[]>> = {};
+
+// QB cards are season summaries, independent of the team-stat timeframe
+// selector. Reuse each season frame's QB rows in its L5/L10/L15 files so any
+// single frame read contains both the selected team stats and season QB cards.
+for (const season of [...new Set(publishedFrames.map((frame: any) => Number(frame.season)))]) {
+  if (!Number.isInteger(season)) continue;
+  const seasonFrame = publishedFrames.find((frame: any) =>
+    Number(frame.season) === season && String(frame.timeframe) === String(season)
+  );
+  if (!seasonFrame) continue;
+
+  const seasonRows = await teamStatsEntity.filter({ season, timeframe: String(season), side: 'team' });
+  const teamQbStats: Record<string, any[]> = {};
+  for (const expectedTeam of NFL_TEAM_STATS_TEAMS) {
+    const teamAbbr = normalizeTeamAbbr(expectedTeam);
+    const matchedRows = seasonRows.filter((row) => normalizeTeamAbbr(row.team_abbr) === teamAbbr);
+    const complete = completeTeamPayload(matchedRows, season, String(season), teamAbbr);
+    if (Array.isArray(complete?.payload?.qbSituationalStats)) {
+      teamQbStats[teamAbbr] = complete.payload.qbSituationalStats;
+    }
+  }
+  seasonQbStatsBySeason[String(season)] = teamQbStats;
+}
+
+for (const frame of publishedFrames) {
   const season = Number(frame.season);
   const timeframe = String(frame.timeframe);
   if (!Number.isInteger(season) || !timeframe) throw new Error('Refresh returned an invalid NFL season/timeframe frame.');
@@ -173,8 +199,15 @@ for (const frame of refreshResult.frames || []) {
       throw new Error(`Refusing to publish NFL ${season} ${timeframe}: ${teamAbbr} has no complete stats payload.`);
     }
     const scrapedAt = String(complete.row?.scraped_at || frame.scraped_at || updatedAt);
+    const seasonQbStats = seasonQbStatsBySeason[String(season)]?.[teamAbbr];
     teams[teamAbbr] = {
       ...complete.payload,
+      // The season-frame QB summary is the card source for every timeframe.
+      qbSituationalStats: Array.isArray(seasonQbStats)
+        ? seasonQbStats
+        : Array.isArray(complete.payload.qbSituationalStats)
+          ? complete.payload.qbSituationalStats
+          : [],
       teamAbbr,
       timeframe,
       scrapedAt,

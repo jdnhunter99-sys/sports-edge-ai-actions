@@ -4570,7 +4570,9 @@ function inlineStripTags(value:any){return inlineDecodeEntities(String(value||''
 function inlineCoverageNumber(value:any){const n=Number(String(value||'').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:null;}
 
 async function buildInlineCoverageSchemes(season:number, forceRefresh:boolean){
-  const cacheKey=`inline_coverage_${season||'latest'}`;
+  // Sharp publishes one current league coverage table. Keep one run-wide
+  // snapshot so each team receives identical man/zone values in every frame.
+  const cacheKey='inline_coverage_latest';
   const cached=INLINE_COVERAGE_MEMORY_CACHE.get(cacheKey);
   if(!forceRefresh&&cached&&Date.now()-cached.savedAt<12*60*60*1000)return cached.data;
   const res=await fetch(INLINE_SHARP_COVERAGE_URL,{headers:{'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/149 Safari/537.36',Accept:'text/html,application/xhtml+xml','Accept-Language':'en-US,en;q=0.9'}});
@@ -4645,9 +4647,9 @@ async function buildNFLTrackingStatsInline({season,week,timeframe,forceRefresh,r
   const cacheKey=`inline_tracking_${Number(season)}_wk${Number(week||0)}_${String(timeframe||'season')}`;
   const cached=INLINE_TRACKING_MEMORY_CACHE.get(cacheKey);
   if(!forceRefresh&&cached&&Date.now()-cached.savedAt<60*60*1000)return {...cached.data,fromCache:true};
-  const coveragePromise=isRollingGameWindow(timeframe)
-    ? Promise.resolve({teamMap:{},warnings:[],pageSeason:null,seasonMatchesRequest:null})
-    : buildInlineCoverageSchemes(Number(season),Boolean(forceRefresh)).catch(err=>({teamMap:{},warnings:[`Coverage schemes failed: ${err?.message||String(err)}`],pageSeason:null,seasonMatchesRequest:null}));
+  // Coverage scheme rates come from one current-season league table rather
+  // than game windows, so include the same snapshot in season and rolling files.
+  const coveragePromise=buildInlineCoverageSchemes(Number(season),false).catch(err=>({teamMap:{},warnings:[`Coverage schemes failed: ${err?.message||String(err)}`],pageSeason:null,seasonMatchesRequest:null}));
   const [ttt,coverage]=await Promise.all([buildInlineTimeToThrowMap(Number(season),Number(week||0),String(timeframe||'season'),ranges||[]),coveragePromise]);
   const coverageMap=new Map<string,any>(); for(const [team,row] of Object.entries(coverage.teamMap||{})){const normalizedTeam=inlineTrackingNormalizeTeam(team); const man=inlineTrackingNum((row as any)?.manCoverageRate,NaN); const zone=inlineTrackingNum((row as any)?.zoneCoverageRate,NaN); if(normalizedTeam&&Number.isFinite(man)&&Number.isFinite(zone))coverageMap.set(normalizedTeam,{manCoverageRate:man,zoneCoverageRate:zone});}
   const teams:any={}; for(const team of new Set([...ttt.map.keys(),...coverageMap.keys()])){const c=coverageMap.get(team);teams[team]={timeToThrow:ttt.map.get(team)??null,manCoverageRate:c?.manCoverageRate??null,zoneCoverageRate:c?.zoneCoverageRate??null};}
