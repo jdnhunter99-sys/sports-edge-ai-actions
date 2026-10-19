@@ -15,8 +15,6 @@ SPORTS={
  'wnba':('basketball_wnba','player_assists player_blocks player_double_double player_first_basket player_first_field_goal player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes player_triple_double player_turnovers'),
  'nhl':('hockey_nhl','player_goals player_first_goal player_goals_2plus player_goals_3plus player_shots_on_goal player_points_1plus player_points_2plus player_points_3plus goalie_saves player_blocked_shots'),
  'cfb':('football_ncaaf','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_pass_tds player_pass_yds player_receptions player_reception_yds player_rush_yds'),
- 'tennis':('tennis','player_aces player_break_points_won player_games_won'),
- 'epl':('soccer_epl','anytime_goal_scorer player_shots_on_target'),
 }
 # Run the same opening-line enrichment for every league fetched above.
 OPENING_SPORTS=set(SPORTS)
