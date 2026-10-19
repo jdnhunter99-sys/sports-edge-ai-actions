@@ -1,0 +1,62 @@
+name: Refresh NFL team stats cache
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nfl-team-stats-publisher
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Prepare the NFL stats data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_BRANCH: nfl-team-stats-data
+        run: |
+          mkdir -p data
+          cd data
+          git init -b "$DATA_BRANCH"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git fetch --depth=1 origin "$DATA_BRANCH"
+            git reset --hard FETCH_HEAD
+          fi
+
+      - name: Refresh all NFL teams and timeframes
+        env:
+          NFL_TEAM_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
+          STATRANKINGS_COOKIE: ${{ secrets.STATRANKINGS_COOKIE }}
+        run: deno run --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_nfl_team_stats_github.ts
+
+      - name: Publish JSON frames
+        working-directory: data
+        env:
+          DATA_BRANCH: nfl-team-stats-data
+        run: |
+          git add nfl-team-stats
+          if git diff --cached --quiet; then
+            echo 'NFL team-stats cache is unchanged.'
+            exit 0
+          fi
+          git commit -qm 'Refresh NFL team-stats cache'
+          git push --quiet origin "HEAD:${DATA_BRANCH}"
