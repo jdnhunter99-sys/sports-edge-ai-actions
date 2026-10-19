@@ -229,7 +229,7 @@ await Deno.writeTextFile(`${sportRoot}/index.json`, `${JSON.stringify({
   sport: 'nfl',
   schemaVersion: 1,
   cacheVersion: CACHE_VERSION,
-  updated_at: updatedAt,
+  updated_at: new Date().toISOString(),
   seasons: indexSeasons,
 })}\n`);
 console.info(`Published ${Object.values(indexSeasons).reduce((sum: number, season: any) => sum + Object.keys(season.timeframes).length, 0)} NFL timeframe frames.`);

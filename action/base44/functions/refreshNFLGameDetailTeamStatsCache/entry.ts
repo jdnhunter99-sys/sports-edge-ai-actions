@@ -1,8 +1,7 @@
 import { asyncBufferFromUrl, parquetReadObjects } from 'npm:hyparquet@1.24.0';
 
 // Shared NFL game-detail team-stats engine used by the GitHub publisher.
-// Derived from the Base44 L5 refresh implementation, including its regular-season
-// rolling-window boundary fix. The source calculations remain unchanged.
+// Rolling timeframes select each team's most recent completed regular-season games.
 export const NFL_TEAM_STATS_TEAMS = ['ARI','ATL','BAL','BUF','CAR','CHI','CIN','CLE','DAL','DEN','DET','GB','HOU','IND','JAX','KC','LAC','LAR','LV','MIA','MIN','NE','NO','NYG','NYJ','PHI','PIT','SEA','SF','TB','TEN','WSH'];
 
 export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
@@ -1742,6 +1741,7 @@ const FTN_CHARTING_URL = (season) => `${NFLVERSE_BASE}/ftn_charting/ftn_charting
 const NGS_PASSING_URL = `${NFLVERSE_BASE}/nextgen_stats/ngs_passing.csv`;
 const PARTICIPATION_URL = (season) => `${NFLVERSE_BASE}/pbp_participation/pbp_participation_${season}.csv`;
 const PFR_ADV_RUSH_WEEK_URL = (season) => `${NFLVERSE_BASE}/pfr_advstats/advstats_week_rush_${season}.csv`;
+const PFR_ADV_PASS_WEEK_URL = (season) => `${NFLVERSE_BASE}/pfr_advstats/advstats_week_pass_${season}.csv`;
 
 const TEAM_ALIASES = {
   ARI: 'ARI', ARZ: 'ARI', ATL: 'ATL', BAL: 'BAL', BLT: 'BAL', BUF: 'BUF', CAR: 'CAR', CHI: 'CHI', CIN: 'CIN', CLE: 'CLE', CLV: 'CLE',
@@ -1778,15 +1778,35 @@ function safeDiv(a, b) {
   return b ? a / b : null;
 }
 
-function rangeIncludes(ranges, season, week) {
+function isRollingGameWindow(timeframe) {
+  return ['L5', 'L10', 'L15'].includes(String(timeframe || '').trim().toUpperCase());
+}
+
+function hasTeamSpecificRollingSelection(ranges) {
+  return (ranges || []).some((range) => Boolean(range?.teamGameIds));
+}
+
+function rangeIncludes(ranges, season, week, team = '', gameId = '') {
   const y = Number(season);
   const w = Number(week);
-  if (!Number.isFinite(y) || !Number.isFinite(w)) return false;
-  return (ranges || []).some((r) =>
-    Number(r?.season) === y &&
-    w >= Number(r?.minWeek ?? 0) &&
-    w <= Number(r?.maxWeek ?? 999)
-  );
+  if (!Number.isFinite(y)) return false;
+  const range = (ranges || []).find((candidate) => Number(candidate?.season) === y);
+  if (!range) return false;
+
+  const normalizedTeam = normalizeTeam(team);
+  if (range.teamGameIds && normalizedTeam) {
+    if (!Object.prototype.hasOwnProperty.call(range.teamGameIds, normalizedTeam)) return false;
+    const selectedGameIds = range.teamGameIds[normalizedTeam];
+    const selectedWeeks = range.teamWeeks?.[normalizedTeam];
+    const normalizedGameId = String(gameId || '').trim();
+    if (normalizedGameId && selectedGameIds?.has(normalizedGameId)) return true;
+    // Some weekly feeds omit the canonical game ID or use a provider-specific ID;
+    // a team-week is still unambiguous in the NFL regular season.
+    return Number.isFinite(w) && Boolean(selectedWeeks?.has(w));
+  }
+
+  if (!Number.isFinite(w)) return false;
+  return w >= Number(range.minWeek ?? 0) && w <= Number(range.maxWeek ?? 999);
 }
 
 function pct(a, b) {
@@ -1990,9 +2010,11 @@ async function loadParticipationTeamTimeToThrow(seasons, ranges) {
           const m = gameId.match(/^\d{4}_(\d{2})_/);
           if (m) rowWeek = Number(m[1]);
         }
-        if (Number.isFinite(rowWeek) && !rangeIncludes(ranges, rowSeason, rowWeek)) continue;
-
         const team = normalizeTeam(firstValue(row, ['possession_team', 'posteam', 'team'], ''));
+        if (!team) continue;
+        if (Number.isFinite(rowWeek) && !rangeIncludes(ranges, rowSeason, rowWeek, team, gameId)) continue;
+        if (!Number.isFinite(rowWeek) && hasTeamSpecificRollingSelection(ranges)) continue;
+
         const ttt = firstNumber(row, ['time_to_throw'], NaN);
         if (!team || !Number.isFinite(ttt) || ttt <= 0) continue;
 
@@ -2039,10 +2061,11 @@ async function loadPfrTeamYardsBeforeContact(seasons, ranges) {
       for (const row of rows) {
         const rowSeason = num(firstValue(row, ['season'], season), Number(season));
         const rowWeek = num(firstValue(row, ['week'], ''), NaN);
-        if (Number.isFinite(rowWeek) && !rangeIncludes(ranges, rowSeason, rowWeek)) continue;
-
         const team = normalizeTeam(firstValue(row, ['team', 'team_abbr', 'teamAbbr'], ''));
+        const gameId = String(firstValue(row, ['game_id', 'nflverse_game_id'], '') || '').trim();
         if (!team) continue;
+        if (Number.isFinite(rowWeek) && !rangeIncludes(ranges, rowSeason, rowWeek, team, gameId)) continue;
+        if (!Number.isFinite(rowWeek) && hasTeamSpecificRollingSelection(ranges)) continue;
 
         const attempts = fuzzyNumeric(row,
           ['rush_attempts', 'rushing_attempts', 'rush_att', 'att', 'carries'],
@@ -2088,6 +2111,74 @@ function mergeYardsBeforeContactIntoPbpMetrics(metrics, ybcByTeam) {
   return metrics;
 }
 
+async function loadPfrTeamPressureStats(seasons, ranges) {
+  const byTeam = new Map();
+  let rowsUsed = 0;
+  const warnings = [];
+
+  for (const season of seasons || []) {
+    try {
+      const rows = parseCsv(await fetchText(PFR_ADV_PASS_WEEK_URL(season)));
+      for (const row of rows) {
+        const rowSeason = num(firstValue(row, ['season'], season), Number(season));
+        const rowWeek = num(firstValue(row, ['week'], ''), NaN);
+        const gameId = String(firstValue(row, ['game_id', 'nflverse_game_id'], '') || '').trim();
+        const offenseTeam = normalizeTeam(firstValue(row, ['team', 'team_abbr'], ''));
+        const defenseTeam = normalizeTeam(firstValue(row, ['opponent', 'opponent_team'], ''));
+        const hurries = firstFiniteNumber(row, ['times_hurried', 'hurries'], NaN);
+        const pressures = firstFiniteNumber(row, ['times_pressured', 'pressures'], NaN);
+        if (!Number.isFinite(hurries) && !Number.isFinite(pressures)) continue;
+
+        let rowUsed = false;
+        if (offenseTeam && rangeIncludes(ranges, rowSeason, rowWeek, offenseTeam, gameId)) {
+          const value = byTeam.get(offenseTeam) || { hurriesAllowed: 0, pressuresAllowed: 0, hurriesAllowedAvailable: false, pressuresAllowedAvailable: false, defHurries: 0, defPressures: 0, defHurriesAvailable: false, defPressuresAvailable: false };
+          if (Number.isFinite(hurries)) { value.hurriesAllowed += hurries; value.hurriesAllowedAvailable = true; }
+          if (Number.isFinite(pressures)) { value.pressuresAllowed += pressures; value.pressuresAllowedAvailable = true; }
+          byTeam.set(offenseTeam, value);
+          rowUsed = true;
+        }
+        if (defenseTeam && rangeIncludes(ranges, rowSeason, rowWeek, defenseTeam, gameId)) {
+          const value = byTeam.get(defenseTeam) || { hurriesAllowed: 0, pressuresAllowed: 0, hurriesAllowedAvailable: false, pressuresAllowedAvailable: false, defHurries: 0, defPressures: 0, defHurriesAvailable: false, defPressuresAvailable: false };
+          if (Number.isFinite(hurries)) { value.defHurries += hurries; value.defHurriesAvailable = true; }
+          if (Number.isFinite(pressures)) { value.defPressures += pressures; value.defPressuresAvailable = true; }
+          byTeam.set(defenseTeam, value);
+          rowUsed = true;
+        }
+        if (rowUsed) rowsUsed += 1;
+      }
+    } catch (err) {
+      warnings.push(`PFR advanced passing pressure stats ${season} unavailable: ${err?.message || String(err)}`);
+    }
+  }
+
+  return { byTeam, rowsUsed, warnings };
+}
+
+function mergePfrPressureIntoPbpMetrics(metrics, pressureByTeam) {
+  if (!metrics) return metrics;
+  for (const [team, value] of pressureByTeam || []) {
+    const m = metrics.get(team);
+    if (!m) continue;
+    if (value?.hurriesAllowedAvailable) {
+      m.hurriesAllowed = value.hurriesAllowed;
+      m.hurriesAllowedAvailable = true;
+    }
+    if (value?.pressuresAllowedAvailable) {
+      m.pressuresAllowed = value.pressuresAllowed;
+      m.pressuresAllowedAvailable = true;
+    }
+    if (value?.defHurriesAvailable) {
+      m.defHurries = value.defHurries;
+      m.defHurriesAvailable = true;
+    }
+    if (value?.defPressuresAvailable) {
+      m.defPressures = value.defPressures;
+      m.defPressuresAvailable = true;
+    }
+  }
+  return metrics;
+}
+
 async function loadNgsTeamTimeToThrow(seasons, ranges) {
   const seasonSet = new Set((seasons || []).map((s) => Number(s)));
   const agg = new Map();
@@ -2104,12 +2195,13 @@ async function loadNgsTeamTimeToThrow(seasons, ranges) {
 
     const rawWeek = firstValue(flat, ['week', 'week_number', 'weekNumber'], '');
     const week = rawWeek === '' ? null : num(rawWeek, NaN);
-    if (week != null && Number.isFinite(week) && week > 0 && !rangeIncludes(ranges, season, week)) return;
-
     const team = normalizeTeam(firstValue(flat, [
       'team_abbr', 'teamAbbr', 'team', 'teamCode', 'club_code', 'clubCode',
       'player_current_team', 'latestTeam'
     ], ''));
+    const gameId = String(firstValue(flat, ['game_id', 'nflverse_game_id'], '') || '').trim();
+    if (week != null && Number.isFinite(week) && week > 0 && !rangeIncludes(ranges, season, week, team, gameId)) return;
+    if ((!Number.isFinite(week) || week <= 0) && hasTeamSpecificRollingSelection(ranges)) return;
 
     const attempts = firstNumber(flat, [
       'attempts', 'pass_attempts', 'passAttempts', 'att', 'passing_attempts'
@@ -2253,9 +2345,12 @@ function aggregateTeamRows(rows, teams, ranges) {
     if (!team || (teams && !teams.has(team))) continue;
     const rowWeek = weekFromRow(row);
     const rowSeason = num(firstValue(row, ['season'], ''), NaN);
+    const gameId = String(firstValue(row, ['game_id', 'old_game_id', 'gsis_id'], '') || '').trim();
     if (Number.isFinite(rowSeason) && Number.isFinite(rowWeek)) {
-      const inRange = ranges.some((r) => Number(r.season) === rowSeason && rowWeek >= r.minWeek && rowWeek <= r.maxWeek);
-      if (!inRange) continue;
+      if (!rangeIncludes(ranges, rowSeason, rowWeek, team, gameId)) continue;
+    } else if (hasTeamSpecificRollingSelection(ranges)) {
+      // Season-level fallbacks cannot be sliced into a genuine last-N-games window.
+      continue;
     }
     if (!map.has(team)) map.set(team, makeBlankTeamSummary(team));
     addToSummary(map.get(team), row);
@@ -2356,19 +2451,20 @@ function buildScheduleAggs(schedules, teamRows, ranges, teams) {
     const gSeason = num(g.season, 0);
     const gWeek = num(g.week, 0);
     if (!gWeek) continue;
-    const inRange = ranges.some((r) => Number(r.season) === gSeason && gWeek >= r.minWeek && gWeek <= r.maxWeek);
-    if (!inRange) continue;
     const away = normalizeTeam(g.away_team);
     const home = normalizeTeam(g.home_team);
+    const gameId = String(firstValue(g, ['game_id', 'old_game_id'], '') || '').trim();
+    const awayInRange = rangeIncludes(ranges, gSeason, gWeek, away, gameId);
+    const homeInRange = rangeIncludes(ranges, gSeason, gWeek, home, gameId);
     const awayScore = num(g.away_score, NaN);
     const homeScore = num(g.home_score, NaN);
     if (!Number.isFinite(awayScore) || !Number.isFinite(homeScore)) continue;
-    if (teams.has(away)) {
+    if (teams.has(away) && awayInRange) {
       const target = map.get(away) || makeScheduleAgg(away);
       addScheduleGameAgg(target, awayScore, homeScore, rowMap.get(`${home}_${gSeason}_${gWeek}`) || rowMap.get(`${home}_${gWeek}`));
       map.set(away, target);
     }
-    if (teams.has(home)) {
+    if (teams.has(home) && homeInRange) {
       const target = map.get(home) || makeScheduleAgg(home);
       addScheduleGameAgg(target, homeScore, awayScore, rowMap.get(`${away}_${gSeason}_${gWeek}`) || rowMap.get(`${away}_${gWeek}`));
       map.set(home, target);
@@ -2385,8 +2481,8 @@ function makePbpAgg(team) {
     interceptionsThrown: 0, fumblesLost: 0, offensivePoints: 0, firstHalfPoints: 0,
     secondHalfPoints: 0, fourthQuarterPoints: 0, twoMinuteEpa: 0, twoMinutePlays: 0,
     possessionSeconds: 0, noHuddlePlays: 0, hurryUpPlays: 0, completions: 0, passYards: 0,
-    passTds: 0, sacksTaken: 0, passDropbacks: 0, pressuresAllowed: 0, qbHitsAllowed: 0,
-    hurriesAllowed: 0, blitzesFaced: 0, chartedBlitzDropbacksFaced: 0, timeToThrowSum: 0, timeToThrowCount: 0,
+    passTds: 0, sacksTaken: 0, passDropbacks: 0, pressuresAllowed: 0, pressuresAllowedAvailable: false, qbHitsAllowed: 0,
+    hurriesAllowed: 0, hurriesAllowedAvailable: false, blitzesFaced: 0, chartedBlitzDropbacksFaced: 0, timeToThrowSum: 0, timeToThrowCount: 0,
     passPlays: 0, passEpa: 0, passSuccesses: 0, explosivePasses: 0, rushPlays: 0,
     rushEpa: 0, rushSuccesses: 0, explosiveRuns: 0, stuffedRuns: 0, powerRushes: 0,
     powerRushSuccesses: 0, shortYardageRushes: 0, shortYardageRushSuccesses: 0,
@@ -2403,8 +2499,8 @@ function makePbpAgg(team) {
     defOpeningDriveTdCount: 0, defAvgDriveStartYardline100: null,
     defPassPlays: 0, defCompletionsAllowed: 0, defPassYardsAllowed: 0, defPassTdsAllowed: 0,
     defInterceptionsForcedAsPassDefense: 0, defPassEpaAllowed: 0, defPassSuccessesAllowed: 0,
-    defExplosivePassesAllowed: 0, defPassDropbacks: 0, defBlitzes: 0, defChartedBlitzDropbacks: 0, defPressures: 0,
-    defQbHits: 0, defHurries: 0, defRushPlays: 0, defRushEpaAllowed: 0, defRushSuccessesAllowed: 0,
+    defExplosivePassesAllowed: 0, defPassDropbacks: 0, defBlitzes: 0, defChartedBlitzDropbacks: 0, defPressures: 0, defPressuresAvailable: false,
+    defQbHits: 0, defHurries: 0, defHurriesAvailable: false, defRushPlays: 0, defRushEpaAllowed: 0, defRushSuccessesAllowed: 0,
     defExplosiveRunsAllowed: 0, defRushYardsBeforeContactAllowedSum: 0, defRushYardsBeforeContactAllowedRuns: 0,
     defAdjustedLineYardsAllowedSum: 0, defAdjustedLineYardsAllowedRuns: 0, defTacklesForLoss: 0,
     defStuffedRuns: 0, defShortYardagePlays: 0, defShortYardageStops: 0, defShortYardageConversionsAllowed: 0,
@@ -2609,14 +2705,13 @@ function addPbpRowToMetrics(row, metrics, ranges, ftnChartingByPlay = null) {
   const rowSeason = num(firstValue(row, ['season'], ''), null);
   const rowWeek = num(firstValue(row, ['week'], ''), null);
   if (rowSeason == null || rowWeek == null || !Number.isFinite(rowWeek)) return false;
-  const inRange = ranges.some((r) => Number(r.season) === rowSeason && rowWeek >= r.minWeek && rowWeek <= r.maxWeek);
-  if (!inRange) return false;
 
   const posteam = normalizeTeam(firstValue(row, ['posteam'], ''));
   const defteam = normalizeTeam(firstValue(row, ['defteam'], ''));
-  if (!metrics.has(posteam) && !metrics.has(defteam)) return false;
-
-  const gameId = firstValue(row, ['game_id', 'old_game_id'], '');
+  const gameId = String(firstValue(row, ['game_id', 'old_game_id'], '') || '').trim();
+  const offenseInRange = metrics.has(posteam) && rangeIncludes(ranges, rowSeason, rowWeek, posteam, gameId);
+  const defenseInRange = metrics.has(defteam) && rangeIncludes(ranges, rowSeason, rowWeek, defteam, gameId);
+  if (!offenseInRange && !defenseInRange) return false;
   const qtr = firstNumber(row, ['qtr', 'quarter'], 0);
   const halfSeconds = firstNumber(row, ['half_seconds_remaining'], NaN);
   const gameSeconds = firstNumber(row, ['game_seconds_remaining'], NaN);
@@ -2662,7 +2757,7 @@ function addPbpRowToMetrics(row, metrics, ranges, ftnChartingByPlay = null) {
   const offensivePlay = shouldUsePbpPlay(row) && isOffensivePbpPlay(row);
   const specialTeamsPlay = shouldUsePbpPlay(row) && isSpecialTeamsPbpPlay(row);
 
-  if (posteam && metrics.has(posteam)) {
+  if (offenseInRange) {
     const offense = metrics.get(posteam);
     if (gameId) offense.gamesSet.add(gameId);
 
@@ -2840,7 +2935,7 @@ function addPbpRowToMetrics(row, metrics, ranges, ftnChartingByPlay = null) {
     }
   }
 
-  if (defteam && metrics.has(defteam)) {
+  if (defenseInRange) {
     const defense = metrics.get(defteam);
     if (gameId) defense.defGamesSet.add(gameId);
 
@@ -3206,10 +3301,10 @@ function applyPbpMetricsToStats(stats, pbp) {
   const passerRating = nflPasserRating(pbp.completions, passAttempts, pbp.passYards, pbp.passTds, pbp.interceptionsThrown);
   setStatValue(stats, 'qbRating', passerRating, 1);
   setStatValue(stats, 'passerRating', passerRating, 1);
-  setStatValue(stats, 'pressureRateAllowed', pct(pbp.pressuresAllowed, pbp.passDropbacks), 1, '%');
+  setStatValue(stats, 'pressureRateAllowed', pbp.pressuresAllowedAvailable ? pct(pbp.pressuresAllowed, pbp.passDropbacks) : null, 1, '%');
   if (pbp.chartedBlitzDropbacksFaced > 0) setStatValue(stats, 'blitzRateFaced', pct(pbp.blitzesFaced, pbp.chartedBlitzDropbacksFaced), 1, '%');
-  setStatValue(stats, 'pressurePctAllowed', pct(pbp.pressuresAllowed, pbp.passDropbacks), 1, '%');
-  setStatValue(stats, 'hurryPct', pct(pbp.hurriesAllowed, pbp.passDropbacks), 1, '%');
+  setStatValue(stats, 'pressurePctAllowed', pbp.pressuresAllowedAvailable ? pct(pbp.pressuresAllowed, pbp.passDropbacks) : null, 1, '%');
+  setStatValue(stats, 'hurryPct', pbp.hurriesAllowedAvailable ? pct(pbp.hurriesAllowed, pbp.passDropbacks) : null, 1, '%');
   setStatValue(stats, 'qbHitsAllowed', safeDiv(pbp.qbHitsAllowed, games), 1);
   setStatValue(stats, 'qbHitPct', safeDiv(pbp.defQbHits, games), 1);
   setStatValue(stats, 'quarterbackHitPercentage', safeDiv(pbp.defQbHits, games), 1);
@@ -3217,8 +3312,8 @@ function applyPbpMetricsToStats(stats, pbp) {
   setStatValue(stats, 'qbHits', safeDiv(pbp.defQbHits, games), 1);
   if (pbp.timeToThrowSum > 0) setStatValue(stats, 'timeToThrow', safeDiv(pbp.timeToThrowSum, pbp.timeToThrowCount), 2);
 
-  setStatValue(stats, 'pressureRate', pct(pbp.defPressures, pbp.defPassDropbacks), 1, '%');
-  setStatValue(stats, 'hurryRate', pct(pbp.defHurries, pbp.defPassDropbacks), 1, '%');
+  setStatValue(stats, 'pressureRate', pbp.defPressuresAvailable ? pct(pbp.defPressures, pbp.defPassDropbacks) : null, 1, '%');
+  setStatValue(stats, 'hurryRate', pbp.defHurriesAvailable ? pct(pbp.defHurries, pbp.defPassDropbacks) : null, 1, '%');
   setStatValue(stats, 'manCoverageRate', pbp.manCoverageRate, 1, '%');
   setStatValue(stats, 'manCoveragePct', pbp.manCoverageRate, 1, '%');
   setStatValue(stats, 'zoneCoverageRate', pbp.zoneCoverageRate, 1, '%');
@@ -3478,7 +3573,16 @@ function statRawNumberForRank(stat) {
   if (!stat) return null;
   const raw = stat.value ?? stat.displayValue;
   if (raw == null || raw === '' || raw === '—') return null;
-  const n = Number(String(raw).replace(/[^0-9.-]/g, ''));
+  const text = String(raw).trim();
+  const fraction = text.match(/^(-?\d+(?:\.\d+)?)\s*\/\s*(-?\d+(?:\.\d+)?)%?$/);
+  if (fraction) {
+    const numerator = Number(fraction[1]);
+    const denominator = Number(fraction[2]);
+    return Number.isFinite(numerator) && Number.isFinite(denominator) && denominator !== 0
+      ? numerator / denominator
+      : null;
+  }
+  const n = Number(text.replace(/[^0-9.-]/g, ''));
   return Number.isFinite(n) ? n : null;
 }
 
@@ -4071,31 +4175,62 @@ async function writeNFLLeagueContextCache(base44, season, week, context, timefra
 function computeSeasonRanges(schedules, statsSeason, timeframe) {
   if (timeframe !== 'L5' && timeframe !== 'L10' && timeframe !== 'L15') return [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
   const n = timeframe === 'L5' ? 5 : timeframe === 'L10' ? 10 : 15;
-  // NFLverse schedule weeks 19-22 are playoffs. The old max-week calculation
-  // counted the Super Bowl as week 22 and selected e.g. 2025 W21-W22 for an
-  // early-season L5 (2026 W1-W3). Almost every team has NO such games, making
-  // their L5 snapshot identical to the current-season snapshot.
-  // Select completed REGULAR-SEASON weeks when crossing the season boundary.
-  const lastCompletedRegularWeek = (season) => {
-    let maxWeek = 0;
-    for (const game of schedules || []) {
-      if (num(game.season, 0) !== season) continue;
-      if (String(game.game_type || '').trim().toUpperCase() !== 'REG') continue;
-      const week = num(game.week, 0);
-      if (week < 1 || week > 18) continue;
-      if (!Number.isFinite(num(game.away_score, NaN)) || !Number.isFinite(num(game.home_score, NaN))) continue;
-      maxWeek = Math.max(maxWeek, week);
-    }
-    return maxWeek;
-  };
-  const maxWeek = lastCompletedRegularWeek(statsSeason);
-  if (maxWeek >= n) return [{ season: statsSeason, minWeek: maxWeek - n + 1, maxWeek }];
-  const ranges = maxWeek > 0 ? [{ season: statsSeason, minWeek: 1, maxWeek }] : [];
-  const prevMax = lastCompletedRegularWeek(statsSeason - 1);
-  if (prevMax > 0) {
-    ranges.push({ season: statsSeason - 1, minWeek: Math.max(1, prevMax - (n - maxWeek) + 1), maxWeek: prevMax });
+  const gamesByTeam = new Map(NFL_CANONICAL_TEAMS.map((team) => [team, []]));
+
+  for (const game of schedules || []) {
+    const season = num(game.season, NaN);
+    const week = num(game.week, NaN);
+    if (!Number.isFinite(season) || season > statsSeason || season < statsSeason - 2) continue;
+    if (String(game.game_type || '').trim().toUpperCase() !== 'REG' || week < 1 || week > 18) continue;
+    const awayScore = num(game.away_score, NaN);
+    const homeScore = num(game.home_score, NaN);
+    const result = num(game.result, NaN);
+    // nflverse leaves schedule result/score fields blank before final; requiring result excludes in-progress games.
+    if (![awayScore, homeScore, result].every(Number.isFinite)) continue;
+
+    const away = normalizeTeam(game.away_team);
+    const home = normalizeTeam(game.home_team);
+    const gameId = String(firstValue(game, ['game_id'], '') || '').trim();
+    if (!gameId || !gamesByTeam.has(away) || !gamesByTeam.has(home)) continue;
+    const entry = {
+      season,
+      week,
+      gameId,
+      gameday: String(firstValue(game, ['gameday', 'game_date'], '') || '').slice(0, 10),
+      gametime: String(firstValue(game, ['gametime'], '') || ''),
+    };
+    gamesByTeam.get(away).push(entry);
+    gamesByTeam.get(home).push(entry);
   }
-  return ranges.length ? ranges : [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
+
+  const seasonRanges = new Map();
+  for (const team of NFL_CANONICAL_TEAMS) {
+    const selected = (gamesByTeam.get(team) || [])
+      .sort((a, b) => a.season - b.season || a.week - b.week || a.gameday.localeCompare(b.gameday) || a.gametime.localeCompare(b.gametime) || a.gameId.localeCompare(b.gameId))
+      .slice(-n);
+    if (selected.length < n) {
+      throw new Error(`Not enough completed regular-season games for ${team}: found ${selected.length}, expected ${n} for ${timeframe}.`);
+    }
+    for (const game of selected) {
+      let range = seasonRanges.get(game.season);
+      if (!range) {
+        range = {
+          season: game.season,
+          minWeek: game.week,
+          maxWeek: game.week,
+          teamWeeks: Object.fromEntries(NFL_CANONICAL_TEAMS.map((abbr) => [abbr, new Set()])),
+          teamGameIds: Object.fromEntries(NFL_CANONICAL_TEAMS.map((abbr) => [abbr, new Set()])),
+        };
+        seasonRanges.set(game.season, range);
+      }
+      range.minWeek = Math.min(range.minWeek, game.week);
+      range.maxWeek = Math.max(range.maxWeek, game.week);
+      range.teamWeeks[team].add(game.week);
+      range.teamGameIds[team].add(game.gameId);
+    }
+  }
+
+  return [...seasonRanges.values()].sort((a, b) => a.season - b.season);
 }
 
 async function buildNFLGameDetailSummary(params) {
@@ -4157,6 +4292,9 @@ teams.add(homeTeam);
   } else {
     try { schedules = await loadSchedules(); } catch (err) { warnings.push(`Schedule load failed: ${err?.message || String(err)}`); }
     seasonRanges = computeSeasonRanges(schedules, statsSeason, timeframe);
+    if (['L5', 'L10', 'L15'].includes(timeframe) && !seasonRanges.length) {
+      throw new Error(`Could not select completed regular-season games for ${timeframe}; refusing to publish a misleading rolling window.`);
+    }
     const seasonsToLoad = [...new Set(seasonRanges.map((r) => r.season))];
     // Load FTN first because the streamed PBP pass joins charting by nflverse game/play ID.
     let ftnChartingByPlay = new Map();
@@ -4178,9 +4316,11 @@ teams.add(homeTeam);
       streamPbpTeamMetrics(seasonsToLoad, teams, seasonRanges, ftnChartingByPlay)
         .then((result) => ({ ok: true, result }))
         .catch((err) => ({ ok: false, error: err })),
-      loadEspnWinRates(statsSeason)
-        .then((result) => ({ ok: true, result }))
-        .catch((err) => ({ ok: false, error: err })),
+      (isRollingGameWindow(timeframe)
+        ? Promise.resolve({ ok: true, result: null })
+        : loadEspnWinRates(statsSeason)
+            .then((result) => ({ ok: true, result }))
+            .catch((err) => ({ ok: false, error: err }))),
     ]);
 
     if (teamRowsResult.ok) {
@@ -4208,6 +4348,7 @@ teams.add(homeTeam);
         week: statsThroughWeek,
         timeframe,
         forceRefresh: Boolean(params.forceRefresh),
+        ranges: seasonRanges,
       });
       const trackingTeams = trackingData?.teams || {};
       trackingStatsSource = trackingData?.source || null;
@@ -4230,6 +4371,15 @@ teams.add(homeTeam);
       for (const warning of ybc?.warnings || []) warnings.push(warning);
     } catch (err) {
       warnings.push(`PFR advanced rushing YBC load failed for ${statsSeason}: ${err?.message || String(err)}`);
+    }
+
+    try {
+      const pressure = await loadPfrTeamPressureStats(seasonsToLoad, seasonRanges);
+      mergePfrPressureIntoPbpMetrics(pbpMetricMap, pressure?.byTeam || new Map());
+      if (!pressure?.rowsUsed) warnings.push(`PFR advanced passing pressure stats parsed 0 rows for ${statsSeason}`);
+      for (const warning of pressure?.warnings || []) warnings.push(warning);
+    } catch (err) {
+      warnings.push(`PFR advanced passing pressure stats load failed: ${err?.message || String(err)}`);
     }
 
     if (espnWinRatesResult.ok) {
@@ -4296,7 +4446,7 @@ teams.add(homeTeam);
           statRankingsBundle,
           team
         ),
-        espnWinRates?.metrics?.get(team) || null
+        isRollingGameWindow(timeframe) ? null : (espnWinRates?.metrics?.get(team) || null)
       ),
       team
     ));
@@ -4312,7 +4462,7 @@ teams.add(homeTeam);
           statRankingsBundle,
           awayTeam
         ),
-        espnWinRates?.metrics?.get(awayTeam) || null
+        isRollingGameWindow(timeframe) ? null : (espnWinRates?.metrics?.get(awayTeam) || null)
       ),
       awayTeam
     ),
@@ -4326,7 +4476,7 @@ teams.add(homeTeam);
           statRankingsBundle,
           homeTeam
         ),
-        espnWinRates?.metrics?.get(homeTeam) || null
+        isRollingGameWindow(timeframe) ? null : (espnWinRates?.metrics?.get(homeTeam) || null)
       ),
       homeTeam
     ),
@@ -4360,7 +4510,7 @@ teams.add(homeTeam);
       resolvedSeason: statsSeason,
       statsSeason,
       statsThroughWeek,
-      seasonRanges,
+      seasonRanges: seasonRanges.map(({ season, minWeek, maxWeek }) => ({ season, minWeek, maxWeek })),
       nflverseMode: pbpRowsUsed ? 'team_stats_plus_league_streamed_pbp_ranked' : 'team_stats_weekly_pregame_baseline',
       awayRowsUsed: awayAgg.rows?.length || 0,
       homeRowsUsed: homeAgg.rows?.length || 0,
@@ -4452,27 +4602,53 @@ async function buildInlineCoverageSchemes(season:number, forceRefresh:boolean){
   const data={teamMap,rows,warnings,pageSeason,seasonMatchesRequest:!season||!pageSeason||season===pageSeason}; INLINE_COVERAGE_MEMORY_CACHE.set(cacheKey,{savedAt:Date.now(),data}); return data;
 }
 
-async function buildInlineTimeToThrowMap(season:number,week:number,timeframe:string){
+async function buildInlineTimeToThrowMap(season:number,week:number,timeframe:string,ranges:any[]=[]){
   const warnings:string[]=[];
   try{
     const file=await asyncBufferFromUrl({url:INLINE_NGS_PASSING_PARQUET,requestInit:{headers:{'User-Agent':'SportsEdgeAI/1.0',Accept:'application/octet-stream,*/*'}}});
     const rows=await parquetReadObjects({file,columns:['season','season_type','week','team_abbr','attempts','pass_attempts','avg_time_to_throw']});
-    const seasonRows=rows.filter((r:any)=>Number(r?.season)===Number(season)&&String(r?.season_type||'REG').toUpperCase()==='REG');
-    let usableRows:any[]=[];
-    if(String(timeframe||'season').toLowerCase()==='season'&&Number(week)>=18){const summaries=seasonRows.filter((r:any)=>Number(r?.week)===0);usableRows=summaries.length?summaries:seasonRows.filter((r:any)=>Number(r?.week)>0&&Number(r?.week)<=Number(week));}
-    else if(Number(week)>0)usableRows=seasonRows.filter((r:any)=>Number(r?.week)>0&&Number(r?.week)<=Number(week));
-    else {const summaries=seasonRows.filter((r:any)=>Number(r?.week)===0);usableRows=summaries.length?summaries:seasonRows.filter((r:any)=>Number(r?.week)>0);}
+    const rolling=hasTeamSpecificRollingSelection(ranges);
+    const seasonRows=rows.filter((r:any)=>String(r?.season_type||'REG').toUpperCase()==='REG');
+    const summaryRows=!rolling&&String(timeframe||'').toLowerCase()==='season'&&Number(week)>=18
+      ? seasonRows.filter((r:any)=>Number(r?.season)===Number(season)&&Number(r?.week)===0)
+      : [];
+    const useSummaryRows=summaryRows.length>0;
+    const usableRows=useSummaryRows?summaryRows:seasonRows;
     const agg=new Map<string,any>(); let rowsUsed=0;
-    for(const r of usableRows){const team=inlineTrackingNormalizeTeam(r?.team_abbr||'');const ttt=inlineTrackingNum(r?.avg_time_to_throw,NaN);const attempts=inlineTrackingNum(r?.attempts??r?.pass_attempts,NaN);if(!team||!Number.isFinite(ttt)||ttt<=0)continue;const weight=Number.isFinite(attempts)&&attempts>0?attempts:1;const cur=agg.get(team)||{weighted:0,attempts:0};cur.weighted+=ttt*weight;cur.attempts+=weight;agg.set(team,cur);rowsUsed++;}
-    const map=new Map<string,number>(); for(const [team,v] of agg.entries())if(v.attempts>0)map.set(team,v.weighted/v.attempts); if(!rowsUsed)warnings.push(`Time to Throw unavailable: NGS parquet contained no usable ${season} passing rows`); return {map,rowsUsed,warnings};
+    for(const r of usableRows){
+      const team=inlineTrackingNormalizeTeam(r?.team_abbr||'');
+      const rowSeason=inlineTrackingNum(r?.season,NaN);
+      const rowWeek=inlineTrackingNum(r?.week,NaN);
+      if(!team||!Number.isFinite(rowSeason))continue;
+      if(rolling){
+        if(!rangeIncludes(ranges,rowSeason,rowWeek,team))continue;
+      }else if(useSummaryRows){
+        if(rowSeason!==Number(season)||rowWeek!==0)continue;
+      }else if(rowSeason!==Number(season)||!Number.isFinite(rowWeek)||rowWeek<=0||(Number(week)>0&&rowWeek>Number(week))){
+        continue;
+      }
+      const ttt=inlineTrackingNum(r?.avg_time_to_throw,NaN);
+      const attempts=inlineTrackingNum(r?.attempts??r?.pass_attempts,NaN);
+      if(!Number.isFinite(ttt)||ttt<=0)continue;
+      const weight=Number.isFinite(attempts)&&attempts>0?attempts:1;
+      const cur=agg.get(team)||{weighted:0,attempts:0};
+      cur.weighted+=ttt*weight;cur.attempts+=weight;agg.set(team,cur);rowsUsed++;
+    }
+    const map=new Map<string,number>();
+    for(const [team,v] of agg.entries())if(v.attempts>0)map.set(team,v.weighted/v.attempts);
+    if(!rowsUsed)warnings.push(`Time to Throw unavailable: NGS parquet contained no usable ${timeframe} passing rows`);
+    return {map,rowsUsed,warnings};
   }catch(err){return {map:new Map(),rowsUsed:0,warnings:[`NGS parquet Time to Throw failed: ${err?.message||String(err)}`]};}
 }
 
-async function buildNFLTrackingStatsInline({season,week,timeframe,forceRefresh}:any){
+async function buildNFLTrackingStatsInline({season,week,timeframe,forceRefresh,ranges}:any){
   const cacheKey=`inline_tracking_${Number(season)}_wk${Number(week||0)}_${String(timeframe||'season')}`;
   const cached=INLINE_TRACKING_MEMORY_CACHE.get(cacheKey);
   if(!forceRefresh&&cached&&Date.now()-cached.savedAt<60*60*1000)return {...cached.data,fromCache:true};
-  const [ttt,coverage]=await Promise.all([buildInlineTimeToThrowMap(Number(season),Number(week||0),String(timeframe||'season')),buildInlineCoverageSchemes(Number(season),Boolean(forceRefresh)).catch(err=>({teamMap:{},warnings:[`Coverage schemes failed: ${err?.message||String(err)}`],pageSeason:null,seasonMatchesRequest:null}))]);
+  const coveragePromise=isRollingGameWindow(timeframe)
+    ? Promise.resolve({teamMap:{},warnings:[],pageSeason:null,seasonMatchesRequest:null})
+    : buildInlineCoverageSchemes(Number(season),Boolean(forceRefresh)).catch(err=>({teamMap:{},warnings:[`Coverage schemes failed: ${err?.message||String(err)}`],pageSeason:null,seasonMatchesRequest:null}));
+  const [ttt,coverage]=await Promise.all([buildInlineTimeToThrowMap(Number(season),Number(week||0),String(timeframe||'season'),ranges||[]),coveragePromise]);
   const coverageMap=new Map<string,any>(); for(const [team,row] of Object.entries(coverage.teamMap||{})){const normalizedTeam=inlineTrackingNormalizeTeam(team); const man=inlineTrackingNum((row as any)?.manCoverageRate,NaN); const zone=inlineTrackingNum((row as any)?.zoneCoverageRate,NaN); if(normalizedTeam&&Number.isFinite(man)&&Number.isFinite(zone))coverageMap.set(normalizedTeam,{manCoverageRate:man,zoneCoverageRate:zone});}
   const teams:any={}; for(const team of new Set([...ttt.map.keys(),...coverageMap.keys()])){const c=coverageMap.get(team);teams[team]={timeToThrow:ttt.map.get(team)??null,manCoverageRate:c?.manCoverageRate??null,zoneCoverageRate:c?.zoneCoverageRate??null};}
   const data={success:true,source:'nflverse-ngs-parquet+sharpfootballanalysis',season:Number(season),week:Number(week||0),timeframe:String(timeframe||'season'),teams,debug:{timeToThrowRowsUsed:ttt.rowsUsed,coverageRowsUsed:coverageMap.size,coveragePageSeason:coverage.pageSeason??null,coverageSeasonMatchesRequest:coverage.seasonMatchesRequest??null,warnings:[...(ttt.warnings||[]),...(coverage.warnings||[])]}};
