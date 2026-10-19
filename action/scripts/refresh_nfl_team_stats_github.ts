@@ -236,6 +236,11 @@ for (const frame of publishedFrames) {
     timeframe,
     updated_at: frameUpdatedAt,
     snapshot_id: snapshotId,
+    espn_win_rates: {
+      source_url: frame.espnWinRates?.url || null,
+      parsed_teams: Number(frame.espnWinRates?.parsedTeams || 0),
+      updated_through: frame.espnWinRates?.updatedThrough || null,
+    },
     rank_population: 'all 32 NFL teams',
     team_count: teamCount,
     teams,
@@ -255,6 +260,8 @@ for (const frame of publishedFrames) {
     scraped_at: frameUpdatedAt,
   };
   console.info(`Materialized NFL season ${season} ${timeframe}: ${teamCount} teams.`);
+  const winRateCount = Number(frame.espnWinRates?.parsedTeams || 0);
+  console.info(`ESPN team win rates: ${winRateCount}/32 teams${frame.espnWinRates?.updatedThrough ? ` (${frame.espnWinRates.updatedThrough})` : ''}.`);
 }
 
 await Deno.mkdir(sportRoot, { recursive: true });

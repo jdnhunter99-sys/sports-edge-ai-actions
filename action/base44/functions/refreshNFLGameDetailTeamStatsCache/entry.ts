@@ -31,6 +31,7 @@ export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
       const scrapedAt = new Date().toISOString();
       const results: Array<any> = [];
       const frameErrors: string[] = [];
+      let espnWinRatesDiagnostic: Record<string, any> | null = null;
 
       for (let pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
         const [awayAbbr, homeAbbr] = pairs[pairIndex];
@@ -49,6 +50,14 @@ export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
             forceRefresh: pairIndex === 0,
             useInlineStatRankings: false,
           });
+
+          if (pairIndex === 0) {
+            espnWinRatesDiagnostic = {
+              parsedTeams: summary?.meta?.espnWinRateTeamsParsed || 0,
+              url: summary?.meta?.espnWinRateUrl || null,
+              updatedThrough: summary?.meta?.espnWinRatesUpdatedThrough || null,
+            };
+          }
 
           const awayStats = Array.isArray(summary?.awayStats) ? summary.awayStats : [];
           const homeStats = Array.isArray(summary?.homeStats) ? summary.homeStats : [];
@@ -92,6 +101,7 @@ export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
         cached_team_count: results.length,
         results,
         errors: frameErrors,
+        espnWinRates: espnWinRatesDiagnostic,
         scraped_at: scrapedAt,
       };
       frames.push(frame);
@@ -1301,23 +1311,33 @@ function stripTags(str) {
 
 
 // ─── ESPN NFL trench win rates ──────────────────────────────────────────────
-// ESPN embeds the team PBWR/RBWR/PRWR/RSWR table directly in this free article.
-// We fetch and parse it once per NFL game-detail request, then place the values
-// into the existing stat rows that already exist in the Offense/Defense tabs.
+// ESPN publishes team-level PBWR/RBWR/PRWR/RSWR in its season article. These
+// are season-to-date snapshots rather than per-game or rolling-window metrics.
 const ESPN_WIN_RATE_URLS = {
+  2026: 'https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking',
   2025: 'https://www.espn.com/nfl/story/_/id/46138675/2025-nfl-win-rates-top-teams-players-rankings-pass-run-block',
   2024: 'https://www.espn.com/nfl/story/_/id/41040723/2024-nfl-win-rates-top-teams-players-rankings',
+};
+const ESPN_WIN_RATE_MEMORY_CACHE = new Map();
+const ESPN_WIN_RATE_COLUMNS = {
+  passRushWinRate: /(?:pass\s*rush|prwr)/i,
+  runStopWinRate: /(?:run\s*stop|rswr)/i,
+  passBlockWinRate: /(?:pass\s*block|pbwr)/i,
+  runBlockWinRate: /(?:run\s*block|rbwr)/i,
 };
 
 function decodeHtmlEntities(value) {
   return String(value || '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)));
 }
 
 function stripHtml(value) {
@@ -1326,66 +1346,124 @@ function stripHtml(value) {
     .trim();
 }
 
-function makeEmptyEspnWinRate(team) {
-  return {
-    team: normalizeTeam(team),
-    passBlockWinRate: null,
-    runBlockWinRate: null,
-    passRushWinRate: null,
-    runStopWinRate: null,
-    source: 'espn_win_rates',
-  };
+function espnTeamFromCell(cellHtml) {
+  const html = String(cellHtml || '');
+  const hrefTeam = html.match(/\/nfl\/team\/_\/name\/([a-z]{2,3})(?:\/|[?#"'])/i)?.[1];
+  const fromHref = hrefTeam ? normalizeTeam(hrefTeam) : '';
+  if (NFL_CANONICAL_TEAMS.includes(fromHref)) return fromHref;
+
+  const teamText = stripHtml(html).replace(/\s*\([A-Z]{2,3}\)\s*$/, '').trim();
+  const fromName = TEAM_ABBR_BY_NAME[teamText] || normalizeTeam(teamText);
+  return NFL_CANONICAL_TEAMS.includes(fromName) ? fromName : '';
 }
 
-function setEspnWinRateMetric(map, team, key, value) {
-  const abbr = normalizeTeam(team);
-  const n = Number(String(value ?? '').replace('%', '').trim());
-  if (!abbr || !Number.isFinite(n)) return;
-  const current = map.get(abbr) || makeEmptyEspnWinRate(abbr);
-  current[key] = n;
-  map.set(abbr, current);
+function espnMetricIndex(label) {
+  const normalized = String(label || '').replace(/[^a-z]/gi, '');
+  for (const [key, pattern] of Object.entries(ESPN_WIN_RATE_COLUMNS)) {
+    if (pattern.test(normalized)) return key;
+  }
+  return '';
+}
+
+function parseEspnPercent(value) {
+  const text = stripHtml(value);
+  const match = text.match(/(-?\d+(?:\.\d+)?)\s*%/) || text.match(/^\s*(-?\d+(?:\.\d+)?)(?:\s|$)/);
+  if (!match) return null;
+  const number = Number(match[1]);
+  return Number.isFinite(number) && number >= 0 && number <= 100 ? number : null;
 }
 
 function parseEspnTeamWinRatesTable(html) {
-  const map = new Map();
-  const tableMatch = String(html || '').match(/<h2[^>]*>\s*NFL team win rate rankings\s*<\/h2>[\s\S]*?<table[\s\S]*?<tbody>([\s\S]*?)<\/tbody>[\s\S]*?<\/table>/i);
-  if (!tableMatch) return map;
+  let bestMap = new Map();
+  const tables = String(html || '').match(/<table\b[^>]*>[\s\S]*?<\/table>/gi) || [];
 
-  const tbody = tableMatch[1];
-  const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
-  let row;
-  while ((row = rowRegex.exec(tbody)) !== null) {
-    const cells = [];
-    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/gi;
-    let cell;
-    while ((cell = cellRegex.exec(row[1])) !== null) cells.push(cell[1]);
-    if (cells.length < 5) continue;
+  for (const table of tables) {
+    const rows = [...table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map((match) => match[1]);
+    let teamColumn = 0;
+    let metricColumns = null;
 
-    const hrefTeam = String(cells[0]).match(/\/nfl\/team\/_\/name\/([a-z]{2,3})\//i)?.[1];
-    const team = normalizeTeam(hrefTeam || stripHtml(cells[0]));
-    if (!team) continue;
+    // Prefer semantic table headers, which tolerate ESPN changing the article
+    // heading or moving the table while keeping the column names intact.
+    for (const row of rows) {
+      const headers = [...row.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/gi)].map((match) => stripHtml(match[1]));
+      if (!headers.length) continue;
+      const candidateMetricColumns = {};
+      headers.forEach((header, index) => {
+        const key = espnMetricIndex(header);
+        if (key) candidateMetricColumns[key] = index;
+        if (/^team(?:\s|$)/i.test(header.trim())) teamColumn = index;
+      });
+      if (Object.keys(candidateMetricColumns).length === 4) {
+        metricColumns = candidateMetricColumns;
+        break;
+      }
+    }
 
-    setEspnWinRateMetric(map, team, 'passRushWinRate', stripHtml(cells[1]).match(/\d+(?:\.\d+)?/)?.[0]);
-    setEspnWinRateMetric(map, team, 'runStopWinRate', stripHtml(cells[2]).match(/\d+(?:\.\d+)?/)?.[0]);
-    setEspnWinRateMetric(map, team, 'passBlockWinRate', stripHtml(cells[3]).match(/\d+(?:\.\d+)?/)?.[0]);
-    setEspnWinRateMetric(map, team, 'runBlockWinRate', stripHtml(cells[4]).match(/\d+(?:\.\d+)?/)?.[0]);
+    const map = new Map();
+    for (const row of rows) {
+      const cells = [...row.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map((match) => match[1]);
+      if (cells.length < 5) continue;
+
+      let resolvedTeamColumn = teamColumn;
+      let team = espnTeamFromCell(cells[resolvedTeamColumn]);
+      if (!team) {
+        const detectedTeamColumn = cells.findIndex((cell) => espnTeamFromCell(cell));
+        if (detectedTeamColumn < 0) continue;
+        resolvedTeamColumn = detectedTeamColumn;
+        team = espnTeamFromCell(cells[detectedTeamColumn]);
+      }
+
+      const indexes = metricColumns || {
+        passRushWinRate: resolvedTeamColumn + 1,
+        runStopWinRate: resolvedTeamColumn + 2,
+        passBlockWinRate: resolvedTeamColumn + 3,
+        runBlockWinRate: resolvedTeamColumn + 4,
+      };
+      const values = {};
+      for (const [key, index] of Object.entries(indexes)) values[key] = parseEspnPercent(cells[index]);
+      if (Object.values(values).some((value) => value == null)) continue;
+
+      const current = {
+        team,
+        ...values,
+        source: 'espn_win_rates',
+      };
+      map.set(team, current);
+    }
+
+    if (map.size > bestMap.size) bestMap = map;
   }
 
-  return map;
+  return bestMap;
 }
 
 async function loadEspnWinRates(season) {
+  const seasonKey = Number(season);
+  if (ESPN_WIN_RATE_MEMORY_CACHE.has(seasonKey)) return ESPN_WIN_RATE_MEMORY_CACHE.get(seasonKey);
+
   const years = Object.keys(ESPN_WIN_RATE_URLS).map(Number);
   const fallbackYear = Math.max(...years);
-  const url = ESPN_WIN_RATE_URLS[Number(season)] || ESPN_WIN_RATE_URLS[fallbackYear];
-  const html = await fetchText(url);
-  const map = parseEspnTeamWinRatesTable(html);
-  return {
+  const url = ESPN_WIN_RATE_URLS[seasonKey] || ESPN_WIN_RATE_URLS[fallbackYear];
+  const response = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36',
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.9',
+    },
+  });
+  if (!response.ok) throw new Error(`ESPN win rates fetch failed ${response.status}: ${url}`);
+  const html = await response.text();
+  const metrics = parseEspnTeamWinRatesTable(html);
+  const updatedThrough = stripHtml(html).match(/Last updated:\s*(Through[\s\S]*?)(?:Jump to:|Visit the ESPN|$)/i)?.[1]?.trim() || null;
+  const result = {
     source: 'espn_win_rates',
     url,
-    parsedTeams: map.size,
-    metrics: map,
+    parsedTeams: metrics.size,
+    updatedThrough,
+    metrics,
   };
+  ESPN_WIN_RATE_MEMORY_CACHE.set(seasonKey, result);
+  return result;
 }
 
 function applyEspnWinRatesToStats(stats, rates) {
@@ -4316,11 +4394,9 @@ teams.add(homeTeam);
       streamPbpTeamMetrics(seasonsToLoad, teams, seasonRanges, ftnChartingByPlay)
         .then((result) => ({ ok: true, result }))
         .catch((err) => ({ ok: false, error: err })),
-      (isRollingGameWindow(timeframe)
-        ? Promise.resolve({ ok: true, result: null })
-        : loadEspnWinRates(statsSeason)
-            .then((result) => ({ ok: true, result }))
-            .catch((err) => ({ ok: false, error: err }))),
+      loadEspnWinRates(statsSeason)
+        .then((result) => ({ ok: true, result }))
+        .catch((err) => ({ ok: false, error: err })),
     ]);
 
     if (teamRowsResult.ok) {
@@ -4384,7 +4460,7 @@ teams.add(homeTeam);
 
     if (espnWinRatesResult.ok) {
       espnWinRates = espnWinRatesResult.result || null;
-      if (!espnWinRates?.parsedTeams) warnings.push(`ESPN win rates parsed 0 teams for ${statsSeason}`);
+      if (espnWinRates?.parsedTeams !== NFL_CANONICAL_TEAMS.length) warnings.push(`ESPN win rates parsed ${espnWinRates?.parsedTeams || 0}/${NFL_CANONICAL_TEAMS.length} teams for ${statsSeason}`);
     } else {
       warnings.push(`ESPN win rates load failed for ${statsSeason}: ${espnWinRatesResult.error?.message || String(espnWinRatesResult.error)}`);
     }
@@ -4446,7 +4522,7 @@ teams.add(homeTeam);
           statRankingsBundle,
           team
         ),
-        isRollingGameWindow(timeframe) ? null : (espnWinRates?.metrics?.get(team) || null)
+        espnWinRates?.metrics?.get(team) || null
       ),
       team
     ));
@@ -4462,7 +4538,7 @@ teams.add(homeTeam);
           statRankingsBundle,
           awayTeam
         ),
-        isRollingGameWindow(timeframe) ? null : (espnWinRates?.metrics?.get(awayTeam) || null)
+        espnWinRates?.metrics?.get(awayTeam) || null
       ),
       awayTeam
     ),
@@ -4476,7 +4552,7 @@ teams.add(homeTeam);
           statRankingsBundle,
           homeTeam
         ),
-        isRollingGameWindow(timeframe) ? null : (espnWinRates?.metrics?.get(homeTeam) || null)
+        espnWinRates?.metrics?.get(homeTeam) || null
       ),
       homeTeam
     ),
@@ -4527,6 +4603,7 @@ teams.add(homeTeam);
       trackingWarnings: trackingStatsDebug?.warnings || [],
       espnWinRateTeamsParsed: espnWinRates?.parsedTeams || 0,
       espnWinRateUrl: espnWinRates?.url || null,
+      espnWinRatesUpdatedThrough: espnWinRates?.updatedThrough || null,
       awayPbpPlaysUsed: awayPbp?.plays || 0,
       homePbpPlaysUsed: homePbp?.plays || 0,
       warnings,
