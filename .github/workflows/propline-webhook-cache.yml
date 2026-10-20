@@ -1,0 +1,89 @@
+name: PropLine Webhook Cache Publisher
+
+on:
+  repository_dispatch:
+    types:
+      - propline_webhook
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  self-test:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the actions repository
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate webhook row mapping and first-price preservation
+        run: python3 action/scripts/publish_propline_webhook_cache.py --self-test
+
+  publish:
+    if: github.event_name == 'repository_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PUBLISH_BRANCH: Propline-Webhook-Cache
+    steps:
+      - name: Check out the actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Check out a workspace for the published cache branch
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: published
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Initialize the isolated cache branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git -C published ls-remote --exit-code origin "refs/heads/$PUBLISH_BRANCH" >/dev/null 2>&1; then
+            git -C published fetch origin "$PUBLISH_BRANCH"
+            git -C published checkout -B "$PUBLISH_BRANCH" FETCH_HEAD
+          else
+            git -C published checkout --orphan "$PUBLISH_BRANCH"
+            git -C published rm -rf . >/dev/null 2>&1 || true
+            git -C published clean -fdx
+          fi
+          git -C published config user.name 'github-actions[bot]'
+          git -C published config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      - name: Merge webhook into per-sport JSON cache and publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5; do
+            python3 "$GITHUB_WORKSPACE/source/action/scripts/publish_propline_webhook_cache.py" \
+              --event-file "$GITHUB_EVENT_PATH" \
+              --output-dir "$GITHUB_WORKSPACE/published/data/propline-webhook-cache/v1"
+            git -C published add -A data/propline-webhook-cache/
+            if git -C published diff --cached --quiet; then
+              echo 'Webhook produced no cache changes.'
+              exit 0
+            fi
+            git -C published commit -m 'Update PropLine webhook cache'
+            if git -C published push origin "HEAD:$PUBLISH_BRANCH"; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo 'Could not publish after five push attempts.'
+              exit 1
+            fi
+            git -C published fetch origin "$PUBLISH_BRANCH"
+            git -C published reset --hard FETCH_HEAD
+            sleep "$((attempt * 2))"
+          done
