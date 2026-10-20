@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 
 API='https://api.prop-line.com/v1'
 OPENING_WINDOW_DAYS=14
-PROP_HISTORY_DAYS=7
+PROP_HISTORY_HOURS=5
 PROP_HISTORY_INTERVAL='5m'
 PROP_HISTORY_DISABLED=False
 SPORTS={
@@ -73,7 +73,7 @@ def fetch_prop_history(sport,event_id,key,market_keys):
  from urllib.parse import urlencode
  provider=SPORTS[sport][0]
  end=datetime.now(timezone.utc).replace(microsecond=0)
- start=end-timedelta(days=PROP_HISTORY_DAYS)
+ start=end-timedelta(hours=PROP_HISTORY_HOURS)
  iso=lambda value:value.isoformat().replace('+00:00','Z')
  url=f'{API}/sports/{provider}/events/{event_id}/odds/history?'+urlencode({
   'markets':','.join(market_keys),
