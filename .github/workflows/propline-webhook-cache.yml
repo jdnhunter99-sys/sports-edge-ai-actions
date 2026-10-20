@@ -14,8 +14,13 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the actions repository
+      - name: Check out only the webhook publisher
         uses: actions/checkout@v6
+        with:
+          ref: main
+          sparse-checkout: action/scripts/publish_propline_webhook_cache.py
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -30,38 +35,40 @@ jobs:
     env:
       PUBLISH_BRANCH: Propline-Webhook-Cache
     steps:
-      - name: Check out the actions repository
+      - name: Check out only the webhook publisher
         uses: actions/checkout@v6
         with:
           ref: main
           path: source
-          persist-credentials: false
+          sparse-checkout: action/scripts/publish_propline_webhook_cache.py
+          sparse-checkout-cone-mode: false
           fetch-depth: 1
-      - name: Check out a workspace for the published cache branch
-        uses: actions/checkout@v6
-        with:
-          ref: main
-          path: published
-          persist-credentials: true
-          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Initialize the isolated cache branch
+      - name: Initialize a shallow workspace for the cache branch
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          mkdir -p published
+          git -C published init
+          git -C published config user.name 'github-actions[bot]'
+          git -C published config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C published remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+
+          auth_header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -C published config http.https://github.com/.extraheader "$auth_header"
+          unset auth_header
+
           if git -C published ls-remote --exit-code origin "refs/heads/$PUBLISH_BRANCH" >/dev/null 2>&1; then
-            git -C published fetch origin "$PUBLISH_BRANCH"
+            git -C published fetch --depth=1 origin "refs/heads/$PUBLISH_BRANCH"
             git -C published checkout -B "$PUBLISH_BRANCH" FETCH_HEAD
           else
             git -C published checkout --orphan "$PUBLISH_BRANCH"
-            git -C published rm -rf . >/dev/null 2>&1 || true
-            git -C published clean -fdx
           fi
-          git -C published config user.name 'github-actions[bot]'
-          git -C published config user.email '41898282+github-actions[bot]@users.noreply.github.com'
       - name: Merge webhook into per-sport JSON cache and publish
         shell: bash
         run: |
@@ -83,7 +90,8 @@ jobs:
               echo 'Could not publish after five push attempts.'
               exit 1
             fi
-            git -C published fetch origin "$PUBLISH_BRANCH"
-            git -C published reset --hard FETCH_HEAD
+            if git -C published fetch --depth=1 origin "refs/heads/$PUBLISH_BRANCH"; then
+              git -C published reset --hard FETCH_HEAD
+            fi
             sleep "$((attempt * 2))"
           done
