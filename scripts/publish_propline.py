@@ -504,6 +504,7 @@ def is_home_for(team_info,event,roster_index):
  return None
 
 def build_sport(sport,events,root,stamp,key,roster_index=None):
+ global PROP_HISTORY_DISABLED
  roster_index=roster_index or {'by_id':{},'by_name':{},'event_teams':{},'by_abbr':{}}
  index=[]; count=0; board_props=[]; history_requests=0; history_quote_rows=0; history_snapshot_rows=0
  for ev in events:
