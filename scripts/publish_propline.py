@@ -4,10 +4,13 @@ import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 API='https://api.prop-line.com/v1'
 OPENING_WINDOW_DAYS=14
+PROP_HISTORY_DAYS=7
+PROP_HISTORY_INTERVAL='5m'
+PROP_HISTORY_DISABLED=False
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
@@ -63,6 +66,47 @@ def fetch_closing(sport,event_id,key):
    if attempt: raise
    time.sleep(2)
  return None
+
+def fetch_prop_history(sport,event_id,key,market_keys):
+ global PROP_HISTORY_DISABLED
+ if PROP_HISTORY_DISABLED: return None,0
+ from urllib.parse import urlencode
+ provider=SPORTS[sport][0]
+ end=datetime.now(timezone.utc).replace(microsecond=0)
+ start=end-timedelta(days=PROP_HISTORY_DAYS)
+ iso=lambda value:value.isoformat().replace('+00:00','Z')
+ url=f'{API}/sports/{provider}/events/{event_id}/odds/history?'+urlencode({
+  'markets':','.join(market_keys),
+  'from':iso(start),
+  'to':iso(end),
+  'interval':PROP_HISTORY_INTERVAL,
+  'changes_only':'true',
+ })
+ requests=0
+ for attempt in range(2):
+  try:
+   req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
+   requests+=1
+   with urllib.request.urlopen(req,timeout=45) as res: return json.load(res),requests
+  except urllib.error.HTTPError as exc:
+   if exc.code in (401,402,403,429):
+    # These errors generally apply to the endpoint or API key, not one event.
+    # Stop requesting history for the remaining events in this run so a plan
+    # restriction or exhausted quota does not create a cascade of failures.
+    PROP_HISTORY_DISABLED=True
+    print(f'{sport}: PropLine prop history unavailable (HTTP {exc.code}); skipping history for remaining events this run',flush=True)
+    return None,requests
+   if exc.code in (400,404,409,422): return None,requests
+   if attempt:
+    print(f'{sport} event {event_id}: PropLine prop history request failed after {requests} requests: {exc}',flush=True)
+    return None,requests
+   time.sleep(2)
+  except (urllib.error.URLError,TimeoutError) as exc:
+   if attempt:
+    print(f'{sport} event {event_id}: PropLine prop history request failed after {requests} requests: {exc}',flush=True)
+    return None,requests
+   time.sleep(2)
+ return None,requests
 
 def norm(v):
  return unicodedata.normalize('NFKD',str(v or '')).encode('ascii','ignore').decode().lower().strip()
@@ -296,6 +340,48 @@ def find_opening(idx,book,market,outcome):
       norm(outcome.get('dfs_odds_type')))
  return idx.get(key)
 
+def history_index(payload):
+ idx={}
+ if not isinstance(payload,dict): return idx
+ for book in payload.get('bookmakers') or []:
+  if not isinstance(book,dict): continue
+  bk=norm(book.get('key') or book.get('title'))
+  for market in book.get('markets') or []:
+   if not isinstance(market,dict): continue
+   mk=str(market.get('key') or '')
+   period=str(market.get('period') or '')
+   team=norm(market.get('team'))
+   for outcome in market.get('outcomes') or []:
+    if not isinstance(outcome,dict): continue
+    snapshots=outcome.get('snapshots') or outcome.get('history') or []
+    points=[]
+    for snapshot in snapshots:
+     if not isinstance(snapshot,dict): continue
+     at=snapshot.get('recorded_at') or snapshot.get('timestamp') or snapshot.get('time')
+     if not at: continue
+     point={'recorded_at':at,'point':snapshot.get('point',snapshot.get('line')),'price':snapshot.get('price')}
+     if snapshot.get('book_updated_at') is not None: point['book_updated_at']=snapshot.get('book_updated_at')
+     if snapshot.get('liquidity') is not None: point['liquidity']=snapshot.get('liquidity')
+     points.append(point)
+    if not points: continue
+    points.sort(key=lambda item:str(item.get('recorded_at') or ''))
+    oid=outcome.get('outcome_id') or outcome.get('book_outcome_id')
+    if oid is not None: idx[('id',str(oid))]=points
+    # Do not include the point/line in this key: line movement changes it.
+    desc=norm(outcome.get('description'))
+    side=norm(outcome.get('name'))
+    dfs=norm(outcome.get('dfs_odds_type'))
+    idx[('fallback',bk,mk,desc,side,period,team,dfs)]=points
+ return idx
+
+def find_history(idx,book,market,outcome):
+ oid=(outcome.get('outcome_id') or outcome.get('book_outcome_id')) if isinstance(outcome,dict) else None
+ if oid is not None and ('id',str(oid)) in idx: return idx[('id',str(oid))]
+ key=('fallback',norm(book.get('key') or book.get('title')),str(market.get('key') or ''),
+      norm(outcome.get('description')),norm(outcome.get('name')),str(market.get('period') or ''),
+      norm(market.get('team')),norm(outcome.get('dfs_odds_type')))
+ return idx.get(key)
+
 def write_json(path,data):
  path.parent.mkdir(parents=True,exist_ok=True)
  path.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
@@ -315,8 +401,14 @@ def market_quote_rows(player):
    'closing_price':row.get('closing_price'),
    'closing_at':row.get('closing_at'),
    'closing_is_final':row.get('closing_is_final'),
+   'history':row.get('history') or [],
   } for row in rows if isinstance(row,dict)]
  return output
+
+def board_quote_rows(quotes):
+ # Full per-prop history is stored in each player's detailed odds file. Keep
+ # the shared sport board compact; it is read for many players at once.
+ return [{key:value for key,value in row.items() if key!='history'} for row in (quotes or []) if isinstance(row,dict)]
 
 def american_best(rows):
  candidates=[]
@@ -413,7 +505,7 @@ def is_home_for(team_info,event,roster_index):
 
 def build_sport(sport,events,root,stamp,key,roster_index=None):
  roster_index=roster_index or {'by_id':{},'by_name':{},'event_teams':{},'by_abbr':{}}
- index=[]; count=0; board_props=[]
+ index=[]; count=0; board_props=[]; history_requests=0; history_quote_rows=0; history_snapshot_rows=0
  for ev in events:
   if not isinstance(ev,dict) or ev.get('id') is None: continue
   eid=str(ev['id']); players={}
@@ -423,6 +515,26 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
     open_idx=opening_index(fetch_closing(sport,eid,key))
    except Exception as exc:
     print(f'{sport} event {eid}: opening-line enrichment skipped: {exc}',flush=True)
+  history_idx={}
+  event_markets=sorted({
+   market.get('key')
+   for book in ev.get('bookmakers') or [] if isinstance(book,dict)
+   for market in book.get('markets') or []
+   if isinstance(market,dict) and market.get('key') in SPORTS[sport][1].split() and market.get('outcomes')
+  })
+  if event_markets and not PROP_HISTORY_DISABLED:
+   try:
+    history_payload,used=fetch_prop_history(sport,eid,key,event_markets)
+    history_requests+=used
+    if isinstance(history_payload,dict) and history_payload.get('redacted') is True:
+     PROP_HISTORY_DISABLED=True
+     print(f'{sport}: PropLine returned redacted prop history; this endpoint requires a paid tier, skipping history for remaining events this run',flush=True)
+    else:
+     history_idx=history_index(history_payload)
+     if history_payload and not history_idx:
+      print(f'{sport} event {eid}: prop history returned no snapshots',flush=True)
+   except Exception as exc:
+    print(f'{sport} event {eid}: prop history enrichment skipped: {exc}',flush=True)
   for book in ev.get('bookmakers') or []:
    if not isinstance(book,dict): continue
    for market in book.get('markets') or []:
@@ -467,6 +579,11 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      if opening:
       # Keep live line/price authoritative. Opening/closing fields are metadata.
       row.update(opening)
+     history=find_history(history_idx,book,market,outcome) if history_idx else None
+     if history:
+      row['history']=history
+      history_quote_rows+=1
+      history_snapshot_rows+=len(history)
      p['markets'].setdefault(market['key'],[]).append(row)
   for identity,player in players.items():
    name=player['player']
@@ -479,7 +596,7 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      'home_team':ev.get('home_team'),'away_team':ev.get('away_team'),
      'team':player.get('team'),'opponent':opponent,'position':player.get('position'),'is_home':home_flag,'markets':list(player['markets'])})
    for provider_market,quotes in market_quote_rows(player).items():
-    compact=prop_quote_fields(quotes)
+    compact=prop_quote_fields(board_quote_rows(quotes))
     # Every quoted price remains in Player Odds. Omit the duplicated copy of
     # the selected line's quotes; the UI can derive it from allOdds.
     compact.pop('selectedLineOdds',None)
@@ -517,8 +634,8 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
  quotes=[quote for prop in board_props for quote in (prop.get('allOdds') or [])]
  books=sorted({str(quote.get('bookmakerTitle') or quote.get('bookmaker') or '').strip() for quote in quotes if quote.get('bookmakerTitle') or quote.get('bookmaker')})
  opening_quotes=sum(quote.get('opening_line') is not None or quote.get('opening_price') is not None for quote in quotes)
- print(f"{sport}: odds integrity: {len(quotes)} quote rows across {len(books)} books ({', '.join(books)}); {opening_quotes} quotes have opening history",flush=True)
- return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),'opening_quote_rows':opening_quotes}
+ print(f"{sport}: odds integrity: {len(quotes)} quote rows across {len(books)} books ({', '.join(books)}); {opening_quotes} quotes have opening history; prop line history on {history_quote_rows} quotes / {history_snapshot_rows} snapshots from {history_requests} history requests",flush=True)
+ return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),'opening_quote_rows':opening_quotes,'prop_history_requests':history_requests,'prop_history_quote_rows':history_quote_rows,'prop_history_snapshots':history_snapshot_rows}
 
 def build_player_list(sport,screen,index,stamp,source_events=None):
  # This compact index is derived from the same PropLine response that produced
@@ -689,7 +806,7 @@ def retain_previous_sport_cache(sport,out,root):
    migrated.append(migrated_entry)
    quotes_by_market=entry.get('market_quotes') or entry.get('marketQuotes') or market_quote_rows(player_data)
    for provider_market,quotes in quotes_by_market.items():
-    compact=prop_quote_fields(quotes if isinstance(quotes,list) else [])
+    compact=prop_quote_fields(board_quote_rows(quotes if isinstance(quotes,list) else []))
     compact.pop('selectedLineOdds',None)
     board_props.append({
      'player':entry.get('player'),'playerId':entry.get('player_id'),'team':entry.get('team'),
