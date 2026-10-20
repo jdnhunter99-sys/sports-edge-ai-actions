@@ -29,7 +29,7 @@ jobs:
         run: python3 action/scripts/publish_propline_webhook_cache.py --self-test
 
   publish:
-    if: github.event_name == 'repository_dispatch'
+    if: github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -74,9 +74,15 @@ jobs:
         run: |
           set -euo pipefail
           for attempt in 1 2 3 4 5; do
-            python3 "$GITHUB_WORKSPACE/source/action/scripts/publish_propline_webhook_cache.py" \
-              --event-file "$GITHUB_EVENT_PATH" \
-              --output-dir "$GITHUB_WORKSPACE/published/data/propline-webhook-cache/v1"
+            if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+              python3 "$GITHUB_WORKSPACE/source/action/scripts/publish_propline_webhook_cache.py" \
+                --initialize-empty \
+                --output-dir "$GITHUB_WORKSPACE/published/data/propline-webhook-cache/v1"
+            else
+              python3 "$GITHUB_WORKSPACE/source/action/scripts/publish_propline_webhook_cache.py" \
+                --event-file "$GITHUB_EVENT_PATH" \
+                --output-dir "$GITHUB_WORKSPACE/published/data/propline-webhook-cache/v1"
+            fi
             git -C published add -A data/propline-webhook-cache/
             if git -C published diff --cached --quiet; then
               echo 'Webhook produced no cache changes.'

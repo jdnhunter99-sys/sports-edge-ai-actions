@@ -15,6 +15,16 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
+SUPPORTED_SPORT_KEYS = (
+    "football_nfl",
+    "football_ncaaf",
+    "basketball_nba",
+    "basketball_wnba",
+    "baseball_mlb",
+    "hockey_nhl",
+)
+
+
 def finite_number(value):
     if value is None or value == "":
         return None
@@ -139,6 +149,20 @@ def write_json(path: Path, document):
     temporary.replace(path)
 
 
+def initialize_empty_sport_files(output_dir: Path, received_at: str):
+    for sport_key in SUPPORTED_SPORT_KEYS:
+        path = output_dir / f"{sport_key}.json"
+        if path.exists():
+            continue
+        write_json(path, {
+            "schema_version": 1,
+            "sport_key": sport_key,
+            "updated_at": received_at,
+            "rows": [],
+        })
+        print(f"Initialized empty cache file at {path}")
+
+
 def run_self_test():
     stamp1 = "2026-10-20T12:00:00.000Z"
     stamp2 = "2026-10-20T12:01:00.000Z"
@@ -170,10 +194,16 @@ def main():
     parser.add_argument("--event-file")
     parser.add_argument("--output-dir")
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--initialize-empty", action="store_true")
     args = parser.parse_args()
 
     if args.self_test:
         run_self_test()
+        return
+    if args.initialize_empty:
+        if not args.output_dir:
+            parser.error("--output-dir is required with --initialize-empty")
+        initialize_empty_sport_files(Path(args.output_dir), now_iso())
         return
     if not args.event_file or not args.output_dir:
         parser.error("--event-file and --output-dir are required")
@@ -232,6 +262,8 @@ def main():
             "rows": merged,
         })
         print(f"Updated {path}: {len(candidates)} incoming row(s), {len(merged)} cached row(s)")
+
+    initialize_empty_sport_files(output_dir, received_at)
 
 
 if __name__ == "__main__":
