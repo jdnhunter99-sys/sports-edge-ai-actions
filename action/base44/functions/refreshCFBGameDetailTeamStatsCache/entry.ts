@@ -14,7 +14,7 @@ import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateC
 const CFBD_BASE = 'https://api.collegefootballdata.com';
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 28;
+const CACHE_VERSION = 30;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
@@ -67,8 +67,8 @@ function teamKey(value: any): string {
 }
 
 const LOWER_IS_BETTER_STAT_KEYS = new Set([
-  // Explicit lower-is-better metrics. All other metrics, including the user's
-  // neutral context stats, rank higher values first.
+  // Shared lower-is-better defaults for metrics outside the explicit CFB
+  // offense and defense game-detail direction maps.
   'interceptionRate',
   'sackRateAllowed',
   'pressureRateAllowed',
@@ -162,6 +162,82 @@ const LOWER_IS_BETTER_STAT_KEYS = new Set([
   'passingTouchdownsAllowedPerGame',
   'passYardsPerAttemptAllowed',
   'qbHurriesAllowedPerGame',
+]);
+
+// CFB game-detail offense grades follow the explicit directions requested for
+// the offense view. Every offense metric not listed here ranks higher values
+// first; keep this separate from defense/special-teams direction rules.
+const OFFENSE_LOWER_IS_BETTER_STAT_KEYS = new Set([
+  'turnovers',
+  'turnoverRate',
+  'penaltiesPerGame',
+  'penalties',
+  'penaltyYardsPerGame',
+  'penaltyYards',
+  'interceptionRate',
+  'intRate',
+  'sackRateAllowed',
+  'sacksAllowedRate',
+  'pressureRateAllowed',
+  'pressurePctAllowed',
+  'pressurePct',
+  'pressureAllowed',
+  'sacksAllowedPerGame',
+  'sacksAllowed',
+  'qbHurriesAllowedPerGame',
+  'stuffRate',
+  'secondsPerPlay',
+  'secPerPlay',
+]);
+
+// These are the direction rules for the CFB game-detail defense rows. The
+// explicit higher set handles defensive production; the explicit lower set
+// handles opponent production/efficiency allowed. Other defense fields retain
+// the existing shared direction rules below.
+const DEFENSE_LOWER_IS_BETTER_STAT_KEYS = new Set([
+  'pointsAllowedPerGame', 'pointsAllowed',
+  'yardsAllowedPerGame', 'totalYardsAllowedPerGame', 'yardsAllowed', 'totalYardsAllowed', 'totalYards',
+  'yardsPerPlayAllowed', 'yardsAllowedPerPlay',
+  'defensiveEpaPerPlay', 'epaAllowedPerPlay',
+  'defensiveSuccessRate', 'successRateAllowed',
+  'pointsAllowedPerDrive',
+  'penaltiesPerGame', 'penalties',
+  'penaltyYardsPerGame', 'penaltyYards',
+  'passingYardsAllowed', 'passingYardsAllowedPerGame', 'netPassingYardsAllowed', 'passingYards', 'netPassingYards',
+  'completionPctAllowed', 'completionPercentageAllowed',
+  'yardsPerPassAllowed', 'yardsPerAttemptAllowed', 'passYardsPerAttemptAllowed', 'ypaAllowed',
+  'passingTouchdownsAllowedPerGame', 'passingTouchdownsAllowed', 'passingTDsAllowed',
+  'passEpaAllowed', 'passEpaAllowedPerPlay', 'passingEpaAllowed',
+  'passSuccessRateAllowed', 'passingSuccessRateAllowed',
+  'explosivePassRateAllowed', 'explosivePassPctAllowed',
+  'rushingYardsAllowedPerGame', 'rushYardsAllowedPerGame', 'rushingYardsAllowed', 'rushingYards',
+  'yardsPerRushAllowed', 'yardsPerCarryAllowed', 'rushYardsPerAttemptAllowed', 'ypcAllowed',
+  'rushEpaAllowed', 'rushEpaAllowedPerPlay', 'rushingEpaAllowed',
+  'rushSuccessRateAllowed', 'rushingSuccessRateAllowed',
+  'explosiveRunRateAllowed', 'explosiveRushRateAllowed',
+  'adjustedLineYardsAllowed', 'alyAllowed',
+  'redZoneScorePctAllowed', 'redZoneEfficiencyAllowed', 'redZoneTdPctAllowed', 'redZoneTouchdownPctAllowed',
+  'goalToGoTdPctAllowed', 'goalToGoTouchdownPctAllowed',
+  'thirdDownPctAllowed', 'thirdDownConversionPctAllowed', 'thirdDownEff',
+  'fourthDownPctAllowed', 'fourthDownConversionPctAllowed',
+  'openingDriveScorePctAllowed', 'openingDriveScoringPctAllowed',
+  'firstHalfPointsAllowed', 'firstHalfPointsAllowedPerGame',
+  'secondHalfPointsAllowed', 'secondHalfPointsAllowedPerGame',
+  'fourthQuarterPointsAllowed', 'fourthQuarterPointsAllowedPerGame',
+  'twoMinuteDefensePpa', 'twoMinuteDefenseEpa', 'twoMinuteEpaAllowed',
+]);
+
+const DEFENSE_HIGHER_IS_BETTER_STAT_KEYS = new Set([
+  'playsFacedPerGame', 'defensivePlays', 'playsFaced',
+  'turnoversForced', 'takeaways', 'takeawaysPerGame', 'takeawayRate',
+  'forcedInterceptionsPerGame', 'interceptionsForcedPerGame', 'interceptionRateForced',
+  'interceptions', 'interceptionsPerGame', 'interceptionsForced', 'intsForced',
+  'sackRate', 'sacksRate', 'sacksPerGame', 'sacks',
+  'pressureRate', 'defensivePressureRate', 'qbHurriesPerGame',
+  'havocRate', 'passesDeflectedPerGame',
+  'rushAttemptsFaced', 'rushingAttemptsFaced',
+  'stuffRate', 'defStuffRate',
+  'tackleForLossPct', 'tflPct', 'tacklesForLoss', 'tfl',
 ]);
 
 function safeJsonParse(value: string) {
@@ -2185,12 +2261,15 @@ function rankLeague(statsByTeam: Map<string, any>) {
     }
 
     for (const [key, rows] of byStat.entries()) {
-      // Match the NFL cache's default (higher is better) and its explicit
-      // lower-is-better stat map. `stuffRate` is the one shared key whose
-      // direction changes by side: lower for offense, higher for defense.
-      const higherIsBetter = side === 'defense' && key === 'stuffRate'
-        ? true
-        : !LOWER_IS_BETTER_STAT_KEYS.has(key);
+      // CFB offense and defense comparison rows have side-specific direction
+      // maps; remaining metrics retain the shared lower-is-better defaults.
+      const higherIsBetter = side === 'offense'
+        ? !OFFENSE_LOWER_IS_BETTER_STAT_KEYS.has(key)
+        : side === 'defense' && DEFENSE_HIGHER_IS_BETTER_STAT_KEYS.has(key)
+          ? true
+          : side === 'defense' && DEFENSE_LOWER_IS_BETTER_STAT_KEYS.has(key)
+            ? false
+            : !LOWER_IS_BETTER_STAT_KEYS.has(key);
       ranks[side][key] = rankCFBRows(rows, { higherIsBetter });
     }
   }
@@ -2945,7 +3024,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           ranks: rankPayload,
           teamsRanked: statsByTeam.size,
           rankPopulation: 'FBS teams with at least one completed game in the selected timeframe',
-          rankPolicy: 'Competition ranks use unrounded aggregates. Lower values are better for explicit defensive efficiency metrics; higher values are better for turnover, disruption, and stop-rate metrics. Plays faced, attempts faced, penalties, penalty yards, and pace are ordinal context rankings, not defense grades.',
+          rankPolicy: 'Competition ranks use unrounded aggregates and exact ties share a rank. Offense ranks lower turnover rate, penalties/game, penalty yards/game, interception rate, sack rate allowed, pressure rate allowed, sack+hurry rate allowed, sacks allowed/game, QB hurries allowed/game, stuff rate, and seconds/play as better; every other offense stat ranks higher as better. Defense ranks lower points/yards/efficiency allowed, penalties, penalty yards, passing/rushing production and efficiency allowed, scoring and conversion rates allowed, adjusted line yards allowed, and situational points/PPA allowed as better; it ranks higher plays faced, takeaways/INTs, sack/pressure/hurry production, havoc, passes deflected, rush attempts faced, stuff rate, and tackles for loss. Other defense and special-teams stats retain their existing direction rules.',
           integrity: {
             status: stats.integrity?.status || 'passed',
             source: 'CFBD game box scores plus complete drive/play coverage where required; aggregate and rank use the same selected game IDs',
