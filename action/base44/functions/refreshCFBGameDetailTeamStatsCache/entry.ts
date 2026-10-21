@@ -1602,10 +1602,10 @@ function computeStats(log: TeamGame[]) {
       ? round(opponentSecondLevelYardsSum / defensiveRushAttempts, 2) : null;
     defense.openFieldYardsAllowed = opponentOpenFieldYardsRushes === defensiveRushAttempts && defensiveRushAttempts > 0
       ? round(opponentOpenFieldYardsSum / defensiveRushAttempts, 2) : null;
-    const opponentPassPpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaSum || 0), 0);
-    const opponentPassPpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaPlays || 0), 0);
-    if (defensivePassAttempts > 0 && opponentPassPpaPlays === defensivePassAttempts) {
-      defense.passPpaTotalAllowed = round(opponentPassPpaSum, 2);
+    const opponentPassAttemptPpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaSum || 0), 0);
+    const opponentPassAttemptPpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaPlays || 0), 0);
+    if (defensivePassAttempts > 0 && opponentPassAttemptPpaPlays === defensivePassAttempts) {
+      defense.passPpaTotalAllowed = round(opponentPassAttemptPpaSum, 2);
       defense.totalPassPpaAllowed = defense.passPpaTotalAllowed;
     }
     defense.runStopRate = pct(defensiveRushAttempts - defensiveSuccessfulRushAttempts, defensiveRushAttempts);
