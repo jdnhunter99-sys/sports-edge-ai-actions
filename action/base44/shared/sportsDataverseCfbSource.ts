@@ -11,9 +11,9 @@ type Params = Record<string, any>;
 const RELEASE_ROOT = 'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/';
 const RELEASES: Record<string, { tag: string; file: string; columns: string[] }> = {
   teams: { tag: 'espn_cfb_teams', file: 'cfb_teams', columns: ['season', 'team_id', 'abbreviation', 'display_name', 'short_display_name', 'name', 'nickname', 'location', 'is_fbs', 'is_exhibition'] },
-  schedules: { tag: 'espn_cfb_schedules', file: 'cfb_schedule', columns: ['game_id', 'week', 'season_type', 'game_date', 'home_id', 'home_score', 'away_id', 'away_score', 'status_type_completed'] },
-  team_box: { tag: 'espn_cfb_team_box', file: 'team_box', columns: ['game_id', 'season', 'week', 'team_id', 'team_display_name', 'home_away', 'first_downs', 'third_down_eff', 'fourth_down_eff', 'total_yards', 'net_passing_yards', 'completion_attempts', 'rushing_yards', 'rushing_attempts', 'total_penalties_yards', 'turnovers', 'fumbles_lost', 'interceptions', 'possession_time'] },
-  player_box: { tag: 'espn_cfb_player_box', file: 'player_box', columns: ['game_id', 'team_id', 'category', 'passing_touchdowns', 'rushing_touchdowns', 'hurries', 'field_goals_made_field_goal_attempts', 'extra_points_made_extra_point_attempts', 'punts', 'punt_yards', 'touchbacks', 'punts_inside20', 'kick_returns', 'kick_return_yards', 'kick_return_touchdowns', 'punt_returns', 'punt_return_yards', 'punt_return_touchdowns'] },
+  schedules: { tag: 'espn_cfb_schedules', file: 'cfb_schedule', columns: ['game_id', 'week', 'season_type', 'game_date', 'home_id', 'home_team', 'home_score', 'away_id', 'away_team', 'away_score', 'status'] },
+  team_box: { tag: 'espn_cfb_team_box', file: 'team_box', columns: ['game_id', 'season', 'team_id', 'home_away', 'firstDowns', 'thirdDownEff', 'fourthDownEff', 'totalYards', 'netPassingYards', 'completionAttempts', 'rushingYards', 'rushingAttempts', 'totalPenaltiesYards', 'turnovers', 'fumblesLost', 'interceptions', 'possessionTime'] },
+  player_box: { tag: 'espn_cfb_player_box', file: 'player_box', columns: ['game_id', 'team_id', 'category', 'passingTouchdowns', 'rushingTouchdowns', 'hurries', 'fieldGoalsMade/fieldGoalAttempts', 'extraPointsMade/extraPointAttempts', 'punts', 'puntYards', 'touchbacks', 'puntsInside20', 'kickReturns', 'kickReturnYards', 'kickReturnTouchdowns', 'puntReturns', 'puntReturnYards', 'puntReturnTouchdowns'] },
   adv_team: { tag: 'espn_cfb_adv_team', file: 'adv_team', columns: ['game_id', 'week', 'pos_team', 'rushes', 'rush_yards', 'EPA_rushing_overall', 'EPA_rushing_per_play', 'EPA_explosive_rushing', 'EPA_explosive_rushing_rate', 'passes', 'EPA_passing_overall', 'EPA_passing_per_play', 'EPA_explosive_passing', 'EPA_explosive_passing_rate', 'scrimmage_plays', 'EPA_overall_off', 'EPA_per_play', 'EPA_explosive', 'EPA_explosive_rate', 'rushing_stuff', 'rushing_power', 'rushing_power_success', 'line_yards', 'second_level_yards', 'open_field_yards'] },
   adv_defensive: { tag: 'espn_cfb_adv_defensive', file: 'adv_defensive', columns: ['game_id', 'week', 'def_pos_team', 'scrimmage_plays', 'TFL', 'havoc_total', 'fumbles', 'def_int', 'num_pass_plays', 'sacks', 'pass_breakups'] },
   adv_situational: { tag: 'espn_cfb_adv_situational', file: 'adv_situational', columns: ['game_id', 'week', 'pos_team', 'EPA_success', 'EPA_success_pass', 'EPA_success_rush'] },
@@ -25,10 +25,29 @@ const RELEASES: Record<string, { tag: string; file: string; columns: string[] }>
     'drive.isScore', 'drive.team.displayName', 'drive.team.shortDisplayName', 'drive.offensivePlays',
     'drive.timeElapsed.displayValue', 'start.pos_team_score', 'end.pos_team_score', 'scoringPlay',
     'punt', 'punt_play', 'fg_attempt', 'fg_made', 'yds_fg', 'yds_punted', 'yds_punt_gained',
-    'yds_punt_return', 'kick_play', 'kickoff_play', 'yds_kickoff', 'yds_kickoff_return',
+    'yds_punt_return', 'kickoff_play', 'yds_kickoff', 'yds_kickoff_return',
     'kickoff_tb', 'punt_tb', 'penalty_flag', 'scrimmage_play', 'pos_unit',
   ] },
   linescores: { tag: 'espn_cfb_linescores', file: 'linescores', columns: ['game_id', 'team_id', 'period', 'value'] },
+};
+
+// The current ESPN-native Parquet releases use camelCase fields for box stats.
+// Normalize those fields once so the existing CFB calculator can keep its stable shape.
+const COLUMN_ALIASES: Record<string, Record<string, string>> = {
+  team_box: {
+    first_downs: 'firstDowns', third_down_eff: 'thirdDownEff', fourth_down_eff: 'fourthDownEff',
+    total_yards: 'totalYards', net_passing_yards: 'netPassingYards', completion_attempts: 'completionAttempts',
+    rushing_yards: 'rushingYards', rushing_attempts: 'rushingAttempts',
+    total_penalties_yards: 'totalPenaltiesYards', fumbles_lost: 'fumblesLost', possession_time: 'possessionTime',
+  },
+  player_box: {
+    passing_touchdowns: 'passingTouchdowns', rushing_touchdowns: 'rushingTouchdowns',
+    field_goals_made_field_goal_attempts: 'fieldGoalsMade/fieldGoalAttempts',
+    extra_points_made_extra_point_attempts: 'extraPointsMade/extraPointAttempts',
+    punt_yards: 'puntYards', punts_inside20: 'puntsInside20', kick_returns: 'kickReturns',
+    kick_return_yards: 'kickReturnYards', kick_return_touchdowns: 'kickReturnTouchdowns',
+    punt_returns: 'puntReturns', punt_return_yards: 'puntReturnYards', punt_return_touchdowns: 'puntReturnTouchdowns',
+  },
 };
 
 function clean(value: unknown): string {
@@ -45,6 +64,14 @@ function number(value: unknown): number | null {
 
 function truth(value: unknown): boolean {
   return /^(true|1|yes|y)$/i.test(clean(value));
+}
+
+function isCompletedGame(row: SourceRow): boolean {
+  const explicit = row.status_type_completed ?? row.completed;
+  if (explicit != null && clean(explicit) !== '') return truth(explicit);
+  const status = textValue(row, 'status_type_name', 'status').toUpperCase();
+  if (status) return /^(?:STATUS_)?FINAL(?:$|[_ /-])/.test(status);
+  return number(row.home_score) != null && number(row.away_score) != null;
 }
 
 function textValue(row: SourceRow, ...keys: string[]): string {
@@ -116,7 +143,15 @@ export class SportsDataverseCfbSource {
                 },
               },
             });
-            const rows = await parquetReadObjects({ file, columns: definition.columns, compressors }) as SourceRow[];
+            const sourceRows = await parquetReadObjects({ file, columns: definition.columns, compressors }) as SourceRow[];
+            const aliases = COLUMN_ALIASES[name] || {};
+            const rows = sourceRows.map((row) => {
+              const normalized = { ...row };
+              for (const [target, source] of Object.entries(aliases)) {
+                if (!(target in normalized) && source in row) normalized[target] = row[source];
+              }
+              return normalized;
+            });
             if (rows.length) return rows;
             throw new Error(`SportsDataverse ${name} Parquet file for ${season} was empty.`);
           } catch (error) {
@@ -150,7 +185,7 @@ export class SportsDataverseCfbSource {
     const [schedule, fbs] = await Promise.all([this.dataset('schedules', season), this.fbsTeams(season)]);
     const fbsIds = new Set(fbs.map((row) => clean(row.team_id)));
     return schedule.filter((row) =>
-      truth(row.status_type_completed) && number(row.home_score) != null && number(row.away_score) != null &&
+      isCompletedGame(row) && number(row.home_score) != null && number(row.away_score) != null &&
       (fbsIds.has(clean(row.home_id)) || fbsIds.has(clean(row.away_id)))
     );
   }
@@ -199,7 +234,7 @@ export class SportsDataverseCfbSource {
     const week = number(params.week);
     const boxesByGame = groupBy(box.filter((row) => {
       const game = scheduleById.get(clean(row.game_id));
-      return Boolean(game) && (week == null || number(row.week) === week) &&
+      return Boolean(game) && (week == null || number(game!.week) === week) &&
         (fbsIds.has(clean(row.team_id)) || clean(row.team_id) === clean(game!.home_id) || clean(row.team_id) === clean(game!.away_id));
     }), (row) => clean(row.game_id));
     const games = schedule.filter((game) => week == null || number(game.week) === week);
