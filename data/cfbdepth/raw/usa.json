@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "11",
+      "Col2": "10",
       "Col3": "# New:",
-      "Col4": "1",
+      "Col4": "0",
       "Col5": "Impact:",
       "Col6": "13",
       "Col7": "Impact Avg:",
-      "Col8": "1.2",
+      "Col8": "1.3",
       "Col9": "Impact Rank:",
-      "Col10": "76",
+      "Col10": "68",
       "Col11": ""
     },
     {
@@ -162,13 +162,13 @@
       "Col1": "Dominic White",
       "Col2": "",
       "Col3": "",
-      "Col4": "GTD",
+      "Col4": "Q",
       "Col5": "WR",
       "Col6": "FALSE",
       "Col7": "9.1",
-      "Col8": "0",
+      "Col8": "1",
       "Col9": "10/20/2026",
-      "Col10": "Official report 2026-10-20: game time decision. Game 2026-10-20. Previous context: Official report 2026-10-17: probable. Game 2026-10-20. Previous context: DNP Week 5 vs. ULM. Remains listed 'out' on the availability report.",
+      "Col10": "Has not played since week five. Remained out through week eight even though he was a game-time decision.",
       "Col11": "0"
     },
     {
@@ -185,17 +185,17 @@
       "Col11": "0"
     },
     {
-      "Col1": "Stephen Johnson",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "GTD",
-      "Col5": "DL",
-      "Col6": "TRUE",
-      "Col7": "10.5",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "10/20/2026",
-      "Col10": "Official report 2026-10-20: game time decision. Game 2026-10-20. Previous context: Official report 2026-10-17: probable. Game 2026-10-20.",
-      "Col11": "37"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,19 @@
       "Col11": ""
     },
     {
+      "Col1": "Stephen Johnson",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DL",
+      "Col6": "",
+      "Col7": "10.5",
+      "Col8": "0",
+      "Col9": "10/21/2026",
+      "Col10": "Cleared from the injury/status report on 10/21/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Everett Hunter",
       "Col2": "",
       "Col3": "",
@@ -1176,15 +1189,15 @@
     ],
     [
       "#:",
-      "11",
+      "10",
       "# New:",
-      "1",
+      "0",
       "Impact:",
       "13",
       "Impact Avg:",
-      "1.2",
+      "1.3",
       "Impact Rank:",
-      "76",
+      "68",
       ""
     ],
     [
@@ -1295,13 +1308,13 @@
       "Dominic White",
       "",
       "",
-      "GTD",
+      "Q",
       "WR",
       "FALSE",
       "9.1",
-      "0",
+      "1",
       "10/20/2026",
-      "Official report 2026-10-20: game time decision. Game 2026-10-20. Previous context: Official report 2026-10-17: probable. Game 2026-10-20. Previous context: DNP Week 5 vs. ULM. Remains listed 'out' on the availability report.",
+      "Has not played since week five. Remained out through week eight even though he was a game-time decision.",
       "0"
     ],
     [
@@ -1318,17 +1331,17 @@
       "0"
     ],
     [
-      "Stephen Johnson",
       "",
       "",
-      "GTD",
-      "DL",
-      "TRUE",
-      "10.5",
+      "",
+      "",
+      "",
+      "",
+      "",
       "0",
-      "10/20/2026",
-      "Official report 2026-10-20: game time decision. Game 2026-10-20. Previous context: Official report 2026-10-17: probable. Game 2026-10-20.",
-      "37"
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2020,6 +2033,19 @@
       ""
     ],
     [
+      "Stephen Johnson",
+      "",
+      "",
+      "Cleared",
+      "DL",
+      "",
+      "10.5",
+      "0",
+      "10/21/2026",
+      "Cleared from the injury/status report on 10/21/2026",
+      ""
+    ],
+    [
       "Everett Hunter",
       "",
       "",
@@ -2280,6 +2306,6 @@
       ""
     ]
   ],
-  "count": 87,
-  "timestamp": "2026-10-20T20:06:01.695Z"
+  "count": 88,
+  "timestamp": "2026-10-21T13:05:53.011Z"
 }
