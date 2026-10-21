@@ -4,6 +4,7 @@
 
 import { asyncBufferFromUrl, parquetMetadataAsync, parquetReadObjects, parquetSchema } from 'npm:hyparquet@1.31.1';
 import { compressors } from 'npm:hyparquet-compressors@1.1.1';
+import { normalizeCFBSourceTeam } from './cfbTeamIdentity.ts';
 
 type SourceRow = Record<string, any>;
 type Params = Record<string, any>;
@@ -20,6 +21,7 @@ const RELEASES: Record<string, { tag: string; file: string; columns: string[] }>
   play_by_play: { tag: 'espn_cfb_pbp', file: 'play_by_play', columns: [
     'game_id', 'week', 'sequenceNumber', 'status_type_completed', 'text', 'type.text', 'orig_play_type',
     'period.number', 'clock.displayValue', 'start.down', 'start.distance', 'start.yardsToEndzone', 'start.pos_team.name',
+    'start.def_pos_team.id', 'start.def_pos_team.name',
     'pos_team_id', 'pos_team', 'def_pos_team_id', 'def_pos_team', 'pass', 'pass_attempt', 'rush', 'sack', 'TFL',
     'forced_fumble', 'fumble_forced_player_name', 'pass_breakup', 'pass_breakup_player_name',
     'EPA_scrimmage', 'EPA', 'EPA_success',
@@ -57,6 +59,39 @@ const COLUMN_ALIASES: Record<string, Record<string, string>> = {
 function clean(value: unknown): string {
   const out = String(value ?? '').trim();
   return out === 'NA' || out === 'NaN' || out === 'null' ? '' : out;
+}
+
+function sourceTeamIdMap(teams: SourceRow[]): Map<string, string> {
+  const ids = new Map<string, string>();
+  const ambiguous = new Set<string>();
+  for (const team of teams) {
+    const id = clean(team.team_id);
+    if (!id) continue;
+    for (const label of [team.abbreviation, team.location, team.short_display_name, team.display_name, team.name]) {
+      const key = normalizeCFBSourceTeam(label);
+      if (!key || ambiguous.has(key)) continue;
+      const current = ids.get(key);
+      if (current && current !== id) {
+        ids.delete(key);
+        ambiguous.add(key);
+      } else {
+        ids.set(key, id);
+      }
+    }
+  }
+  return ids;
+}
+
+function resolveSourceTeamId(
+  rawId: unknown,
+  rawName: unknown,
+  teamsById: Map<string, SourceRow>,
+  idsByTeamKey: Map<string, string>,
+): string {
+  const id = clean(rawId);
+  if (id && teamsById.has(id)) return id;
+  const nameKey = normalizeCFBSourceTeam(rawName || rawId);
+  return idsByTeamKey.get(nameKey) || id;
 }
 
 function number(value: unknown): number | null {
@@ -255,12 +290,19 @@ export class SportsDataverseCfbSource {
       this.playRows(season),
     ]);
     const plays = await this.selectedByWeek(allPlays, params);
+    const teamById = new Map(teams.map((row) => [clean(row.team_id), row]));
+    const idsByTeamKey = sourceTeamIdMap(teams);
     const defensiveEventsByGameTeam = new Map<string, {
       sacks: number; tacklesForLoss: number; forcedFumbles: number; passesDeflected: number; reported: Set<string>;
     }>();
     for (const play of plays) {
       const gameId = clean(play.game_id);
-      const defenseTeamId = clean(play.def_pos_team_id || play['start.def_pos_team.id']);
+      const defenseTeamId = resolveSourceTeamId(
+        play.def_pos_team_id || play['start.def_pos_team.id'],
+        play.def_pos_team || play['start.def_pos_team.name'],
+        teamById,
+        idsByTeamKey,
+      );
       if (!gameId || !defenseTeamId) continue;
       const eventKey = `${gameId}|${defenseTeamId}`;
       let events = defensiveEventsByGameTeam.get(eventKey);
@@ -282,9 +324,11 @@ export class SportsDataverseCfbSource {
       countFlag('passesDeflected', play.pass_breakup, play.pass_breakup_player_name);
     }
     const fbsIds = new Set((await this.fbsTeams(season)).map((row) => clean(row.team_id)));
-    const teamById = new Map(teams.map((row) => [clean(row.team_id), row]));
     const scheduleById = new Map(schedule.map((row) => [clean(row.game_id), row]));
-    const defenseByGameTeam = new Map(defensive.map((row) => [clean(row.game_id) + '|' + clean(row.def_pos_team_id || row.def_pos_team), row]));
+    const defenseByGameTeam = new Map(defensive.flatMap((row) => {
+      const teamId = resolveSourceTeamId(row.def_pos_team_id, row.def_pos_team, teamById, idsByTeamKey);
+      return teamId ? [[clean(row.game_id) + '|' + teamId, row] as const] : [];
+    }));
     const playersByGameTeam = groupBy(playerBox, (row) => clean(row.game_id) + '|' + clean(row.team_id));
     const linesByGameTeam = groupBy(linescores, (row) => clean(row.game_id) + '|' + clean(row.team_id));
     const week = number(params.week);
@@ -479,6 +523,9 @@ export class SportsDataverseCfbSource {
       this.completedGames(season), this.fbsTeams(season), this.teams(season), this.dataset('adv_team', season),
       this.dataset('adv_defensive', season), this.dataset('adv_situational', season),
     ]);
+    const teamById = new Map(teams.map((row) => [clean(row.team_id), row]));
+    const idsByTeamKey = sourceTeamIdMap(teams);
+    const sourceId = (id: unknown, name: unknown) => resolveSourceTeamId(id, name, teamById, idsByTeamKey);
     const gameById = new Map(games.map((row) => [clean(row.game_id), row]));
     const completedIds = new Set(gameById.keys());
     const startWeek = number(params.startWeek) ?? 1;
@@ -488,9 +535,18 @@ export class SportsDataverseCfbSource {
     const offense = offenseRows.filter(inRange);
     const defense = defenseRows.filter(inRange);
     const situations = situationRows.filter(inRange);
-    const offenseByGameTeam = new Map(offense.map((row) => [clean(row.game_id) + '|' + clean(row.pos_team_id || row.pos_team), row]));
-    const situationByGameTeam = new Map(situations.map((row) => [clean(row.game_id) + '|' + clean(row.pos_team_id || row.pos_team), row]));
-    const defenseByTeam = groupBy(defense, (row) => clean(row.game_id) + '|' + clean(row.def_pos_team_id || row.def_pos_team));
+    const offenseByGameTeam = new Map(offense.flatMap((row) => {
+      const teamId = sourceId(row.pos_team_id, row.pos_team);
+      return teamId ? [[clean(row.game_id) + '|' + teamId, row] as const] : [];
+    }));
+    const situationByGameTeam = new Map(situations.flatMap((row) => {
+      const teamId = sourceId(row.pos_team_id, row.pos_team);
+      return teamId ? [[clean(row.game_id) + '|' + teamId, row] as const] : [];
+    }));
+    const defenseByTeam = groupBy(defense, (row) => {
+      const teamId = sourceId(row.def_pos_team_id, row.def_pos_team);
+      return teamId ? clean(row.game_id) + '|' + teamId : '';
+    });
 
     const aggregate = (rows: SourceRow[], situationalRows: SourceRow[], defenseRowsForTeam: SourceRow[]) => {
       const rushes = sum(rows, 'rushes');
@@ -528,7 +584,7 @@ export class SportsDataverseCfbSource {
     const output: any[] = [];
     for (const team of fbs) {
       const teamId = clean(team.team_id);
-      const ownRows = offense.filter((row) => clean(row.pos_team_id || row.pos_team) === teamId);
+      const ownRows = offense.filter((row) => sourceId(row.pos_team_id, row.pos_team) === teamId);
       const ownSituations = ownRows.map((row) => situationByGameTeam.get(clean(row.game_id) + '|' + teamId)).filter(Boolean) as SourceRow[];
       const opponentRows: SourceRow[] = [];
       const opponentSituations: SourceRow[] = [];
