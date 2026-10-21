@@ -11,10 +11,9 @@ import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.
 const CFB_SOURCE = new SportsDataverseCfbSource();
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-// Bump the published cache contract when the source-team identity fallback
-// changes so the publisher rebuilds the prior-season game logs as well as the
-// live season. Rolling windows depend on those historical logs.
-export const CFB_TEAM_STATS_CACHE_VERSION = 34;
+// Bump the published cache contract when source parsing or coverage logic changes
+// so the publisher rebuilds current and prior-season logs used by rolling windows.
+export const CFB_TEAM_STATS_CACHE_VERSION = 35;
 const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
@@ -3078,10 +3077,19 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
             gameIds,
             totals: mergedStats.aggregates?.defense || {},
           });
+          const unavailableEventMetrics = (defenseIntegrity.unavailable || []).filter((metric: string) =>
+            /defensive sacks|tackles for loss|forced fumbles|passes deflected/i.test(metric)
+          );
+          if (mergedStats.offense?.sacksAllowedPerGame == null) unavailableEventMetrics.push('offensive sacks allowed/game');
+          if (mergedStats.offense?.tacklesForLossAllowedPerGame == null) unavailableEventMetrics.push('offensive tackles for loss allowed/game');
+          const eventCoverageWarnings = unavailableEventMetrics.map((metric: string) =>
+            `${teamName} ${timeframe} event stats unavailable: ${metric}.`
+          );
           const teamDiscrepancies = [
             ...offenseIntegrity.errors.map((message: string) => `${teamName} ${timeframe} offense: ${message}`),
             ...defenseIntegrity.errors.map((message: string) => `${teamName} ${timeframe} defense: ${message}`),
             ...defenseIntegrity.warnings.map((message: string) => `${teamName} ${timeframe} defense warning: ${message}`),
+            ...eventCoverageWarnings,
           ];
           integrityDiscrepancies.push(...teamDiscrepancies);
           mergedStats.integrity = {
@@ -3089,7 +3097,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
             checks: [...offenseIntegrity.checks, ...defenseIntegrity.checks],
             status: teamDiscrepancies.length ? 'completed_with_discrepancies' : 'passed',
             errors: [...offenseIntegrity.errors, ...defenseIntegrity.errors],
-            warnings: defenseIntegrity.warnings,
+            warnings: [...defenseIntegrity.warnings, ...eventCoverageWarnings],
             discrepancies: teamDiscrepancies,
             defense: defenseIntegrity,
             unavailableDefenseMetrics: defenseIntegrity.unavailable,

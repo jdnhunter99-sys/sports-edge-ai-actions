@@ -310,14 +310,23 @@ export class SportsDataverseCfbSource {
         events = { sacks: 0, tacklesForLoss: 0, forcedFumbles: 0, passesDeflected: 0, reported: new Set<string>() };
         defensiveEventsByGameTeam.set(eventKey, events);
       }
+      const hasSourceField = (field: string) => Object.prototype.hasOwnProperty.call(play, field);
       const countFlag = (target: 'sacks' | 'tacklesForLoss' | 'forcedFumbles' | 'passesDeflected', flag: unknown, fallbackName?: unknown) => {
-        const known = flag != null && clean(flag) !== ''
-          ? truth(flag)
-          : fallbackName != null && clean(fallbackName) !== '' ? true : undefined;
-        if (known === undefined) return;
-        events!.reported.add(target);
-        if (known) events![target] += 1;
+        const value = clean(flag);
+        const numeric = number(value);
+        const occurred = Boolean(value) && !/^(?:false|no|n|0+(?:\.0+)?)$/i.test(value) &&
+          (truth(value) || numeric == null || numeric > 0);
+        const namedEvent = fallbackName != null && clean(fallbackName) !== '';
+        if (occurred || namedEvent) events![target] += 1;
       };
+      // A null flag means zero when the published PBP schema includes the event
+      // column and this game has PBP rows. Track schema coverage separately from
+      // whether an event occurred, so a no-event game is a valid zero instead
+      // of making the entire rolling window unavailable.
+      if (hasSourceField('sack')) events.reported.add('sacks');
+      if (hasSourceField('TFL')) events.reported.add('tacklesForLoss');
+      if (hasSourceField('forced_fumble') || hasSourceField('fumble_forced_player_name')) events.reported.add('forcedFumbles');
+      if (hasSourceField('pass_breakup') || hasSourceField('pass_breakup_player_name')) events.reported.add('passesDeflected');
       countFlag('sacks', play.sack);
       countFlag('tacklesForLoss', play.TFL);
       countFlag('forcedFumbles', play.forced_fumble, play.fumble_forced_player_name);
