@@ -11,7 +11,7 @@ import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.
 const CFB_SOURCE = new SportsDataverseCfbSource();
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 31;
+const CACHE_VERSION = 32;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
@@ -48,12 +48,13 @@ const METRIC_DEFINITIONS = {
   goalToGoTdPctAllowed: 'Opponent touchdown drives among drives with a goal-to-go scrimmage play (within 10 yards and distance to go reaches the goal line).',
   twoMinuteDefensePpa: 'SportsDataverse/ESPN play PPA average allowed on scrimmage plays in the final two minutes of the second and fourth quarters; lower is better.',
   stuffRate: 'SportsDataverse/ESPN season-advanced defensive stuff rate; kept separate from offensive stuff rate.',
-  adjustedLineYardsAllowed: 'SportsDataverse/ESPN season-advanced defensive lineYards; source-defined adjusted line yards allowed.',
+  adjustedLineYardsAllowed: 'SportsDataverse/ESPN PBP line yards summed over the selected games and divided by opponent rush attempts.',
   havocRate: 'SportsDataverse/ESPN season-advanced defense.havoc.total, using SportsDataverse/ESPN source definition; no event count is reconstructed locally.',
   passesDeflectedPerGame: 'SportsDataverse/ESPN team box-score passesDeflected per completed game; reported as supplied, without adding interceptions.',
   ncaaPasserRating: 'NCAA passing-efficiency formula, not NFL passer rating.',
-  explosivePlays: 'SportsDataverse/ESPN play-by-play: pass gains of 20+ yards and rush gains of 10+ yards, divided by eligible pass/rush plays.',
-  advancedLineStats: 'SportsDataverse/ESPN season-advanced fields; unavailable for a rolling window unless its selected game logs contain the required play coverage.',
+  explosivePlays: 'SportsDataverse/ESPN EPA-defined explosive pass/rush flags from play-by-play, divided by eligible attempts; yardage thresholds are used only when those flags are unavailable.',
+  advancedLineStats: 'SportsDataverse/ESPN play-by-play line-yard decomposition aggregated across the exact selected games; season advanced game totals fill any unavailable PBP fields.',
+  passPpaTotal: 'Sum of pass-attempt PPA from the exact selected games; season advanced game totals fill any unavailable PBP coverage.',
   redZone: 'Drive-derived red-zone entries; scoring rate includes any points, while touchdown rate counts touchdowns only.',
   ranking: 'FBS teams with at least one completed game in the selected timeframe; competition ranking, exact ties share a rank, missing values are excluded. Volume and pace ranks are ordinal, not performance grades.',
 };
@@ -207,12 +208,15 @@ const DEFENSE_LOWER_IS_BETTER_STAT_KEYS = new Set([
   'passEpaAllowed', 'passEpaAllowedPerPlay', 'passingEpaAllowed',
   'passSuccessRateAllowed', 'passingSuccessRateAllowed',
   'explosivePassRateAllowed', 'explosivePassPctAllowed',
+  'explosivenessAllowed', 'passingExplosivenessAllowed', 'rushingExplosivenessAllowed',
   'rushingYardsAllowedPerGame', 'rushYardsAllowedPerGame', 'rushingYardsAllowed', 'rushingYards',
   'yardsPerRushAllowed', 'yardsPerCarryAllowed', 'rushYardsPerAttemptAllowed', 'ypcAllowed',
   'rushEpaAllowed', 'rushEpaAllowedPerPlay', 'rushingEpaAllowed',
   'rushSuccessRateAllowed', 'rushingSuccessRateAllowed',
   'explosiveRunRateAllowed', 'explosiveRushRateAllowed',
   'adjustedLineYardsAllowed', 'alyAllowed',
+  'secondLevelYardsAllowed', 'openFieldYardsAllowed',
+  'passPpaTotalAllowed', 'totalPassPpaAllowed',
   'redZoneScorePctAllowed', 'redZoneEfficiencyAllowed', 'redZoneTdPctAllowed', 'redZoneTouchdownPctAllowed',
   'goalToGoTdPctAllowed', 'goalToGoTouchdownPctAllowed',
   'thirdDownPctAllowed', 'thirdDownConversionPctAllowed', 'thirdDownEff',
@@ -527,6 +531,8 @@ interface SituationalGameMetrics {
   passAttempts: number;
   passPpaSum: number;
   passPpaPlays: number;
+  passAttemptPpaSum: number;
+  passAttemptPpaPlays: number;
   passLikePlays: number;
   successfulPassPlays: number;
   explosiveRushes: number;
@@ -538,6 +544,12 @@ interface SituationalGameMetrics {
   scrimmagePpaPlays: number;
   scrimmagePlays: number;
   successfulScrimmagePlays: number;
+  lineYardsSum: number;
+  lineYardsRushes: number;
+  secondLevelYardsSum: number;
+  secondLevelYardsRushes: number;
+  openFieldYardsSum: number;
+  openFieldYardsRushes: number;
   shortYardageRushAttempts: number;
   shortYardageRushConversions: number;
   earlyDownPassPlays: number;
@@ -553,7 +565,7 @@ interface SituationalGameMetrics {
 interface PassingGameMetrics {
   airYardsAttempts: number;
   totalAirYards: number;
-  totalPpa: number;
+  totalPpa: number | null;
   ppaAttempts: number;
 }
 
@@ -610,8 +622,11 @@ function emptySituational(): SituationalGameMetrics {
     redZoneTrips: 0, redZoneScores: 0, redZoneTouchdowns: 0, goalToGoTrips: 0, goalToGoTouchdowns: 0,
     goalToGoPlays: 0, goalToGoSuccesses: 0, thirdDownPpaSum: 0, thirdDownPpaPlays: 0, fourthDownAttempts: 0,
     explosivePasses: 0, passAttempts: 0, passPpaSum: 0, passPpaPlays: 0, passLikePlays: 0, successfulPassPlays: 0,
+    passAttemptPpaSum: 0, passAttemptPpaPlays: 0,
     explosiveRushes: 0, rushAttempts: 0, rushPpaSum: 0, rushPpaPlays: 0,
     successfulRushAttempts: 0, scrimmagePpaSum: 0, scrimmagePpaPlays: 0, scrimmagePlays: 0, successfulScrimmagePlays: 0,
+    lineYardsSum: 0, lineYardsRushes: 0, secondLevelYardsSum: 0, secondLevelYardsRushes: 0,
+    openFieldYardsSum: 0, openFieldYardsRushes: 0,
     shortYardageRushAttempts: 0, shortYardageRushConversions: 0, earlyDownPassPlays: 0,
     earlyDownScrimmagePlays: 0, twoMinutePpaSum: 0, twoMinutePpaPlays: 0, driveElapsedSeconds: 0, drivePlays: 0,
     openingDriveScore: 0, openingDriveTouchdown: 0,
@@ -619,19 +634,35 @@ function emptySituational(): SituationalGameMetrics {
 }
 
 function isPassLike(play: any): boolean {
+  // Sacks can be marked as pass plays in the source flags, but they are not
+  // pass attempts. They remain included in pass-like protection metrics below.
+  if (isSackPlay(play)) return false;
+  if (typeof play?.isPass === 'boolean') return play.isPass;
   const type = normalizeCategory(play?.playType);
   const text = String(play?.playText || '').toLowerCase();
   if (/sack/.test(type) || /sacked/.test(text)) return false;
   return /pass|interception/.test(type) || /\bpass(?:es|ed)?\b|intercepted/.test(text);
 }
 
+function isPassPlay(play: any): boolean {
+  if (typeof play?.isPassPlay === 'boolean') return play.isPassPlay || isSackPlay(play);
+  return isPassLike(play) || isSackPlay(play);
+}
+
 function isSackPlay(play: any): boolean {
+  if (typeof play?.isSack === 'boolean') return play.isSack;
   const type = normalizeCategory(play?.playType);
   const text = String(play?.playText || '').toLowerCase();
   return /sack/.test(type) || /sacked/.test(text);
 }
 
 function isRushLike(play: any): boolean {
+  if (typeof play?.isRush === 'boolean') {
+    if (!play.isRush) return false;
+    const type = normalizeCategory(play?.playType);
+    const text = String(play?.playText || '').toLowerCase();
+    return !/kneel/.test(type) && !/kneels?/.test(text);
+  }
   const type = normalizeCategory(play?.playType);
   const text = String(play?.playText || '').toLowerCase();
   if (/kick|punt|return|sack|pass|interception/.test(type)) return false;
@@ -652,6 +683,10 @@ function playSucceeded(play: any): boolean {
   return false;
 }
 
+function playEpaSuccessful(play: any): boolean {
+  return typeof play?.success === 'boolean' ? play.success : playSucceeded(play);
+}
+
 function situationalByGameTeam(drives: any[], plays: any[]): Map<string, SituationalGameMetrics> {
   const buckets = new Map<string, any>();
   const ensure = (gameId: any, offense: any) => {
@@ -670,9 +705,10 @@ function situationalByGameTeam(drives: any[], plays: any[]): Map<string, Situati
     m.playCoverage = true;
     const driveId = String(play?.driveId || '');
     const pass = isPassLike(play);
+    const passPlay = isPassPlay(play);
     const sack = isSackPlay(play);
     const rush = isRushLike(play);
-    const scrimmage = pass || sack || rush;
+    const scrimmage = typeof play?.isScrimmage === 'boolean' ? play.isScrimmage : pass || sack || rush;
     const yardsGained = n(play?.yardsGained, 0);
     const down = n(play?.down, 0);
     const yardsToGoal = n(play?.yardsToGoal, 0);
@@ -681,7 +717,7 @@ function situationalByGameTeam(drives: any[], plays: any[]): Map<string, Situati
 
     if (scrimmage) {
       m.scrimmagePlays += 1;
-      if (playSucceeded(play)) m.successfulScrimmagePlays += 1;
+      if (playEpaSuccessful(play)) m.successfulScrimmagePlays += 1;
       if (Number.isFinite(ppa)) {
         m.scrimmagePpaSum += ppa;
         m.scrimmagePpaPlays += 1;
@@ -690,11 +726,15 @@ function situationalByGameTeam(drives: any[], plays: any[]): Map<string, Situati
 
     if (pass) {
       m.passAttempts += 1;
-      if (yardsGained >= 20) m.explosivePasses += 1;
+      if (typeof play?.explosivePass === 'boolean' ? play.explosivePass : yardsGained >= 20) m.explosivePasses += 1;
+      if (Number.isFinite(ppa)) {
+        m.passAttemptPpaSum += ppa;
+        m.passAttemptPpaPlays += 1;
+      }
     }
-    if (pass || sack) {
+    if (passPlay || sack) {
       m.passLikePlays += 1;
-      if (playSucceeded(play)) m.successfulPassPlays += 1;
+      if (playEpaSuccessful(play)) m.successfulPassPlays += 1;
       if (Number.isFinite(ppa)) {
         m.passPpaSum += ppa;
         m.passPpaPlays += 1;
@@ -702,7 +742,13 @@ function situationalByGameTeam(drives: any[], plays: any[]): Map<string, Situati
     }
     if (rush) {
       m.rushAttempts += 1;
-      if (playSucceeded(play)) m.successfulRushAttempts += 1;
+      const lineYards = play?.lineYards == null || play.lineYards === '' ? null : Number(play.lineYards);
+      const secondLevelYards = play?.secondLevelYards == null || play.secondLevelYards === '' ? null : Number(play.secondLevelYards);
+      const openFieldYards = play?.openFieldYards == null || play.openFieldYards === '' ? null : Number(play.openFieldYards);
+      if (Number.isFinite(lineYards)) { m.lineYardsSum += lineYards; m.lineYardsRushes += 1; }
+      if (Number.isFinite(secondLevelYards)) { m.secondLevelYardsSum += secondLevelYards; m.secondLevelYardsRushes += 1; }
+      if (Number.isFinite(openFieldYards)) { m.openFieldYardsSum += openFieldYards; m.openFieldYardsRushes += 1; }
+      if (playEpaSuccessful(play)) m.successfulRushAttempts += 1;
       if (Number.isFinite(ppa)) {
         m.rushPpaSum += ppa;
         m.rushPpaPlays += 1;
@@ -713,11 +759,11 @@ function situationalByGameTeam(drives: any[], plays: any[]): Map<string, Situati
           m.shortYardageRushConversions += 1;
         }
       }
-      if (yardsGained >= 10) m.explosiveRushes += 1;
+      if (typeof play?.explosiveRush === 'boolean' ? play.explosiveRush : yardsGained >= 10) m.explosiveRushes += 1;
     }
     if (scrimmage && (down === 1 || down === 2)) {
       m.earlyDownScrimmagePlays += 1;
-      if (pass || sack) m.earlyDownPassPlays += 1;
+      if (passPlay || sack) m.earlyDownPassPlays += 1;
     }
     if (scrimmage && down === 3 && Number.isFinite(ppa)) {
       m.thirdDownPpaSum += ppa;
@@ -798,8 +844,8 @@ function passingGameByTeam(rows: any[]): Map<string, PassingGameMetrics> {
     out.set(key, {
       airYardsAttempts: Math.max(0, n(off?.airYardsAttemptsAvailable, 0)),
       totalAirYards: n(off?.totalAirYards, 0),
-      totalPpa: n(off?.totalPpa, 0),
-      ppaAttempts: Math.max(0, n(off?.ppaAttemptsAvailable, 0)),
+      totalPpa: off?.totalPpa == null ? null : n(off?.totalPpa, 0),
+      ppaAttempts: off?.totalPpa == null ? 0 : Math.max(0, n(off?.ppaAttemptsAvailable, 0)),
     });
   }
   return out;
@@ -985,6 +1031,8 @@ function computeStats(log: TeamGame[]) {
   let situationalPassAttempts = 0;
   let passPpaSum = 0;
   let passPpaPlays = 0;
+  let passAttemptPpaSum = 0;
+  let passAttemptPpaPlays = 0;
   let passLikePlays = 0;
   let successfulPassPlays = 0;
   let explosiveRushes = 0;
@@ -996,6 +1044,12 @@ function computeStats(log: TeamGame[]) {
   let scrimmagePpaPlays = 0;
   let scrimmagePlays = 0;
   let successfulScrimmagePlays = 0;
+  let lineYardsSum = 0;
+  let lineYardsRushes = 0;
+  let secondLevelYardsSum = 0;
+  let secondLevelYardsRushes = 0;
+  let openFieldYardsSum = 0;
+  let openFieldYardsRushes = 0;
   let shortYardageRushAttempts = 0;
   let shortYardageRushConversions = 0;
   let earlyDownPassPlays = 0;
@@ -1129,6 +1183,8 @@ function computeStats(log: TeamGame[]) {
       situationalPassAttempts += sit.passAttempts;
       passPpaSum += sit.passPpaSum;
       passPpaPlays += sit.passPpaPlays;
+      passAttemptPpaSum += sit.passAttemptPpaSum;
+      passAttemptPpaPlays += sit.passAttemptPpaPlays;
       passLikePlays += sit.passLikePlays;
       successfulPassPlays += sit.successfulPassPlays;
       explosiveRushes += sit.explosiveRushes;
@@ -1140,6 +1196,12 @@ function computeStats(log: TeamGame[]) {
       scrimmagePpaPlays += sit.scrimmagePpaPlays;
       scrimmagePlays += sit.scrimmagePlays;
       successfulScrimmagePlays += sit.successfulScrimmagePlays;
+      lineYardsSum += sit.lineYardsSum;
+      lineYardsRushes += sit.lineYardsRushes;
+      secondLevelYardsSum += sit.secondLevelYardsSum;
+      secondLevelYardsRushes += sit.secondLevelYardsRushes;
+      openFieldYardsSum += sit.openFieldYardsSum;
+      openFieldYardsRushes += sit.openFieldYardsRushes;
       shortYardageRushAttempts += sit.shortYardageRushAttempts;
       shortYardageRushConversions += sit.shortYardageRushConversions;
       earlyDownPassPlays += sit.earlyDownPassPlays;
@@ -1152,8 +1214,10 @@ function computeStats(log: TeamGame[]) {
     if (passing) {
       passingAirYardsAttempts += passing.airYardsAttempts;
       passingTotalAirYards += passing.totalAirYards;
-      passingTotalPpa += passing.totalPpa;
-      passingPpaAttempts += passing.ppaAttempts;
+      if (passing.totalPpa != null && passing.ppaAttempts > 0) {
+        passingTotalPpa += passing.totalPpa;
+        passingPpaAttempts += passing.ppaAttempts;
+      }
     }
 
     const oppSit = game.oppSituational;
@@ -1334,6 +1398,9 @@ function computeStats(log: TeamGame[]) {
     offense.secondsPerPlay = drivePlays ? round(driveElapsedSeconds / drivePlays, 1) : null;
   }
   if (playCoverageGames === games) {
+    const rushLineCoverageComplete = situationalRushAttempts > 0 && lineYardsRushes === situationalRushAttempts;
+    const rushSecondLevelCoverageComplete = situationalRushAttempts > 0 && secondLevelYardsRushes === situationalRushAttempts;
+    const rushOpenFieldCoverageComplete = situationalRushAttempts > 0 && openFieldYardsRushes === situationalRushAttempts;
     offense.epaPerPlay = scrimmagePpaPlays ? round(scrimmagePpaSum / scrimmagePpaPlays, 3) : null;
     offense.offensiveEpaPerPlay = offense.epaPerPlay;
     offense.successRate = pct(successfulScrimmagePlays, scrimmagePlays);
@@ -1355,6 +1422,20 @@ function computeStats(log: TeamGame[]) {
     offense.explosivePassPct = offense.explosivePassRate;
     offense.explosiveRunRate = pct(explosiveRushes, situationalRushAttempts);
     offense.explosiveRushRate = offense.explosiveRunRate;
+    offense.explosiveness = pct(explosivePasses + explosiveRushes, situationalPassAttempts + situationalRushAttempts);
+    offense.passingExplosiveness = offense.explosivePassRate;
+    offense.rushingExplosiveness = offense.explosiveRunRate;
+    offense.adjustedLineYards = rushLineCoverageComplete ? round(lineYardsSum / situationalRushAttempts, 2) : null;
+    offense.lineYardsPerRush = offense.adjustedLineYards;
+    offense.secondLevelYards = rushSecondLevelCoverageComplete ? round(secondLevelYardsSum / situationalRushAttempts, 2) : null;
+    offense.secondLevelYardsPerRush = offense.secondLevelYards;
+    offense.openFieldYards = rushOpenFieldCoverageComplete ? round(openFieldYardsSum / situationalRushAttempts, 2) : null;
+    offense.openFieldYardsPerRush = offense.openFieldYards;
+    if (situationalPassAttempts > 0 && passAttemptPpaPlays === situationalPassAttempts) {
+      offense.passPpaTotal = round(passAttemptPpaSum, 2);
+      offense.totalPassPpa = offense.passPpaTotal;
+      offense.expectedPointsGenerated = offense.passPpaTotal;
+    }
     offense.runSuccessRate = pct(successfulRushAttempts, situationalRushAttempts);
     offense.rushSuccessRate = offense.runSuccessRate;
     offense.shortYardageSuccess = pct(shortYardageRushConversions, shortYardageRushAttempts);
@@ -1373,7 +1454,7 @@ function computeStats(log: TeamGame[]) {
     offense.aDOT = offense.averageDepthOfTarget;
     offense.adot = offense.averageDepthOfTarget;
   }
-  if (passingPpaAttempts > 0) {
+  if (!(playCoverageGames === games && situationalPassAttempts > 0 && passAttemptPpaPlays === situationalPassAttempts) && passingPpaAttempts > 0) {
     offense.passPpaTotal = round(passingTotalPpa, 2);
     offense.totalPassPpa = offense.passPpaTotal;
     offense.expectedPointsGenerated = offense.passPpaTotal;
@@ -1479,6 +1560,12 @@ function computeStats(log: TeamGame[]) {
     );
   }
   if (defensivePlayCoverageGames === games) {
+    const opponentLineYardsSum = log.reduce((sum, game) => sum + (game.oppSituational?.lineYardsSum || 0), 0);
+    const opponentLineYardsRushes = log.reduce((sum, game) => sum + (game.oppSituational?.lineYardsRushes || 0), 0);
+    const opponentSecondLevelYardsSum = log.reduce((sum, game) => sum + (game.oppSituational?.secondLevelYardsSum || 0), 0);
+    const opponentSecondLevelYardsRushes = log.reduce((sum, game) => sum + (game.oppSituational?.secondLevelYardsRushes || 0), 0);
+    const opponentOpenFieldYardsSum = log.reduce((sum, game) => sum + (game.oppSituational?.openFieldYardsSum || 0), 0);
+    const opponentOpenFieldYardsRushes = log.reduce((sum, game) => sum + (game.oppSituational?.openFieldYardsRushes || 0), 0);
     const opponentScrimmagePpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaSum || 0), 0);
     const opponentScrimmagePpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaPlays || 0), 0);
     const opponentSuccessfulScrimmagePlays = log.reduce((sum, game) => sum + (game.oppSituational?.successfulScrimmagePlays || 0), 0);
@@ -1496,14 +1583,31 @@ function computeStats(log: TeamGame[]) {
     defense.successRateAllowed = defense.defensiveSuccessRate;
     defense.passEpaAllowedPerPlay = opponentPassPpaPlays ? round(opponentPassPpaSum / opponentPassPpaPlays, 3) : null;
     defense.passEpaAllowed = defense.passEpaAllowedPerPlay;
+    defense.passingEpaAllowed = defense.passEpaAllowedPerPlay;
     defense.passSuccessRateAllowed = pct(opponentSuccessfulPassPlays, opponentPassLikePlays);
     defense.rushEpaAllowedPerPlay = opponentRushPpaPlays ? round(opponentRushPpaSum / opponentRushPpaPlays, 3) : null;
     defense.rushEpaAllowed = defense.rushEpaAllowedPerPlay;
+    defense.rushingEpaAllowed = defense.rushEpaAllowedPerPlay;
     defense.rushSuccessRateAllowed = pct(opponentSuccessfulRushPlays, defensiveRushAttempts);
     defense.explosivePassRateAllowed = pct(defensiveExplosivePasses, defensivePassAttempts);
     defense.explosivePassPctAllowed = defense.explosivePassRateAllowed;
     defense.explosiveRunRateAllowed = pct(defensiveExplosiveRushes, defensiveRushAttempts);
     defense.explosiveRushRateAllowed = defense.explosiveRunRateAllowed;
+    defense.explosivenessAllowed = pct(defensiveExplosivePasses + defensiveExplosiveRushes, defensivePassAttempts + defensiveRushAttempts);
+    defense.passingExplosivenessAllowed = defense.explosivePassRateAllowed;
+    defense.rushingExplosivenessAllowed = defense.explosiveRunRateAllowed;
+    defense.adjustedLineYardsAllowed = opponentLineYardsRushes === defensiveRushAttempts && defensiveRushAttempts > 0
+      ? round(opponentLineYardsSum / defensiveRushAttempts, 2) : null;
+    defense.secondLevelYardsAllowed = opponentSecondLevelYardsRushes === defensiveRushAttempts && defensiveRushAttempts > 0
+      ? round(opponentSecondLevelYardsSum / defensiveRushAttempts, 2) : null;
+    defense.openFieldYardsAllowed = opponentOpenFieldYardsRushes === defensiveRushAttempts && defensiveRushAttempts > 0
+      ? round(opponentOpenFieldYardsSum / defensiveRushAttempts, 2) : null;
+    const opponentPassPpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaSum || 0), 0);
+    const opponentPassPpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaPlays || 0), 0);
+    if (defensivePassAttempts > 0 && opponentPassPpaPlays === defensivePassAttempts) {
+      defense.passPpaTotalAllowed = round(opponentPassPpaSum, 2);
+      defense.totalPassPpaAllowed = defense.passPpaTotalAllowed;
+    }
     defense.runStopRate = pct(defensiveRushAttempts - defensiveSuccessfulRushAttempts, defensiveRushAttempts);
     defense.shortYardageStopPct = pct(
       defensiveShortYardageRushAttempts - defensiveShortYardageRushConversions,
@@ -1603,7 +1707,7 @@ function computeStats(log: TeamGame[]) {
   const exactNetYardsPerAttempt = own.passAtt + sacksAllowed
     ? own.netPassingYards / (own.passAtt + sacksAllowed)
     : null;
-  const exactPressureRateAllowed = own.passAtt + sacksAllowed
+  const exactPressureRateAllowed = hasReported('own', ['sacks']) && hasReported('opp', ['qbHurries']) && own.passAtt + sacksAllowed
     ? pressureEventsAllowed / (own.passAtt + sacksAllowed)
     : null;
   const exactOpponentScrimmagePpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePpaSum || 0), 0);
@@ -1617,6 +1721,29 @@ function computeStats(log: TeamGame[]) {
   const exactOpponentSuccessfulRushPlays = log.reduce((sum, game) => sum + (game.oppSituational?.successfulRushAttempts || 0), 0);
   const exactOpponentScrimmagePlays = log.reduce((sum, game) => sum + (game.oppSituational?.scrimmagePlays || 0), 0);
   const exactOpponentPassLikePlays = log.reduce((sum, game) => sum + (game.oppSituational?.passLikePlays || 0), 0);
+  const exactOpponentLineYardsSum = log.reduce((sum, game) => sum + (game.oppSituational?.lineYardsSum || 0), 0);
+  const exactOpponentLineYardsRushes = log.reduce((sum, game) => sum + (game.oppSituational?.lineYardsRushes || 0), 0);
+  const exactOpponentSecondLevelYardsSum = log.reduce((sum, game) => sum + (game.oppSituational?.secondLevelYardsSum || 0), 0);
+  const exactOpponentSecondLevelYardsRushes = log.reduce((sum, game) => sum + (game.oppSituational?.secondLevelYardsRushes || 0), 0);
+  const exactOpponentOpenFieldYardsSum = log.reduce((sum, game) => sum + (game.oppSituational?.openFieldYardsSum || 0), 0);
+  const exactOpponentOpenFieldYardsRushes = log.reduce((sum, game) => sum + (game.oppSituational?.openFieldYardsRushes || 0), 0);
+  const exactOpponentPassAttemptPpaSum = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaSum || 0), 0);
+  const exactOpponentPassAttemptPpaPlays = log.reduce((sum, game) => sum + (game.oppSituational?.passAttemptPpaPlays || 0), 0);
+  const exactPassPpaTotal = playCoverageGames === games && situationalPassAttempts > 0 && passAttemptPpaPlays === situationalPassAttempts
+    ? passAttemptPpaSum
+    : passingPpaAttempts > 0 ? passingTotalPpa : null;
+  const exactOpponentPassPpaTotal = defensivePlayCoverageGames === games && defensivePassAttempts > 0 && exactOpponentPassAttemptPpaPlays === defensivePassAttempts
+    ? exactOpponentPassAttemptPpaSum
+    : opponentPassingPpaAttempts > 0 ? opponentPassingTotalPpa : null;
+  if (exactPassPpaTotal != null) {
+    offense.passPpaTotal = exactPassPpaTotal;
+    offense.totalPassPpa = exactPassPpaTotal;
+    offense.expectedPointsGenerated = exactPassPpaTotal;
+  }
+  if (exactOpponentPassPpaTotal != null) {
+    defense.passPpaTotalAllowed = exactOpponentPassPpaTotal;
+    defense.totalPassPpaAllowed = exactOpponentPassPpaTotal;
+  }
   const exactOffenseRankValues: Record<string, number | null> = {
     pointsPerGame: perGameExact(pointsFor),
     yardsPerGame: perGameExact(own.totalYards),
@@ -1714,6 +1841,15 @@ function computeStats(log: TeamGame[]) {
     explosivePassPct: percentExact(explosivePasses, situationalPassAttempts),
     explosiveRunRate: percentExact(explosiveRushes, situationalRushAttempts),
     explosiveRushRate: percentExact(explosiveRushes, situationalRushAttempts),
+    explosiveness: playCoverageGames === games ? percentExact(explosivePasses + explosiveRushes, situationalPassAttempts + situationalRushAttempts) : null,
+    passingExplosiveness: playCoverageGames === games ? percentExact(explosivePasses, situationalPassAttempts) : null,
+    rushingExplosiveness: playCoverageGames === games ? percentExact(explosiveRushes, situationalRushAttempts) : null,
+    adjustedLineYards: playCoverageGames === games && situationalRushAttempts > 0 && lineYardsRushes === situationalRushAttempts ? lineYardsSum / situationalRushAttempts : null,
+    lineYardsPerRush: playCoverageGames === games && situationalRushAttempts > 0 && lineYardsRushes === situationalRushAttempts ? lineYardsSum / situationalRushAttempts : null,
+    secondLevelYards: playCoverageGames === games && situationalRushAttempts > 0 && secondLevelYardsRushes === situationalRushAttempts ? secondLevelYardsSum / situationalRushAttempts : null,
+    secondLevelYardsPerRush: playCoverageGames === games && situationalRushAttempts > 0 && secondLevelYardsRushes === situationalRushAttempts ? secondLevelYardsSum / situationalRushAttempts : null,
+    openFieldYards: playCoverageGames === games && situationalRushAttempts > 0 && openFieldYardsRushes === situationalRushAttempts ? openFieldYardsSum / situationalRushAttempts : null,
+    openFieldYardsPerRush: playCoverageGames === games && situationalRushAttempts > 0 && openFieldYardsRushes === situationalRushAttempts ? openFieldYardsSum / situationalRushAttempts : null,
     runSuccessRate: percentExact(successfulRushAttempts, situationalRushAttempts),
     shortYardageSuccess: percentExact(shortYardageRushConversions, shortYardageRushAttempts),
     shortYardageSuccessRate: percentExact(shortYardageRushConversions, shortYardageRushAttempts),
@@ -1726,9 +1862,9 @@ function computeStats(log: TeamGame[]) {
     averageDepthOfTarget: passingAirYardsAttempts ? passingTotalAirYards / passingAirYardsAttempts : null,
     aDOT: passingAirYardsAttempts ? passingTotalAirYards / passingAirYardsAttempts : null,
     adot: passingAirYardsAttempts ? passingTotalAirYards / passingAirYardsAttempts : null,
-    passPpaTotal: passingPpaAttempts ? passingTotalPpa : null,
-    totalPassPpa: passingPpaAttempts ? passingTotalPpa : null,
-    expectedPointsGenerated: passingPpaAttempts ? passingTotalPpa : null,
+    passPpaTotal: exactPassPpaTotal,
+    totalPassPpa: exactPassPpaTotal,
+    expectedPointsGenerated: exactPassPpaTotal,
   };
 
   const exactDefenseRankValues: Record<string, number | null> = {
@@ -1801,13 +1937,23 @@ function computeStats(log: TeamGame[]) {
     successRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulScrimmagePlays, exactOpponentScrimmagePlays) : null,
     passEpaAllowedPerPlay: defensivePlayCoverageGames === games && exactOpponentPassPpaPlays ? exactOpponentPassPpaSum / exactOpponentPassPpaPlays : null,
     passEpaAllowed: defensivePlayCoverageGames === games && exactOpponentPassPpaPlays ? exactOpponentPassPpaSum / exactOpponentPassPpaPlays : null,
+    passingEpaAllowed: defensivePlayCoverageGames === games && exactOpponentPassPpaPlays ? exactOpponentPassPpaSum / exactOpponentPassPpaPlays : null,
     passSuccessRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulPassPlays, exactOpponentPassLikePlays) : null,
     passingSuccessRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulPassPlays, exactOpponentPassLikePlays) : null,
     rushEpaAllowedPerPlay: defensivePlayCoverageGames === games && exactOpponentRushPpaPlays ? exactOpponentRushPpaSum / exactOpponentRushPpaPlays : null,
     rushEpaAllowed: defensivePlayCoverageGames === games && exactOpponentRushPpaPlays ? exactOpponentRushPpaSum / exactOpponentRushPpaPlays : null,
+    rushingEpaAllowed: defensivePlayCoverageGames === games && exactOpponentRushPpaPlays ? exactOpponentRushPpaSum / exactOpponentRushPpaPlays : null,
     rushSuccessRateAllowed: defensivePlayCoverageGames === games ? percentExact(exactOpponentSuccessfulRushPlays, defensiveRushAttempts) : null,
     explosivePassRateAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosivePasses, defensivePassAttempts) : null,
     explosiveRunRateAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosiveRushes, defensiveRushAttempts) : null,
+    explosivenessAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosivePasses + defensiveExplosiveRushes, defensivePassAttempts + defensiveRushAttempts) : null,
+    passingExplosivenessAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosivePasses, defensivePassAttempts) : null,
+    rushingExplosivenessAllowed: defensivePlayCoverageGames === games ? percentExact(defensiveExplosiveRushes, defensiveRushAttempts) : null,
+    adjustedLineYardsAllowed: defensivePlayCoverageGames === games && defensiveRushAttempts > 0 && exactOpponentLineYardsRushes === defensiveRushAttempts ? exactOpponentLineYardsSum / defensiveRushAttempts : null,
+    secondLevelYardsAllowed: defensivePlayCoverageGames === games && defensiveRushAttempts > 0 && exactOpponentSecondLevelYardsRushes === defensiveRushAttempts ? exactOpponentSecondLevelYardsSum / defensiveRushAttempts : null,
+    openFieldYardsAllowed: defensivePlayCoverageGames === games && defensiveRushAttempts > 0 && exactOpponentOpenFieldYardsRushes === defensiveRushAttempts ? exactOpponentOpenFieldYardsSum / defensiveRushAttempts : null,
+    passPpaTotalAllowed: exactOpponentPassPpaTotal,
+    totalPassPpaAllowed: exactOpponentPassPpaTotal,
     twoMinuteDefensePpa: defensivePlayCoverageGames === games && twoMinuteDefensePpaPlays ? twoMinuteDefensePpaSum / twoMinuteDefensePpaPlays : null,
   };
   const defenseAggregate = {
@@ -2231,6 +2377,13 @@ function supplementMissingStats(stats: any, standard: Record<string, any> | unde
     offense: { ...stats.offense },
     defense: { ...stats.defense },
     special_teams: { ...stats.special_teams },
+    // Keep supplemental ranking inputs isolated. Advanced source values may
+    // be unavailable in older Parquet releases; they must never overwrite
+    // the exact PBP-derived rank values already attached to the team log.
+    rankValues: {
+      offense: { ...(stats.rankValues?.offense || {}) },
+      defense: { ...(stats.rankValues?.defense || {}) },
+    },
   };
   mergeStandardStats(supplemental, standard);
   mergeAdvancedStats(supplemental, advanced);

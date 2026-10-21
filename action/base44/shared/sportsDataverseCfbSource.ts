@@ -2,7 +2,7 @@
 // It converts the public, per-season cfbfastR Parquet assets into the source rows
 // consumed by the existing CFB calculator. No CFBD endpoint or API key is used.
 
-import { asyncBufferFromUrl, parquetReadObjects } from 'npm:hyparquet@1.31.1';
+import { asyncBufferFromUrl, parquetMetadataAsync, parquetReadObjects, parquetSchema } from 'npm:hyparquet@1.31.1';
 import { compressors } from 'npm:hyparquet-compressors@1.1.1';
 
 type SourceRow = Record<string, any>;
@@ -20,13 +20,15 @@ const RELEASES: Record<string, { tag: string; file: string; columns: string[] }>
   play_by_play: { tag: 'espn_cfb_pbp', file: 'play_by_play', columns: [
     'game_id', 'week', 'sequenceNumber', 'status_type_completed', 'text', 'type.text', 'orig_play_type',
     'period.number', 'clock.displayValue', 'start.down', 'start.distance', 'start.yardsToEndzone', 'start.pos_team.name',
-    'pos_team', 'pass', 'rush', 'sack', 'EPA_scrimmage', 'EPA', 'EPA_success', 'yds_rushed',
+    'pos_team', 'pass', 'pass_attempt', 'rush', 'sack', 'EPA_scrimmage', 'EPA', 'EPA_success',
+    'EPA_explosive_pass', 'EPA_explosive_rush', 'yds_rushed',
     'yds_receiving', 'statYardage', 'yds_sacked', 'drive.id', 'drive.result', 'drive.displayResult',
     'drive.isScore', 'drive.team.displayName', 'drive.team.shortDisplayName', 'drive.offensivePlays',
     'drive.timeElapsed.displayValue', 'start.pos_team_score', 'end.pos_team_score', 'scoringPlay',
     'punt', 'punt_play', 'fg_attempt', 'fg_made', 'yds_fg', 'yds_punted', 'yds_punt_gained',
     'yds_punt_return', 'kickoff_play', 'yds_kickoff', 'yds_kickoff_return',
     'kickoff_tb', 'punt_tb', 'penalty_flag', 'scrimmage_play', 'pos_unit',
+    'line_yards', 'second_level_yards', 'open_field_yards',
   ] },
   linescores: { tag: 'espn_cfb_linescores', file: 'linescores', columns: ['game_id', 'team_id', 'period', 'value'] },
 };
@@ -90,12 +92,13 @@ function numValue(row: SourceRow, ...keys: string[]): number | null {
   return null;
 }
 
-function sum(rows: SourceRow[], key: string): number {
-  return rows.reduce((total, row) => total + (number(row[key]) ?? 0), 0);
+function sum(rows: SourceRow[], key: string): number | null {
+  const values = rows.map((row) => number(row[key])).filter((value): value is number => value != null);
+  return values.length ? values.reduce((total, value) => total + value, 0) : null;
 }
 
-function ratio(numerator: number, denominator: number): number | null {
-  return denominator > 0 ? numerator / denominator : null;
+function ratio(numerator: number | null, denominator: number | null): number | null {
+  return numerator != null && denominator != null && denominator > 0 ? numerator / denominator : null;
 }
 
 function pair(value: unknown): [number, number] {
@@ -116,6 +119,22 @@ function groupBy<T>(rows: T[], keyOf: (row: T) => string): Map<string, T[]> {
     result.get(key)!.push(row);
   }
   return result;
+}
+
+function parquetColumnNames(schema: any): Set<string> {
+  const names = new Set<string>();
+  const visit = (node: any, prefix = '') => {
+    for (const child of node?.children || []) {
+      const name = clean(child?.element?.name);
+      if (!name) continue;
+      const path = prefix ? `${prefix}.${name}` : name;
+      names.add(name);
+      names.add(path);
+      if (child?.children?.length) visit(child, path);
+    }
+  };
+  visit(schema);
+  return names;
 }
 
 export class SportsDataverseCfbSource {
@@ -143,7 +162,14 @@ export class SportsDataverseCfbSource {
                 },
               },
             });
-            const sourceRows = await parquetReadObjects({ file, columns: definition.columns, compressors }) as SourceRow[];
+            const schema = parquetSchema(await parquetMetadataAsync(file));
+            const availableColumns = parquetColumnNames(schema);
+            const columns = definition.columns.filter((column) => availableColumns.has(column));
+            const missingColumns = definition.columns.filter((column) => !availableColumns.has(column));
+            if (missingColumns.length) {
+              console.warn(`SportsDataverse ${name} ${season} is missing requested Parquet columns: ${missingColumns.join(', ')}`);
+            }
+            const sourceRows = await parquetReadObjects({ file, columns, compressors }) as SourceRow[];
             const aliases = COLUMN_ALIASES[name] || {};
             const rows = sourceRows.map((row) => {
               const normalized = { ...row };
@@ -331,15 +357,18 @@ export class SportsDataverseCfbSource {
       const offenseId = clean(row.pos_team);
       const offenseMeta = teamById.get(offenseId) || {};
       const sack = truth(row.sack);
-      const pass = truth(row.pass);
+      const passPlay = truth(row.pass);
+      const passAttempt = row.pass_attempt == null || clean(row.pass_attempt) === ''
+        ? passPlay && !sack
+        : truth(row.pass_attempt);
       const rush = truth(row.rush);
       let playType = textValue(row, 'type.text', 'orig_play_type');
       if (sack) playType = 'Sack';
-      else if (pass) playType = 'Pass';
+      else if (passPlay) playType = 'Pass';
       else if (rush) playType = 'Rush';
       const yards = sack
         ? -Math.abs(number(row.yds_sacked) ?? 0)
-        : rush ? number(row.yds_rushed) : pass ? number(row.yds_receiving) : number(row.statYardage);
+        : rush ? number(row.yds_rushed) : passPlay ? number(row.yds_receiving) : number(row.statYardage);
       return {
         gameId: clean(row.game_id),
         offense: textValue(offenseMeta, 'location', 'short_display_name') || textValue(row, 'start.pos_team.name', 'drive.team.shortDisplayName', 'drive.team.displayName'),
@@ -350,12 +379,24 @@ export class SportsDataverseCfbSource {
         distance: number(row.distance) ?? number(row['start.distance']) ?? 0,
         yardsToGoal: number(row['start.yardsToEndzone']) ?? 0,
         ppa: numValue(row, 'EPA_scrimmage', 'EPA'),
-        success: row.EPA_success === '' ? undefined : truth(row.EPA_success),
+        success: row.EPA_success == null || clean(row.EPA_success) === '' ? undefined : truth(row.EPA_success),
         period: number(row['period.number']) ?? 0,
         clock: textValue(row, 'clock.displayValue'),
         driveId: textValue(row, 'drive.id'),
         playTextScoring: truth(row['drive.isScore']),
         scoring: truth(row.scoringPlay),
+        isPass: row.pass_attempt == null || clean(row.pass_attempt) === ''
+          ? (row.pass == null || clean(row.pass) === '' ? undefined : passAttempt)
+          : passAttempt,
+        isPassPlay: row.pass == null || clean(row.pass) === '' ? undefined : passPlay,
+        isRush: row.rush == null || clean(row.rush) === '' ? undefined : rush,
+        isSack: row.sack == null || clean(row.sack) === '' ? undefined : sack,
+        isScrimmage: row.scrimmage_play == null || clean(row.scrimmage_play) === '' ? undefined : truth(row.scrimmage_play),
+        explosivePass: row.EPA_explosive_pass == null || clean(row.EPA_explosive_pass) === '' ? undefined : truth(row.EPA_explosive_pass),
+        explosiveRush: row.EPA_explosive_rush == null || clean(row.EPA_explosive_rush) === '' ? undefined : truth(row.EPA_explosive_rush),
+        lineYards: number(row.line_yards),
+        secondLevelYards: number(row.second_level_yards),
+        openFieldYards: number(row.open_field_yards),
       };
     });
   }
@@ -596,8 +637,8 @@ export class SportsDataverseCfbSource {
         offense: {
           airYardsAttemptsAvailable: 0,
           totalAirYards: 0,
-          totalPpa: number(row.EPA_passing_overall) ?? 0,
-          ppaAttemptsAvailable: number(row.passes) ?? 0,
+          totalPpa: number(row.EPA_passing_overall),
+          ppaAttemptsAvailable: number(row.EPA_passing_overall) == null ? 0 : number(row.passes) ?? 0,
         },
       }));
     }
