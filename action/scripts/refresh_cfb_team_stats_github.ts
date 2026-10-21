@@ -3,9 +3,8 @@ import { normalizeCFBSchool } from '../base44/shared/cfbTeamIdentity.ts';
 
 const outputRoot = Deno.env.get('CFB_STATS_OUTPUT_DIR')?.trim();
 if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
-if (!Deno.env.get('CFBD_API_KEY')?.trim()) throw new Error('CFBD_API_KEY is required');
 
-const CACHE_VERSION = 30;
+const CACHE_VERSION = 31;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
 const TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
@@ -207,33 +206,16 @@ const historicalHasCurrentVersion = historicalFramePaths.every((path) => path.in
 const historicalGameLogsExist = await Deno.stat(gameLogPath(previousSeason)).then(() => true).catch(() => false);
 const historicalAlreadyPresent = historicalHasCurrentVersion && historicalGameLogsExist;
 let refreshedSeasonCount = 0;
-let quotaExhausted = false;
-async function refreshUnlessQuotaExceeded(season: number, isPrevious: boolean) {
-  try {
-    await refreshSeason(season, isPrevious);
-    refreshedSeasonCount++;
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (!/monthly call quota exceeded/i.test(message)) {
-      if (isPrevious) {
-        integrityDiscrepancies.push(`${season}: previous-season refresh could not complete: ${message}`);
-        console.warn(`Previous-season refresh failed for ${season}; retaining any existing cache and continuing with ${currentSeason}: ${message}`);
-        return;
-      }
-      throw error;
-    }
-    quotaExhausted = true;
-    console.warn(`CFBD monthly quota is exhausted; keeping the last published cache for ${season}.`);
-  }
-}
-// Current-season stats are the primary output, so spend quota on them first.
-// A prior-season integrity error can no longer prevent this season from being
-// materialized; it is logged as a warning above and any existing cache remains.
-await refreshUnlessQuotaExceeded(currentSeason, false);
-if (!quotaExhausted && (refreshPrevious || !historicalAlreadyPresent)) {
-  await refreshUnlessQuotaExceeded(previousSeason, true);
-} else if (!refreshPrevious && historicalAlreadyPresent) {
-  console.info(`Keeping existing previous-season (${previousSeason}) materialization; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
+await refreshSeason(currentSeason, false);
+refreshedSeasonCount++;
+if (refreshPrevious || !historicalAlreadyPresent) {
+  // The prior season is part of the current season's rolling L5/L10/L15
+  // windows. If the new source cannot rebuild it, fail before updating the
+  // index so the published cache never mixes CFBD and SportsDataverse data.
+  await refreshSeason(previousSeason, true);
+  refreshedSeasonCount++;
+} else {
+  console.info(`Keeping existing SportsDataverse previous-season (${previousSeason}) materialization; set CFB_REFRESH_PREVIOUS_SEASON=true to rebuild it.`);
 }
 
 const finalIndex = {

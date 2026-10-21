@@ -21,11 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Check required CFBD API key
-        env:
-          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-        run: test -n "$CFBD_API_KEY" || { echo 'Add repository secret CFBD_API_KEY'; exit 1; }
-
       - name: Check out this Actions repository
         uses: actions/checkout@v6
         with:
@@ -56,7 +51,6 @@ jobs:
       - name: Fetch, calculate, and materialize all CFB timeframes
         env:
           CFB_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
-          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           CFB_REFRESH_PREVIOUS_SEASON: ${{ github.event.inputs.refresh_previous || 'false' }}
         run: deno run --node-modules-dir=auto --allow-net --allow-env --allow-read --allow-write action/scripts/refresh_cfb_team_stats_github.ts
 

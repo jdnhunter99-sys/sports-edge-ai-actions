@@ -1,30 +1,27 @@
 // CFB game-detail team stats cache.
 //
-// Mirrors the NFL Game Detail cache contract while sourcing CFB data from the
-// supported CollegeFootballData API instead of the retired SportsDataverse
-// release CSV.  Each run downloads the season schedule once, then downloads
-// team box scores once per completed week and builds Season/L5/L10/L15 team
-// windows plus league ranks.
-//
-// Required secret: CFBD_API_KEY
+// Mirrors the NFL Game Detail cache contract using SportsDataverse's public
+// cfbfastR/ESPN per-season datasets. It calculates game logs and league ranks
+// locally from schedules, box scores, advanced team data, and play-by-play.
 
 import { normalizeCFBSchool, normalizeCFBSourceTeam, cfbDisplayName } from '../../shared/cfbTeamIdentity.ts';
 import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateCFBTeamOffense } from '../../shared/cfbTeamStatsIntegrity.mjs';
+import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.ts';
 
-const CFBD_BASE = 'https://api.collegefootballdata.com';
+const CFB_SOURCE = new SportsDataverseCfbSource();
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 30;
+const CACHE_VERSION = 31;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {
   pointsPerGame: 'Official completed-game team points divided by selected games.',
-  yardsPerGame: 'CFBD net passing yards plus rushing yards, divided by the same selected games.',
-  yardsAllowedPerGame: 'CFBD opponent net passing yards plus rushing yards, divided by the same selected games; differences from the provider total-yards row are diagnostic warnings.',
+  yardsPerGame: 'SportsDataverse/ESPN net passing yards plus rushing yards, divided by the same selected games.',
+  yardsAllowedPerGame: 'SportsDataverse/ESPN opponent net passing yards plus rushing yards, divided by the same selected games; differences from the provider total-yards row are diagnostic warnings.',
   playsPerGame: 'Official passing attempts plus rushing attempts, divided by selected games; must reconcile to the source total plays.',
   completionPct: 'Aggregate completions divided by aggregate passing attempts; not an average of game percentages.',
-  yardsPerAttempt: 'Aggregate CFBD net passing yards divided by aggregate pass attempts.',
-  netYardsPerAttempt: 'Aggregate CFBD net passing yards divided by pass attempts plus sacks allowed; sack yards are already netted and are not subtracted twice.',
+  yardsPerAttempt: 'Aggregate SportsDataverse/ESPN net passing yards divided by aggregate pass attempts.',
+  netYardsPerAttempt: 'Aggregate SportsDataverse/ESPN net passing yards divided by pass attempts plus sacks allowed; sack yards are already netted and are not subtracted twice.',
   yardsPerCarry: 'Aggregate rushing yards divided by aggregate rushing attempts.',
   yardsPerPlay: 'Aggregate total offensive yards divided by aggregate official offensive plays.',
   firstDownRate: 'Aggregate first downs divided by official offensive plays.',
@@ -34,29 +31,29 @@ const METRIC_DEFINITIONS = {
   sackRate: 'Defensive sacks credited from the opponent offense box-score sacks-lost total, divided by opponent pass attempts plus defensive sacks.',
   pressureRateAllowed: 'Sacks allowed plus opponent defensive QB hurries divided by team pass attempts plus sacks allowed; null if either event source is incomplete.',
   pressureRate: 'Defensive sacks plus defensive QB hurries divided by opponent pass attempts plus defensive sacks; null if either event source is incomplete.',
-  fumblesForced: 'CFBD forced-fumble count by the defense; never substituted with fumbles recovered.',
+  fumblesForced: 'SportsDataverse/ESPN forced-fumble count by the defense; never substituted with fumbles recovered.',
   turnoversForced: 'Opponent interceptions thrown plus opponent fumbles lost, or the explicit opponent box-score turnover total when present.',
   takeawayRate: 'Turnovers forced divided by opponent passing attempts plus rushing attempts.',
   tackleForLossPct: 'Defensive tackles for loss divided by opponent passing attempts plus rushing attempts.',
-  defensiveEpaPerPlay: 'CFBD predicted points added (PPA) allowed per opponent scrimmage play; sourced from complete /plays coverage or the CFBD season-advanced defense field.',
-  passEpaAllowedPerPlay: 'CFBD predicted points added (PPA) allowed per opponent pass or sack play; lower is better.',
-  rushEpaAllowedPerPlay: 'CFBD predicted points added (PPA) allowed per opponent rushing play; lower is better.',
-  defensiveSuccessRate: 'Share of opponent scrimmage plays meeting CFBD success criteria; source-derived from complete /plays coverage or season advanced defense.',
-  passSuccessRateAllowed: 'Share of opponent pass and sack plays meeting CFBD success criteria; lower is better.',
-  rushSuccessRateAllowed: 'Share of opponent rush plays meeting CFBD success criteria; lower is better.',
+  defensiveEpaPerPlay: 'SportsDataverse/ESPN predicted points added (PPA) allowed per opponent scrimmage play; sourced from complete /plays coverage or the SportsDataverse/ESPN season-advanced defense field.',
+  passEpaAllowedPerPlay: 'SportsDataverse/ESPN predicted points added (PPA) allowed per opponent pass or sack play; lower is better.',
+  rushEpaAllowedPerPlay: 'SportsDataverse/ESPN predicted points added (PPA) allowed per opponent rushing play; lower is better.',
+  defensiveSuccessRate: 'Share of opponent scrimmage plays meeting SportsDataverse/ESPN success criteria; source-derived from complete /plays coverage or season advanced defense.',
+  passSuccessRateAllowed: 'Share of opponent pass and sack plays meeting SportsDataverse/ESPN success criteria; lower is better.',
+  rushSuccessRateAllowed: 'Share of opponent rush plays meeting SportsDataverse/ESPN success criteria; lower is better.',
   explosivePassRateAllowed: 'Opponent pass plays gaining at least 20 yards divided by opponent pass plays.',
   explosiveRunRateAllowed: 'Opponent rushes gaining at least 10 yards divided by opponent rush attempts.',
   redZoneScorePctAllowed: 'Opponent scoring red-zone drives divided by opponent drives that had a scrimmage play inside the 20-yard line.',
   redZoneTdPctAllowed: 'Opponent touchdown red-zone drives divided by opponent drives that had a scrimmage play inside the 20-yard line.',
   goalToGoTdPctAllowed: 'Opponent touchdown drives among drives with a goal-to-go scrimmage play (within 10 yards and distance to go reaches the goal line).',
-  twoMinuteDefensePpa: 'CFBD play PPA average allowed on scrimmage plays in the final two minutes of the second and fourth quarters; lower is better.',
-  stuffRate: 'CFBD season-advanced defensive stuff rate; kept separate from offensive stuff rate.',
-  adjustedLineYardsAllowed: 'CFBD season-advanced defensive lineYards; source-defined adjusted line yards allowed.',
-  havocRate: 'CFBD season-advanced defense.havoc.total, using CFBD source definition; no event count is reconstructed locally.',
-  passesDeflectedPerGame: 'CFBD team box-score passesDeflected per completed game; reported as supplied, without adding interceptions.',
+  twoMinuteDefensePpa: 'SportsDataverse/ESPN play PPA average allowed on scrimmage plays in the final two minutes of the second and fourth quarters; lower is better.',
+  stuffRate: 'SportsDataverse/ESPN season-advanced defensive stuff rate; kept separate from offensive stuff rate.',
+  adjustedLineYardsAllowed: 'SportsDataverse/ESPN season-advanced defensive lineYards; source-defined adjusted line yards allowed.',
+  havocRate: 'SportsDataverse/ESPN season-advanced defense.havoc.total, using SportsDataverse/ESPN source definition; no event count is reconstructed locally.',
+  passesDeflectedPerGame: 'SportsDataverse/ESPN team box-score passesDeflected per completed game; reported as supplied, without adding interceptions.',
   ncaaPasserRating: 'NCAA passing-efficiency formula, not NFL passer rating.',
-  explosivePlays: 'CFBD play-by-play: pass gains of 20+ yards and rush gains of 10+ yards, divided by eligible pass/rush plays.',
-  advancedLineStats: 'CFBD season-advanced fields; unavailable for a rolling window unless its selected game logs contain the required play coverage.',
+  explosivePlays: 'SportsDataverse/ESPN play-by-play: pass gains of 20+ yards and rush gains of 10+ yards, divided by eligible pass/rush plays.',
+  advancedLineStats: 'SportsDataverse/ESPN season-advanced fields; unavailable for a rolling window unless its selected game logs contain the required play coverage.',
   redZone: 'Drive-derived red-zone entries; scoring rate includes any points, while touchdown rate counts touchdowns only.',
   ranking: 'FBS teams with at least one completed game in the selected timeframe; competition ranking, exact ties share a rank, missing values are excluded. Volume and pace ranks are ordinal, not performance grades.',
 };
@@ -382,7 +379,7 @@ function teamBoxTotals(team: any): BoxTotals {
   const stats = Array.isArray(team?.stats) ? team.stats : [];
   const seen = new Set<string>();
   for (const item of stats) {
-    // CFBD normally puts the exact stat key in `category`. Some responses use
+    // SportsDataverse/ESPN normally puts the exact stat key in `category`. Some responses use
     // a broad group there (for example `passing`) and put the specific field
     // in `name`/`label`. Consider every available identifier so those rows do
     // not silently disappear from aggregate metrics.
@@ -492,11 +489,11 @@ function teamBoxTotals(team: any): BoxTotals {
     .filter((key) => !seen.has(key));
   if (!seen.has('totalYards') && !(seen.has('netPassingYards') && seen.has('rushingYards'))) missingCore.push('totalYards');
   if (missingCore.length) {
-    throw new Error(`CFBD box score for ${team?.team || 'unknown team'} is missing required offense fields: ${missingCore.join(', ')}`);
+    throw new Error(`SportsDataverse cfbfastR/ESPN box score for ${team?.team || 'unknown team'} is missing required offense fields: ${missingCore.join(', ')}`);
   }
 
   // Use one internally consistent total for all per-game and per-play stats.
-  // Keep CFBD's reported total separately so source discrepancies can be
+  // Keep SportsDataverse/ESPN's reported total separately so source discrepancies can be
   // surfaced as diagnostics without blocking publication.
   out.totalYards = out.netPassingYards + out.rushingYards;
 
@@ -1236,7 +1233,7 @@ function computeStats(log: TeamGame[]) {
   const ncaaPasserRating = own.passAtt
     ? round((8.4 * own.netPassingYards + 330 * own.passingTouchdowns + 100 * own.comp - 200 * own.interceptions) / own.passAtt, 1)
     : null;
-  // CFBD's team-game "Sacks-Yards Lost" row belongs to the offense shown in
+  // SportsDataverse/ESPN's team-game "Sacks-Yards Lost" row belongs to the offense shown in
   // that row: own.sacks are sacks allowed by this team's offense, while
   // opp.sacks are sacks allowed by the opponent offense (credited to this
   // team's defense). QB hurries, TFL, pass breakups, and forced fumbles are
@@ -1274,7 +1271,7 @@ function computeStats(log: TeamGame[]) {
     yardsPerAttempt: round(safeDiv(own.netPassingYards, own.passAtt), 2),
     passYardsPerAttempt: round(safeDiv(own.netPassingYards, own.passAtt), 2),
     ypa: round(safeDiv(own.netPassingYards, own.passAtt), 2),
-    // CFBD's team-box-score passing yards are net of sacks. Do not subtract
+    // SportsDataverse/ESPN's team-box-score passing yards are net of sacks. Do not subtract
     // sack yards a second time when calculating net yards per pass attempt.
     netYardsPerAttempt: round(safeDiv(own.netPassingYards, own.passAtt + sacksAllowed), 2),
     yardsPerRush: round(safeDiv(own.rushingYards, own.rushingAttempts), 2),
@@ -1882,7 +1879,7 @@ function mergeAdvancedStats(stats: any, advanced: any) {
     rushRate: asPct(offRush?.rate),
     rushingPlayRate: asPct(offRush?.rate),
     stuffRate: asPct(offense?.stuffRate),
-    // CFBD's offense stuff rate is the share of the team's rushes stopped at
+    // SportsDataverse/ESPN's offense stuff rate is the share of the team's rushes stopped at
     // or behind the line; expose the alias used by the CFB matchup panels.
     stuffRateAllowed: asPct(offense?.stuffRate),
     powerSuccessRate: asPct(offense?.powerSuccess),
@@ -2025,7 +2022,7 @@ function mergeAdvancedStats(stats: any, advanced: any) {
   });
 
   // The CFB panel expects the same defense alias used by the matchup table.
-  // CFBD publishes this as defense.stuffRate.
+  // SportsDataverse/ESPN publishes this as defense.stuffRate.
   if (stats.defense.defStuffRate == null) stats.defense.defStuffRate = asPct(defense?.stuffRate);
 
   return stats;
@@ -2279,13 +2276,13 @@ function rankLeague(statsByTeam: Map<string, any>) {
 // Fetch the previous season's game-level logs for rolling windows. Season
 // summaries cannot be blended here: L5/L10/L15 must take each team's actual
 // most recent games, including games played before the season boundary.
-async function fetchPriorSeasonLogs(season: number, apiKey: string) {
-  const fbsTeamKeys = await fetchFbsTeamKeys(season, apiKey);
-  const schedule = await cfbdGet('/games', {
+async function fetchPriorSeasonLogs(season: number) {
+  const fbsTeamKeys = await fetchFbsTeamKeys(season);
+  const schedule = await cfbSourceGet('/games', {
     year: season,
     seasonType: 'both',
     classification: 'fbs',
-  }, apiKey);
+  });
   const completed = schedule.filter((game: any) => game?.completed === true && game?.homePoints != null && game?.awayPoints != null);
   const weeks = [...new Set(completed.map((game: any) => n(game?.week, 0)).filter((week: number) => week > 0))]
     .sort((a: number, b: number) => a - b);
@@ -2295,14 +2292,10 @@ async function fetchPriorSeasonLogs(season: number, apiKey: string) {
   const passingRows: any[] = [];
   for (const week of weeks) {
     const params = { year: season, week, seasonType: 'both', classification: 'fbs' };
-    boxGames.push(...await cfbdGet('/games/teams', params, apiKey));
-    await pause(250);
-    driveRows.push(...await cfbdGet('/drives', params, apiKey).catch(() => []));
-    await pause(250);
-    playRows.push(...await cfbdGet('/plays', params, apiKey).catch(() => []));
-    await pause(250);
-    passingRows.push(...await cfbdGet('/passing/teams/games', params, apiKey).catch(() => []));
-    await pause(250);
+    boxGames.push(...await cfbSourceGet('/games/teams', params));
+    driveRows.push(...await cfbSourceGet('/drives', params));
+    playRows.push(...await cfbSourceGet('/plays', params));
+    passingRows.push(...await cfbSourceGet('/passing/teams/games', params));
   }
 
   const situational = situationalByGameTeam(driveRows, playRows);
@@ -2358,36 +2351,15 @@ async function fetchPriorSeasonLogs(season: number, apiKey: string) {
   return { logs, names, teamKeys: [...fbsTeamKeys].filter((key) => (logs.get(key)?.length || 0) > 0) };
 }
 
-async function fetchFbsTeamKeys(season: number, apiKey: string): Promise<Set<string>> {
-  const teams = await cfbdGet('/teams/fbs', { year: season }, apiKey);
+async function fetchFbsTeamKeys(season: number): Promise<Set<string>> {
+  const teams = await cfbSourceGet('/teams/fbs', { year: season });
   const keys = new Set(teams.map((team: any) => teamKey(team?.school || team?.name || team?.abbreviation)).filter(Boolean));
-  if (keys.size < 120) throw new Error(`CFBD returned only ${keys.size} FBS teams for ${season}; refusing to publish an incomplete team frame.`);
+  if (keys.size < 120) throw new Error(`SportsDataverse/ESPN returned only ${keys.size} FBS teams for ${season}; refusing to publish an incomplete team frame.`);
   return keys;
 }
 
-async function pause(ms: number) {
-  await new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function cfbdGet(path: string, params: Record<string, any>, apiKey: string): Promise<any[]> {
-  const url = new URL(`${CFBD_BASE}${path}`);
-  for (const [key, value] of Object.entries(params || {})) {
-    if (value !== undefined && value !== null && value !== '') url.searchParams.set(key, String(value));
-  }
-  let last = '';
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    const response = await fetch(url.toString(), {
-      headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' },
-    });
-    if (response.ok) {
-      const json = await response.json().catch(() => []);
-      return Array.isArray(json) ? json : [];
-    }
-    last = `${response.status} ${await response.text().catch(() => '')}`.slice(0, 300);
-    if (![429, 502, 503, 504].includes(response.status)) break;
-    await new Promise((resolve) => setTimeout(resolve, attempt * 900));
-  }
-  throw new Error(`CFBD ${path} failed: ${last || 'unknown error'}`);
+async function cfbSourceGet(path: string, params: Record<string, any>): Promise<any[]> {
+  return await CFB_SOURCE.get(path, params);
 }
 
 async function upsert(base44: any, record: any) {
@@ -2511,7 +2483,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     }
 
     // Lightweight verification mode used after deployments. It proves which
-    // cache versions/timeframes are actually present without touching CFBD.
+    // cache versions/timeframes are actually present without downloading source data.
     if (String(body?.mode || '').toLowerCase() === 'inspect') {
       const byTimeframe: Record<string, any> = {};
       for (const timeframe of timeframes) {
@@ -2541,9 +2513,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       return Response.json({ ok: true, mode: 'inspect', cacheVersion: CACHE_VERSION, season, timeframes, byTimeframe });
     }
 
-    const apiKey = Deno.env.get('CFBD_API_KEY') || '';
-    if (!apiKey) return Response.json({ ok: false, error: 'CFBD_API_KEY not set' }, { status: 500 });
-    const fbsTeamKeys = await fetchFbsTeamKeys(season, apiKey);
+    const fbsTeamKeys = await fetchFbsTeamKeys(season);
     const limit = Math.max(1, Math.min(n(body?.limit, 30), MAX_TEAMS_PER_RUN));
     const offset = Math.max(0, n(body?.offset, 0));
     const requestedTeams = Array.isArray(body?.teams)
@@ -2586,15 +2556,15 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       if (Array.isArray(boxSource.coverageDiscrepancies)) {
         boxCoverageDiscrepancies.push(...boxSource.coverageDiscrepancies.map(String));
       } else if (completedGameCount !== boxGameCount) {
-        boxCoverageDiscrepancies.push(`CFBD box-score game coverage: expected ${completedGameCount}, got ${boxGameCount}.`);
+        boxCoverageDiscrepancies.push(`SportsDataverse/ESPN box-score game coverage: expected ${completedGameCount}, got ${boxGameCount}.`);
       }
       if (!cachedSourceDiscrepancies.length) integrityDiscrepancies.push(...boxCoverageDiscrepancies);
     } else {
-      const schedule = await cfbdGet('/games', {
+      const schedule = await cfbSourceGet('/games', {
         year: season,
         seasonType: 'both',
         classification: 'fbs',
-      }, apiKey);
+      });
 
       const completedById = new Map<string, any>();
       for (const game of schedule) {
@@ -2602,7 +2572,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         completedById.set(String(game.id), game);
       }
       const completed = [...completedById.values()];
-      if (!completed.length) throw new Error(`No completed FBS games returned by CFBD for ${season}`);
+      if (!completed.length) throw new Error(`No completed FBS games returned by SportsDataverse/ESPN for ${season}`);
       const opponentSets = new Map<string, Set<string>>();
       for (const game of completed) {
         const homeName = String(game?.homeTeam || '').trim();
@@ -2618,7 +2588,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       opponentsByTeam = new Map<string, string[]>([...opponentSets]
         .map(([key, values]) => [key, [...values]] as [string, string[]]));
       // The FBS schedule can contain FCS opponents and may omit a side's
-      // classification. Use CFBD's season-specific FBS directory as the
+      // classification. Use SportsDataverse/ESPN's season-specific FBS directory as the
       // authoritative team set so FCS rows cannot crowd real FBS teams out.
 
       completedWeeks = [...new Set(completed.map((game: any) => n(game?.week, 0)).filter((week) => week > 0))].sort((a: number, b: number) => a - b);
@@ -2630,37 +2600,12 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       for (const week of completedWeeks) {
         const params = { year: season, week, seasonType: 'both', classification: 'fbs' };
 
-        // These are large endpoints, especially /plays. Stagger them instead of
-        // firing four concurrent requests per week, which can trigger upstream
-        // throttling and make the entire Base44 refresh much less reliable.
-        const boxWeek = await cfbdGet('/games/teams', params, apiKey);
-        let drivesWeek: any[] = [];
-        let playsWeek: any[] = [];
-        let passingWeek: any[] = [];
-
-        // Previous-season buttons only need a stable historical snapshot. Skip
-        // the enormous drive/play feeds there; standard + advanced season data
-        // and game box scores still populate the core Offense/Defense/Special
-        // Teams views while keeping a historical rebuild practical.
-        if (!historicalSeason) {
-          await pause(450);
-          drivesWeek = await cfbdGet('/drives', params, apiKey).catch((error: any) => {
-            sourceWarnings.push(`drives week ${week}: ${error?.message || String(error)}`);
-            return [];
-          });
-          await pause(450);
-          playsWeek = await cfbdGet('/plays', params, apiKey).catch((error: any) => {
-            sourceWarnings.push(`plays week ${week}: ${error?.message || String(error)}`);
-            return [];
-          });
-          await pause(450);
-          passingWeek = await cfbdGet('/passing/teams/games', params, apiKey).catch((error: any) => {
-            sourceWarnings.push(`passing teams/games week ${week}: ${error?.message || String(error)}`);
-            return [];
-          });
-        } else {
-          await pause(150);
-        }
+        // The source adapter reads each public per-season release once and
+        // selects the requested week locally.
+        const boxWeek = await cfbSourceGet('/games/teams', params);
+        const drivesWeek = await cfbSourceGet('/drives', params);
+        const playsWeek = await cfbSourceGet('/plays', params);
+        const passingWeek = await cfbSourceGet('/passing/teams/games', params);
 
         boxGames.push(...boxWeek);
         driveRows.push(...drivesWeek);
@@ -2677,7 +2622,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         boxGames.map((game: any) => game?.id),
       );
       if (!gameCoverage.ok) {
-        boxCoverageDiscrepancies.push(`CFBD box-score game coverage: expected ${gameCoverage.expected}, got ${gameCoverage.actual}; missing=${gameCoverage.missing.join(',')}; duplicates=${gameCoverage.duplicates.join(',')}; unexpected=${gameCoverage.unexpected.join(',')}.`);
+        boxCoverageDiscrepancies.push(`SportsDataverse/ESPN box-score game coverage: expected ${gameCoverage.expected}, got ${gameCoverage.actual}; missing=${gameCoverage.missing.join(',')}; duplicates=${gameCoverage.duplicates.join(',')}; unexpected=${gameCoverage.unexpected.join(',')}.`);
         integrityDiscrepancies.push(...boxCoverageDiscrepancies);
       }
       // Duplicate feed rows should be reported once and excluded from the
@@ -2713,10 +2658,10 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const awayKey = teamKey(away.team || scheduleGame.awayTeam);
         if (!homeKey || !awayKey) continue;
         if (homeKey === awayKey) {
-          throw new Error(`CFBD team identity collision for game ${game.id}: ${String(home.team || scheduleGame.homeTeam)} (teamId=${home.teamId ?? 'missing'}) and ${String(away.team || scheduleGame.awayTeam)} (teamId=${away.teamId ?? 'missing'}) both normalized to ${homeKey}`);
+          throw new Error(`SportsDataverse/ESPN team identity collision for game ${game.id}: ${String(home.team || scheduleGame.homeTeam)} (teamId=${home.teamId ?? 'missing'}) and ${String(away.team || scheduleGame.awayTeam)} (teamId=${away.teamId ?? 'missing'}) both normalized to ${homeKey}`);
         }
         if (homeKey !== scheduledHomeKey || awayKey !== scheduledAwayKey) {
-          throw new Error(`Team identity mismatch for CFBD game ${game.id}: schedule=${scheduledAwayKey}/${scheduledHomeKey}, box=${awayKey}/${homeKey}`);
+          throw new Error(`Team identity mismatch for SportsDataverse/ESPN game ${game.id}: schedule=${scheduledAwayKey}/${scheduledHomeKey}, box=${awayKey}/${homeKey}`);
         }
         teamNames.set(homeKey, String(home.team || scheduleGame.homeTeam || homeKey));
         teamNames.set(awayKey, String(away.team || scheduleGame.awayTeam || awayKey));
@@ -2768,7 +2713,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           actualGames.map((game) => game.gameId),
         );
         if (actualGames.length !== expectedGames || !coverage.ok) {
-          integrityDiscrepancies.push(`CFBD team game coverage for ${key}: expected ${expectedGames}, got ${actualGames.length}; missing=${coverage.missing.join(',')}; duplicates=${coverage.duplicates.join(',')}.`);
+          integrityDiscrepancies.push(`SportsDataverse/ESPN team game coverage for ${key}: expected ${expectedGames}, got ${actualGames.length}; missing=${coverage.missing.join(',')}; duplicates=${coverage.duplicates.join(',')}.`);
         }
       }
       allTeamKeys = [...fbsTeamKeys].filter((key) => (logs.get(key)?.length || 0) > 0).sort();
@@ -2802,7 +2747,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         status: 'ready',
         cache_version: CACHE_VERSION,
         payload: JSON.stringify(boxSource),
-        source: 'cfbd-games+games-teams+drives+plays+passing-teams-games',
+        source: 'sportsdataverse-cfbfastr-espn-schedules+team-boxes+player-boxes+advanced+play-by-play',
         last_error: sourceWarnings.join(' | '),
       });
     }
@@ -2824,7 +2769,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         deduplicated.push(game);
       }
       if (duplicateIds.size) {
-        integrityDiscrepancies.push(`CFBD cached game logs for ${key} contain duplicate game IDs: ${[...duplicateIds].join(',')}; duplicate rows were ignored.`);
+        integrityDiscrepancies.push(`SportsDataverse/ESPN cached game logs for ${key} contain duplicate game IDs: ${[...duplicateIds].join(',')}; duplicate rows were ignored.`);
       }
       logs.set(key, deduplicated.sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId)));
     }
@@ -2852,11 +2797,11 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         }
       } else {
         try {
-          const prior = await fetchPriorSeasonLogs(season - 1, apiKey);
+          const prior = await fetchPriorSeasonLogs(season - 1);
           priorSeasonLogs = prior.logs;
           priorSeasonNames = prior.names;
         } catch (error: any) {
-          warnings.push(`previous-season logs ${season - 1}: ${error?.message || String(error)}`);
+          throw new Error(`SportsDataverse previous-season CFB logs failed for ${season - 1}; refusing to publish incomplete rolling windows: ${error?.message || String(error)}`);
         }
       }
       for (const key of priorSeasonLogs.keys()) {
@@ -2893,25 +2838,27 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           if (cachedAdvanced?.teams) advancedMap = new Map(Object.entries(cachedAdvanced.teams));
           else {
             try {
-              const advancedRows = await cfbdGet('/stats/season/advanced', {
+              const advancedRows = await cfbSourceGet('/stats/season/advanced', {
                 year: season,
                 startWeek,
                 endWeek: maxCompletedWeek,
                 seasonType: 'both',
                 classification: 'fbs',
-              }, apiKey);
+              });
               advancedMap = advancedByTeam(advancedRows);
               await writeSourceCache(base44, {
                 cache_key: advancedSourceKey, cache_date: cacheDate, season, source_type: 'advanced',
                 start_week: startWeek, end_week: maxCompletedWeek, scraped_at: new Date().toISOString(),
                 status: 'ready', cache_version: CACHE_VERSION,
                 payload: JSON.stringify({ teams: Object.fromEntries(advancedMap) }),
-                source: 'cfbd-stats-season-advanced', last_error: '',
+                source: 'sportsdataverse-cfbfastr-espn-advanced', last_error: '',
               });
             } catch (error: any) {
-              advancedMap = new Map();
-              warnings.push(`advanced ${timeframe}: ${error?.message || String(error)}`);
+              throw new Error(`SportsDataverse advanced CFB dataset failed for ${season}: ${error?.message || String(error)}`);
             }
+          }
+          if (advancedMap.size < fbsTeamKeys.size) {
+            throw new Error(`SportsDataverse advanced CFB dataset returned ${advancedMap.size}/${fbsTeamKeys.size} FBS teams for ${season}.`);
           }
           advancedWindowCache.set(advancedWindowKey, advancedMap);
         }
@@ -2923,21 +2870,23 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           if (cachedStandard?.teams) standardMap = new Map(Object.entries(cachedStandard.teams));
           else {
             try {
-              const standardRows = await cfbdGet('/stats/season', {
+              const standardRows = await cfbSourceGet('/stats/season', {
                 year: season, startWeek, endWeek: maxCompletedWeek, seasonType: 'both', classification: 'fbs',
-              }, apiKey);
+              });
               standardMap = standardByTeam(standardRows);
               await writeSourceCache(base44, {
                 cache_key: standardSourceKey, cache_date: cacheDate, season, source_type: 'standard',
                 start_week: startWeek, end_week: maxCompletedWeek, scraped_at: new Date().toISOString(),
                 status: 'ready', cache_version: CACHE_VERSION,
                 payload: JSON.stringify({ teams: Object.fromEntries(standardMap) }),
-                source: 'cfbd-stats-season', last_error: '',
+                source: 'sportsdataverse-cfbfastr-espn-box-score-rollups', last_error: '',
               });
             } catch (error: any) {
-              standardMap = new Map();
-              warnings.push(`standard ${timeframe}: ${error?.message || String(error)}`);
+              throw new Error(`SportsDataverse CFB box-score rollup failed for ${season}: ${error?.message || String(error)}`);
             }
+          }
+          if (standardMap.size < fbsTeamKeys.size) {
+            throw new Error(`SportsDataverse CFB box-score rollup returned ${standardMap.size}/${fbsTeamKeys.size} FBS teams for ${season}.`);
           }
           standardWindowCache.set(advancedWindowKey, standardMap);
         }
@@ -2953,7 +2902,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const selected = windowSize ? allGames.slice(-windowSize) : allGames;
         const stats = computeStats(selected);
         if (stats) {
-          // Keep every standard value on the same exact game sample. CFBD's
+          // Keep every standard value on the same exact game sample. SportsDataverse/ESPN's
           // season summary may cover a different set of completed weeks than
           // the box scores used to count games; use it only to fill unavailable
           // fields, never to overwrite the game-log aggregate.
@@ -3027,7 +2976,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           rankPolicy: 'Competition ranks use unrounded aggregates and exact ties share a rank. Offense ranks lower turnover rate, penalties/game, penalty yards/game, interception rate, sack rate allowed, pressure rate allowed, sack+hurry rate allowed, sacks allowed/game, QB hurries allowed/game, stuff rate, and seconds/play as better; every other offense stat ranks higher as better. Defense ranks lower points/yards/efficiency allowed, penalties, penalty yards, passing/rushing production and efficiency allowed, scoring and conversion rates allowed, adjusted line yards allowed, and situational points/PPA allowed as better; it ranks higher plays faced, takeaways/INTs, sack/pressure/hurry production, havoc, passes deflected, rush attempts faced, stuff rate, and tackles for loss. Other defense and special-teams stats retain their existing direction rules.',
           integrity: {
             status: stats.integrity?.status || 'passed',
-            source: 'CFBD game box scores plus complete drive/play coverage where required; aggregate and rank use the same selected game IDs',
+            source: 'SportsDataverse cfbfastR/ESPN schedules, team/player box scores, advanced data, and complete play-by-play; aggregate and rank use the same selected game IDs',
             games: stats.games,
             checks: stats.integrity?.checks || [],
             errors: stats.integrity?.errors || [],
@@ -3053,7 +3002,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           opponent_abbr: '',
           side: 'team',
           payload: JSON.stringify(payload),
-          source: `cfbd-games-teams+drives+plays+passing+season-standard+advanced-v${CACHE_VERSION}`,
+          source: `sportsdataverse-cfbfastr-espn-game-boxes+drives+plays+advanced-v${CACHE_VERSION}`,
         };
         pendingRecords.push({ record, team: teamName, key, timeframe, games: stats.games });
       }
@@ -3074,7 +3023,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     const response: Record<string, any> = {
       ok: errors.length === 0,
       cacheVersion: CACHE_VERSION,
-      source: 'cfbd-games+games-teams+drives+plays+passing-teams-games+season-standard+season-advanced',
+      source: 'sportsdataverse-cfbfastr-espn-schedules+team-boxes+player-boxes+advanced+play-by-play',
       metricDefinitions: METRIC_DEFINITIONS,
       season,
       completedWeeks,

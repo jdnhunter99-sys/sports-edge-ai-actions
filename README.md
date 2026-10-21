@@ -17,7 +17,7 @@ does not delete source branches.
 ## Repository secrets
 
 - `PRIVATE_REPO_TOKEN` with read access to `jdnhunter99-sys/sports-edge-ai2` (used for the one-time migration and the NFL model-source checkout)
-- `CFBD_API_KEY` for the CFB team-stats publisher
+- The CFB team-stats publisher reads public SportsDataverse cfbfastR/ESPN release data; it does not require a CFBD API key
 - `SHARP_API_KEY` for NCAAF SharpOdds
 - `PROPLINE_API_KEY` for both PropLine publishers
 - `PIKKIT_AUTH_TOKEN` for the authenticated Pikkit HTTP consensus collector
