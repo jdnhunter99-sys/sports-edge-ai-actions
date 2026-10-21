@@ -11,7 +11,8 @@ import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.
 const CFB_SOURCE = new SportsDataverseCfbSource();
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-const CACHE_VERSION = 32;
+export const CFB_TEAM_STATS_CACHE_VERSION = 32;
+const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const METRIC_DEFINITIONS = {

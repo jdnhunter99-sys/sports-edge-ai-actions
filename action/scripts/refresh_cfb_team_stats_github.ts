@@ -1,10 +1,10 @@
-import { handleCFBTeamStatsRefresh } from '../base44/functions/refreshCFBGameDetailTeamStatsCache/entry.ts';
+import { CFB_TEAM_STATS_CACHE_VERSION, handleCFBTeamStatsRefresh } from '../base44/functions/refreshCFBGameDetailTeamStatsCache/entry.ts';
 import { normalizeCFBSchool } from '../base44/shared/cfbTeamIdentity.ts';
 
 const outputRoot = Deno.env.get('CFB_STATS_OUTPUT_DIR')?.trim();
 if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 
-const CACHE_VERSION = 31;
+const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
 const TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
@@ -113,6 +113,9 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   const result = await response.json();
   if (!response.ok || result?.ok !== true) {
     throw new Error(`CFB stats refresh failed for ${season} (HTTP ${response.status}): ${JSON.stringify(result).slice(0, 1600)}`);
+  }
+  if (Number(result?.cacheVersion) !== CACHE_VERSION) {
+    throw new Error(`CFB stats function returned cache version ${result?.cacheVersion}; publisher is configured for ${CACHE_VERSION}.`);
   }
   for (const discrepancy of Array.isArray(result?.discrepancies) ? result.discrepancies : []) {
     integrityDiscrepancies.push(`${season}: ${String(discrepancy)}`);
