@@ -1,0 +1,109 @@
+name: Grade daily PropLine EV ledger
+
+on:
+  schedule:
+    # 7:15 AM CDT / 6:15 AM CST, after overnight event results are usually available.
+    - cron: '15 12 * * *'
+  workflow_dispatch:
+    inputs:
+      event_date:
+        description: Optional Chicago date limit (YYYY-MM-DD); blank scans every unresolved event that has started
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: propline-results-daily-grader
+  cancel-in-progress: false
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out only the results grader
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: source
+          sparse-checkout: action/scripts/grade_propline_webhook_cache.py
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check required API key
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: test -n "$PROPLINE_API_KEY" || { echo 'Add repository secret PROPLINE_API_KEY'; exit 1; }
+
+      - name: Check out the published webhook cache
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository }}
+          ref: Propline-Webhook-Cache
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+          path: published
+
+      - name: Configure cache commit identity
+        working-directory: published
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Fetch and grade unresolved past events
+        id: grade
+        continue-on-error: true
+        env:
+          EVENT_DATE: ${{ inputs.event_date }}
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(
+            --output-dir "$GITHUB_WORKSPACE/published/data/propline-webhook-cache/v1"
+            --results-output "$RUNNER_TEMP/propline-grades.json"
+          )
+          if [ -n "${EVENT_DATE:-}" ]; then
+            args+=(--event-date "$EVENT_DATE")
+          fi
+          python3 "$GITHUB_WORKSPACE/source/action/scripts/grade_propline_webhook_cache.py" "${args[@]}"
+
+      - name: Publish all successful grades
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5; do
+            git -C published add data/propline-webhook-cache/v1/
+            if git -C published diff --cached --quiet; then
+              echo 'No resolution rows changed.'
+              exit 0
+            fi
+            git -C published commit -m 'Grade daily PropLine EV plays'
+            if git -C published push origin HEAD:Propline-Webhook-Cache; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo 'Could not publish grading results after five push attempts.'
+              exit 1
+            fi
+            git -C published fetch --depth=1 origin refs/heads/Propline-Webhook-Cache
+            git -C published reset --hard FETCH_HEAD
+            python3 "$GITHUB_WORKSPACE/source/action/scripts/grade_propline_webhook_cache.py" \
+              --output-dir "$GITHUB_WORKSPACE/published/data/propline-webhook-cache/v1" \
+              --merge-results-file "$RUNNER_TEMP/propline-grades.json"
+          done
+
+      - name: Report partial grading failure
+        if: steps.grade.outcome == 'failure'
+        run: |
+          echo 'Some event lookups failed. Successful grades and check markers were published; failed requests were not marked and can be retried.'
+          exit 1
