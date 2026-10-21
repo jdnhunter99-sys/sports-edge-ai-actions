@@ -14,13 +14,15 @@ const RELEASES: Record<string, { tag: string; file: string; columns: string[] }>
   schedules: { tag: 'espn_cfb_schedules', file: 'cfb_schedule', columns: ['game_id', 'week', 'season_type', 'game_date', 'home_id', 'home_team', 'home_score', 'away_id', 'away_team', 'away_score', 'status'] },
   team_box: { tag: 'espn_cfb_team_box', file: 'team_box', columns: ['game_id', 'season', 'team_id', 'home_away', 'firstDowns', 'thirdDownEff', 'fourthDownEff', 'totalYards', 'netPassingYards', 'completionAttempts', 'rushingYards', 'rushingAttempts', 'totalPenaltiesYards', 'turnovers', 'fumblesLost', 'interceptions', 'possessionTime'] },
   player_box: { tag: 'espn_cfb_player_box', file: 'player_box', columns: ['game_id', 'team_id', 'category', 'passingTouchdowns', 'rushingTouchdowns', 'hurries', 'fieldGoalsMade/fieldGoalAttempts', 'extraPointsMade/extraPointAttempts', 'punts', 'puntYards', 'touchbacks', 'puntsInside20', 'kickReturns', 'kickReturnYards', 'kickReturnTouchdowns', 'puntReturns', 'puntReturnYards', 'puntReturnTouchdowns'] },
-  adv_team: { tag: 'espn_cfb_adv_team', file: 'adv_team', columns: ['game_id', 'week', 'pos_team', 'rushes', 'rush_yards', 'EPA_rushing_overall', 'EPA_rushing_per_play', 'EPA_explosive_rushing', 'EPA_explosive_rushing_rate', 'passes', 'EPA_passing_overall', 'EPA_passing_per_play', 'EPA_explosive_passing', 'EPA_explosive_passing_rate', 'scrimmage_plays', 'EPA_overall_off', 'EPA_per_play', 'EPA_explosive', 'EPA_explosive_rate', 'rushing_stuff', 'rushing_power', 'rushing_power_success', 'line_yards', 'second_level_yards', 'open_field_yards'] },
-  adv_defensive: { tag: 'espn_cfb_adv_defensive', file: 'adv_defensive', columns: ['game_id', 'week', 'def_pos_team', 'scrimmage_plays', 'TFL', 'havoc_total', 'fumbles', 'def_int', 'num_pass_plays', 'sacks', 'pass_breakups'] },
-  adv_situational: { tag: 'espn_cfb_adv_situational', file: 'adv_situational', columns: ['game_id', 'week', 'pos_team', 'EPA_success', 'EPA_success_pass', 'EPA_success_rush'] },
+  adv_team: { tag: 'espn_cfb_adv_team', file: 'adv_team', columns: ['game_id', 'week', 'pos_team_id', 'pos_team', 'rushes', 'rush_yards', 'EPA_rushing_overall', 'EPA_rushing_per_play', 'EPA_explosive_rushing', 'EPA_explosive_rushing_rate', 'passes', 'EPA_passing_overall', 'EPA_passing_per_play', 'EPA_explosive_passing', 'EPA_explosive_passing_rate', 'scrimmage_plays', 'EPA_overall_off', 'EPA_per_play', 'EPA_explosive', 'EPA_explosive_rate', 'rushing_stuff', 'rushing_power', 'rushing_power_success', 'line_yards', 'second_level_yards', 'open_field_yards'] },
+  adv_defensive: { tag: 'espn_cfb_adv_defensive', file: 'adv_defensive', columns: ['game_id', 'week', 'def_pos_team_id', 'def_pos_team', 'scrimmage_plays', 'TFL', 'havoc_total', 'fumbles', 'def_int', 'num_pass_plays', 'sacks', 'pass_breakups'] },
+  adv_situational: { tag: 'espn_cfb_adv_situational', file: 'adv_situational', columns: ['game_id', 'week', 'pos_team_id', 'pos_team', 'EPA_success', 'EPA_success_pass', 'EPA_success_rush'] },
   play_by_play: { tag: 'espn_cfb_pbp', file: 'play_by_play', columns: [
     'game_id', 'week', 'sequenceNumber', 'status_type_completed', 'text', 'type.text', 'orig_play_type',
     'period.number', 'clock.displayValue', 'start.down', 'start.distance', 'start.yardsToEndzone', 'start.pos_team.name',
-    'pos_team', 'pass', 'pass_attempt', 'rush', 'sack', 'EPA_scrimmage', 'EPA', 'EPA_success',
+    'pos_team_id', 'pos_team', 'def_pos_team_id', 'def_pos_team', 'pass', 'pass_attempt', 'rush', 'sack', 'TFL',
+    'forced_fumble', 'fumble_forced_player_name', 'pass_breakup', 'pass_breakup_player_name',
+    'EPA_scrimmage', 'EPA', 'EPA_success',
     'EPA_explosive_pass', 'EPA_explosive_rush', 'yds_rushed',
     'yds_receiving', 'statYardage', 'yds_sacked', 'drive.id', 'drive.result', 'drive.displayResult',
     'drive.isScore', 'drive.team.displayName', 'drive.team.shortDisplayName', 'drive.offensivePlays',
@@ -247,14 +249,42 @@ export class SportsDataverseCfbSource {
 
   private async gameBoxes(params: Params): Promise<any[]> {
     const season = seasonFrom(params);
-    const [schedule, teams, box, playerBox, defensive, linescores] = await Promise.all([
+    const [schedule, teams, box, playerBox, defensive, linescores, allPlays] = await Promise.all([
       this.completedGames(season), this.teams(season), this.dataset('team_box', season),
       this.dataset('player_box', season), this.dataset('adv_defensive', season), this.optionalDataset('linescores', season),
+      this.playRows(season),
     ]);
+    const plays = await this.selectedByWeek(allPlays, params);
+    const defensiveEventsByGameTeam = new Map<string, {
+      sacks: number; tacklesForLoss: number; forcedFumbles: number; passesDeflected: number; reported: Set<string>;
+    }>();
+    for (const play of plays) {
+      const gameId = clean(play.game_id);
+      const defenseTeamId = clean(play.def_pos_team_id || play['start.def_pos_team.id']);
+      if (!gameId || !defenseTeamId) continue;
+      const eventKey = `${gameId}|${defenseTeamId}`;
+      let events = defensiveEventsByGameTeam.get(eventKey);
+      if (!events) {
+        events = { sacks: 0, tacklesForLoss: 0, forcedFumbles: 0, passesDeflected: 0, reported: new Set<string>() };
+        defensiveEventsByGameTeam.set(eventKey, events);
+      }
+      const countFlag = (target: 'sacks' | 'tacklesForLoss' | 'forcedFumbles' | 'passesDeflected', flag: unknown, fallbackName?: unknown) => {
+        const known = flag != null && clean(flag) !== ''
+          ? truth(flag)
+          : fallbackName != null && clean(fallbackName) !== '' ? true : undefined;
+        if (known === undefined) return;
+        events!.reported.add(target);
+        if (known) events![target] += 1;
+      };
+      countFlag('sacks', play.sack);
+      countFlag('tacklesForLoss', play.TFL);
+      countFlag('forcedFumbles', play.forced_fumble, play.fumble_forced_player_name);
+      countFlag('passesDeflected', play.pass_breakup, play.pass_breakup_player_name);
+    }
     const fbsIds = new Set((await this.fbsTeams(season)).map((row) => clean(row.team_id)));
     const teamById = new Map(teams.map((row) => [clean(row.team_id), row]));
     const scheduleById = new Map(schedule.map((row) => [clean(row.game_id), row]));
-    const defenseByGameTeam = new Map(defensive.map((row) => [clean(row.game_id) + '|' + clean(row.def_pos_team), row]));
+    const defenseByGameTeam = new Map(defensive.map((row) => [clean(row.game_id) + '|' + clean(row.def_pos_team_id || row.def_pos_team), row]));
     const playersByGameTeam = groupBy(playerBox, (row) => clean(row.game_id) + '|' + clean(row.team_id));
     const linesByGameTeam = groupBy(linescores, (row) => clean(row.game_id) + '|' + clean(row.team_id));
     const week = number(params.week);
@@ -307,17 +337,21 @@ export class SportsDataverseCfbSource {
         if (hasCategory('passing')) addPlayerSum('passingTouchdowns', 'passing', 'passing_touchdowns');
         if (hasCategory('rushing')) addPlayerSum('rushingTouchdowns', 'rushing', 'rushing_touchdowns');
 
-        // Team sacks allowed are the opponent defense's sacks from cfbfastR's
-        // per-game defensive unit table. Hurries/TFL/PBUs/forced fumbles are
-        // mapped from the same season's ESPN box releases.
+        // Sack, TFL, forced-fumble, and pass-breakup totals are counted from the
+        // exact completed-game PBP rows. Advanced defensive rows remain a fallback
+        // for releases where a PBP event field is unavailable.
         const opponentDefense = defenseByGameTeam.get(`${gameId}|${opponentId}`);
-        if (opponentDefense) add('sacks', opponentDefense.sacks);
+        const opponentEvents = defensiveEventsByGameTeam.get(`${gameId}|${opponentId}`);
+        if (opponentEvents?.reported.has('sacks')) add('sacks', opponentEvents.sacks);
+        else if (opponentDefense) add('sacks', opponentDefense.sacks);
         const ownDefense = defenseByGameTeam.get(`${gameId}|${teamId}`);
-        if (ownDefense) {
-          add('tacklesForLoss', ownDefense.TFL);
-          add('passesDeflected', ownDefense.pass_breakups);
-          add('fumblesForced', ownDefense.fumbles);
-        }
+        const ownEvents = defensiveEventsByGameTeam.get(`${gameId}|${teamId}`);
+        if (ownEvents?.reported.has('tacklesForLoss')) add('tacklesForLoss', ownEvents.tacklesForLoss);
+        else if (ownDefense) add('tacklesForLoss', ownDefense.TFL);
+        if (ownEvents?.reported.has('passesDeflected')) add('passesDeflected', ownEvents.passesDeflected);
+        else if (ownDefense) add('passesDeflected', ownDefense.pass_breakups);
+        if (ownEvents?.reported.has('forcedFumbles')) add('fumblesForced', ownEvents.forcedFumbles);
+        else if (ownDefense) add('fumblesForced', ownDefense.fumbles);
         addPlayerSum('qbHurries', 'defensive', 'hurries');
         addPlayerSum('fieldGoalsMadeFieldGoalsAttempted', 'kicking', 'field_goals_made_field_goal_attempts');
         addPlayerSum('extraPointsMadeExtraPointsAttempted', 'kicking', 'extra_points_made_extra_point_attempts');
@@ -354,7 +388,7 @@ export class SportsDataverseCfbSource {
     const teams = await this.teams(seasonFrom(params));
     const teamById = new Map(teams.map((row) => [clean(row.team_id), row]));
     return rows.map((row) => {
-      const offenseId = clean(row.pos_team);
+      const offenseId = clean(row.pos_team_id || row.pos_team);
       const offenseMeta = teamById.get(offenseId) || {};
       const sack = truth(row.sack);
       const passPlay = truth(row.pass);
@@ -412,7 +446,7 @@ export class SportsDataverseCfbSource {
       const gameId = clean(row.game_id);
       const driveId = clean(row['drive.id']);
       if (!gameId || !driveId) continue;
-      const teamId = clean(row.pos_team);
+      const teamId = clean(row.pos_team_id || row.pos_team);
       const team = teamById.get(teamId) || {};
       const offense = textValue(team, 'location', 'short_display_name') || textValue(row, 'drive.team.shortDisplayName', 'drive.team.displayName', 'start.pos_team.name');
       const key = `${gameId}|${driveId}`;
@@ -454,9 +488,9 @@ export class SportsDataverseCfbSource {
     const offense = offenseRows.filter(inRange);
     const defense = defenseRows.filter(inRange);
     const situations = situationRows.filter(inRange);
-    const offenseByGameTeam = new Map(offense.map((row) => [clean(row.game_id) + '|' + clean(row.pos_team), row]));
-    const situationByGameTeam = new Map(situations.map((row) => [clean(row.game_id) + '|' + clean(row.pos_team), row]));
-    const defenseByTeam = groupBy(defense, (row) => clean(row.game_id) + '|' + clean(row.def_pos_team));
+    const offenseByGameTeam = new Map(offense.map((row) => [clean(row.game_id) + '|' + clean(row.pos_team_id || row.pos_team), row]));
+    const situationByGameTeam = new Map(situations.map((row) => [clean(row.game_id) + '|' + clean(row.pos_team_id || row.pos_team), row]));
+    const defenseByTeam = groupBy(defense, (row) => clean(row.game_id) + '|' + clean(row.def_pos_team_id || row.def_pos_team));
 
     const aggregate = (rows: SourceRow[], situationalRows: SourceRow[], defenseRowsForTeam: SourceRow[]) => {
       const rushes = sum(rows, 'rushes');
@@ -494,7 +528,7 @@ export class SportsDataverseCfbSource {
     const output: any[] = [];
     for (const team of fbs) {
       const teamId = clean(team.team_id);
-      const ownRows = offense.filter((row) => clean(row.pos_team) === teamId);
+      const ownRows = offense.filter((row) => clean(row.pos_team_id || row.pos_team) === teamId);
       const ownSituations = ownRows.map((row) => situationByGameTeam.get(clean(row.game_id) + '|' + teamId)).filter(Boolean) as SourceRow[];
       const opponentRows: SourceRow[] = [];
       const opponentSituations: SourceRow[] = [];
@@ -530,7 +564,7 @@ export class SportsDataverseCfbSource {
     }).map((game) => clean(game.game_id)));
     const boxByTeam = groupBy(box.filter((row) => completed.has(clean(row.game_id))), (row) => clean(row.team_id));
     const playerByTeam = groupBy(players.filter((row) => completed.has(clean(row.game_id))), (row) => clean(row.team_id));
-    const advByTeam = groupBy(advanced.filter((row) => completed.has(clean(row.game_id))), (row) => clean(row.pos_team));
+    const advByTeam = groupBy(advanced.filter((row) => completed.has(clean(row.game_id))), (row) => clean(row.pos_team_id || row.pos_team));
     const result: any[] = [];
     for (const team of teams) {
       const teamId = clean(team.team_id);

@@ -11,7 +11,7 @@ import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.
 const CFB_SOURCE = new SportsDataverseCfbSource();
 const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
-export const CFB_TEAM_STATS_CACHE_VERSION = 32;
+export const CFB_TEAM_STATS_CACHE_VERSION = 33;
 const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
@@ -28,11 +28,11 @@ const METRIC_DEFINITIONS = {
   firstDownRate: 'Aggregate first downs divided by official offensive plays.',
   pointsPerDrive: 'Official offense-drive point changes divided by offense drives; excludes defensive and special-teams scores.',
   pointsAllowedPerDrive: 'Opponent offense-drive point changes divided by opponent drives; excludes defensive and special-teams scores.',
-  sackRateAllowed: 'Offense sacks allowed divided by pass attempts plus sacks allowed; sacks allowed are read from the offense team box-score row.',
-  sackRate: 'Defensive sacks credited from the opponent offense box-score sacks-lost total, divided by opponent pass attempts plus defensive sacks.',
+  sackRateAllowed: 'Offense sacks allowed divided by pass attempts plus sacks allowed; sacks allowed are counted from SportsDataverse/ESPN PBP sack flags credited to the opposing defense.',
+  sackRate: 'Defensive sacks counted from SportsDataverse/ESPN PBP sack flags, divided by opponent pass attempts plus defensive sacks.',
   pressureRateAllowed: 'Sacks allowed plus opponent defensive QB hurries divided by team pass attempts plus sacks allowed; null if either event source is incomplete.',
   pressureRate: 'Defensive sacks plus defensive QB hurries divided by opponent pass attempts plus defensive sacks; null if either event source is incomplete.',
-  fumblesForced: 'SportsDataverse/ESPN forced-fumble count by the defense; never substituted with fumbles recovered.',
+  fumblesForced: 'SportsDataverse/ESPN PBP forced_fumble events credited to the defense; never substituted with fumbles recovered.',
   turnoversForced: 'Opponent interceptions thrown plus opponent fumbles lost, or the explicit opponent box-score turnover total when present.',
   takeawayRate: 'Turnovers forced divided by opponent passing attempts plus rushing attempts.',
   tackleForLossPct: 'Defensive tackles for loss divided by opponent passing attempts plus rushing attempts.',
@@ -51,7 +51,7 @@ const METRIC_DEFINITIONS = {
   stuffRate: 'SportsDataverse/ESPN season-advanced defensive stuff rate; kept separate from offensive stuff rate.',
   adjustedLineYardsAllowed: 'SportsDataverse/ESPN PBP line yards summed over the selected games and divided by opponent rush attempts.',
   havocRate: 'SportsDataverse/ESPN season-advanced defense.havoc.total, using SportsDataverse/ESPN source definition; no event count is reconstructed locally.',
-  passesDeflectedPerGame: 'SportsDataverse/ESPN team box-score passesDeflected per completed game; reported as supplied, without adding interceptions.',
+  passesDeflectedPerGame: 'SportsDataverse/ESPN PBP pass_breakup events credited to the defense per completed game; interceptions are not added.',
   ncaaPasserRating: 'NCAA passing-efficiency formula, not NFL passer rating.',
   explosivePlays: 'SportsDataverse/ESPN EPA-defined explosive pass/rush flags from play-by-play, divided by eligible attempts; yardage thresholds are used only when those flags are unavailable.',
   advancedLineStats: 'SportsDataverse/ESPN play-by-play line-yard decomposition aggregated across the exact selected games; season advanced game totals fill any unavailable PBP fields.',
