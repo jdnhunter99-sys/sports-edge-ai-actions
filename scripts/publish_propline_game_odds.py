@@ -13,6 +13,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from statistics import median
 from urllib.parse import urlencode
+from zoneinfo import ZoneInfo
 
 API = 'https://api.prop-line.com/v1'
 MARKETS = 'h2h,spreads,totals'
@@ -330,6 +331,13 @@ def parse_ts(value):
         return None
 
 
+def local_game_date(value, timezone_name):
+    parsed = parse_ts(value)
+    if not parsed:
+        return None
+    return parsed.astimezone(ZoneInfo(timezone_name)).date().isoformat()
+
+
 def dedupe_history(rows, commence_time):
     kickoff = parse_ts(commence_time)
     cutoff = datetime.now(timezone.utc) - timedelta(days=MAX_HISTORY_DAYS)
@@ -554,6 +562,42 @@ def build_cache(sport, event, existing, stamp):
     }
 
 
+def build_game_card_odds(sport, event, stamp):
+    """Publish each book's current full-game main markets, excluding alt lines."""
+    books = book_rows(event)
+    if not books:
+        return None
+
+    commence_time = event.get('commence_time')
+    central_date = local_game_date(commence_time, 'America/Chicago')
+    eastern_date = local_game_date(commence_time, 'America/New_York')
+    primary_date = eastern_date if sport == 'cfb' else central_date
+    return {
+        'id': str(event.get('id')),
+        'event_id': str(event.get('id')),
+        'sport': sport,
+        'sport_key': SPORTS[sport],
+        'awayTeam': event.get('away_team'),
+        'homeTeam': event.get('home_team'),
+        'away_team': event.get('away_team'),
+        'home_team': event.get('home_team'),
+        'gameTime': commence_time,
+        'game_datetime': commence_time,
+        'startTime': commence_time,
+        'start_time': commence_time,
+        'gameDate': primary_date,
+        'game_date': primary_date,
+        'gameDateCentral': central_date,
+        'gameDateEastern': eastern_date,
+        'books': books,
+        'bookmakers': books,
+        'sportsbooks': books,
+        'source': 'PropLine API',
+        'source_updated_at': max((book.get('last_update') or stamp for book in books), default=stamp),
+        'published_at': stamp,
+    }
+
+
 def carry_recent_existing(root, sport, current_ids, index_rows):
     index_path = root / 'game-odds' / sport / 'index.json'
     prior = read_json(index_path) or {}
@@ -574,9 +618,12 @@ def main():
     root = Path(os.environ['PROPLINE_OUTPUT_DIR'])
     stamp = iso_now()
     summary = {}
+    card_games = []
     for sport, provider in SPORTS.items():
         events = fetch_current(provider, key)
         index_rows = []
+        bookmaker_keys = set()
+        games_with_prices = set()
         for event in events:
             if not isinstance(event, dict) or event.get('id') is None:
                 continue
@@ -585,6 +632,11 @@ def main():
             existing = read_json(path)
             cache = build_cache(sport, event, existing or {}, stamp)
             write_json(path, cache)
+            card_game = build_game_card_odds(sport, event, stamp)
+            if card_game:
+                card_games.append(card_game)
+                games_with_prices.add(eid)
+                bookmaker_keys.update(book.get('key') for book in card_game['books'] if book.get('key'))
             index_rows.append({
                 'event_id': eid, 'path': f'game-odds/{sport}/events/{slug(eid)}.json',
                 'home_team': event.get('home_team'), 'away_team': event.get('away_team'),
@@ -598,9 +650,29 @@ def main():
         write_json(root / 'game-odds' / sport / 'index.json', {
             'sport': sport, 'provider': provider, 'updated_at': stamp, 'events': index_rows,
         })
-        summary[sport] = {'current_events': len(events), 'cached_events': len(index_rows), 'bulk_requests': 1, 'history_requests': 0}
+        summary[sport] = {
+            'current_events': len(events),
+            'cached_events': len(index_rows),
+            'games_with_prices': len(games_with_prices),
+            'bookmakers': sorted(bookmaker_keys),
+            'bulk_requests': 1,
+            'history_requests': 0,
+            'coverage': 'available' if games_with_prices else 'no_book_lines_returned',
+        }
         print(f'{sport}: {summary[sport]}', flush=True)
     write_json(root / 'game-odds' / 'manifest.json', {'updated_at': stamp, 'sports': summary, 'markets': ['h2h','spreads','totals']})
+    card_games.sort(key=lambda game: (game.get('gameTime') or '', game.get('sport') or '', game.get('awayTeam') or ''))
+    write_json(root / 'game-card-odds' / 'v2' / 'latest.json', {
+        'schema_version': 2,
+        'generated_at': stamp,
+        'updated_at': stamp,
+        'source': 'PropLine API',
+        'line_selection': 'main_full_game_only',
+        'markets': ['h2h', 'spreads', 'totals'],
+        'sports': summary,
+        'games': card_games,
+    })
+    print(f'Published unified all-book main game-card odds: {len(card_games)} games', flush=True)
     print('Published PropLine game odds', stamp, flush=True)
 
 

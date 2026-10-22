@@ -43,7 +43,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Build per-game bulk current odds caches
+      - name: Build per-game history caches and unified all-book main-line game-card feed
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
           PROPLINE_OUTPUT_DIR: ${{ github.workspace }}/data
@@ -52,7 +52,7 @@ jobs:
       - name: Publish completed game caches
         working-directory: data
         run: |
-          git add game-odds
+          git add game-odds game-card-odds/v2/latest.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -qm 'Publish PropLine game odds caches'
+          git commit -qm 'Publish PropLine game odds and all-book main-line feed'
           git push --quiet origin HEAD:propline-data
