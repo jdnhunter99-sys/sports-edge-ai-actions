@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fetch PropLine bulk odds and publish per-player JSON to the private data branch."""
-import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
+import hashlib, json, os, re, time, threading, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -11,6 +11,8 @@ OPENING_WINDOW_DAYS=14
 PROP_HISTORY_HOURS=5
 PROP_HISTORY_INTERVAL='5m'
 PROP_HISTORY_DISABLED=False
+PROP_HISTORY_LOCK=threading.Lock()
+EVENT_ENRICHMENT_WORKERS=4
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_threes'),
@@ -69,7 +71,8 @@ def fetch_closing(sport,event_id,key):
 
 def fetch_prop_history(sport,event_id,key,market_keys):
  global PROP_HISTORY_DISABLED
- if PROP_HISTORY_DISABLED: return None,0
+ with PROP_HISTORY_LOCK:
+  if PROP_HISTORY_DISABLED: return None,0
  from urllib.parse import urlencode
  provider=SPORTS[sport][0]
  end=datetime.now(timezone.utc).replace(microsecond=0)
@@ -93,8 +96,11 @@ def fetch_prop_history(sport,event_id,key,market_keys):
     # These errors generally apply to the endpoint or API key, not one event.
     # Stop requesting history for the remaining events in this run so a plan
     # restriction or exhausted quota does not create a cascade of failures.
-    PROP_HISTORY_DISABLED=True
-    print(f'{sport}: PropLine prop history unavailable (HTTP {exc.code}); skipping history for remaining events this run',flush=True)
+    with PROP_HISTORY_LOCK:
+     should_log=not PROP_HISTORY_DISABLED
+     PROP_HISTORY_DISABLED=True
+    if should_log:
+     print(f'{sport}: PropLine prop history unavailable (HTTP {exc.code}); skipping history for remaining events this run',flush=True)
     return None,requests
    if exc.code in (400,404,409,422): return None,requests
    if attempt:
@@ -503,39 +509,60 @@ def is_home_for(team_info,event,roster_index):
    if norm(team.get('abbreviation'))==own_abbr: return side=='home'
  return None
 
+def fetch_event_enrichment(sport,event,key):
+ eid=str(event['id'])
+ open_idx={}
+ if sport in OPENING_SPORTS:
+  try:
+   open_idx=opening_index(fetch_closing(sport,eid,key))
+  except Exception as exc:
+   print(f'{sport} event {eid}: opening-line enrichment skipped: {exc}',flush=True)
+ history_idx={}; history_requests=0
+ event_markets=sorted({
+  market.get('key')
+  for book in event.get('bookmakers') or [] if isinstance(book,dict)
+  for market in book.get('markets') or []
+  if isinstance(market,dict) and market.get('key') in SPORTS[sport][1].split() and market.get('outcomes')
+ })
+ if event_markets:
+  try:
+   history_payload,history_requests=fetch_prop_history(sport,eid,key,event_markets)
+   if isinstance(history_payload,dict) and history_payload.get('redacted') is True:
+    global PROP_HISTORY_DISABLED
+    with PROP_HISTORY_LOCK:
+     should_log=not PROP_HISTORY_DISABLED
+     PROP_HISTORY_DISABLED=True
+    if should_log:
+     print(f'{sport}: PropLine returned redacted prop history; this endpoint requires a paid tier, skipping history for remaining events this run',flush=True)
+   else:
+    history_idx=history_index(history_payload)
+    if history_payload and not history_idx:
+     print(f'{sport} event {eid}: prop history returned no snapshots',flush=True)
+  except Exception as exc:
+   print(f'{sport} event {eid}: prop history enrichment skipped: {exc}',flush=True)
+ return {'opening_index':open_idx,'history_index':history_idx,'history_requests':history_requests}
+
 def build_sport(sport,events,root,stamp,key,roster_index=None):
- global PROP_HISTORY_DISABLED
  roster_index=roster_index or {'by_id':{},'by_name':{},'event_teams':{},'by_abbr':{}}
  index=[]; count=0; board_props=[]; history_requests=0; history_quote_rows=0; history_snapshot_rows=0
+ valid_events=[ev for ev in events if isinstance(ev,dict) and ev.get('id') is not None]
+ event_enrichment={}
+ if valid_events:
+  with ThreadPoolExecutor(max_workers=min(EVENT_ENRICHMENT_WORKERS,len(valid_events))) as pool:
+   futures={pool.submit(fetch_event_enrichment,sport,ev,key):str(ev['id']) for ev in valid_events}
+   for future in as_completed(futures):
+    eid=futures[future]
+    try:
+     event_enrichment[eid]=future.result()
+    except Exception as exc:
+     print(f'{sport} event {eid}: odds enrichment skipped: {exc}',flush=True)
  for ev in events:
   if not isinstance(ev,dict) or ev.get('id') is None: continue
   eid=str(ev['id']); players={}
-  open_idx={}
-  if sport in OPENING_SPORTS:
-   try:
-    open_idx=opening_index(fetch_closing(sport,eid,key))
-   except Exception as exc:
-    print(f'{sport} event {eid}: opening-line enrichment skipped: {exc}',flush=True)
-  history_idx={}
-  event_markets=sorted({
-   market.get('key')
-   for book in ev.get('bookmakers') or [] if isinstance(book,dict)
-   for market in book.get('markets') or []
-   if isinstance(market,dict) and market.get('key') in SPORTS[sport][1].split() and market.get('outcomes')
-  })
-  if event_markets and not PROP_HISTORY_DISABLED:
-   try:
-    history_payload,used=fetch_prop_history(sport,eid,key,event_markets)
-    history_requests+=used
-    if isinstance(history_payload,dict) and history_payload.get('redacted') is True:
-     PROP_HISTORY_DISABLED=True
-     print(f'{sport}: PropLine returned redacted prop history; this endpoint requires a paid tier, skipping history for remaining events this run',flush=True)
-    else:
-     history_idx=history_index(history_payload)
-     if history_payload and not history_idx:
-      print(f'{sport} event {eid}: prop history returned no snapshots',flush=True)
-   except Exception as exc:
-    print(f'{sport} event {eid}: prop history enrichment skipped: {exc}',flush=True)
+  enrichment=event_enrichment.get(eid,{})
+  open_idx=enrichment.get('opening_index') or {}
+  history_idx=enrichment.get('history_index') or {}
+  history_requests+=enrichment.get('history_requests',0)
   for book in ev.get('bookmakers') or []:
    if not isinstance(book,dict): continue
    for market in book.get('markets') or []:
@@ -632,11 +659,7 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
  print(f'{sport}: Player Odds board / {len(board_props)} player-market rows / {board_mb:.1f} MiB',flush=True)
  if board_path.stat().st_size >= 95*1024*1024:
   raise ValueError(f'Player Odds/{sport}/board.json is {board_mb:.1f} MiB; must remain below 95 MiB to preserve GitHub\'s per-file size limit')
- quotes=[quote for prop in board_props for quote in (prop.get('allOdds') or [])]
- books=sorted({str(quote.get('bookmakerTitle') or quote.get('bookmaker') or '').strip() for quote in quotes if quote.get('bookmakerTitle') or quote.get('bookmaker')})
- opening_quotes=sum(quote.get('opening_line') is not None or quote.get('opening_price') is not None for quote in quotes)
- print(f"{sport}: odds integrity: {len(quotes)} quote rows across {len(books)} books ({', '.join(books)}); {opening_quotes} quotes have opening history; prop line history on {history_quote_rows} quotes / {history_snapshot_rows} snapshots from {history_requests} history requests",flush=True)
- return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),'opening_quote_rows':opening_quotes,'prop_history_requests':history_requests,'prop_history_quote_rows':history_quote_rows,'prop_history_snapshots':history_snapshot_rows}
+ return {'players':count,'events':len(events),'prop_history_requests':history_requests,'prop_history_quote_rows':history_quote_rows,'prop_history_snapshots':history_snapshot_rows}
 
 def build_player_list(sport,screen,index,stamp,source_events=None):
  # This compact index is derived from the same PropLine response that produced
