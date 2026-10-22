@@ -659,11 +659,7 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
  print(f'{sport}: Player Odds board / {len(board_props)} player-market rows / {board_mb:.1f} MiB',flush=True)
  if board_path.stat().st_size >= 95*1024*1024:
   raise ValueError(f'Player Odds/{sport}/board.json is {board_mb:.1f} MiB; must remain below 95 MiB to preserve GitHub\'s per-file size limit')
- quotes=[quote for prop in board_props for quote in (prop.get('allOdds') or [])]
- books=sorted({str(quote.get('bookmakerTitle') or quote.get('bookmaker') or '').strip() for quote in quotes if quote.get('bookmakerTitle') or quote.get('bookmaker')})
- opening_quotes=sum(quote.get('opening_line') is not None or quote.get('opening_price') is not None for quote in quotes)
- print(f"{sport}: {len(quotes)} quote rows across {len(books)} books; {opening_quotes} quotes have opening history; prop line history on {history_quote_rows} quotes / {history_snapshot_rows} snapshots from {history_requests} history requests",flush=True)
- return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),'opening_quote_rows':opening_quotes,'prop_history_requests':history_requests,'prop_history_quote_rows':history_quote_rows,'prop_history_snapshots':history_snapshot_rows}
+ return {'players':count,'events':len(events),'prop_history_requests':history_requests,'prop_history_quote_rows':history_quote_rows,'prop_history_snapshots':history_snapshot_rows}
 
 def build_player_list(sport,screen,index,stamp,source_events=None):
  # This compact index is derived from the same PropLine response that produced
