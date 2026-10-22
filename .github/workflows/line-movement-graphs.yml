@@ -1,0 +1,60 @@
+name: Line Movement Graphs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: propline-private-data-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check out the published data branch
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository }}
+          ref: propline-data
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+          path: data
+
+      - name: Configure data commit identity
+        working-directory: data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Check publisher and scraper modules
+        run: deno check action/action/scripts/publish_line_movement_graphs.ts
+
+      - name: Scrape and publish ScoresAndOdds line movement graphs
+        env:
+          LINE_MOVEMENT_OUTPUT_DIR: ${{ github.workspace }}/data/line-movement-graphs/v1
+        run: deno run --allow-net --allow-read --allow-write --allow-env=LINE_MOVEMENT_OUTPUT_DIR action/action/scripts/publish_line_movement_graphs.ts
+
+      - name: Publish updated per-game graph files
+        working-directory: data
+        run: |
+          git add line-movement-graphs/v1
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -qm 'Publish ScoresAndOdds line movement graphs'
+          git push --quiet origin HEAD:propline-data
