@@ -24,6 +24,7 @@ if not OUTPUT_ROOT_VALUE:
 OUTPUT_ROOT = Path(OUTPUT_ROOT_VALUE).expanduser()
 
 TZ = ZoneInfo("America/Chicago")
+NBA_SCHEDULE_TZ = ZoneInfo("America/New_York")
 TODAY = dt.datetime.now(TZ).date()
 SEASON_START_YEAR = TODAY.year if TODAY.month >= 7 else TODAY.year - 1
 SEASON_END_YEAR = SEASON_START_YEAR + 1
@@ -33,6 +34,7 @@ DATA_ROOT = OUTPUT_ROOT / "nba-team-stats"
 RAW_ROOT = DATA_ROOT / "raw" / SEASON_FOLDER
 PUBLISH_ROOT = DATA_ROOT / "v1" / SEASON_FOLDER
 SCHEDULE_URL = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json"
+ESPN_SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
 BOX_SCORE_URL = "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_{game_id}.json"
 NBA_STATS_URL = "https://stats.nba.com/stats/leaguedashteamstats"
 SPORTSDATAVERSE_RELEASE_API = "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/"
@@ -248,6 +250,111 @@ def find_schedule_games(payload):
     for game in games:
         unique[game["gameId"]] = game
     return sorted(unique.values(), key=lambda game: (game["gameDate"], game["gameId"]))
+
+
+def espn_game_date(value):
+    text = clean_text(value)
+    if not text:
+        return None
+    try:
+        parsed = dt.datetime.fromisoformat(text.replace("Z", "+00:00"))
+        if parsed.tzinfo is not None:
+            return parsed.astimezone(NBA_SCHEDULE_TZ).date().isoformat()
+        return parsed.date().isoformat()
+    except ValueError:
+        return parse_date(text)
+
+
+def find_espn_schedule_games(payload):
+    games = []
+    for event in payload.get("events") or []:
+        season = event.get("season") or {}
+        season_type = season.get("type")
+        if isinstance(season_type, dict):
+            season_type = season_type.get("id") or season_type.get("slug")
+        is_regular = str(season_type).lower() in ("2", "regular", "regular-season", "regular season")
+        if str(season.get("year") or "") != str(SEASON_END_YEAR) or not is_regular:
+            continue
+
+        competition = next(iter(event.get("competitions") or []), {})
+        competitors = competition.get("competitors") or []
+        home = next((item for item in competitors if item.get("homeAway") == "home"), None)
+        away = next((item for item in competitors if item.get("homeAway") == "away"), None)
+        if not home or not away:
+            continue
+
+        def team_identity(competitor):
+            team = competitor.get("team") or {}
+            return {
+                "teamId": clean_text(team.get("id")),
+                "abbreviation": normalize_abbr(team.get("abbreviation")),
+                "teamCity": clean_text(team.get("location") or ""),
+                "teamName": clean_text(team.get("name") or team.get("displayName") or ""),
+            }
+
+        home_team = team_identity(home)
+        away_team = team_identity(away)
+        game_date = espn_game_date(event.get("date") or competition.get("date"))
+        game_id = clean_text(event.get("id") or competition.get("id"))
+        if not game_id or not game_date or not home_team["abbreviation"] or not away_team["abbreviation"]:
+            continue
+
+        status = competition.get("status") or event.get("status") or {}
+        status_type = status.get("type") or {}
+        if not isinstance(status_type, dict):
+            status_type = {}
+        status_text = clean_text(status_type.get("shortDetail") or status_type.get("detail") or status_type.get("description"))
+        completed = bool(status_type.get("completed")) or clean_text(status_type.get("state")).lower() in ("post", "final") or "final" in status_text.lower()
+        games.append({
+            "gameId": game_id,
+            "gameDate": game_date,
+            "status": 3 if completed else None,
+            "statusText": status_text,
+            "completed": completed,
+            "homeTeam": home_team,
+            "awayTeam": away_team,
+        })
+
+    unique = {game["gameId"]: game for game in games}
+    return sorted(unique.values(), key=lambda game: (game["gameDate"], game["gameId"]))
+
+
+def fetch_espn_schedule():
+    months = [(SEASON_START_YEAR, month) for month in (10, 11, 12)]
+    months.extend((SEASON_END_YEAR, month) for month in (1, 2, 3, 4))
+    month_payloads = {}
+    errors = []
+
+    def fetch_month(year_month):
+        year, month = year_month
+        query = urllib.parse.urlencode({"dates": f"{year}{month:02d}", "limit": "1000"})
+        return http_json(ESPN_SCOREBOARD_URL + "?" + query, headers=RAW_HEADERS, attempts=4, timeout=35)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        futures = {pool.submit(fetch_month, item): item for item in months}
+        for future in concurrent.futures.as_completed(futures):
+            year, month = futures[future]
+            label = f"{year}-{month:02d}"
+            try:
+                payload = future.result()
+                month_games = find_espn_schedule_games(payload)
+                if not month_games:
+                    raise RuntimeError("no regular-season games returned")
+                month_payloads[label] = month_games
+            except Exception as error:
+                errors.append(f"{label}: {error}")
+
+    if errors:
+        raise RuntimeError("ESPN schedule fallback was incomplete: " + "; ".join(errors))
+
+    unique = {}
+    for month_games in month_payloads.values():
+        for game in month_games:
+            unique[game["gameId"]] = game
+    games = sorted(unique.values(), key=lambda game: (game["gameDate"], game["gameId"]))
+    if not games:
+        raise RuntimeError(f"ESPN schedule returned no {SEASON_LABEL} regular-season games")
+    return games
 
 
 def make_team_name(team):
@@ -478,16 +585,20 @@ def complete_boxscores(games):
     cutoff = TODAY - dt.timedelta(days=3)
     boxes = {}
     to_fetch = []
+    errors = []
     for game in games:
         if not game["completed"]:
             continue
         cached = load_cached_box(game)
         if cached and game["gameDate"] < cutoff.isoformat():
             boxes[game["gameId"]] = cached
+        elif not re.fullmatch(r"002\d{7}", game["gameId"]):
+            # ESPN event IDs cannot be used with the NBA live boxscore URL.
+            # Resolve these completed games from the SportsDataverse release.
+            errors.append((game, RuntimeError("schedule fallback uses ESPN event ID")))
         else:
             to_fetch.append((game, cached))
 
-    errors = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
         futures = {pool.submit(fetch_box_for_game, game): (game, cached) for game, cached in to_fetch}
         for future in concurrent.futures.as_completed(futures):
@@ -771,10 +882,20 @@ def fetch_official_advanced():
 
 
 def normalized_schedule():
-    payload = http_json(SCHEDULE_URL, headers=RAW_HEADERS, attempts=4, timeout=35)
-    games = find_schedule_games(payload)
-    if not games:
-        raise RuntimeError(f"NBA schedule returned no {SEASON_LABEL} regular-season games")
+    schedule_source = "nba-live-schedule"
+    try:
+        payload = http_json(SCHEDULE_URL, headers=NBA_HEADERS, attempts=4, timeout=35)
+        games = find_schedule_games(payload)
+        if not games:
+            raise RuntimeError(f"NBA schedule returned no {SEASON_LABEL} regular-season games")
+    except Exception as nba_error:
+        print(f"WARN NBA schedule endpoint unavailable; trying ESPN monthly schedule fallback: {nba_error}")
+        try:
+            games = fetch_espn_schedule()
+            schedule_source = "espn-scoreboard-fallback"
+        except Exception as espn_error:
+            raise RuntimeError(f"NBA schedule failed ({nba_error}); ESPN fallback failed ({espn_error})") from espn_error
+
     teams = {}
     for game in games:
         for side in ("homeTeam", "awayTeam"):
@@ -790,7 +911,7 @@ def normalized_schedule():
             }
     if len(teams) != 30:
         raise RuntimeError(f"NBA schedule identified {len(teams)} teams, expected 30; refusing to publish incomplete league data")
-    return games, teams
+    return games, teams, schedule_source
 
 
 def team_rows_from_boxes(boxes, games):
@@ -864,7 +985,16 @@ def make_all_frames(rows_before, pairs, identities, official_frames=None, use_of
             team_rows = rows_for_team(rows_before, identity)
             selected = timeframe_rows(team_rows, frame_name)
             aggregate[abbr] = calculate_split(selected, pairs)
-            api_row = ((official_frames or {}).get(frame_name) or {}).get(str(identity["id"]))
+            official_frame = (official_frames or {}).get(frame_name) or {}
+            api_row = official_frame.get(str(identity["id"]))
+            if api_row is None:
+                for candidate in official_frame.values():
+                    candidate_abbr = normalize_abbr(candidate.get("TEAM_ABBREVIATION"))
+                    if not candidate_abbr:
+                        candidate_abbr = NAME_TO_ABBR.get(clean_text(candidate.get("TEAM_NAME")).lower(), "")
+                    if candidate_abbr == abbr:
+                        api_row = candidate
+                        break
             if use_official and api_row:
                 apply_official_advanced(aggregate[abbr], api_row)
         frames[frame_name] = rank_split(aggregate, identities)
@@ -1219,7 +1349,7 @@ def write_json(path, payload):
     return True
 
 
-def publish(games, teams, boxes, official_frames, official_errors, advanced_date_to):
+def publish(games, teams, boxes, official_frames, official_errors, advanced_date_to, schedule_source):
     all_rows, all_players = team_rows_from_boxes(boxes, games)
     pairs = pair_rows(all_rows)
     published = []
@@ -1279,7 +1409,7 @@ def publish(games, teams, boxes, official_frames, official_errors, advanced_date
         "completedGamesCached": len(boxes),
         "games": published,
         "sources": {
-            "schedule": "nba-live-schedule",
+            "schedule": schedule_source,
             "teamGameRecords": "nba-live-boxscore-with-sportsdataverse-fallback",
             "officialAdvanced": "nba-stats-leaguedashteamstats",
             "officialAdvancedDateTo": advanced_date_to,
@@ -1295,12 +1425,12 @@ def main():
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     DATA_ROOT.mkdir(parents=True, exist_ok=True)
     print(f"NBA stats publisher: season={SEASON_LABEL}, today={TODAY.isoformat()}")
-    games, teams = normalized_schedule()
-    print(f"NBA schedule loaded: {len(games)} games; {len(teams)} teams")
+    games, teams, schedule_source = normalized_schedule()
+    print(f"NBA schedule loaded: {len(games)} games; {len(teams)} teams ({schedule_source})")
     boxes = complete_boxscores(games)
     print(f"Completed box scores available: {len(boxes)}")
     official_frames, official_errors, date_to = fetch_official_advanced()
-    count = publish(games, teams, boxes, official_frames, official_errors, date_to)
+    count = publish(games, teams, boxes, official_frames, official_errors, date_to, schedule_source)
     print(f"Published {count} NBA per-game snapshots, {len(teams)} teams, and {len(TIMEFRAMES)} timeframes.")
 
 
