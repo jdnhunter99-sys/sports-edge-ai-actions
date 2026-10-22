@@ -27,15 +27,22 @@ jobs:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: test -n "$PROPLINE_API_KEY" || { echo 'Add repository secret PROPLINE_API_KEY'; exit 1; }
 
-      - name: Check out the published PropLine data branch
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ github.repository }}
-          ref: propline-data
-          token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true
-          fetch-depth: 1
-          path: data
+      - name: Sparse check out the published PropLine data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          cd data
+          git init
+          git remote add origin "https://github.com/${DATA_REPOSITORY}.git"
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" fetch \
+            --depth=1 --filter=blob:none origin refs/heads/propline-data
+          git checkout --detach --no-checkout FETCH_HEAD
+          git sparse-checkout init --cone
+          git sparse-checkout set 'Player Odds/cfb' team-rosters
 
       - name: Configure data commit identity
         working-directory: data
@@ -51,8 +58,17 @@ jobs:
 
       - name: Publish completed PropLine generation
         working-directory: data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git add -A
+          set -euo pipefail
+          # Replace only the generated PropLine trees. Keep unrelated data-branch
+          # paths (for example game-odds) in the index without checking them out.
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git rm --cached --sparse -r --ignore-unmatch -- \
+            'Player Odds' 'Player Lists' versions player-lists
+          git add --sparse -A -- 'Player Odds' 'Player Lists' manifest.json team-rosters
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Publish complete PropLine JSON generation'
-          git push --quiet origin HEAD:propline-data
+          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" \
+            push --quiet origin HEAD:propline-data
