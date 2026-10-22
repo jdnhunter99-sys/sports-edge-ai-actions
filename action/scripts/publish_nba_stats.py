@@ -61,7 +61,7 @@ TIMEFRAMES = {
     "away": {"last_n": 0, "location": "Road"},
 }
 ABBR_ALIASES = {
-    "GS": "GSW", "NO": "NOP", "NY": "NYK", "SA": "SAS", "UTAH": "UTA",
+    "BRK": "BKN", "GS": "GSW", "NO": "NOP", "NY": "NYK", "SA": "SAS", "UTAH": "UTA",
     "PHO": "PHX", "WSH": "WAS",
 }
 NAME_TO_ABBR = {
@@ -77,6 +77,7 @@ NAME_TO_ABBR = {
     "sacramento kings": "SAC", "san antonio spurs": "SAS", "toronto raptors": "TOR",
     "utah jazz": "UTA", "washington wizards": "WAS",
 }
+NBA_TEAM_ABBREVIATIONS = frozenset(NAME_TO_ABBR.values())
 CORE_FIELDS = (
     "team_score", "field_goals_made", "field_goals_attempted",
     "three_point_field_goals_made", "three_point_field_goals_attempted",
@@ -268,6 +269,7 @@ def espn_game_date(value):
 
 def find_espn_schedule_games(payload):
     games = []
+    unexpected_team_abbrs = set()
     for event in payload.get("events") or []:
         season = event.get("season") or {}
         season_type = season.get("type")
@@ -286,15 +288,30 @@ def find_espn_schedule_games(payload):
 
         def team_identity(competitor):
             team = competitor.get("team") or {}
+            location = clean_text(team.get("location") or "")
+            name = clean_text(team.get("name") or team.get("displayName") or "")
+            full_name = clean_text(team.get("displayName") or " ".join(part for part in (location, name) if part))
+            abbreviation = normalize_abbr(team.get("abbreviation"))
+            if abbreviation not in NBA_TEAM_ABBREVIATIONS:
+                abbreviation = NAME_TO_ABBR.get(full_name.lower(), abbreviation)
             return {
                 "teamId": clean_text(team.get("id")),
-                "abbreviation": normalize_abbr(team.get("abbreviation")),
-                "teamCity": clean_text(team.get("location") or ""),
-                "teamName": clean_text(team.get("name") or team.get("displayName") or ""),
+                "abbreviation": abbreviation,
+                "teamCity": location,
+                "teamName": name,
             }
 
         home_team = team_identity(home)
         away_team = team_identity(away)
+        if home_team["abbreviation"] not in NBA_TEAM_ABBREVIATIONS:
+            unexpected_team_abbrs.add(home_team["abbreviation"])
+        if away_team["abbreviation"] not in NBA_TEAM_ABBREVIATIONS:
+            unexpected_team_abbrs.add(away_team["abbreviation"])
+        if (
+            home_team["abbreviation"] not in NBA_TEAM_ABBREVIATIONS
+            or away_team["abbreviation"] not in NBA_TEAM_ABBREVIATIONS
+        ):
+            continue
         game_date = espn_game_date(event.get("date") or competition.get("date"))
         game_id = clean_text(event.get("id") or competition.get("id"))
         if not game_id or not game_date or not home_team["abbreviation"] or not away_team["abbreviation"]:
@@ -315,6 +332,10 @@ def find_espn_schedule_games(payload):
             "homeTeam": home_team,
             "awayTeam": away_team,
         })
+
+    if unexpected_team_abbrs:
+        codes = ", ".join(sorted(code or "<blank>" for code in unexpected_team_abbrs))
+        print(f"WARN ESPN schedule ignored events with non-NBA team codes: {codes}")
 
     unique = {game["gameId"]: game for game in games}
     return sorted(unique.values(), key=lambda game: (game["gameDate"], game["gameId"]))
