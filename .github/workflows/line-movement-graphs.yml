@@ -27,15 +27,21 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Check out the published data branch
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ github.repository }}
-          ref: propline-data
-          token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true
-          fetch-depth: 1
-          path: data
+      - name: Sparse check out the published graph files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          cd data
+          git init
+          git remote add origin "https://github.com/${DATA_REPOSITORY}.git"
+          auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.extraheader="AUTHORIZATION: basic ${auth_header}" fetch --quiet --depth=1 --filter=blob:none origin refs/heads/propline-data
+          git checkout --quiet --detach --no-checkout FETCH_HEAD
+          git sparse-checkout init --cone
+          git sparse-checkout set line-movement-graphs/v1
 
       - name: Configure data commit identity
         working-directory: data
@@ -50,8 +56,12 @@ jobs:
 
       - name: Publish updated per-game graph files
         working-directory: data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           git add line-movement-graphs/v1
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Publish ScoresAndOdds line movement graphs'
-          git push --quiet origin HEAD:propline-data
+          auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.extraheader="AUTHORIZATION: basic ${auth_header}" push --quiet origin HEAD:propline-data
