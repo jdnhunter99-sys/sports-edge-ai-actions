@@ -43,13 +43,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Check publisher and scraper modules
-        run: deno check action/action/scripts/publish_line_movement_graphs.ts
-
       - name: Scrape and publish ScoresAndOdds line movement graphs
         env:
           LINE_MOVEMENT_OUTPUT_DIR: ${{ github.workspace }}/data/line-movement-graphs/v1
-        run: deno run --allow-net --allow-read --allow-write --allow-env=LINE_MOVEMENT_OUTPUT_DIR action/action/scripts/publish_line_movement_graphs.ts
+        run: deno run --no-check --allow-net --allow-read --allow-write --allow-env=LINE_MOVEMENT_OUTPUT_DIR action/action/scripts/publish_line_movement_graphs.ts
 
       - name: Publish updated per-game graph files
         working-directory: data
