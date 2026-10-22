@@ -33,16 +33,13 @@ jobs:
           DATA_REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
-          mkdir -p data
-          cd data
-          git init
-          git remote add origin "https://github.com/${DATA_REPOSITORY}.git"
           token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
-          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" fetch \
-            --depth=1 --filter=blob:none origin refs/heads/propline-data
-          git checkout --detach --no-checkout FETCH_HEAD
-          git sparse-checkout init --cone
-          git sparse-checkout set 'Player Odds/cfb' team-rosters
+          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" clone \
+            --quiet --filter=blob:none --depth=1 --no-checkout \
+            --single-branch --branch propline-data \
+            "https://github.com/${DATA_REPOSITORY}.git" data
+          git -C data sparse-checkout init --cone
+          git -C data sparse-checkout set 'Player Odds/cfb' team-rosters
 
       - name: Configure data commit identity
         working-directory: data

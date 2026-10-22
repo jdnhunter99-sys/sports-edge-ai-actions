@@ -1,0 +1,69 @@
+name: NBA stats
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-team-stats-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Prepare the NBA stats data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_BRANCH: nba-team-stats-data
+        run: |
+          mkdir -p data
+          cd data
+          set -euo pipefail
+          git init -b "$DATA_BRANCH"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          if git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" fetch --depth=1 origin "$DATA_BRANCH"
+            git reset --hard FETCH_HEAD
+          fi
+
+      - name: Fetch completed NBA box scores, calculate splits, and publish game JSON
+        env:
+          NBA_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
+        run: python action/action/scripts/publish_nba_stats.py
+
+      - name: Publish NBA stats JSON
+        working-directory: data
+        env:
+          DATA_BRANCH: nba-team-stats-data
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git add nba-team-stats
+          if git diff --cached --quiet; then
+            echo 'NBA team-stats cache is unchanged.'
+            exit 0
+          fi
+          git commit -qm 'Refresh NBA team-stats cache'
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" push --quiet origin "HEAD:${DATA_BRANCH}"
+
