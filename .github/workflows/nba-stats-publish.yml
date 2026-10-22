@@ -49,6 +49,7 @@ jobs:
       - name: Fetch completed NBA box scores, calculate splits, and publish game JSON
         env:
           NBA_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
+          BROWSERLESS_TOKEN: ${{ secrets.BROWSERLESS_TOKEN }}
         run: python action/action/scripts/publish_nba_stats.py
 
       - name: Publish NBA stats JSON

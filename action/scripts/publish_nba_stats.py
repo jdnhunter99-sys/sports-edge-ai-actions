@@ -35,6 +35,7 @@ RAW_ROOT = DATA_ROOT / "raw" / SEASON_FOLDER
 PUBLISH_ROOT = DATA_ROOT / "v1" / SEASON_FOLDER
 SCHEDULE_URL = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json"
 ESPN_SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+BROWSERLESS_FUNCTION_URL = "https://production-sfo.browserless.io/function"
 BOX_SCORE_URL = "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_{game_id}.json"
 NBA_STATS_URL = "https://stats.nba.com/stats/leaguedashteamstats"
 SPORTSDATAVERSE_RELEASE_API = "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/"
@@ -354,6 +355,80 @@ def fetch_espn_schedule():
     games = sorted(unique.values(), key=lambda game: (game["gameDate"], game["gameId"]))
     if not games:
         raise RuntimeError(f"ESPN schedule returned no {SEASON_LABEL} regular-season games")
+    return games
+
+
+def fetch_browserless_schedule():
+    token = os.environ.get("BROWSERLESS_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("BROWSERLESS_TOKEN secret is not configured")
+
+    browser_function = """
+export default async ({ page, context }) => {
+  await page.setUserAgent(context.userAgent);
+  await page.setExtraHTTPHeaders(context.headers);
+  const response = await page.goto(context.url, {
+    waitUntil: "domcontentloaded",
+    timeout: 60000,
+  });
+  const body = response ? await response.text() : "";
+  return {
+    data: {
+      status: response ? response.status() : null,
+      body: body.slice(0, 12000000),
+    },
+    type: "application/json",
+  };
+};
+"""
+    browserless_url = BROWSERLESS_FUNCTION_URL + "?token=" + urllib.parse.quote(token, safe="")
+    request_body = json.dumps({
+        "code": browser_function,
+        "context": {
+            "url": SCHEDULE_URL,
+            "userAgent": NBA_HEADERS["User-Agent"],
+            "headers": {
+                "Accept": NBA_HEADERS["Accept"],
+                "Accept-Language": NBA_HEADERS["Accept-Language"],
+                "Origin": NBA_HEADERS["Origin"],
+                "Referer": NBA_HEADERS["Referer"],
+            },
+        },
+    }).encode("utf-8")
+    request = urllib.request.Request(
+        browserless_url,
+        data=request_body,
+        headers={"Content-Type": "application/json", "Accept": "application/json"},
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response:
+            result = json.loads(response.read())
+    except urllib.error.HTTPError as error:
+        # Never include the request URL in logs because it contains the secret token.
+        detail = error.read(1000).decode("utf-8", errors="replace").replace(token, "[redacted]")
+        raise RuntimeError(f"Browserless function request failed with HTTP {error.code}: {detail}") from None
+    except Exception as error:
+        detail = str(error).replace(token, "[redacted]")
+        raise RuntimeError(f"Browserless function request failed: {detail}") from None
+
+    result_data = result.get("data") if isinstance(result, dict) else None
+    if not isinstance(result_data, dict):
+        raise RuntimeError("Browserless returned an unexpected response shape")
+    status = result_data.get("status")
+    body = result_data.get("body")
+    if status != 200:
+        preview = clean_text(body)[:300] if body else "empty response body"
+        raise RuntimeError(f"Browserless NBA schedule navigation returned HTTP {status}: {preview}")
+    try:
+        payload = json.loads(body or "")
+    except (TypeError, json.JSONDecodeError) as error:
+        raise RuntimeError(f"Browserless returned invalid NBA schedule JSON: {error}") from error
+
+    games = find_schedule_games(payload)
+    if not games:
+        raise RuntimeError(f"Browserless returned no {SEASON_LABEL} regular-season games")
     return games
 
 
@@ -889,12 +964,20 @@ def normalized_schedule():
         if not games:
             raise RuntimeError(f"NBA schedule returned no {SEASON_LABEL} regular-season games")
     except Exception as nba_error:
-        print(f"WARN NBA schedule endpoint unavailable; trying ESPN monthly schedule fallback: {nba_error}")
+        print(f"WARN NBA schedule endpoint unavailable; trying Browserless schedule fallback: {nba_error}")
         try:
-            games = fetch_espn_schedule()
-            schedule_source = "espn-scoreboard-fallback"
-        except Exception as espn_error:
-            raise RuntimeError(f"NBA schedule failed ({nba_error}); ESPN fallback failed ({espn_error})") from espn_error
+            games = fetch_browserless_schedule()
+            schedule_source = "browserless-nba-schedule-fallback"
+        except Exception as browserless_error:
+            print(f"WARN Browserless schedule fallback failed; trying ESPN monthly fallback: {browserless_error}")
+            try:
+                games = fetch_espn_schedule()
+                schedule_source = "espn-scoreboard-fallback"
+            except Exception as espn_error:
+                raise RuntimeError(
+                    f"NBA schedule failed ({nba_error}); Browserless fallback failed ({browserless_error}); "
+                    f"ESPN fallback failed ({espn_error})"
+                ) from espn_error
 
     teams = {}
     for game in games:
