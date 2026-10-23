@@ -62,6 +62,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          # This is a fresh clone. Reset its index before staging so a path
+          # carried by sparse-checkout/index state from another publisher cannot
+          # make the PropLine job try to publish unrelated data.
+          git reset --quiet
           # Replace only the generated PropLine trees. Refuse to publish if the
           # sparse checkout has staged changes outside the paths this workflow owns.
           token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
