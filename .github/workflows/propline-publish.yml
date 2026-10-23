@@ -39,11 +39,10 @@ jobs:
             --single-branch --branch propline-data \
             "https://github.com/${DATA_REPOSITORY}.git" data
           git -C data sparse-checkout init --cone
-          # Keep every other publisher's data in the checkout so this commit
-          # cannot replace the shared branch with only the PropLine trees.
-          git -C data sparse-checkout set \
-            'Player Odds/cfb' team-rosters \
-            'game-card-odds/v2' game-odds 'line-movement-graphs/v1'
+          # Keep unrelated publishers' paths out of this working tree. Their
+          # tracked index entries remain untouched while this workflow replaces
+          # only the PropLine player odds and roster paths.
+          git -C data sparse-checkout set 'Player Odds/cfb' team-rosters
 
       - name: Configure data commit identity
         working-directory: data
