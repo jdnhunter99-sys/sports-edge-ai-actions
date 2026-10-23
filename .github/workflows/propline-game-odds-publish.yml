@@ -43,16 +43,56 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Build per-game history caches and unified all-book main-line game-card feed
+      - name: Prepare isolated output with the current odds history
+        run: |
+          set -euo pipefail
+          output_dir="$RUNNER_TEMP/propline-game-odds-output"
+          mkdir -p "$output_dir"
+          if [[ -d data/game-odds ]]; then
+            cp -a data/game-odds "$output_dir/game-odds"
+          fi
+
+      - name: Build and validate a complete replacement
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
-          PROPLINE_OUTPUT_DIR: ${{ github.workspace }}/data
-        run: python3 action/scripts/publish_propline_game_odds.py
+          PROPLINE_OUTPUT_DIR: ${{ runner.temp }}/propline-game-odds-output
+        run: |
+          set -euo pipefail
+          python3 action/scripts/publish_propline_game_odds.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
 
-      - name: Publish completed game caches
+          path = Path("${{ runner.temp }}/propline-game-odds-output/game-card-odds/v2/latest.json")
+          payload = json.loads(path.read_text(encoding="utf-8"))
+          if payload.get("schema_version") != 2:
+              raise SystemExit("Refusing to publish game-card odds with an unexpected schema")
+          if not payload.get("generated_at") or not isinstance(payload.get("games"), list) or not payload["games"]:
+              raise SystemExit("Refusing to replace published game-card odds with an empty or incomplete feed")
+          print(f"Validated replacement game-card feed: {len(payload['games'])} games")
+          PY
+
+      - name: Publish validated odds without removing the current file
         working-directory: data
         run: |
-          git add game-odds game-card-odds/v2/latest.json
+          set -euo pipefail
+          output_dir="$RUNNER_TEMP/propline-game-odds-output"
+          test -s "$output_dir/game-card-odds/v2/latest.json"
+          test -d "$output_dir/game-odds"
+
+          # Keep the last published payload as a fallback for clients while
+          # GitHub's raw-content edge propagates the newly published large file.
+          if [[ -s game-card-odds/v2/latest.json ]]; then
+            cp game-card-odds/v2/latest.json game-card-odds/v2/previous.json.tmp
+            mv game-card-odds/v2/previous.json.tmp game-card-odds/v2/previous.json
+          fi
+
+          mkdir -p game-odds game-card-odds/v2
+          cp -a "$output_dir/game-odds/." game-odds/
+          cp "$output_dir/game-card-odds/v2/latest.json" game-card-odds/v2/latest.json.tmp
+          mv game-card-odds/v2/latest.json.tmp game-card-odds/v2/latest.json
+
+          git add game-odds game-card-odds/v2/latest.json game-card-odds/v2/previous.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Publish PropLine game odds and all-book main-line feed'
           git push --quiet origin HEAD:propline-data
