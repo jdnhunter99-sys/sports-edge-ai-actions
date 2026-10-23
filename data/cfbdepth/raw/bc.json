@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "",
+  "sheetTitle": "Status Update",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "11",
+      "Col2": "10",
       "Col3": "# New:",
-      "Col4": "3",
+      "Col4": "2",
       "Col5": "Impact:",
-      "Col6": "17",
+      "Col6": "15",
       "Col7": "Impact Avg:",
       "Col8": "1.5",
       "Col9": "Impact Rank:",
-      "Col10": "54",
+      "Col10": "59",
       "Col11": ""
     },
     {
@@ -81,6 +81,19 @@
       "Col11": "0"
     },
     {
+      "Col1": "Evan Dickens",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "OFS",
+      "Col5": "RB",
+      "Col6": "TRUE",
+      "Col7": "14.3",
+      "Col8": "5",
+      "Col9": "10/21/2026",
+      "Col10": "His leg injury will now cost him the rest of the season. Injured in week seven.",
+      "Col11": "15"
+    },
+    {
       "Col1": "Reed Swanson",
       "Col2": "",
       "Col3": "",
@@ -88,7 +101,7 @@
       "Col5": "WR",
       "Col6": "FALSE",
       "Col7": "12.7",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "10/16/2026",
       "Col10": "Official report 2026-10-16: out.",
       "Col11": "0"
@@ -159,32 +172,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Evan Dickens",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "O",
-      "Col5": "RB",
-      "Col6": "TRUE",
-      "Col7": "14.3",
-      "Col8": "5",
-      "Col9": "10/21/2026",
-      "Col10": "Official report 2026-10-21: out. Game 2026-10-24. Previous context: Update 2026-10-20: His game availability is questionable. He is dealing with a leg injury.",
-      "Col11": "15"
-    },
-    {
-      "Col1": "Demetrius Ballard",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "DE",
-      "Col6": "TRUE",
-      "Col7": "13.4",
-      "Col8": "2",
-      "Col9": "10/21/2026",
-      "Col10": "Official report 2026-10-21: questionable. Game 2026-10-24.",
-      "Col11": "41"
-    },
-    {
       "Col1": "Gavin Neil",
       "Col2": "",
       "Col3": "",
@@ -196,6 +183,19 @@
       "Col9": "10/21/2026",
       "Col10": "Official report 2026-10-21: questionable. Game 2026-10-24.",
       "Col11": "7"
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,19 @@
       "Col11": ""
     },
     {
+      "Col1": "Demetrius Ballard",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DE",
+      "Col6": "",
+      "Col7": "13.4",
+      "Col8": "2",
+      "Col9": "10/22/2026",
+      "Col10": "Cleared from the injury/status report on 10/22/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Evan Dickens",
       "Col2": "",
       "Col3": "",
@@ -1293,15 +1306,15 @@
     ],
     [
       "#:",
-      "11",
+      "10",
       "# New:",
-      "3",
+      "2",
       "Impact:",
-      "17",
+      "15",
       "Impact Avg:",
       "1.5",
       "Impact Rank:",
-      "54",
+      "59",
       ""
     ],
     [
@@ -1331,6 +1344,19 @@
       "0"
     ],
     [
+      "Evan Dickens",
+      "",
+      "",
+      "OFS",
+      "RB",
+      "TRUE",
+      "14.3",
+      "5",
+      "10/21/2026",
+      "His leg injury will now cost him the rest of the season. Injured in week seven.",
+      "15"
+    ],
+    [
       "Reed Swanson",
       "",
       "",
@@ -1338,7 +1364,7 @@
       "WR",
       "FALSE",
       "12.7",
-      "4",
+      "3",
       "10/16/2026",
       "Official report 2026-10-16: out.",
       "0"
@@ -1409,32 +1435,6 @@
       "0"
     ],
     [
-      "Evan Dickens",
-      "",
-      "",
-      "O",
-      "RB",
-      "TRUE",
-      "14.3",
-      "5",
-      "10/21/2026",
-      "Official report 2026-10-21: out. Game 2026-10-24. Previous context: Update 2026-10-20: His game availability is questionable. He is dealing with a leg injury.",
-      "15"
-    ],
-    [
-      "Demetrius Ballard",
-      "",
-      "",
-      "Q",
-      "DE",
-      "TRUE",
-      "13.4",
-      "2",
-      "10/21/2026",
-      "Official report 2026-10-21: questionable. Game 2026-10-24.",
-      "41"
-    ],
-    [
       "Gavin Neil",
       "",
       "",
@@ -1446,6 +1446,19 @@
       "10/21/2026",
       "Official report 2026-10-21: questionable. Game 2026-10-24.",
       "7"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2137,6 +2150,19 @@
       ""
     ],
     [
+      "Demetrius Ballard",
+      "",
+      "",
+      "Cleared",
+      "DE",
+      "",
+      "13.4",
+      "2",
+      "10/22/2026",
+      "Cleared from the injury/status report on 10/22/2026",
+      ""
+    ],
+    [
       "Evan Dickens",
       "",
       "",
@@ -2514,6 +2540,6 @@
       ""
     ]
   ],
-  "count": 96,
-  "timestamp": "2026-10-22T21:05:19.159Z"
+  "count": 97,
+  "timestamp": "2026-10-23T12:06:59.305Z"
 }
