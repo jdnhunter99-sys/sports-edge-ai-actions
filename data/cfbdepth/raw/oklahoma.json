@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "12",
+      "Col2": "10",
       "Col3": "# New:",
       "Col4": "4",
       "Col5": "Impact:",
-      "Col6": "29",
+      "Col6": "26",
       "Col7": "Impact Avg:",
-      "Col8": "2.4",
+      "Col8": "2.6",
       "Col9": "Impact Rank:",
-      "Col10": "13",
+      "Col10": "16",
       "Col11": ""
     },
     {
@@ -120,19 +120,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Michael Fasusi",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "OL",
-      "Col6": "FALSE",
-      "Col7": "13.0",
-      "Col8": "1",
-      "Col9": "10/21/2026",
-      "Col10": "Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable. Previous context: Official report 2026-10-09: out. Previous context: Made it back in time for week one, but was banged up and limited. Hoped to get him back for week four but was unable to go. Has a bye to get healthy but does not appear he'll be ready to return for Red River.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Trynae Washington",
       "Col2": "",
       "Col3": "",
@@ -172,32 +159,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
-    },
-    {
-      "Col1": "Heath Ozaeta",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "OL",
-      "Col6": "FALSE",
-      "Col7": "11.4",
-      "Col8": "1",
-      "Col9": "10/21/2026",
-      "Col10": "Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Ryan Fodje",
       "Col2": "",
       "Col3": "",
@@ -211,6 +172,19 @@
       "Col11": "57"
     },
     {
+      "Col1": "Elijah Thomas",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "O",
+      "Col5": "WR",
+      "Col6": "TRUE",
+      "Col7": "10.0",
+      "Col8": "4",
+      "Col9": "10/24/2026",
+      "Col10": "Official report 2026-10-24: out. Game 2026-10-24. Previous context: Official report 2026-10-23: doubtful. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
+      "Col11": "9"
+    },
+    {
       "Col1": "",
       "Col2": "",
       "Col3": "",
@@ -224,17 +198,43 @@
       "Col11": ""
     },
     {
-      "Col1": "Elijah Thomas",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "O",
-      "Col5": "WR",
-      "Col6": "TRUE",
-      "Col7": "10.0",
-      "Col8": "4",
-      "Col9": "10/24/2026",
-      "Col10": "Official report 2026-10-24: out. Game 2026-10-24. Previous context: Official report 2026-10-23: doubtful. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
-      "Col11": "9"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,32 @@
       "Col11": ""
     },
     {
+      "Col1": "Heath Ozaeta",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "11.4",
+      "Col8": "1",
+      "Col9": "10/24/2026",
+      "Col10": "Cleared from the injury/status report on 10/24/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Michael Fasusi",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "13.0",
+      "Col8": "1",
+      "Col9": "10/24/2026",
+      "Col10": "Cleared from the injury/status report on 10/24/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Tory Blaylock",
       "Col2": "",
       "Col3": "",
@@ -1190,23 +1216,41 @@
     [
       "",
       "#a32036",
-      "Oklahoma"
+      "Oklahoma",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET"
+      "INJURY / STATUS UPDATE SHEET",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "#:",
-      "12",
+      "10",
       "# New:",
       "4",
       "Impact:",
-      "29",
+      "26",
       "Impact Avg:",
-      "2.4",
+      "2.6",
       "Impact Rank:",
-      "13"
+      "16",
+      ""
     ],
     [
       "Player Name",
@@ -1274,19 +1318,6 @@
       "0"
     ],
     [
-      "Michael Fasusi",
-      "",
-      "",
-      "Q",
-      "OL",
-      "FALSE",
-      "13.0",
-      "1",
-      "10/21/2026",
-      "Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable. Previous context: Official report 2026-10-09: out. Previous context: Made it back in time for week one, but was banged up and limited. Hoped to get him back for week four but was unable to go. Has a bye to get healthy but does not appear he'll be ready to return for Red River.",
-      "0"
-    ],
-    [
       "Trynae Washington",
       "",
       "",
@@ -1326,29 +1357,6 @@
       "0"
     ],
     [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "Heath Ozaeta",
-      "",
-      "",
-      "Q",
-      "OL",
-      "FALSE",
-      "11.4",
-      "1",
-      "10/21/2026",
-      "Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable.",
-      "0"
-    ],
-    [
       "Ryan Fodje",
       "",
       "",
@@ -1360,16 +1368,6 @@
       "10/21/2026",
       "Official report 2026-10-21: out. Game 2026-10-24. Previous context: Injured in-game week seven and though he was able to return to action, he was clearly hobbled for the remainder of the game. Tracking for updates.",
       "57"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
     ],
     [
       "Elijah Thomas",
@@ -1392,7 +1390,62 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1402,7 +1455,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1412,7 +1468,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1422,7 +1481,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1432,7 +1494,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1442,7 +1507,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1452,7 +1520,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1462,7 +1533,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1472,7 +1546,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1482,7 +1559,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1492,7 +1572,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1502,7 +1585,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1512,7 +1598,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1522,7 +1611,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1532,7 +1624,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1542,7 +1637,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1552,7 +1650,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1562,7 +1663,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1572,7 +1676,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1582,7 +1689,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1592,7 +1702,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1602,7 +1715,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1612,7 +1728,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1622,7 +1741,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1632,7 +1754,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1642,7 +1767,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1652,7 +1780,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1662,7 +1793,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1672,7 +1806,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1682,7 +1819,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1692,7 +1832,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1702,7 +1845,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1712,7 +1858,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1722,7 +1871,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1732,7 +1884,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1742,7 +1897,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1752,7 +1910,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1762,7 +1923,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1772,7 +1936,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1782,7 +1949,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1792,7 +1962,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1802,7 +1975,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1812,7 +1988,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1822,7 +2001,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1832,7 +2014,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1842,7 +2027,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1852,7 +2040,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1862,7 +2053,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "0",
@@ -1872,7 +2066,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "Player Name",
@@ -1884,7 +2081,34 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes"
+      "Update Notes",
+      ""
+    ],
+    [
+      "Heath Ozaeta",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "11.4",
+      "1",
+      "10/24/2026",
+      "Cleared from the injury/status report on 10/24/2026",
+      ""
+    ],
+    [
+      "Michael Fasusi",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "13.0",
+      "1",
+      "10/24/2026",
+      "Cleared from the injury/status report on 10/24/2026",
+      ""
     ],
     [
       "Tory Blaylock",
@@ -1896,7 +2120,8 @@
       "12.6",
       "0",
       "10/23/2026",
-      "Cleared from the injury/status report on 10/23/2026"
+      "Cleared from the injury/status report on 10/23/2026",
+      ""
     ],
     [
       "Parker Livingstone",
@@ -1908,7 +2133,8 @@
       "12.9",
       "0",
       "10/23/2026",
-      "Cleared from the injury/status report on 10/23/2026"
+      "Cleared from the injury/status report on 10/23/2026",
+      ""
     ],
     [
       "Jack Van Dorselaer",
@@ -1920,7 +2146,8 @@
       "9.6",
       "0",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Fred Hinton",
@@ -1932,7 +2159,8 @@
       "9.2",
       "1",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Tory Blaylock",
@@ -1944,7 +2172,8 @@
       "12.5",
       "0",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Owen Heinecke",
@@ -1956,7 +2185,8 @@
       "13.8",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026"
+      "Cleared from the injury/status report on 10/10/2026",
+      ""
     ],
     [
       "Jer'Michael Carter",
@@ -1968,7 +2198,8 @@
       "10.8",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026"
+      "Cleared from the injury/status report on 10/10/2026",
+      ""
     ],
     [
       "Cole Sullivan",
@@ -1980,7 +2211,8 @@
       "11.7",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026"
+      "Cleared from the injury/status report on 10/10/2026",
+      ""
     ],
     [
       "Michael Boganowski",
@@ -1992,7 +2224,8 @@
       "12.2",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026"
+      "Cleared from the injury/status report on 10/10/2026",
+      ""
     ],
     [
       "David Stone",
@@ -2004,7 +2237,8 @@
       "14.3",
       "0",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Kip Lewis",
@@ -2016,7 +2250,8 @@
       "13.7",
       "0",
       "9/25/2026",
-      "Cleared from the injury/status report on 09/25/2026"
+      "Cleared from the injury/status report on 09/25/2026",
+      ""
     ],
     [
       "Ryder Mix",
@@ -2028,7 +2263,8 @@
       "9.7",
       "0",
       "9/23/2026",
-      "Cleared from the injury/status report on 09/23/2026"
+      "Cleared from the injury/status report on 09/23/2026",
+      ""
     ],
     [
       "Braxton Fely",
@@ -2040,7 +2276,8 @@
       "11.0",
       "0",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Ryan Fodje",
@@ -2052,7 +2289,8 @@
       "10.5",
       "0",
       "9/14/2026",
-      "Cleared from the injury/status report on 09/14/2026"
+      "Cleared from the injury/status report on 09/14/2026",
+      ""
     ],
     [
       "Tory Blaylock",
@@ -2064,7 +2302,8 @@
       "12.6",
       "0",
       "9/14/2026",
-      "Cleared from the injury/status report on 09/14/2026"
+      "Cleared from the injury/status report on 09/14/2026",
+      ""
     ],
     [
       "Jake Maikkula",
@@ -2076,7 +2315,8 @@
       "12.9",
       "0",
       "9/11/2026",
-      "Cleared from the injury/status report on 09/11/2026"
+      "Cleared from the injury/status report on 09/11/2026",
+      ""
     ],
     [
       "Danny Okoye",
@@ -2088,7 +2328,8 @@
       "13.8",
       "0",
       "9/9/2026",
-      "Cleared from the injury/status report on 09/09/2026"
+      "Cleared from the injury/status report on 09/09/2026",
+      ""
     ],
     [
       "Danny Saili",
@@ -2100,7 +2341,8 @@
       "12.9",
       "1",
       "9/5/2026",
-      "Cleared from the injury/status report on 09/05/2026"
+      "Cleared from the injury/status report on 09/05/2026",
+      ""
     ],
     [
       "Jonathan Hatton Jr.",
@@ -2112,7 +2354,8 @@
       "12.7",
       "0",
       "9/5/2026",
-      "Cleared from the injury/status report on 09/05/2026"
+      "Cleared from the injury/status report on 09/05/2026",
+      ""
     ],
     [
       "Andy Bass",
@@ -2124,7 +2367,8 @@
       "9.8",
       "0",
       "9/5/2026",
-      "Cleared from the injury/status report on 09/05/2026"
+      "Cleared from the injury/status report on 09/05/2026",
+      ""
     ],
     [
       "Jayden Jackson",
@@ -2136,7 +2380,8 @@
       "13.6",
       "0",
       "9/5/2026",
-      "Cleared from the injury/status report on 09/05/2026"
+      "Cleared from the injury/status report on 09/05/2026",
+      ""
     ],
     [
       "Xavier Robinson",
@@ -2148,7 +2393,8 @@
       "13.4",
       "0",
       "8/11/2026",
-      "Cleared from the injury/status report on 08/11/2026"
+      "Cleared from the injury/status report on 08/11/2026",
+      ""
     ],
     [
       "Trell Harris",
@@ -2160,9 +2406,10 @@
       "14.1",
       "0",
       "8/8/2026",
-      "Cleared from the injury/status report on 08/08/2026"
+      "Cleared from the injury/status report on 08/08/2026",
+      ""
     ]
   ],
-  "count": 90,
-  "timestamp": "2026-10-24T19:02:11.655Z"
+  "count": 92,
+  "timestamp": "2026-10-24T20:03:47.834Z"
 }
