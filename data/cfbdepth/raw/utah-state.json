@@ -45,13 +45,13 @@
       "Col1": "#:",
       "Col2": "13",
       "Col3": "# New:",
-      "Col4": "4",
+      "Col4": "0",
       "Col5": "Impact:",
       "Col6": "15",
       "Col7": "Impact Avg:",
-      "Col8": "1.2",
+      "Col8": "1.1",
       "Col9": "Impact Rank:",
-      "Col10": "60",
+      "Col10": "61",
       "Col11": ""
     },
     {
@@ -139,7 +139,7 @@
       "Col4": "P",
       "Col5": "OL",
       "Col6": "FALSE",
-      "Col7": "10.5",
+      "Col7": "11.2",
       "Col8": "0",
       "Col9": "10/21/2026",
       "Col10": "Official report 2026-10-21: probable. Game 2026-10-24. Previous context: Added to the week five availability report as 'out' ahead of the week five game against Boise State.",
@@ -164,7 +164,7 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "ILB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "5.9",
       "Col8": "0",
       "Col9": "10/23/2026",
@@ -177,25 +177,12 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "WR",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "8.9",
       "Col8": "3",
       "Col9": "10/23/2026",
       "Col10": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-08: out. Game 2026-10-09. Previous context: Added as 'doubtful' on the week six availability report.",
       "Col11": "0"
-    },
-    {
-      "Col1": "",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
     },
     {
       "Col1": "Chapman Lewis",
@@ -216,12 +203,25 @@
       "Col3": "",
       "Col4": "GTD",
       "Col5": "WR",
-      "Col6": "TRUE",
-      "Col7": "13.8",
+      "Col6": "FALSE",
+      "Col7": "13.6",
       "Col8": "0",
       "Col9": "10/24/2026",
       "Col10": "Official report 2026-10-24: game time decision. Game 2026-10-24. Previous context: Update 2026-10-21: His game availability is questionable. The reported issue is: undisclosed issue.",
-      "Col11": "29"
+      "Col11": "0"
+    },
+    {
+      "Col1": "John Randle Jr.",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "O",
+      "Col5": "OL",
+      "Col6": "FALSE",
+      "Col7": "11.0",
+      "Col8": "3",
+      "Col9": "10/23/2026",
+      "Col10": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
+      "Col11": "0"
     },
     {
       "Col1": "",
@@ -237,17 +237,17 @@
       "Col11": ""
     },
     {
-      "Col1": "John Randle Jr.",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "O",
-      "Col5": "OL",
-      "Col6": "TRUE",
-      "Col7": "10.7",
-      "Col8": "3",
-      "Col9": "10/23/2026",
-      "Col10": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
-      "Col11": "30"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -1112,41 +1112,23 @@
     [
       "",
       "#00263a",
-      "Utah State",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "Utah State"
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "INJURY / STATUS UPDATE SHEET"
     ],
     [
       "#:",
       "13",
       "# New:",
-      "4",
+      "0",
       "Impact:",
       "15",
       "Impact Avg:",
-      "1.2",
+      "1.1",
       "Impact Rank:",
-      "60",
-      ""
+      "61"
     ],
     [
       "Player Name",
@@ -1233,7 +1215,7 @@
       "P",
       "OL",
       "FALSE",
-      "10.5",
+      "11.2",
       "0",
       "10/21/2026",
       "Official report 2026-10-21: probable. Game 2026-10-24. Previous context: Added to the week five availability report as 'out' ahead of the week five game against Boise State.",
@@ -1258,7 +1240,7 @@
       "",
       "O",
       "ILB",
-      "TRUE",
+      "FALSE",
       "5.9",
       "0",
       "10/23/2026",
@@ -1271,25 +1253,12 @@
       "",
       "O",
       "WR",
-      "TRUE",
+      "FALSE",
       "8.9",
       "3",
       "10/23/2026",
       "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-08: out. Game 2026-10-09. Previous context: Added as 'doubtful' on the week six availability report.",
       "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0",
-      "",
-      "",
-      ""
     ],
     [
       "Chapman Lewis",
@@ -1310,25 +1279,12 @@
       "",
       "GTD",
       "WR",
-      "TRUE",
-      "13.8",
+      "FALSE",
+      "13.6",
       "0",
       "10/24/2026",
       "Official report 2026-10-24: game time decision. Game 2026-10-24. Previous context: Update 2026-10-21: His game availability is questionable. The reported issue is: undisclosed issue.",
-      "29"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "John Randle Jr.",
@@ -1336,12 +1292,12 @@
       "",
       "O",
       "OL",
-      "TRUE",
-      "10.7",
+      "FALSE",
+      "11.0",
       "3",
       "10/23/2026",
       "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
-      "30"
+      "0"
     ],
     [
       "",
@@ -1351,10 +1307,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1364,23 +1317,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1390,10 +1327,17 @@
       "",
       "",
       "",
-      "0",
+      "0"
+    ],
+    [
       "",
       "",
-      ""
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0"
     ],
     [
       "",
@@ -1403,10 +1347,17 @@
       "",
       "FALSE",
       "",
-      "0",
+      "0"
+    ],
+    [
       "",
       "",
-      ""
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0"
     ],
     [
       "",
@@ -1416,10 +1367,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1429,10 +1377,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1442,10 +1387,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1455,10 +1397,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1468,10 +1407,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1481,10 +1417,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1494,10 +1427,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1507,10 +1437,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1520,10 +1447,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1533,10 +1457,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1546,10 +1467,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1559,10 +1477,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1572,10 +1487,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1585,10 +1497,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1598,10 +1507,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1611,10 +1517,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1624,10 +1527,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1637,10 +1537,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1650,10 +1547,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1663,10 +1557,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1676,10 +1567,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1689,10 +1577,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1702,10 +1587,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1715,10 +1597,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1728,10 +1607,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1741,10 +1617,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1754,10 +1627,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1767,10 +1637,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1780,10 +1647,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1793,10 +1657,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1806,10 +1667,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1819,10 +1677,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1832,10 +1687,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1845,10 +1697,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1858,10 +1707,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1871,10 +1717,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1884,10 +1727,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1897,10 +1737,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1910,10 +1747,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1923,10 +1757,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1936,10 +1767,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1949,10 +1777,17 @@
       "",
       "FALSE",
       "",
-      "0",
+      "0"
+    ],
+    [
       "",
       "",
-      ""
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0"
     ],
     [
       "0",
@@ -1962,10 +1797,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "Player Name",
@@ -1977,8 +1809,7 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes",
-      ""
+      "Update Notes"
     ],
     [
       "James Jennette",
@@ -1990,8 +1821,7 @@
       "13.0",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026",
-      ""
+      "Cleared from the injury/status report on 10/24/2026"
     ],
     [
       "Jordan Pendleton",
@@ -2003,8 +1833,7 @@
       "11.0",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026",
-      ""
+      "Cleared from the injury/status report on 10/24/2026"
     ],
     [
       "Javon Robinson",
@@ -2016,8 +1845,7 @@
       "11.1",
       "0",
       "10/23/2026",
-      "Cleared from the injury/status report on 10/23/2026",
-      ""
+      "Cleared from the injury/status report on 10/23/2026"
     ],
     [
       "Nehemiah Washington",
@@ -2029,8 +1857,7 @@
       "5.5",
       "1",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Tavo Motu'apuaka",
@@ -2042,8 +1869,7 @@
       "11.2",
       "2",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Kache Kaio",
@@ -2055,8 +1881,7 @@
       "8.6",
       "2",
       "10/12/2026",
-      "Cleared from the injury/status report on 10/12/2026",
-      ""
+      "Cleared from the injury/status report on 10/12/2026"
     ],
     [
       "Brycen Edwards",
@@ -2068,8 +1893,7 @@
       "13.8",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026",
-      ""
+      "Cleared from the injury/status report on 10/10/2026"
     ],
     [
       "John Randle Jr.",
@@ -2081,8 +1905,7 @@
       "9.6",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026",
-      ""
+      "Cleared from the injury/status report on 10/10/2026"
     ],
     [
       "Tyler Masdea",
@@ -2094,8 +1917,7 @@
       "6.8",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026",
-      ""
+      "Cleared from the injury/status report on 10/10/2026"
     ],
     [
       "Dakota Howell",
@@ -2107,8 +1929,7 @@
       "5.9",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "John McClellan",
@@ -2120,8 +1941,7 @@
       "",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Brycen Edwards",
@@ -2133,8 +1953,7 @@
       "13.8",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Asher Cunningham",
@@ -2146,8 +1965,7 @@
       "12.6",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Tevita Tuha",
@@ -2159,8 +1977,7 @@
       "10.4",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "McCae Hillstead",
@@ -2172,8 +1989,7 @@
       "10.0",
       "0",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Asher Cunningham",
@@ -2185,8 +2001,7 @@
       "12.6",
       "1",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026",
-      ""
+      "Cleared from the injury/status report on 09/27/2026"
     ],
     [
       "Ronnie Mageo",
@@ -2198,10 +2013,9 @@
       "9.8",
       "1",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026",
-      ""
+      "Cleared from the injury/status report on 09/27/2026"
     ]
   ],
   "count": 84,
-  "timestamp": "2026-10-25T12:06:03.423Z"
+  "timestamp": "2026-10-25T13:05:35.624Z"
 }
