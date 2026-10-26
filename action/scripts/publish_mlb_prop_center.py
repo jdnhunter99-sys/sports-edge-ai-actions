@@ -35,6 +35,24 @@ TEAM_ALIASES = {
     'AZ': 'ARI', 'ATH': 'OAK', 'CHW': 'CWS', 'KCR': 'KC', 'SDP': 'SD',
     'SFG': 'SF', 'TBR': 'TB', 'WSN': 'WSH', 'WAS': 'WSH',
 }
+TEAM_NAME_ALIASES = {
+    'ARIZONADIAMONDBACKS': 'ARI', 'ATLANTABRAVES': 'ATL',
+    'BALTIMOREORIOLES': 'BAL', 'BOSTONREDSOX': 'BOS',
+    'CHICAGOCUBS': 'CHC', 'CHICAGOWHITESOX': 'CWS',
+    'CINCINNATIREDS': 'CIN', 'CLEVELANDGUARDIANS': 'CLE',
+    'COLORADOROCKIES': 'COL', 'DETROITTIGERS': 'DET',
+    'HOUSTONASTROS': 'HOU', 'KANSASCITYROYALS': 'KC',
+    'LOSANGELESANGELS': 'LAA', 'LOSANGELESDODGERS': 'LAD',
+    'MIAMIMARLINS': 'MIA', 'MILWAUKEEBREWERS': 'MIL',
+    'MINNESOTATWINS': 'MIN', 'NEWYORKMETS': 'NYM',
+    'NEWYORKYANKEES': 'NYY', 'OAKLANDATHLETICS': 'OAK',
+    'ATHLETICS': 'OAK', 'PHILADELPHIAPHILLIES': 'PHI',
+    'PITTSBURGHPIRATES': 'PIT', 'SANDIEGOPADRES': 'SD',
+    'SEATTLEMARINERS': 'SEA', 'SANFRANCISCOGIANTS': 'SF',
+    'STLOUISCARDINALS': 'STL', 'TAMPABAYRAYS': 'TB',
+    'TEXASRANGERS': 'TEX', 'TORONTOBLUEJAYS': 'TOR',
+    'WASHINGTONNATIONALS': 'WSH',
+}
 ID_TO_TEAM = {value: key for key, value in TEAM_IDS.items()}
 SEASON_TYPES = {'R': 'Regular Season', 'F': 'Wild Card', 'D': 'Division Series', 'L': 'League Championship', 'W': 'World Series'}
 HEADERS = {
@@ -45,7 +63,7 @@ HEADERS = {
 
 def normalize_team(value):
     raw = re.sub(r'[^A-Z0-9]', '', str(value or '').strip().upper())
-    return TEAM_ALIASES.get(raw, raw)
+    return TEAM_ALIASES.get(raw, TEAM_NAME_ALIASES.get(raw, raw))
 
 
 def normalize_name(value):
@@ -216,9 +234,13 @@ def normalize_split(split, player, kind, season, schedule):
     team_obj = split.get('team') or {}
     opponent_obj = split.get('opponent') or {}
     team_id = number(team_obj.get('id') or split.get('teamId') or player.get('currentTeam', {}).get('id'))
-    team = normalize_team(team_obj.get('abbreviation') or team_obj.get('name') or ID_TO_TEAM.get(int(team_id or 0), ''))
-    opponent_id = number(opponent_obj.get('id') or (opponent_obj.get('team') or {}).get('id'))
-    opponent = normalize_team(opponent_obj.get('abbreviation') or opponent_obj.get('name') or ID_TO_TEAM.get(int(opponent_id or 0), ''))
+    team = normalize_team(team_obj.get('abbreviation') or ID_TO_TEAM.get(int(team_id or 0)) or team_obj.get('name'))
+    opponent_team_obj = opponent_obj.get('team') or {}
+    opponent_id = number(opponent_obj.get('id') or opponent_team_obj.get('id'))
+    opponent = normalize_team(
+        opponent_obj.get('abbreviation') or opponent_team_obj.get('abbreviation') or
+        ID_TO_TEAM.get(int(opponent_id or 0)) or opponent_obj.get('name') or opponent_team_obj.get('name')
+    )
     is_home = split.get('isHome')
     if not isinstance(is_home, bool):
         if team_id and team_id == meta.get('homeTeamId'):
@@ -391,7 +413,7 @@ def fetch_statcast_players(player_ids, season, kind):
     wanted = set(player_ids)
     id_field = 'batter' if kind == 'batters' else 'pitcher'
     try:
-        raw = request_bytes(url, 'text/csv,text/plain,*/*', timeout=120, attempts=3).decode('utf-8-sig', errors='replace')
+        raw = request_bytes(url, 'text/csv,text/plain,*/*', timeout=90, attempts=2).decode('utf-8-sig', errors='replace')
         if not raw or raw.lstrip().startswith('<'):
             return season, kind, {}
         grouped = defaultdict(lambda: defaultdict(list))
@@ -821,25 +843,37 @@ def main():
             }
             write_json(season_root / f'{player_id}.json.gz', payload)
 
+    # Validate the core game-log payload before optional, slow Statcast enrichment.
+    opponent_row_count = sum(len(rows) for rows in all_opponents.values())
+    if not player_lookup['byId'] or not opponent_row_count:
+        raise RuntimeError(
+            'Refusing to publish MLB prop-center data without player and opponent data '
+            f'(players={len(player_lookup["byId"])}, opponent_rows={opponent_row_count})'
+        )
+
     # Batch pitch-by-pitch requests to avoid making one network call per player.
     statcast_jobs = []
     for (season, kind), player_ids in statcast_player_ids.items():
         ordered_ids = sorted(player_ids, key=lambda value: int(value))
-        for offset in range(0, len(ordered_ids), 20):
-            statcast_jobs.append((season, kind, ordered_ids[offset:offset + 20]))
+        for offset in range(0, len(ordered_ids), 40):
+            statcast_jobs.append((season, kind, ordered_ids[offset:offset + 40]))
     print(f'Fetching Statcast splits in {len(statcast_jobs)} batches for {sum(len(ids) for _, _, ids in statcast_jobs)} player/season groups', flush=True)
     statcast_by_player = defaultdict(dict)
-    with ThreadPoolExecutor(max_workers=5) as pool:
+    with ThreadPoolExecutor(max_workers=8) as pool:
         future_context = {
             pool.submit(fetch_statcast_players, player_ids, season, kind): (season, kind, player_ids)
             for season, kind, player_ids in statcast_jobs
         }
+        completed_batches = 0
         for future in as_completed(future_context):
             season, kind, player_ids = future_context[future]
             _, _, metrics_by_player = future.result()
             for player_id, metrics in metrics_by_player.items():
                 if metrics:
                     statcast_by_player[(player_id, season)][kind] = metrics
+            completed_batches += 1
+            if completed_batches % 10 == 0 or completed_batches == len(future_context):
+                print(f'Statcast progress: {completed_batches}/{len(future_context)} batches', flush=True)
     for (player_id, season), player in all_player_seasons.items():
         if season not in (current, current - 1):
             continue
