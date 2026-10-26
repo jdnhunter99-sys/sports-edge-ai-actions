@@ -8,6 +8,7 @@ import json
 import math
 import os
 import re
+import shutil
 import time
 import urllib.error
 import urllib.parse
@@ -737,9 +738,15 @@ def write_json(path, payload):
 def main():
     today = dt.datetime.now(ZoneInfo('America/Chicago')).date()
     current = today.year
-    seasons = list(range(max(2015, current - 5), current + 1))
+    seasons = [current - 1, current]
     generated_at = dt.datetime.now(dt.timezone.utc).isoformat().replace('+00:00', 'Z')
     root = OUTPUT_DIR / 'mlb-prop-center' / 'v1'
+    seasons_root = root / 'seasons'
+    seasons_root.mkdir(parents=True, exist_ok=True)
+    retained_seasons = {str(season) for season in seasons}
+    for old_season_dir in seasons_root.iterdir():
+        if old_season_dir.is_dir() and old_season_dir.name.isdigit() and old_season_dir.name not in retained_seasons:
+            shutil.rmtree(old_season_dir)
     print(f'MLB prop-center publisher: seasons={seasons[0]}-{seasons[-1]}, generated={generated_at}', flush=True)
     all_profiles = {}
     player_lookup = {'byId': {}, 'byName': {}}
