@@ -1,0 +1,77 @@
+name: MLB Prop Center Data
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: propline-private-data-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Prepare the published data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_REPOSITORY: ${{ github.repository }}
+          DATA_BRANCH: propline-data
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          git -C data init -b "$DATA_BRANCH"
+          git -C data config user.name 'github-actions[bot]'
+          git -C data config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C data remote add origin "https://github.com/${DATA_REPOSITORY}.git"
+          git -C data sparse-checkout init --cone
+          git -C data sparse-checkout set mlb-prop-center
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          if git -C data -c http.extraheader="AUTHORIZATION: basic ${token_auth}" ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git -C data -c http.extraheader="AUTHORIZATION: basic ${token_auth}" fetch --quiet --depth=1 --filter=blob:none origin "$DATA_BRANCH"
+            git -C data checkout -B "$DATA_BRANCH" FETCH_HEAD
+          fi
+
+      - name: Fetch MLB player logs and build prop-center JSON
+        env:
+          MLB_PROP_CENTER_OUTPUT_DIR: ${{ github.workspace }}/data
+        run: python action/action/scripts/publish_mlb_prop_center.py
+
+      - name: Publish the completed MLB prop-center generation
+        working-directory: data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_BRANCH: propline-data
+        run: |
+          set -euo pipefail
+          git add -A -- mlb-prop-center
+          mapfile -t staged_paths < <(git diff --cached --name-only)
+          for path in "${staged_paths[@]}"; do
+            case "$path" in
+              mlb-prop-center/*) ;;
+              *) echo "Refusing to publish unexpected staged path: $path" >&2; exit 1 ;;
+            esac
+          done
+          if git diff --cached --quiet; then
+            echo 'MLB prop-center JSON is unchanged.'
+            exit 0
+          fi
+          git commit -qm 'Refresh MLB prop-center JSON'
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" push --quiet origin "HEAD:${DATA_BRANCH}"
