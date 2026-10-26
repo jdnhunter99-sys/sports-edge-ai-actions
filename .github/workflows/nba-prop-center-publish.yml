@@ -2,10 +2,6 @@ name: NBA Prop Center Data
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [nba-prop-center]
-  schedule:
-    - cron: '0 11 * * *'
 
 permissions:
   contents: write
