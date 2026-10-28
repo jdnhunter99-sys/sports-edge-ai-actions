@@ -31,6 +31,7 @@ USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 )
+BROWSERLESS_FUNCTION_URL = "https://production-sfo.browserless.io/function"
 INJURY_PAGE_TEMPLATE = "https://official.nba.com/nba-injury-report-{start}-{end2}-season/"
 BREF_ADVANCED_TEMPLATE = "https://www.basketball-reference.com/leagues/NBA_{end}_advanced.html"
 PDF_PATTERN = re.compile(
@@ -414,15 +415,91 @@ def select_player_metrics(grouped: dict[str, list[dict]], player_key: str, team_
     return chosen
 
 
+def fetch_browserless_page(url: str) -> str:
+    token = os.environ.get("BROWSERLESS_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("BROWSERLESS_TOKEN is not configured")
+
+    browser_function = """
+export default async ({ page, context }) => {
+  await page.setUserAgent(context.userAgent);
+  await page.setExtraHTTPHeaders(context.headers);
+  const response = await page.goto(context.url, {
+    waitUntil: "domcontentloaded",
+    timeout: 60000,
+  });
+  return {
+    data: {
+      status: response ? response.status() : null,
+      body: response ? await response.text() : "",
+    },
+    type: "application/json",
+  };
+};
+"""
+    browserless_url = BROWSERLESS_FUNCTION_URL + "?token=" + urllib.parse.quote(token, safe="")
+    request_body = json.dumps({
+        "code": browser_function,
+        "context": {
+            "url": url,
+            "userAgent": USER_AGENT,
+            "headers": {
+                "Accept": "text/html,application/xhtml+xml",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Referer": "https://www.basketball-reference.com/",
+            },
+        },
+    }).encode("utf-8")
+    request = urllib.request.Request(
+        browserless_url,
+        data=request_body,
+        headers={"Content-Type": "application/json", "Accept": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response:
+            result = json.loads(response.read())
+    except urllib.error.HTTPError as error:
+        detail = error.read(1000).decode("utf-8", errors="replace").replace(token, "[redacted]")
+        raise RuntimeError(f"Browserless function request failed with HTTP {error.code}: {detail}") from None
+    except Exception as error:
+        detail = str(error).replace(token, "[redacted]")
+        raise RuntimeError(f"Browserless function request failed: {detail}") from None
+
+    result_data = result.get("data") if isinstance(result, dict) else None
+    if not isinstance(result_data, dict):
+        raise RuntimeError("Browserless returned an unexpected response shape")
+    status = result_data.get("status")
+    if status != 200:
+        raise RuntimeError(f"Browserless navigation to Basketball-Reference returned HTTP {status}")
+    return str(result_data.get("body") or "")
+
+
 def fetch_advanced_stats(url: str) -> tuple[list[dict[str, str]], str]:
-    html = request_bytes(url, headers={
-        "Accept": "text/html,application/xhtml+xml",
-        "Referer": "https://www.basketball-reference.com/",
-    }).decode("utf-8", errors="replace")
-    rows = parse_advanced_table(html)
-    if not rows:
-        raise RuntimeError("The direct Basketball-Reference response contained no advanced table")
-    return rows, "direct"
+    direct_error = None
+    try:
+        html = request_bytes(url, headers={
+            "Accept": "text/html,application/xhtml+xml",
+            "Referer": "https://www.basketball-reference.com/",
+        }).decode("utf-8", errors="replace")
+        rows = parse_advanced_table(html)
+        if rows:
+            return rows, "direct"
+        direct_error = "direct request returned no advanced table"
+    except Exception as error:
+        direct_error = str(error)[:300]
+
+    try:
+        html = fetch_browserless_page(url)
+        rows = parse_advanced_table(html)
+        if rows:
+            return rows, "browserless"
+        raise RuntimeError("Browserless response contained no advanced table")
+    except Exception as error:
+        raise RuntimeError(
+            f"Basketball-Reference direct fetch failed ({direct_error}); "
+            f"Browserless fallback failed ({str(error)[:300]})"
+        ) from error
 
 
 def attach_metrics(players: list[dict], grouped: dict[str, list[dict]] | None, stats_available: bool) -> None:

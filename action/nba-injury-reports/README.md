@@ -14,7 +14,7 @@ Each JSON contains a teams array with all 30 NBA teams and a top-level players a
 
 Basketball-Reference advanced stats are taken from the same season as the injury report. MPG is calculated as the table's total MP divided by G. Names are normalized for suffixes and common spelling differences. If a report player has no row yet for the season, that player remains in the JSON and the four metric values are null with metrics_status: no_current_season_row.
 
-The official injury report is still published if a direct Basketball-Reference request fails; in that case metrics are null, player_metrics.available is false, and the workflow log explains the failure. No third-party browser credential is sent to fetch the statistics.
+The publisher tries Basketball-Reference directly first, then uses the repository's BROWSERLESS_TOKEN Actions secret to fetch the page through Browserless if the direct request is blocked. The token is not stored in the repository files or written to logs. If both routes fail, the official injury report still publishes, the metric fields are null, player_metrics.available is false, and the workflow log explains the failure.
 
 ## Sources
 
