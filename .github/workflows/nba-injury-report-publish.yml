@@ -1,0 +1,74 @@
+name: NBA Injury Report Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-injury-report-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PDF parser
+        run: python -m pip install "pdfplumber>=0.11,<0.12"
+
+      - name: Prepare the NBA injury data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_REPOSITORY: ${{ github.repository }}
+          DATA_BRANCH: nba-injury-report-data
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          git -C data init -b "$DATA_BRANCH"
+          git -C data config user.name 'github-actions[bot]'
+          git -C data config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C data remote add origin "https://github.com/$DATA_REPOSITORY.git"
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          if git -C data -c http.extraheader="AUTHORIZATION: basic $token_auth" ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git -C data -c http.extraheader="AUTHORIZATION: basic $token_auth" fetch --quiet --depth=1 origin "$DATA_BRANCH"
+            git -C data reset --hard FETCH_HEAD
+          fi
+
+      - name: Fetch the latest NBA PDF and enrich listed players
+        env:
+          NBA_INJURY_OUTPUT_DIR: ${{ github.workspace }}/data
+          BROWSERLESS_TOKEN: ${{ secrets.BROWSERLESS_TOKEN }}
+        run: python action/action/scripts/publish_nba_injury_report.py
+
+      - name: Publish NBA injury report JSON
+        working-directory: data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_BRANCH: nba-injury-report-data
+        run: |
+          set -euo pipefail
+          git add nba-injuries
+          if git diff --cached --quiet; then
+            echo 'NBA injury report JSON is unchanged.'
+            exit 0
+          fi
+          git commit -qm 'Refresh NBA injury report data'
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.extraheader="AUTHORIZATION: basic $token_auth" push --quiet origin "HEAD:$DATA_BRANCH"
