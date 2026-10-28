@@ -54,7 +54,6 @@ jobs:
       - name: Fetch the latest NBA PDF and enrich listed players
         env:
           NBA_INJURY_OUTPUT_DIR: ${{ github.workspace }}/data
-          BROWSERLESS_TOKEN: ${{ secrets.BROWSERLESS_TOKEN }}
         run: python action/action/scripts/publish_nba_injury_report.py
 
       - name: Publish NBA injury report JSON
