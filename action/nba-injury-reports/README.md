@@ -1,6 +1,6 @@
 # NBA injury report publisher
 
-The NBA Injury Report Data GitHub Actions workflow runs every 15 minutes and can also be started manually. It discovers the newest published PDF linked from the current-season page on NBA.com, parses the official report, and enriches each listed player with current-season Basketball-Reference values.
+The NBA Injury Report Data GitHub Actions workflow runs every 15 minutes during the NBA season months (January–June and October–December) and can also be started manually. It discovers the newest published PDF linked from the current-season page on NBA.com, parses the official report, and enriches each listed player with current-season Basketball-Reference values.
 
 ## Published JSON
 
