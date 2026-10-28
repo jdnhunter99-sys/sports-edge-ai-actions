@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 113,
+  "listed_player_count": 117,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4336,
-      "matched": 49,
+      "complete_coverage_rate": 0.453,
+      "matched": 53,
       "no_current_season_row": 63,
       "partial": 1,
-      "player_count": 113,
+      "player_count": 117,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -75,7 +75,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -113,7 +113,7 @@
       "usg_pct_rank": 191
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -151,7 +151,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -303,7 +303,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -322,7 +322,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -3.1,
       "dbpm_rank": 338,
       "game_date": "2026-10-28",
@@ -448,7 +448,7 @@
       "obpm": 2.9,
       "obpm_rank": 82,
       "player_name": "Kyrie Irving",
-      "reason": "Management",
+      "reason": "Injury/Illness - Left Knee Injury",
       "team_abbreviation": "DAL",
       "team_name": "Dallas Mavericks",
       "usg_pct": 27.2,
@@ -505,7 +505,7 @@
       "obpm": -2.0,
       "obpm_rank": 221,
       "player_name": "Sergio de Larrea",
-      "reason": "Injury/Illness - Right Knee Sprain Injury/Illness - Left Knee Injury",
+      "reason": "Injury/Illness - Right Knee Sprain",
       "team_abbreviation": "DAL",
       "team_name": "Dallas Mavericks",
       "usg_pct": 20.2,
@@ -550,7 +550,7 @@
       "usg_pct_rank": 347
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": 3.4,
       "dbpm_rank": 32,
       "game_date": "2026-10-28",
@@ -607,7 +607,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": 0.9,
       "dbpm_rank": 97,
       "game_date": "2026-10-28",
@@ -684,6 +684,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": -1.8,
+      "dbpm_rank": 259,
+      "game_date": "2026-10-28",
+      "game_time_et": null,
+      "matchup": "GSW@MIN",
+      "metrics_status": "matched",
+      "minutes_per_game": 24.0,
+      "minutes_per_game_rank": 153,
+      "obpm": 0.2,
+      "obpm_rank": 157,
+      "player_name": "Gui Santos",
+      "reason": "Injury/Illness - Left Knee Tendinitis Injury/Illness - Right Achilles Tendon",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": 13.2,
+      "usg_pct_rank": 314
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -695,7 +714,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jimmy Butler III",
-      "reason": "Surgery Injury/Illness - Left Foot",
+      "reason": "Surgery",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -740,7 +759,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -2.7,
       "dbpm_rank": 316,
       "game_date": "2026-10-28",
@@ -752,7 +771,7 @@
       "obpm": 3.7,
       "obpm_rank": 60,
       "player_name": "Yaxel Lendeborg",
-      "reason": "Inflammation / Soreness Injury/Illness - Left Patellar Tendon",
+      "reason": "Injury/Illness - Left Foot",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": 26.7,
@@ -854,7 +873,7 @@
       "usg_pct_rank": 384
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -2.8,
       "dbpm_rank": 323,
       "game_date": "2026-10-28",
@@ -1006,7 +1025,7 @@
       "usg_pct_rank": 139
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": -1.2,
       "dbpm_rank": 217,
       "game_date": "2026-10-28",
@@ -1044,7 +1063,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 0.0,
       "dbpm_rank": 143,
       "game_date": "2026-10-28",
@@ -1595,7 +1614,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 5.3,
       "dbpm_rank": 15,
       "game_date": "2026-10-28",
@@ -1626,7 +1645,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Izaiyah Nelson",
-      "reason": "Recovery Injury/Illness - Right Partially Torn",
+      "reason": "Recovery",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1645,7 +1664,7 @@
       "obpm": -5.0,
       "obpm_rank": 308,
       "player_name": "Jalen Suggs",
-      "reason": "/ Bone Bruise",
+      "reason": "/ Bone Bruise Injury/Illness - Right Foot Avulsion",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 16.2,
@@ -1683,7 +1702,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Noah Penda",
-      "reason": "Hamstring Injury/Illness - Right Knee Contusion",
+      "reason": "Injury/Illness - Right Partially Torn",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1854,7 +1873,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Maxime Raynaud",
-      "reason": "subluxation",
+      "reason": "subluxation Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -1968,7 +1987,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Nate Bittle",
-      "reason": "Injury/Illness - Right Foot Avulsion",
+      "reason": "Fracture Injury/Illness - Left Knee Effusion /",
       "team_abbreviation": "TOR",
       "team_name": "Toronto Raptors",
       "usg_pct": null,
@@ -2120,11 +2139,30 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "AJ Dybantsa",
-      "reason": "Injury/Illness - Left Ankle Sprain",
+      "reason": "Injury/Illness - Left Ankle Sprain Injury/Illness - Right Achilles",
       "team_abbreviation": "WAS",
       "team_name": "Washington Wizards",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -4.2,
+      "dbpm_rank": 377,
+      "game_date": "2026-10-28",
+      "game_time_et": null,
+      "matchup": "WAS@CLE",
+      "metrics_status": "matched",
+      "minutes_per_game": 1.0,
+      "minutes_per_game_rank": 405,
+      "obpm": 3.9,
+      "obpm_rank": 55,
+      "player_name": "Felix Okpara",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "WAS",
+      "team_name": "Washington Wizards",
+      "usg_pct": 36.7,
+      "usg_pct_rank": 9
     },
     {
       "current_status": "Out",
@@ -2166,6 +2204,44 @@
     },
     {
       "current_status": "Out",
+      "dbpm": -2.8,
+      "dbpm_rank": 323,
+      "game_date": "2026-10-28",
+      "game_time_et": null,
+      "matchup": "WAS@CLE",
+      "metrics_status": "matched",
+      "minutes_per_game": 1.0,
+      "minutes_per_game_rank": 405,
+      "obpm": -6.6,
+      "obpm_rank": 340,
+      "player_name": "Reece Beekman",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "WAS",
+      "team_name": "Washington Wizards",
+      "usg_pct": 0.0,
+      "usg_pct_rank": 404
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -2.6,
+      "dbpm_rank": 313,
+      "game_date": "2026-10-28",
+      "game_time_et": null,
+      "matchup": "WAS@CLE",
+      "metrics_status": "matched",
+      "minutes_per_game": 22.75,
+      "minutes_per_game_rank": 170,
+      "obpm": -1.7,
+      "obpm_rank": 210,
+      "player_name": "Tre Johnson",
+      "reason": "Soreness",
+      "team_abbreviation": "WAS",
+      "team_name": "Washington Wizards",
+      "usg_pct": 20.3,
+      "usg_pct_rank": 153
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -2187,8 +2263,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-28",
-    "report_time_et": "2026-10-28 05:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-28_05_45PM.pdf"
+    "report_time_et": "2026-10-28 07:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-28_07_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2332,14 +2408,14 @@
       "team_name": "Detroit Pistons"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-28",
           "game_time_et": null,
           "matchup": "GSW@MIN",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
@@ -2623,14 +2699,14 @@
       "team_name": "Utah Jazz"
     },
     {
-      "player_count": 4,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-28",
           "game_time_et": null,
           "matchup": "WAS@CLE",
-          "player_count": 4,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
