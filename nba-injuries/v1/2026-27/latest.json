@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 108,
+  "listed_player_count": 113,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4444,
-      "matched": 48,
-      "no_current_season_row": 59,
+      "complete_coverage_rate": 0.4336,
+      "matched": 49,
+      "no_current_season_row": 63,
       "partial": 1,
-      "player_count": 108,
+      "player_count": 113,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -37,7 +37,7 @@
   },
   "players": [
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": 0.6,
       "dbpm_rank": 113,
       "game_date": "2026-10-28",
@@ -170,7 +170,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -3.2,
       "dbpm_rank": 340,
       "game_date": "2026-10-28",
@@ -182,7 +182,7 @@
       "obpm": -13.4,
       "obpm_rank": 397,
       "player_name": "Zuby Ejiofor",
-      "reason": "G League - On Assignment",
+      "reason": null,
       "team_abbreviation": "ATL",
       "team_name": "Atlanta Hawks",
       "usg_pct": 16.0,
@@ -1788,6 +1788,101 @@
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Ben Simmons",
+      "reason": "Repair / Surgery",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Dylan Cardwell",
+      "reason": "Injury/Illness - Left Calf Strain",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -3.4,
+      "dbpm_rank": 349,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 27.0,
+      "minutes_per_game_rank": 118,
+      "obpm": -5.2,
+      "obpm_rank": 316,
+      "player_name": "Keegan Murray",
+      "reason": "Injury/Illness - Left Ankle capsulitis",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": 15.1,
+      "usg_pct_rank": 275
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Maxime Raynaud",
+      "reason": "subluxation",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Sean Pedulla",
+      "reason": "G League - Two-Way Injury/Illness - Right Patella",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
       "game_date": "2026-10-28",
       "game_time_et": "09:00",
       "matchup": "SAS@UTA",
@@ -2092,8 +2187,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-28",
-    "report_time_et": "2026-10-28 04:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-28_04_45PM.pdf"
+    "report_time_et": "2026-10-28 05:15 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-28_05_15PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2468,15 +2563,15 @@
       "team_name": "Portland Trail Blazers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-29",
           "game_time_et": null,
           "matchup": "SAC@NOP",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "SAC",
