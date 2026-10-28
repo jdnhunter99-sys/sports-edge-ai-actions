@@ -2,8 +2,6 @@ name: NBA Injury Report Data
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/15 * 1-6,10-12 * *"
 
 permissions:
   contents: write
