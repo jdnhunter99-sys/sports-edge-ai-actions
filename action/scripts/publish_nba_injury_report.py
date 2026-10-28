@@ -31,6 +31,7 @@ USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 )
+BROWSERLESS_FUNCTION_URL = "https://production-sfo.browserless.io/function"
 INJURY_PAGE_TEMPLATE = "https://official.nba.com/nba-injury-report-{start}-{end2}-season/"
 BREF_ADVANCED_TEMPLATE = "https://www.basketball-reference.com/leagues/NBA_{end}_advanced.html"
 PDF_PATTERN = re.compile(
@@ -38,6 +39,10 @@ PDF_PATTERN = re.compile(
     re.IGNORECASE,
 )
 STATUS_PATTERN = re.compile(r"\b(Out|Doubtful|Questionable|Probable|Available)\b", re.IGNORECASE)
+MATCHUP_PATTERN = re.compile(r"\b(?P<away>[A-Z]{2,3})\s*@\s*(?P<home>[A-Z]{2,3})\b")
+GAME_DATE_PATTERN = re.compile(r"\b(?P<date>\d{1,2}/\d{1,2}/\d{4})\b")
+GAME_TIME_PATTERN = re.compile(r"\b(?P<time>\d{1,2}:\d{2})\s*\(ET\)")
+PLAYER_METRIC_FIELDS = ("minutes_per_game", "usg_pct", "obpm", "dbpm")
 SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "v"}
 
 TEAM_NAMES = {
@@ -202,19 +207,33 @@ def normalize_lookup_name(value: str) -> str:
     return NAME_ALIASES.get(normalized, normalized)
 
 
-def extract_report_rows(pdf_bytes: bytes) -> tuple[list[dict], dict[str, str]]:
+def extract_report_rows(pdf_bytes: bytes) -> tuple[list[dict], dict[str, list[dict]]]:
     teams = {
         abbreviation: {
             "abbreviation": abbreviation,
             "name": labels[0],
-            "report_status": "not_in_report",
             "players": [],
+            "reports": {},
         }
         for abbreviation, labels in TEAM_NAMES.items()
     }
     current_team = None
     current_game = {"game_date": None, "game_time_et": None, "matchup": None}
     last_player = None
+
+    def set_team_report_status(abbreviation: str, status: str) -> None:
+        game_key = (current_game["game_date"], current_game["matchup"])
+        reports = teams[abbreviation]["reports"]
+        report = reports.setdefault(game_key, {
+            "game_date": current_game["game_date"],
+            "game_time_et": current_game["game_time_et"],
+            "matchup": current_game["matchup"],
+            "report_status": None,
+        })
+        if current_game["game_time_et"]:
+            report["game_time_et"] = current_game["game_time_et"]
+        report["report_status"] = status
+
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
         for page in pdf.pages:
             text = page.extract_text(x_tolerance=2, y_tolerance=3) or ""
@@ -229,34 +248,39 @@ def extract_report_rows(pdf_bytes: bytes) -> tuple[list[dict], dict[str, str]]:
                     last_player = None
                     continue
 
-                game_match = re.search(
-                    r"(?:(?P<date>\d{1,2}/\d{1,2}/\d{4})\s+)?"
-                    r"(?P<time>\d{1,2}:\d{2})\s*\(ET\)\s*"
-                    r"(?P<matchup>[A-Z]{2,3}\s*@\s*[A-Z]{2,3})",
-                    line,
-                )
-                if game_match:
-                    raw_game_date = game_match.group("date")
+                matchup_match = MATCHUP_PATTERN.search(line)
+                if matchup_match:
+                    header_prefix = line[:matchup_match.start()]
+                    date_match = GAME_DATE_PATTERN.search(header_prefix)
+                    time_match = GAME_TIME_PATTERN.search(header_prefix)
+                    raw_game_date = date_match.group("date") if date_match else None
                     game_date = (
                         dt.datetime.strptime(raw_game_date, "%m/%d/%Y").date().isoformat()
                         if raw_game_date
                         else current_game["game_date"]
                     )
+                    matchup = f"{matchup_match.group('away')}@{matchup_match.group('home')}"
+                    matchup_changed = matchup != current_game["matchup"]
+                    if time_match:
+                        game_time_et = time_match.group("time")
+                    elif matchup_changed:
+                        game_time_et = None
+                    else:
+                        game_time_et = current_game["game_time_et"]
                     current_game = {
                         "game_date": game_date,
-                        "game_time_et": game_match.group("time"),
-                        "matchup": re.sub(r"\s+", "", game_match.group("matchup")),
+                        "game_time_et": game_time_et,
+                        "matchup": matchup,
                     }
 
                 team_prefix = report_team_prefix(line)
                 if team_prefix:
                     current_team, remainder = team_prefix
-                    team = teams[current_team]
-                    team["report_status"] = "submitted"
                     last_player = None
                     if "not yet submitted" in remainder.casefold():
-                        team["report_status"] = "not_yet_submitted"
+                        set_team_report_status(current_team, "not_yet_submitted")
                         continue
+                    set_team_report_status(current_team, "submitted")
                     if "no players listed" in remainder.casefold():
                         continue
                     line = remainder
@@ -266,7 +290,7 @@ def extract_report_rows(pdf_bytes: bytes) -> tuple[list[dict], dict[str, str]]:
                 if current_team is None:
                     continue
                 if "not yet submitted" in line.casefold():
-                    teams[current_team]["report_status"] = "not_yet_submitted"
+                    set_team_report_status(current_team, "not_yet_submitted")
                     last_player = None
                     continue
                 if "no players listed" in line.casefold():
@@ -297,23 +321,68 @@ def extract_report_rows(pdf_bytes: bytes) -> tuple[list[dict], dict[str, str]]:
                     "reason": reason,
                     "_lookup_name": normalize_lookup_name(player_name),
                 }
+                set_team_report_status(current_team, "submitted")
                 teams[current_team]["players"].append(player)
                 last_player = player
 
-    if not any(team["players"] or team["report_status"] == "not_yet_submitted" for team in teams.values()):
+    if not any(team["players"] or team["reports"] for team in teams.values()):
         raise RuntimeError("The official injury report PDF yielded no team or player rows")
+
+    invalid_matchups = [
+        player for team in teams.values() for player in team["players"]
+        if not player["matchup"]
+        or player["team_abbreviation"] not in player["matchup"].split("@")
+    ]
+    if invalid_matchups:
+        examples = ", ".join(
+            f"{player['player_name']} ({player['team_abbreviation']} in {player['matchup'] or 'no matchup'})"
+            for player in invalid_matchups[:5]
+        )
+        raise RuntimeError(
+            f"Parsed {len(invalid_matchups)} player row(s) with a missing or mismatched matchup: {examples}"
+        )
+
     for team in teams.values():
         seen = set()
         unique = []
         for player in team["players"]:
-            key = normalize_lookup_name(player["player_name"])
+            key = (
+                normalize_lookup_name(player["player_name"]),
+                player["game_date"],
+                player["matchup"],
+            )
             if key in seen:
                 continue
             seen.add(key)
             unique.append(player)
         team["players"] = unique
-    report_statuses = {abbr: team["report_status"] for abbr, team in teams.items()}
-    return [player for team in teams.values() for player in team["players"]], report_statuses
+
+    team_reports = {}
+    for abbreviation, team in teams.items():
+        serialized_reports = []
+        for report in team["reports"].values():
+            player_count = sum(
+                player["game_date"] == report["game_date"]
+                and player["matchup"] == report["matchup"]
+                for player in team["players"]
+            )
+            serialized_reports.append({
+                "game_date": report["game_date"],
+                "game_time_et": report["game_time_et"],
+                "matchup": report["matchup"],
+                "report_status": report["report_status"] or "submitted",
+                "player_count": player_count,
+            })
+        team_reports[abbreviation] = sorted(
+            serialized_reports,
+            key=lambda report: (
+                report["game_date"] or "",
+                report["game_time_et"] or "",
+                report["matchup"] or "",
+            ),
+        )
+
+    return [player for team in teams.values() for player in team["players"]], team_reports
 
 
 class AdvancedTableParser(HTMLParser):
@@ -377,7 +446,16 @@ def number(value):
     return parsed if parsed == parsed and abs(parsed) != float("inf") else None
 
 
-def player_metrics(rows: list[dict[str, str]]) -> dict[str, list[dict]]:
+def select_player_metrics(candidates: list[dict]) -> dict | None:
+    if not candidates:
+        return None
+    total_row = next((row for row in candidates if row["team"] == "TOT"), None)
+    if total_row is not None:
+        return total_row
+    return max(candidates, key=lambda row: row["games"] or 0)
+
+
+def player_metrics(rows: list[dict[str, str]]) -> tuple[dict[str, list[dict]], dict[str, int]]:
     grouped = defaultdict(list)
     for row in rows:
         raw_name = row.get("player") or row.get("name_display") or ""
@@ -399,39 +477,135 @@ def player_metrics(rows: list[dict[str, str]]) -> dict[str, list[dict]]:
             "obpm": number(row.get("obpm")),
             "dbpm": number(row.get("dbpm")),
         })
-    return grouped
+
+    # Rank one season profile per player. Use Basketball-Reference's TOT row for
+    # traded players; if there is no total row, use the player's most-played team.
+    profiles = {
+        player_key: select_player_metrics(candidates)
+        for player_key, candidates in grouped.items()
+    }
+    rank_populations = {}
+    for metric in PLAYER_METRIC_FIELDS:
+        ranked_profiles = sorted(
+            (
+                (player_key, profile[metric])
+                for player_key, profile in profiles.items()
+                if profile is not None and profile[metric] is not None
+            ),
+            key=lambda item: item[1],
+            reverse=True,
+        )
+        rank_populations[metric] = len(ranked_profiles)
+        previous_value = None
+        previous_rank = None
+        for position, (player_key, value) in enumerate(ranked_profiles, start=1):
+            rank = previous_rank if value == previous_value else position
+            profiles[player_key][f"{metric}_rank"] = rank
+            previous_value = value
+            previous_rank = rank
+
+    return grouped, rank_populations
 
 
-def select_player_metrics(grouped: dict[str, list[dict]], player_key: str, team_abbreviation: str) -> dict | None:
+def selected_profile_metrics(grouped: dict[str, list[dict]], player_key: str) -> dict | None:
     candidates = grouped.get(player_key) or []
-    if not candidates:
-        return None
-    chosen = next((row for row in candidates if row["team"] == "TOT"), None)
-    if chosen is None:
-        chosen = next((row for row in candidates if row["team"] == team_abbreviation), None)
-    if chosen is None:
-        chosen = max(candidates, key=lambda row: row["games"] or 0)
-    return chosen
+    return select_player_metrics(candidates)
+
+
+def fetch_browserless_page(url: str) -> str:
+    token = os.environ.get("BROWSERLESS_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("BROWSERLESS_TOKEN is not configured")
+
+    browser_function = """
+export default async ({ page, context }) => {
+  await page.setUserAgent(context.userAgent);
+  await page.setExtraHTTPHeaders(context.headers);
+  const response = await page.goto(context.url, {
+    waitUntil: "domcontentloaded",
+    timeout: 60000,
+  });
+  return {
+    data: {
+      status: response ? response.status() : null,
+      body: response ? await response.text() : "",
+    },
+    type: "application/json",
+  };
+};
+"""
+    browserless_url = BROWSERLESS_FUNCTION_URL + "?token=" + urllib.parse.quote(token, safe="")
+    request_body = json.dumps({
+        "code": browser_function,
+        "context": {
+            "url": url,
+            "userAgent": USER_AGENT,
+            "headers": {
+                "Accept": "text/html,application/xhtml+xml",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Referer": "https://www.basketball-reference.com/",
+            },
+        },
+    }).encode("utf-8")
+    request = urllib.request.Request(
+        browserless_url,
+        data=request_body,
+        headers={"Content-Type": "application/json", "Accept": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response:
+            result = json.loads(response.read())
+    except urllib.error.HTTPError as error:
+        detail = error.read(1000).decode("utf-8", errors="replace").replace(token, "[redacted]")
+        raise RuntimeError(f"Browserless function request failed with HTTP {error.code}: {detail}") from None
+    except Exception as error:
+        detail = str(error).replace(token, "[redacted]")
+        raise RuntimeError(f"Browserless function request failed: {detail}") from None
+
+    result_data = result.get("data") if isinstance(result, dict) else None
+    if not isinstance(result_data, dict):
+        raise RuntimeError("Browserless returned an unexpected response shape")
+    status = result_data.get("status")
+    if status != 200:
+        raise RuntimeError(f"Browserless navigation to Basketball-Reference returned HTTP {status}")
+    return str(result_data.get("body") or "")
 
 
 def fetch_advanced_stats(url: str) -> tuple[list[dict[str, str]], str]:
-    html = request_bytes(url, headers={
-        "Accept": "text/html,application/xhtml+xml",
-        "Referer": "https://www.basketball-reference.com/",
-    }).decode("utf-8", errors="replace")
-    rows = parse_advanced_table(html)
-    if not rows:
-        raise RuntimeError("The direct Basketball-Reference response contained no advanced table")
-    return rows, "direct"
+    direct_error = None
+    try:
+        html = request_bytes(url, headers={
+            "Accept": "text/html,application/xhtml+xml",
+            "Referer": "https://www.basketball-reference.com/",
+        }).decode("utf-8", errors="replace")
+        rows = parse_advanced_table(html)
+        if rows:
+            return rows, "direct"
+        direct_error = "direct request returned no advanced table"
+    except Exception as error:
+        direct_error = str(error)[:300]
+
+    try:
+        html = fetch_browserless_page(url)
+        rows = parse_advanced_table(html)
+        if rows:
+            return rows, "browserless"
+        raise RuntimeError("Browserless response contained no advanced table")
+    except Exception as error:
+        raise RuntimeError(
+            f"Basketball-Reference direct fetch failed ({direct_error}); "
+            f"Browserless fallback failed ({str(error)[:300]})"
+        ) from error
 
 
-def attach_metrics(players: list[dict], grouped: dict[str, list[dict]] | None, stats_available: bool) -> None:
+def attach_metrics(
+    players: list[dict],
+    grouped: dict[str, list[dict]] | None,
+    stats_available: bool,
+) -> None:
     for player in players:
-        metrics = select_player_metrics(
-            grouped or {},
-            player["_lookup_name"],
-            player["team_abbreviation"],
-        )
+        metrics = selected_profile_metrics(grouped or {}, player["_lookup_name"])
         if not stats_available:
             match_status = "source_unavailable"
         elif metrics is None:
@@ -442,6 +616,7 @@ def attach_metrics(players: list[dict], grouped: dict[str, list[dict]] | None, s
                 metrics["usg_pct"],
                 metrics["obpm"],
                 metrics["dbpm"],
+                *(metrics.get(f"{field}_rank") for field in PLAYER_METRIC_FIELDS),
             )
             match_status = "matched" if all(value is not None for value in values) else "partial"
         player.update({
@@ -449,6 +624,10 @@ def attach_metrics(players: list[dict], grouped: dict[str, list[dict]] | None, s
             "usg_pct": metrics["usg_pct"] if metrics else None,
             "obpm": metrics["obpm"] if metrics else None,
             "dbpm": metrics["dbpm"] if metrics else None,
+            **{
+                f"{field}_rank": metrics.get(f"{field}_rank") if metrics else None
+                for field in PLAYER_METRIC_FIELDS
+            },
             "metrics_status": match_status,
         })
         player.pop("_lookup_name", None)
@@ -470,16 +649,17 @@ def main() -> None:
     bref_url = BREF_ADVANCED_TEMPLATE.format(end=end)
     pdf_url, report_time = latest_report_link(page_url, now_et)
     pdf_bytes = request_bytes(pdf_url, headers={"Accept": "application/pdf,application/octet-stream"})
-    players, team_report_status = extract_report_rows(pdf_bytes)
+    players, team_reports = extract_report_rows(pdf_bytes)
     if not players:
         raise RuntimeError(f"No player rows were parsed from the official NBA PDF: {pdf_url}")
 
     stats_error = None
     stats_method = "unavailable"
     grouped = None
+    rank_populations = {field: 0 for field in PLAYER_METRIC_FIELDS}
     try:
         rows, stats_method = fetch_advanced_stats(bref_url)
-        grouped = player_metrics(rows)
+        grouped, rank_populations = player_metrics(rows)
     except Exception as error:
         stats_error = str(error)[:500]
         print("WARN Basketball-Reference metrics unavailable: " + stats_error)
@@ -492,12 +672,38 @@ def main() -> None:
     teams = []
     for abbreviation, labels in sorted(TEAM_NAMES.items()):
         team_players = [player for player in players if player["team_abbreviation"] == abbreviation]
+        reports = team_reports[abbreviation]
+        report_statuses = {report["report_status"] for report in reports}
+        report_status = (
+            "not_in_report" if not report_statuses
+            else next(iter(report_statuses)) if len(report_statuses) == 1
+            else "mixed"
+        )
         teams.append({
             "team_abbreviation": abbreviation,
             "team_name": labels[0],
-            "report_status": team_report_status[abbreviation],
+            "report_status": report_status,
             "player_count": len(team_players),
+            "reports": reports,
         })
+
+    metric_counts = defaultdict(int)
+    for player in players:
+        metric_counts[player["metrics_status"]] += 1
+    matched = metric_counts["matched"]
+    metric_coverage = {
+        "player_count": len(players),
+        "matched": matched,
+        "partial": metric_counts["partial"],
+        "no_current_season_row": metric_counts["no_current_season_row"],
+        "source_unavailable": metric_counts["source_unavailable"],
+        "complete_coverage_rate": round(matched / len(players), 4) if players else None,
+    }
+    coverage_status = (
+        "unavailable" if grouped is None
+        else "complete" if matched == len(players)
+        else "partial"
+    )
 
     report_time_text = report_time.strftime("%Y-%m-%d %I:%M %p ET")
     payload = {
@@ -518,13 +724,24 @@ def main() -> None:
             "source_url": bref_url,
             "season_end_year": end,
             "fetch_method": stats_method,
+            # `available` means a usable source table was retrieved. It does not
+            # imply that every injury-report player has a row in that table.
             "available": grouped is not None,
+            "all_players_matched": matched == len(players),
+            "coverage_status": coverage_status,
+            "coverage": metric_coverage,
+            "rank_method": "Competition rank; 1 is highest, ties share rank; one season row per player",
+            "rank_population": rank_populations,
             "error": stats_error,
             "fields": {
                 "minutes_per_game": "Basketball-Reference MP divided by G",
+                "minutes_per_game_rank": "Rank by minutes per game among all unique players on the season page",
                 "usg_pct": "Basketball-Reference USG%",
+                "usg_pct_rank": "Rank by USG% among all unique players on the season page",
                 "obpm": "Basketball-Reference OBPM",
+                "obpm_rank": "Rank by OBPM among all unique players on the season page",
                 "dbpm": "Basketball-Reference DBPM",
+                "dbpm_rank": "Rank by DBPM among all unique players on the season page",
             },
         },
         "team_count": len(teams),
@@ -544,12 +761,16 @@ def main() -> None:
         changed = write_json(path, payload)
         print(("Updated " if changed else "Unchanged ") + str(path.relative_to(OUTPUT_ROOT)))
 
-    matched = sum(player["metrics_status"] == "matched" for player in players)
-    partial = sum(player["metrics_status"] == "partial" for player in players)
+    submitted_reports = sum(
+        report["report_status"] == "submitted"
+        for reports in team_reports.values()
+        for report in reports
+    )
     print(
         f"Published report {report_time_text}: {len(players)} listed players across "
-        f"{sum(team['report_status'] == 'submitted' for team in teams)} submitted teams; "
-        f"metrics matched={matched}, partial={partial}, source={stats_method}."
+        f"{submitted_reports} submitted team-game reports; "
+        f"metrics matched={matched}, partial={metric_counts['partial']}, "
+        f"no_current_season_row={metric_counts['no_current_season_row']}, source={stats_method}."
     )
 
 
