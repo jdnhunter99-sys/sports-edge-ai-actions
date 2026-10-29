@@ -1405,7 +1405,7 @@
       "usg_pct_rank": 167
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-28",
@@ -2263,8 +2263,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-28",
-    "report_time_et": "2026-10-28 07:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-28_07_00PM.pdf"
+    "report_time_et": "2026-10-28 08:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-28_08_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2484,16 +2484,8 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_yet_submitted",
-      "reports": [
-        {
-          "game_date": "2026-10-29",
-          "game_time_et": "10:00",
-          "matchup": "MEM@POR",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
-        }
-      ],
+      "report_status": "not_in_report",
+      "reports": [],
       "team_abbreviation": "MEM",
       "team_name": "Memphis Grizzlies"
     },
