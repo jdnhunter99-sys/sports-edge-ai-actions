@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,13 +43,13 @@
     },
     {
       "Col1": "#:",
-      "Col2": "23",
+      "Col2": "20",
       "Col3": "# New:",
       "Col4": "5",
       "Col5": "Impact:",
       "Col6": "18",
       "Col7": "Impact Avg:",
-      "Col8": "0.8",
+      "Col8": "0.9",
       "Col9": "Impact Rank:",
       "Col10": "45",
       "Col11": ""
@@ -120,19 +120,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "LaVar Arrington II",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "O",
-      "Col5": "DE",
-      "Col6": "FALSE",
-      "Col7": "10.6",
-      "Col8": "1",
-      "Col9": "9/8/2026",
-      "Col10": "Reportedly suffered a setback in his recovery and missed week one. Will remain out 4-6 weeks, targeting a mid-sesason return.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Joshua Johnson",
       "Col2": "",
       "Col3": "",
@@ -159,19 +146,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Dayshaun Burnett",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "O",
-      "Col5": "DE",
-      "Col6": "FALSE",
-      "Col7": "10.3",
-      "Col8": "0",
-      "Col9": "9/23/2026",
-      "Col10": "Added as 'out' on the week four initial report. Remains out. Not an impact to the rotation.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Cooper Alexander",
       "Col2": "",
       "Col3": "",
@@ -182,19 +156,6 @@
       "Col8": "0",
       "Col9": "8/19/2026",
       "Col10": "Sidelined for fall practices due to an undisclosed injury. DNP week one. Leaving as 'out' until we hear more or get an update.",
-      "Col11": "0"
-    },
-    {
-      "Col1": "Cam Smith",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "GTD",
-      "Col5": "LB",
-      "Col6": "FALSE",
-      "Col7": "11.6",
-      "Col8": "0",
-      "Col9": "10/17/2026",
-      "Col10": "Official report 2026-10-17: game time decision. Game 2026-10-17. Previous context: Official report 2026-10-15: probable. Previous context: Official report 2026-10-14: questionable. Previous context: Was questionable to play week three against Buffalo and he was certainly not needed. Has not played since. Remains out.",
       "Col11": "0"
     },
     {
@@ -359,7 +320,7 @@
       "Col3": "",
       "Col4": "",
       "Col5": "",
-      "Col6": "FALSE",
+      "Col6": "",
       "Col7": "",
       "Col8": "0",
       "Col9": "",
@@ -373,6 +334,45 @@
       "Col4": "",
       "Col5": "",
       "Col6": "FALSE",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "FALSE",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
       "Col7": "",
       "Col8": "0",
       "Col9": "",
@@ -887,6 +887,58 @@
       "Col11": ""
     },
     {
+      "Col1": "Dayshaun Burnett",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DE",
+      "Col6": "",
+      "Col7": "10.3",
+      "Col8": "0",
+      "Col9": "2026-10-29",
+      "Col10": "Cleared from the injury/status report on 10/29/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Cam Smith",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "LB",
+      "Col6": "",
+      "Col7": "11.6",
+      "Col8": "0",
+      "Col9": "2026-10-29",
+      "Col10": "Cleared from the injury/status report on 10/29/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "LaVar Arrington II",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DE",
+      "Col6": "",
+      "Col7": "10.6",
+      "Col8": "1",
+      "Col9": "2026-10-29",
+      "Col10": "Cleared from the injury/status report on 10/29/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "LaVar Arrington II",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
       "Col1": "Carson Hansen",
       "Col2": "",
       "Col3": "",
@@ -1398,23 +1450,41 @@
     [
       "",
       "#041E42",
-      "Penn State"
+      "Penn State",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET"
+      "INJURY / STATUS UPDATE SHEET",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "#:",
-      "23",
+      "20",
       "# New:",
       "5",
       "Impact:",
       "18",
       "Impact Avg:",
-      "0.8",
+      "0.9",
       "Impact Rank:",
-      "45"
+      "45",
+      ""
     ],
     [
       "Player Name",
@@ -1482,19 +1552,6 @@
       "0"
     ],
     [
-      "LaVar Arrington II",
-      "",
-      "",
-      "O",
-      "DE",
-      "FALSE",
-      "10.6",
-      "1",
-      "9/8/2026",
-      "Reportedly suffered a setback in his recovery and missed week one. Will remain out 4-6 weeks, targeting a mid-sesason return.",
-      "0"
-    ],
-    [
       "Joshua Johnson",
       "",
       "",
@@ -1521,19 +1578,6 @@
       "0"
     ],
     [
-      "Dayshaun Burnett",
-      "",
-      "",
-      "O",
-      "DE",
-      "FALSE",
-      "10.3",
-      "0",
-      "9/23/2026",
-      "Added as 'out' on the week four initial report. Remains out. Not an impact to the rotation.",
-      "0"
-    ],
-    [
       "Cooper Alexander",
       "",
       "",
@@ -1544,19 +1588,6 @@
       "0",
       "8/19/2026",
       "Sidelined for fall practices due to an undisclosed injury. DNP week one. Leaving as 'out' until we hear more or get an update.",
-      "0"
-    ],
-    [
-      "Cam Smith",
-      "",
-      "",
-      "GTD",
-      "LB",
-      "FALSE",
-      "11.6",
-      "0",
-      "10/17/2026",
-      "Official report 2026-10-17: game time decision. Game 2026-10-17. Previous context: Official report 2026-10-15: probable. Previous context: Official report 2026-10-14: questionable. Previous context: Was questionable to play week three against Buffalo and he was certainly not needed. Has not played since. Remains out.",
       "0"
     ],
     [
@@ -1721,9 +1752,12 @@
       "",
       "",
       "",
-      "FALSE",
       "",
-      "0"
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1733,7 +1767,23 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1743,7 +1793,23 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1753,7 +1819,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1763,7 +1832,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1773,7 +1845,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1783,7 +1858,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1793,7 +1871,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1803,7 +1884,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1813,7 +1897,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1823,7 +1910,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1833,7 +1923,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1843,7 +1936,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1853,7 +1949,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1863,7 +1962,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1873,7 +1975,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1883,7 +1988,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1893,7 +2001,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1903,7 +2014,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1913,7 +2027,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1923,7 +2040,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1933,7 +2053,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1943,7 +2066,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1953,7 +2079,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1963,7 +2092,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1973,7 +2105,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1983,7 +2118,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1993,7 +2131,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2003,7 +2144,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2013,7 +2157,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2023,7 +2170,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2033,7 +2183,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2043,7 +2196,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2053,7 +2209,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2063,7 +2222,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2073,7 +2235,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2083,7 +2248,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2093,7 +2261,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2103,7 +2274,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2113,7 +2287,23 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "Player Name",
@@ -2125,7 +2315,60 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes"
+      "Update Notes",
+      ""
+    ],
+    [
+      "Dayshaun Burnett",
+      "",
+      "",
+      "Cleared",
+      "DE",
+      "",
+      "10.3",
+      "0",
+      "2026-10-29",
+      "Cleared from the injury/status report on 10/29/2026",
+      ""
+    ],
+    [
+      "Cam Smith",
+      "",
+      "",
+      "Cleared",
+      "LB",
+      "",
+      "11.6",
+      "0",
+      "2026-10-29",
+      "Cleared from the injury/status report on 10/29/2026",
+      ""
+    ],
+    [
+      "LaVar Arrington II",
+      "",
+      "",
+      "Cleared",
+      "DE",
+      "",
+      "10.6",
+      "1",
+      "2026-10-29",
+      "Cleared from the injury/status report on 10/29/2026",
+      ""
+    ],
+    [
+      "LaVar Arrington II",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "Carson Hansen",
@@ -2137,7 +2380,8 @@
       "14.1",
       "0",
       "2026-10-17",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Josiah Zayas",
@@ -2149,7 +2393,8 @@
       "14",
       "0",
       "2026-10-17",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Chase Sowell",
@@ -2161,7 +2406,8 @@
       "13.6",
       "1",
       "2026-10-15",
-      "Cleared from the injury/status report on 10/15/2026"
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
     ],
     [
       "Armstrong Nnodim",
@@ -2173,7 +2419,8 @@
       "13",
       "0",
       "2026-10-12",
-      "Cleared from the injury/status report on 10/12/2026"
+      "Cleared from the injury/status report on 10/12/2026",
+      ""
     ],
     [
       "Daryus Dixson",
@@ -2185,7 +2432,8 @@
       "15.2",
       "1",
       "2026-10-03",
-      "Cleared from the injury/status report on 10/03/2026"
+      "Cleared from the injury/status report on 10/03/2026",
+      ""
     ],
     [
       "Ethan Black",
@@ -2197,7 +2445,8 @@
       "6",
       "0",
       "2026-09-29",
-      "Cleared from the injury/status report on 09/29/2026"
+      "Cleared from the injury/status report on 09/29/2026",
+      ""
     ],
     [
       "Dominic Rulli",
@@ -2209,7 +2458,8 @@
       "11.9",
       "1",
       "2026-09-29",
-      "Cleared from the injury/status report on 09/29/2026"
+      "Cleared from the injury/status report on 09/29/2026",
+      ""
     ],
     [
       "Omarion Davis",
@@ -2221,7 +2471,8 @@
       "10.8",
       "0",
       "2026-09-27",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Ethan Black",
@@ -2233,7 +2484,8 @@
       "6",
       "0",
       "2026-09-27",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Andrew Rappleyea",
@@ -2245,7 +2497,8 @@
       "11.4",
       "1",
       "2026-09-27",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Brock Riker",
@@ -2257,7 +2510,8 @@
       "13.5",
       "1",
       "2026-09-27",
-      "Cleared from the injury/status report on 09/27/2026"
+      "Cleared from the injury/status report on 09/27/2026",
+      ""
     ],
     [
       "Brett Eskildsen",
@@ -2269,7 +2523,8 @@
       "12.8",
       "1",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Koby Howard",
@@ -2281,7 +2536,8 @@
       "14.3",
       "2",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "D'Antae Sheffey",
@@ -2293,7 +2549,8 @@
       "9.4",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Chris Fileppo",
@@ -2305,7 +2562,8 @@
       "9.8",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Tyshon Huff",
@@ -2317,7 +2575,8 @@
       "8.1",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Alijah Carnell",
@@ -2329,7 +2588,8 @@
       "11.4",
       "0",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Armstrong Nnodim",
@@ -2341,7 +2601,8 @@
       "12.8",
       "0",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Owen Aliciene",
@@ -2353,7 +2614,8 @@
       "11.7",
       "1",
       "9/14/2026",
-      "Cleared from the injury/status report on 09/14/2026"
+      "Cleared from the injury/status report on 09/14/2026",
+      ""
     ],
     [
       "Alex Tatsch",
@@ -2365,7 +2627,8 @@
       "11.6",
       "0",
       "9/14/2026",
-      "Cleared from the injury/status report on 09/14/2026"
+      "Cleared from the injury/status report on 09/14/2026",
+      ""
     ],
     [
       "Gabe Burkle",
@@ -2377,7 +2640,8 @@
       "9.6",
       "0",
       "9/14/2026",
-      "Cleared from the injury/status report on 09/14/2026"
+      "Cleared from the injury/status report on 09/14/2026",
+      ""
     ],
     [
       "Vaea Ikakoula",
@@ -2389,7 +2653,8 @@
       "10.1",
       "1",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Dominic Rulli",
@@ -2401,7 +2666,8 @@
       "11.9",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Zay Robinson",
@@ -2413,7 +2679,8 @@
       "9.8",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Brett Eskildsen",
@@ -2425,7 +2692,8 @@
       "12.8",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Carson Hansen",
@@ -2437,7 +2705,8 @@
       "14.2",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Brian Kortovich",
@@ -2449,7 +2718,8 @@
       "7.2",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026"
+      "Cleared from the injury/status report on 09/06/2026",
+      ""
     ],
     [
       "Jeremiah Cooper",
@@ -2461,7 +2731,8 @@
       "12.6",
       "0",
       "9/4/2026",
-      "Cleared from the injury/status report on 09/04/2026"
+      "Cleared from the injury/status report on 09/04/2026",
+      ""
     ],
     [
       "Andrew Rappleyea",
@@ -2473,7 +2744,8 @@
       "12.0",
       "0",
       "9/4/2026",
-      "Cleared from the injury/status report on 09/04/2026"
+      "Cleared from the injury/status report on 09/04/2026",
+      ""
     ],
     [
       "Karon Brookins",
@@ -2485,7 +2757,8 @@
       "8.8",
       "0",
       "8/19/2026",
-      "Cleared from the injury/status report on 08/19/2026"
+      "Cleared from the injury/status report on 08/19/2026",
+      ""
     ],
     [
       "Brett Eskildsen",
@@ -2497,7 +2770,8 @@
       "12.9",
       "0",
       "8/11/2026",
-      "Cleared from the injury/status report on 08/11/2026"
+      "Cleared from the injury/status report on 08/11/2026",
+      ""
     ],
     [
       "Peter Gonzalez",
@@ -2509,7 +2783,8 @@
       "9.5",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026"
+      "Cleared from the injury/status report on 08/10/2026",
+      ""
     ],
     [
       "Tony Rojas",
@@ -2521,7 +2796,8 @@
       "13.7",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026"
+      "Cleared from the injury/status report on 08/10/2026",
+      ""
     ],
     [
       "Gabe Burkle",
@@ -2533,7 +2809,8 @@
       "10.3",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026"
+      "Cleared from the injury/status report on 08/10/2026",
+      ""
     ],
     [
       "Max Granville",
@@ -2545,7 +2822,8 @@
       "11.2",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026"
+      "Cleared from the injury/status report on 08/10/2026",
+      ""
     ],
     [
       "Marcus Neal Jr.",
@@ -2557,7 +2835,8 @@
       "15.2",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026"
+      "Cleared from the injury/status report on 08/10/2026",
+      ""
     ],
     [
       "Chase Sowell",
@@ -2569,7 +2848,8 @@
       "13.0",
       "0",
       "8/8/2026",
-      "Cleared from the injury/status report on 08/08/2026"
+      "Cleared from the injury/status report on 08/08/2026",
+      ""
     ],
     [
       "Andrew Rappleyea",
@@ -2581,7 +2861,8 @@
       "12.0",
       "0",
       "8/8/2026",
-      "Cleared from the injury/status report on 08/08/2026"
+      "Cleared from the injury/status report on 08/08/2026",
+      ""
     ],
     [
       "Alex Manske",
@@ -2593,9 +2874,10 @@
       "11.0",
       "0",
       "8/8/2026",
-      "Cleared from the injury/status report on 08/08/2026"
+      "Cleared from the injury/status report on 08/08/2026",
+      ""
     ]
   ],
-  "count": 106,
-  "timestamp": "2026-10-29T09:03:58.472Z"
+  "count": 110,
+  "timestamp": "2026-10-29T12:08:21.767Z"
 }
