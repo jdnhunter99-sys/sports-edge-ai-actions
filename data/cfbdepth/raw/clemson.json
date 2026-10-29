@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "",
+  "sheetTitle": "Status Update",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "14",
+      "Col2": "12",
       "Col3": "# New:",
       "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "14",
+      "Col6": "12",
       "Col7": "Impact Avg:",
       "Col8": "1.0",
       "Col9": "Impact Rank:",
-      "Col10": "68",
+      "Col10": "84",
       "Col11": ""
     },
     {
@@ -201,40 +201,40 @@
       "Col1": "Gordon Sellars III",
       "Col2": "",
       "Col3": "",
-      "Col4": "O",
+      "Col4": "Q",
       "Col5": "WR",
       "Col6": "FALSE",
       "Col7": "11.3",
-      "Col8": "3",
-      "Col9": "10/21/2026",
-      "Col10": "Official report 2026-10-21: out. Game 2026-10-24.",
+      "Col8": "1",
+      "Col9": "10/28/2026",
+      "Col10": "Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-21: out. Game 2026-10-24.",
       "Col11": "0"
     },
     {
-      "Col1": "Chase Byrd",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "O",
-      "Col5": "WR",
-      "Col6": "FALSE",
-      "Col7": "5.8",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "10/21/2026",
-      "Col10": "Official report 2026-10-21: out. Game 2026-10-24.",
-      "Col11": "0"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
-      "Col1": "Vic Burley",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "GTD",
-      "Col5": "DT",
-      "Col6": "FALSE",
-      "Col7": "12.7",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "10/24/2026",
-      "Col10": "Official report 2026-10-24: game time decision. Game 2026-10-24. Previous context: Official report 2026-10-22: questionable. Game 2026-10-24.",
-      "Col11": "0"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,45 @@
       "Col11": ""
     },
     {
+      "Col1": "Vic Burley",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DT",
+      "Col6": "",
+      "Col7": "12.7",
+      "Col8": "0",
+      "Col9": "10/28/2026",
+      "Col10": "Cleared from the injury/status report on 10/28/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Chase Byrd",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "WR",
+      "Col6": "",
+      "Col7": "5.8",
+      "Col8": "0",
+      "Col9": "10/28/2026",
+      "Col10": "Cleared from the injury/status report on 10/28/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Chase Byrd",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
       "Col1": "Jarvis Green",
       "Col2": "",
       "Col3": "",
@@ -1125,41 +1164,23 @@
     [
       "",
       "#f56600",
-      "Clemson",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "Clemson"
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "INJURY / STATUS UPDATE SHEET"
     ],
     [
       "#:",
-      "14",
+      "12",
       "# New:",
       "0",
       "Impact:",
-      "14",
+      "12",
       "Impact Avg:",
       "1.0",
       "Impact Rank:",
-      "68",
-      ""
+      "84"
     ],
     [
       "Player Name",
@@ -1308,39 +1329,13 @@
       "Gordon Sellars III",
       "",
       "",
-      "O",
+      "Q",
       "WR",
       "FALSE",
       "11.3",
-      "3",
-      "10/21/2026",
-      "Official report 2026-10-21: out. Game 2026-10-24.",
-      "0"
-    ],
-    [
-      "Chase Byrd",
-      "",
-      "",
-      "O",
-      "WR",
-      "FALSE",
-      "5.8",
-      "0",
-      "10/21/2026",
-      "Official report 2026-10-21: out. Game 2026-10-24.",
-      "0"
-    ],
-    [
-      "Vic Burley",
-      "",
-      "",
-      "GTD",
-      "DT",
-      "FALSE",
-      "12.7",
-      "0",
-      "10/24/2026",
-      "Official report 2026-10-24: game time decision. Game 2026-10-24. Previous context: Official report 2026-10-22: questionable. Game 2026-10-24.",
+      "1",
+      "10/28/2026",
+      "Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-21: out. Game 2026-10-24.",
       "0"
     ],
     [
@@ -1351,10 +1346,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1364,10 +1356,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1377,10 +1366,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1390,10 +1376,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1403,10 +1386,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1416,10 +1396,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1427,12 +1404,19 @@
       "",
       "",
       "",
-      "FALSE",
-      "",
-      "0",
       "",
       "",
-      ""
+      "0"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0"
     ],
     [
       "",
@@ -1442,10 +1426,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1455,10 +1436,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1468,10 +1446,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1481,10 +1456,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1494,10 +1466,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1507,10 +1476,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1520,10 +1486,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1533,10 +1496,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1546,10 +1506,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1559,10 +1516,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1572,10 +1526,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1585,10 +1536,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1598,10 +1546,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1611,10 +1556,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1624,10 +1566,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1637,10 +1576,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1650,10 +1586,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1663,10 +1596,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1676,10 +1606,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1689,10 +1616,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1702,10 +1626,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1715,10 +1636,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1728,10 +1646,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1741,10 +1656,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1754,10 +1666,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1767,10 +1676,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1780,10 +1686,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1793,10 +1696,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1806,10 +1706,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1819,10 +1716,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1832,10 +1726,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1845,10 +1736,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1858,10 +1746,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1871,10 +1756,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1884,10 +1766,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1897,10 +1776,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1910,10 +1786,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1923,10 +1796,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1936,10 +1806,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1949,10 +1816,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1962,10 +1826,17 @@
       "",
       "FALSE",
       "",
-      "0",
+      "0"
+    ],
+    [
       "",
       "",
-      ""
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0"
     ],
     [
       "0",
@@ -1975,10 +1846,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "Player Name",
@@ -1990,8 +1858,34 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes",
-      ""
+      "Update Notes"
+    ],
+    [
+      "Vic Burley",
+      "",
+      "",
+      "Cleared",
+      "DT",
+      "",
+      "12.7",
+      "0",
+      "10/28/2026",
+      "Cleared from the injury/status report on 10/28/2026"
+    ],
+    [
+      "Chase Byrd",
+      "",
+      "",
+      "Cleared",
+      "WR",
+      "",
+      "5.8",
+      "0",
+      "10/28/2026",
+      "Cleared from the injury/status report on 10/28/2026"
+    ],
+    [
+      "Chase Byrd"
     ],
     [
       "Jarvis Green",
@@ -2003,8 +1897,7 @@
       "10.9",
       "0",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Christopher Vizzina",
@@ -2016,8 +1909,7 @@
       "10.5",
       "1",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Kourtney Kelly",
@@ -2029,8 +1921,7 @@
       "11.5",
       "3",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026",
-      ""
+      "Cleared from the injury/status report on 10/18/2026"
     ],
     [
       "Jay Haynes",
@@ -2042,8 +1933,7 @@
       "10.8",
       "2",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026",
-      ""
+      "Cleared from the injury/status report on 10/18/2026"
     ],
     [
       "Tristan Smith",
@@ -2055,8 +1945,7 @@
       "11.3",
       "1",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026",
-      ""
+      "Cleared from the injury/status report on 10/18/2026"
     ],
     [
       "Elyjah Thurmon",
@@ -2068,8 +1957,7 @@
       "11.8",
       "0",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026",
-      ""
+      "Cleared from the injury/status report on 10/18/2026"
     ],
     [
       "Elyjah Thurmon",
@@ -2081,8 +1969,7 @@
       "11.0",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Devarrick Woods",
@@ -2094,8 +1981,7 @@
       "12.5",
       "3",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Joseph Roberto II",
@@ -2107,8 +1993,7 @@
       "4.9",
       "0",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Hevin Brown-Shuler",
@@ -2120,8 +2005,7 @@
       "11.0",
       "0",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Jay Haynes",
@@ -2133,8 +2017,7 @@
       "10.7",
       "3",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Keil McGriff",
@@ -2146,8 +2029,7 @@
       "5.3",
       "0",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Corian Gipson",
@@ -2159,8 +2041,7 @@
       "11.4",
       "3",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026",
-      ""
+      "Cleared from the injury/status report on 10/02/2026"
     ],
     [
       "Christopher Vizzina",
@@ -2172,8 +2053,7 @@
       "10.5",
       "0",
       "9/25/2026",
-      "Cleared from the injury/status report on 09/25/2026",
-      ""
+      "Cleared from the injury/status report on 09/25/2026"
     ],
     [
       "Jay Haynes",
@@ -2185,8 +2065,7 @@
       "10.7",
       "1",
       "9/16/2026",
-      "Cleared from the injury/status report on 09/16/2026",
-      ""
+      "Cleared from the injury/status report on 09/16/2026"
     ],
     [
       "Collin Sadler",
@@ -2198,8 +2077,7 @@
       "11.4",
       "1",
       "9/11/2026",
-      "Cleared from the injury/status report on 09/11/2026",
-      ""
+      "Cleared from the injury/status report on 09/11/2026"
     ],
     [
       "Vic Burley",
@@ -2211,8 +2089,7 @@
       "12.7",
       "3",
       "9/8/2026",
-      "Cleared from the injury/status report on 09/08/2026",
-      ""
+      "Cleared from the injury/status report on 09/08/2026"
     ],
     [
       "T.J. Moore",
@@ -2224,10 +2101,9 @@
       "13.8",
       "0",
       "9/6/2026",
-      "Cleared from the injury/status report on 09/06/2026",
-      ""
+      "Cleared from the injury/status report on 09/06/2026"
     ]
   ],
-  "count": 85,
-  "timestamp": "2026-10-29T00:05:03.956Z"
+  "count": 88,
+  "timestamp": "2026-10-29T01:03:33.248Z"
 }
