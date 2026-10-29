@@ -1,0 +1,655 @@
+{
+  "listed_player_count": 10,
+  "player_metrics": {
+    "all_players_matched": false,
+    "available": true,
+    "coverage": {
+      "complete_coverage_rate": 0.2,
+      "matched": 2,
+      "no_current_season_row": 8,
+      "partial": 0,
+      "player_count": 10,
+      "source_unavailable": 0
+    },
+    "coverage_status": "partial",
+    "error": null,
+    "fetch_method": "direct",
+    "fields": {
+      "dbpm": "Basketball-Reference DBPM",
+      "dbpm_rank": "Rank by DBPM among all unique players on the season page",
+      "minutes_per_game": "Basketball-Reference MP divided by G",
+      "minutes_per_game_rank": "Rank by minutes per game among all unique players on the season page",
+      "obpm": "Basketball-Reference OBPM",
+      "obpm_rank": "Rank by OBPM among all unique players on the season page",
+      "usg_pct": "Basketball-Reference USG%",
+      "usg_pct_rank": "Rank by USG% among all unique players on the season page"
+    },
+    "rank_method": "Competition rank; 1 is highest, ties share rank; one season row per player",
+    "rank_population": {
+      "dbpm": 423,
+      "minutes_per_game": 425,
+      "obpm": 423,
+      "usg_pct": 424
+    },
+    "season_end_year": 2027,
+    "source": "Basketball-Reference advanced table",
+    "source_url": "https://www.basketball-reference.com/leagues/NBA_2027_advanced.html"
+  },
+  "players": [
+    {
+      "current_status": "Questionable",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Chris Youngblood",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Hansen Yang",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -7.7,
+      "dbpm_rank": 418,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "matched",
+      "minutes_per_game": 7.0,
+      "minutes_per_game_rank": 348,
+      "obpm": -27.1,
+      "obpm_rank": 421,
+      "player_name": "Jayson Kent",
+      "reason": "G League - Two-Way Injury/Illness - Right Meniscus",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 35.5,
+      "usg_pct_rank": 8
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "John Tonje",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Shaedon Sharpe",
+      "reason": "Surgery",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Ben Simmons",
+      "reason": "Repair / Surgery",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Dylan Cardwell",
+      "reason": "Injury/Illness - Left Calf Strain",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -3.6,
+      "dbpm_rank": 375,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 27.0,
+      "minutes_per_game_rank": 118,
+      "obpm": -5.0,
+      "obpm_rank": 330,
+      "player_name": "Keegan Murray",
+      "reason": "Injury/Illness - Left Ankle capsulitis",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": 15.1,
+      "usg_pct_rank": 286
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Maxime Raynaud",
+      "reason": "subluxation Injury/Illness - Right Achilles Tendon",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": null,
+      "matchup": "SAC@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Sean Pedulla",
+      "reason": "G League - Two-Way Injury/Illness - Right Patella",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    }
+  ],
+  "report": {
+    "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
+    "report_date": "2026-10-29",
+    "report_time_et": "2026-10-29 05:00 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_05_00AM.pdf"
+  },
+  "schema_version": 1,
+  "season": {
+    "end_year": 2027,
+    "label": "2026-27",
+    "start_year": 2026
+  },
+  "team_count": 30,
+  "teams": [
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-29",
+          "game_time_et": "08:00",
+          "matchup": "CLE@ATL",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "ATL",
+      "team_name": "Atlanta Hawks"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "DET@BKN",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "BKN",
+      "team_name": "Brooklyn Nets"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "07:30",
+          "matchup": "CHI@BOS",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "07:00",
+          "matchup": "CHA@WAS",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "CHA",
+      "team_name": "Charlotte Hornets"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "07:30",
+          "matchup": "CHI@BOS",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-29",
+          "game_time_et": "08:00",
+          "matchup": "CLE@ATL",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "CLE",
+      "team_name": "Cleveland Cavaliers"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "08:00",
+          "matchup": "HOU@DAL",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "DAL",
+      "team_name": "Dallas Mavericks"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "10:00",
+          "matchup": "DEN@PHX",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "DET@BKN",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "DET",
+      "team_name": "Detroit Pistons"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "LAL@GSW",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "08:00",
+          "matchup": "HOU@DAL",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "IND@MIA",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "IND",
+      "team_name": "Indiana Pacers"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "LAC@MIN",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "LAL@GSW",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_in_report",
+      "reports": [],
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "IND@MIA",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "MIA",
+      "team_name": "Miami Heat"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_in_report",
+      "reports": [],
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "LAC@MIN",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-29",
+          "game_time_et": null,
+          "matchup": "SAC@NOP",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "NOP",
+      "team_name": "New Orleans Pelicans"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "NYK@PHI",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "NYK",
+      "team_name": "New York Knicks"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_in_report",
+      "reports": [],
+      "team_abbreviation": "OKC",
+      "team_name": "Oklahoma City Thunder"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "ORL@TOR",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "NYK@PHI",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "PHI",
+      "team_name": "Philadelphia 76ers"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "10:00",
+          "matchup": "DEN@PHX",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns"
+    },
+    {
+      "player_count": 5,
+      "report_status": "submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-29",
+          "game_time_et": "10:00",
+          "matchup": "MEM@POR",
+          "player_count": 5,
+          "report_status": "submitted"
+        }
+      ],
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers"
+    },
+    {
+      "player_count": 5,
+      "report_status": "submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-29",
+          "game_time_et": null,
+          "matchup": "SAC@NOP",
+          "player_count": 5,
+          "report_status": "submitted"
+        }
+      ],
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_in_report",
+      "reports": [],
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": null,
+          "matchup": "ORL@TOR",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_in_report",
+      "reports": [],
+      "team_abbreviation": "UTA",
+      "team_name": "Utah Jazz"
+    },
+    {
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-30",
+          "game_time_et": "07:00",
+          "matchup": "CHA@WAS",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
+      "team_abbreviation": "WAS",
+      "team_name": "Washington Wizards"
+    }
+  ]
+}
