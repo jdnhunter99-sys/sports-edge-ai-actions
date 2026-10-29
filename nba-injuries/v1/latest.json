@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 36,
+  "listed_player_count": 39,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.3611,
-      "matched": 13,
-      "no_current_season_row": 23,
+      "complete_coverage_rate": 0.359,
+      "matched": 14,
+      "no_current_season_row": 25,
       "partial": 0,
-      "player_count": 36,
+      "player_count": 39,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -448,7 +448,7 @@
       "obpm": -5.0,
       "obpm_rank": 330,
       "player_name": "Jalen Suggs",
-      "reason": "/ Bone Bruise",
+      "reason": "/ Bone Bruise Injury/Illness - Right Avulsion",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 16.3,
@@ -719,13 +719,70 @@
       "team_name": "Sacramento Kings",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.8,
+      "dbpm_rank": 37,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "ORL@TOR",
+      "metrics_status": "matched",
+      "minutes_per_game": 26.0,
+      "minutes_per_game_rank": 139,
+      "obpm": -1.9,
+      "obpm_rank": 224,
+      "player_name": "Kawhi Leonard",
+      "reason": "Swelling",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 34.5,
+      "usg_pct_rank": 10
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "ORL@TOR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Malachi Smith",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "ORL@TOR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Nate Bittle",
+      "reason": "Fracture Injury/Illness - Left Knee Effusion /",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": null,
+      "usg_pct_rank": null
     }
   ],
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-29",
-    "report_time_et": "2026-10-29 03:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_03_00PM.pdf"
+    "report_time_et": "2026-10-29 03:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_03_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1109,15 +1166,15 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-30",
           "game_time_et": null,
           "matchup": "ORL@TOR",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "TOR",
