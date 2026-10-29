@@ -498,12 +498,13 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      'rawMarket':provider_market,'source':'PropLine','projection':None,**compact,
     })
    count+=1
- if not count:
+ empty_response=not count
+ if empty_response:
+  # A sport can legitimately have no current events or no player markets
+  # (for example, MLB after the season). Publish an explicit empty snapshot
+  # for that sport instead of failing the entire multi-sport generation.
+  # Other sports will continue through the same build and publish path.
   describe_empty_response(sport,events)
-  if sport != 'cfb': raise ValueError(f'{sport}: zero described player outcomes; refusing empty publish')
-  # A temporary upstream CFB gap must not prevent fresh data for every other
-  # sport from publishing. main() will retain the prior CFB cache when present.
-  return {'players':0,'events':len(events),'empty_response':True}
  event_index=[]
  for ev in events:
   if not isinstance(ev,dict) or ev.get('id') is None: continue
@@ -513,7 +514,10 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
    'home_team':ev.get('home_team'),'away_team':ev.get('away_team'),
    'commence_time':ev.get('commence_time'),
   })
- write_json(root/'Player Odds'/sport/'index.json',{'sport':sport,'fetched_at':stamp,'events':event_index,'players':index})
+ write_json(root/'Player Odds'/sport/'index.json',{
+  'sport':sport,'fetched_at':stamp,'events':event_index,'players':index,
+  **({'warning':'PropLine returned no player outcomes for this run.'} if empty_response else {}),
+ })
  board_path=root/'Player Odds'/sport/'board.json'
  write_json(board_path,{'sport':sport,'updated_at':stamp,'player_count':len(index),'props':board_props})
  board_mb=board_path.stat().st_size/(1024*1024)
@@ -524,7 +528,8 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
  books=sorted({str(quote.get('bookmakerTitle') or quote.get('bookmaker') or '').strip() for quote in quotes if quote.get('bookmakerTitle') or quote.get('bookmaker')})
  opening_quotes=sum(quote.get('opening_line') is not None or quote.get('opening_price') is not None for quote in quotes)
  print(f"{sport}: odds integrity: {len(quotes)} quote rows across {len(books)} books ({', '.join(books)}); {opening_quotes} quotes have opening history",flush=True)
- return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),'opening_quote_rows':opening_quotes}
+ return {'players':count,'events':len(events),'quote_rows':len(quotes),'sportsbook_count':len(books),
+  'opening_quote_rows':opening_quotes,**({'empty_response':True} if empty_response else {})}
 
 def build_player_list(sport,screen,index,stamp,source_events=None):
  # This compact index is derived from the same PropLine response that produced
