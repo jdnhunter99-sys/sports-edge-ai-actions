@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 96,
+  "listed_player_count": 109,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4583,
-      "matched": 44,
-      "no_current_season_row": 52,
+      "complete_coverage_rate": 0.4495,
+      "matched": 49,
+      "no_current_season_row": 60,
       "partial": 0,
-      "player_count": 96,
+      "player_count": 109,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -56,7 +56,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-29",
@@ -94,7 +94,7 @@
       "usg_pct_rank": 167
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-29",
@@ -132,7 +132,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-29",
@@ -334,7 +334,7 @@
       "obpm": -4.1,
       "obpm_rank": 312,
       "player_name": "Dennis Schroder",
-      "reason": "Inflammation / Soreness",
+      "reason": "Injury/Illness - Right Foot",
       "team_abbreviation": "CHA",
       "team_name": "Charlotte Hornets",
       "usg_pct": 21.3,
@@ -372,7 +372,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Kon Knueppel",
-      "reason": "G League - On Assignment Injury/Illness - Right Foot",
+      "reason": "G League - On Assignment",
       "team_abbreviation": "CHA",
       "team_name": "Charlotte Hornets",
       "usg_pct": null,
@@ -493,7 +493,7 @@
       "usg_pct_rank": 406
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -1.0,
       "dbpm_rank": 218,
       "game_date": "2026-10-29",
@@ -524,14 +524,14 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Khalifa Diop",
-      "reason": "G League - On Assignment Injury/Illness - Right Foot",
+      "reason": "G League - On Assignment",
       "team_abbreviation": "CLE",
       "team_name": "Cleveland Cavaliers",
       "usg_pct": null,
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -0.4,
       "dbpm_rank": 176,
       "game_date": "2026-10-29",
@@ -563,6 +563,25 @@
       "obpm_rank": null,
       "player_name": "Nae'Qwan Tomlin",
       "reason": "Reaction",
+      "team_abbreviation": "CLE",
+      "team_name": "Cleveland Cavaliers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "08:00",
+      "matchup": "CLE@ATL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Tristan Enaruna",
+      "reason": "G League - Two-Way Injury/Illness - Right Foot",
       "team_abbreviation": "CLE",
       "team_name": "Cleveland Cavaliers",
       "usg_pct": null,
@@ -684,6 +703,82 @@
     },
     {
       "current_status": "Questionable",
+      "dbpm": 2.1,
+      "dbpm_rank": 53,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 22.0,
+      "minutes_per_game_rank": 184,
+      "obpm": -4.5,
+      "obpm_rank": 321,
+      "player_name": "Alpha Diallo",
+      "reason": "Personal Reasons",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 11.8,
+      "usg_pct_rank": 351
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": 3.8,
+      "dbpm_rank": 26,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 11.0,
+      "minutes_per_game_rank": 318,
+      "obpm": 3.5,
+      "obpm_rank": 59,
+      "player_name": "Cameron Johnson",
+      "reason": "Injury/Illness - Right Ankle Sprain Injury/Illness - Bilateral Hamstring",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 11.8,
+      "usg_pct_rank": 351
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Julian Strawther",
+      "reason": "Injury/Illness - Left Knee Sprain",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Spencer Jones",
+      "reason": "Injury Management",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
       "dbpm": -4.4,
       "dbpm_rank": 397,
       "game_date": "2026-10-30",
@@ -774,6 +869,82 @@
       "reason": "G League - Two-Way",
       "team_abbreviation": "DET",
       "team_name": "Detroit Pistons",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Doubtful",
+      "dbpm": -1.8,
+      "dbpm_rank": 274,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 24.0,
+      "minutes_per_game_rank": 158,
+      "obpm": 0.6,
+      "obpm_rank": 144,
+      "player_name": "Gui Santos",
+      "reason": "Injury/Illness - Left Knee Tendinitis",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": 13.0,
+      "usg_pct_rank": 325
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jimmy Butler III",
+      "reason": "Surgery Injury/Illness - Left Patellar Tendon",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Kristaps Porzingis",
+      "reason": "Not With Team",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Moses Moody",
+      "reason": "Repair / Surgery",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
       "usg_pct": null,
       "usg_pct_rank": null
     },
@@ -1139,6 +1310,82 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Adou Thiero",
+      "reason": "Management Injury/Illness - Left Foot / Heel Injury",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Cameron Carr",
+      "reason": "Injury/Illness - Right Oblique Strain",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Available",
+      "dbpm": 0.4,
+      "dbpm_rank": 130,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 30.4,
+      "minutes_per_game_rank": 78,
+      "obpm": 1.8,
+      "obpm_rank": 111,
+      "player_name": "Walker Kessler",
+      "reason": "Injury/Illness - Left Finger Splint Injury/Illness - Left Knee Injury",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 17.1,
+      "usg_pct_rank": 230
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -0.6,
+      "dbpm_rank": 191,
+      "game_date": "2026-10-30",
+      "game_time_et": null,
+      "matchup": "LAL@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 28.5,
+      "minutes_per_game_rank": 100,
+      "obpm": 2.8,
+      "obpm_rank": 71,
+      "player_name": "Ziaire Williams",
+      "reason": "Management Injury/Illness - Right ACL Repair /",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 13.0,
+      "usg_pct_rank": 325
+    },
+    {
       "current_status": "Questionable",
       "dbpm": -4.2,
       "dbpm_rank": 392,
@@ -1360,7 +1607,7 @@
       "obpm": -5.0,
       "obpm_rank": 330,
       "player_name": "Jalen Suggs",
-      "reason": "Injury/Illness - Right Knee Contusion",
+      "reason": "/ Bone Bruise Injury/Illness - Right Avulsion",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 16.3,
@@ -1645,7 +1892,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Ben Simmons",
-      "reason": "Injury/Illness - Right Achilles Tendon",
+      "reason": "Repair / Surgery",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -1864,8 +2111,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-29",
-    "report_time_et": "2026-10-29 07:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_07_00PM.pdf"
+    "report_time_et": "2026-10-29 08:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_08_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1951,14 +2198,14 @@
       "team_name": "Chicago Bulls"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-29",
           "game_time_et": "08:00",
           "matchup": "CLE@ATL",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
@@ -1981,15 +2228,15 @@
       "team_name": "Dallas Mavericks"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-30",
           "game_time_et": "10:00",
           "matchup": "DEN@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "DEN",
@@ -2011,15 +2258,15 @@
       "team_name": "Detroit Pistons"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-30",
           "game_time_et": null,
           "matchup": "LAL@GSW",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "GSW",
@@ -2071,15 +2318,15 @@
       "team_name": "LA Clippers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-30",
           "game_time_et": null,
           "matchup": "LAL@GSW",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "LAL",
