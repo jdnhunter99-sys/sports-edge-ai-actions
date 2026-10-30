@@ -171,6 +171,7 @@ async function buildSeason(season: number, group: keyof typeof groups) {
         att: Number(value(row, 'rushing_attempts', 'rushingAttempts')) || 0,
         yards: Number(value(row, 'rushing_yards', 'rushingYards')) || 0,
         tds: Number(value(row, 'rushing_touchdowns', 'rushingTouchdowns')) || 0,
+        long: number(value(row, 'long_rushing', 'rushing_longest', 'longest_rushing', 'longestRush')),
       };
     } else if (category === 'receiving') {
       game.receiving = {
