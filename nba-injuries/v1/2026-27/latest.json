@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 115,
+  "listed_player_count": 116,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4348,
-      "matched": 50,
+      "complete_coverage_rate": 0.4397,
+      "matched": 51,
       "no_current_season_row": 65,
       "partial": 0,
-      "player_count": 115,
+      "player_count": 116,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -600,7 +600,7 @@
       "obpm": 6.3,
       "obpm_rank": 28,
       "player_name": "Caleb Martin",
-      "reason": "Injury/Illness - Right Thumb Splint",
+      "reason": "Injury/Illness - Right Thumb Splint Injury/Illness - Right ACL Repair /",
       "team_abbreviation": "DAL",
       "team_name": "Dallas Mavericks",
       "usg_pct": 21.1,
@@ -1265,7 +1265,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Max Strus",
-      "reason": "Tear Injury/Illness - Right Achilles Tendon",
+      "reason": "Tear",
       "team_abbreviation": "LAC",
       "team_name": "LA Clippers",
       "usg_pct": null,
@@ -1441,6 +1441,25 @@
       "team_name": "Memphis Grizzlies",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Available",
+      "dbpm": 0.6,
+      "dbpm_rank": 120,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.25,
+      "minutes_per_game_rank": 66,
+      "obpm": 9.0,
+      "obpm_rank": 15,
+      "player_name": "Ty Jerome",
+      "reason": "Injury/Illness - Back Tightness",
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies",
+      "usg_pct": 32.8,
+      "usg_pct_rank": 15
     },
     {
       "current_status": "Questionable",
@@ -1645,7 +1664,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Izaiyah Nelson",
-      "reason": "Recovery",
+      "reason": "Recovery Injury/Illness - Right Partially Torn",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1683,7 +1702,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jonathan Isaac",
-      "reason": "Management Injury/Illness - Left Ankle Injury",
+      "reason": "Management",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -2225,8 +2244,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-29",
-    "report_time_et": "2026-10-29 09:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_09_00PM.pdf"
+    "report_time_et": "2026-10-29 09:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_09_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2447,14 +2466,14 @@
       "team_name": "Los Angeles Lakers"
     },
     {
-      "player_count": 3,
+      "player_count": 4,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-29",
           "game_time_et": "10:00",
           "matchup": "MEM@POR",
-          "player_count": 3,
+          "player_count": 4,
           "report_status": "submitted"
         }
       ],
