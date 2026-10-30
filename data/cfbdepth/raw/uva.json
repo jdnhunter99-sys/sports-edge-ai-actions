@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,13 +43,13 @@
     },
     {
       "Col1": "#:",
-      "Col2": "25",
+      "Col2": "26",
       "Col3": "# New:",
-      "Col4": "2",
+      "Col4": "3",
       "Col5": "Impact:",
-      "Col6": "36",
+      "Col6": "40",
       "Col7": "Impact Avg:",
-      "Col8": "1.4",
+      "Col8": "1.6",
       "Col9": "Impact Rank:",
       "Col10": "2",
       "Col11": ""
@@ -107,17 +107,17 @@
       "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Noah Vaughn",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "RB",
+      "Col6": "TRUE",
+      "Col7": "12.4",
+      "Col8": "1",
+      "Col9": "10/29/2026",
+      "Col10": "Official report 2026-10-29: questionable. Game 2026-10-31.",
+      "Col11": "0"
     },
     {
       "Col1": "Alex Dunn",
@@ -279,13 +279,13 @@
       "Col1": "Corey Costner",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
+      "Col4": "D",
       "Col5": "S",
       "Col6": "FALSE",
       "Col7": "13.2",
-      "Col8": "1",
-      "Col9": "10/28/2026",
-      "Col10": "Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-15: out. Previous context: Official report 2026-10-14: doubtful.",
+      "Col8": "3",
+      "Col9": "10/29/2026",
+      "Col10": "Official report 2026-10-29: doubtful. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-15: out. Previous context: Official report 2026-10-14: doubtful.",
       "Col11": "0"
     },
     {
@@ -422,13 +422,13 @@
       "Col1": "Jekail Middlebrook",
       "Col2": "",
       "Col3": "",
-      "Col4": "D",
+      "Col4": "O",
       "Col5": "RB",
       "Col6": "TRUE",
       "Col7": "13.9",
-      "Col8": "3",
-      "Col9": "10/28/2026",
-      "Col10": "Official report 2026-10-28: doubtful. Game 2026-10-31.",
+      "Col8": "5",
+      "Col9": "10/29/2026",
+      "Col10": "Official report 2026-10-29: out. Game 2026-10-31. Previous context: Official report 2026-10-28: doubtful. Game 2026-10-31.",
       "Col11": "24"
     },
     {
@@ -1319,13 +1319,13 @@
     ],
     [
       "#:",
-      "25",
+      "26",
       "# New:",
-      "2",
+      "3",
       "Impact:",
-      "36",
+      "40",
       "Impact Avg:",
-      "1.4",
+      "1.6",
       "Impact Rank:",
       "2",
       ""
@@ -1383,17 +1383,17 @@
       "0"
     ],
     [
+      "Noah Vaughn",
       "",
       "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0",
-      "",
-      "",
-      ""
+      "Q",
+      "RB",
+      "TRUE",
+      "12.4",
+      "1",
+      "10/29/2026",
+      "Official report 2026-10-29: questionable. Game 2026-10-31.",
+      "0"
     ],
     [
       "Alex Dunn",
@@ -1555,13 +1555,13 @@
       "Corey Costner",
       "",
       "",
-      "Q",
+      "D",
       "S",
       "FALSE",
       "13.2",
-      "1",
-      "10/28/2026",
-      "Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-15: out. Previous context: Official report 2026-10-14: doubtful.",
+      "3",
+      "10/29/2026",
+      "Official report 2026-10-29: doubtful. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-15: out. Previous context: Official report 2026-10-14: doubtful.",
       "0"
     ],
     [
@@ -1698,13 +1698,13 @@
       "Jekail Middlebrook",
       "",
       "",
-      "D",
+      "O",
       "RB",
       "TRUE",
       "13.9",
-      "3",
-      "10/28/2026",
-      "Official report 2026-10-28: doubtful. Game 2026-10-31.",
+      "5",
+      "10/29/2026",
+      "Official report 2026-10-29: out. Game 2026-10-31. Previous context: Official report 2026-10-28: doubtful. Game 2026-10-31.",
       "24"
     ],
     [
@@ -2567,5 +2567,5 @@
     ]
   ],
   "count": 98,
-  "timestamp": "2026-10-30T00:04:24.629Z"
+  "timestamp": "2026-10-30T01:05:40.749Z"
 }
