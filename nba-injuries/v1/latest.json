@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 109,
+  "listed_player_count": 115,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4495,
-      "matched": 49,
-      "no_current_season_row": 60,
+      "complete_coverage_rate": 0.4348,
+      "matched": 50,
+      "no_current_season_row": 65,
       "partial": 0,
-      "player_count": 109,
+      "player_count": 115,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -334,7 +334,7 @@
       "obpm": -4.1,
       "obpm_rank": 312,
       "player_name": "Dennis Schroder",
-      "reason": "Injury/Illness - Right Foot",
+      "reason": "Inflammation / Soreness",
       "team_abbreviation": "CHA",
       "team_name": "Charlotte Hornets",
       "usg_pct": 21.3,
@@ -372,7 +372,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Kon Knueppel",
-      "reason": "G League - On Assignment",
+      "reason": "G League - On Assignment Injury/Illness - Right Foot",
       "team_abbreviation": "CHA",
       "team_name": "Charlotte Hornets",
       "usg_pct": null,
@@ -600,7 +600,7 @@
       "obpm": 6.3,
       "obpm_rank": 28,
       "player_name": "Caleb Martin",
-      "reason": "Injury/Illness - Right Thumb Splint Injury/Illness - Right ACL Repair /",
+      "reason": "Injury/Illness - Right Thumb Splint",
       "team_abbreviation": "DAL",
       "team_name": "Dallas Mavericks",
       "usg_pct": 21.1,
@@ -1386,6 +1386,63 @@
       "usg_pct_rank": 325
     },
     {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Carson Cooper",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jahmai Mashack",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-29",
+      "game_time_et": "10:00",
+      "matchup": "MEM@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Javon Small",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Questionable",
       "dbpm": -4.2,
       "dbpm_rank": 392,
@@ -1588,7 +1645,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Izaiyah Nelson",
-      "reason": "Recovery Injury/Illness - Right Partially Torn",
+      "reason": "Recovery",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1645,7 +1702,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Noah Penda",
-      "reason": "Hamstring",
+      "reason": "Hamstring Injury/Illness - Right Knee Contusion",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1766,7 +1823,64 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Drew Timme",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Mark Williams",
+      "reason": "Injury/Illness - Left Shoulder Surgery",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Questionable",
+      "dbpm": -1.6,
+      "dbpm_rank": 261,
+      "game_date": "2026-10-30",
+      "game_time_et": "10:00",
+      "matchup": "DEN@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 15.0,
+      "minutes_per_game_rank": 269,
+      "obpm": 4.9,
+      "obpm_rank": 40,
+      "player_name": "Oso Ighodaro",
+      "reason": "Injury/Illness - Right Oblique Strain",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": 23.2,
+      "usg_pct_rank": 96
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-29",
@@ -1804,7 +1918,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -7.7,
       "dbpm_rank": 418,
       "game_date": "2026-10-29",
@@ -1823,7 +1937,7 @@
       "usg_pct_rank": 8
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-29",
@@ -1842,7 +1956,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": 1.8,
       "dbpm_rank": 62,
       "game_date": "2026-10-29",
@@ -2111,8 +2225,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-29",
-    "report_time_et": "2026-10-29 08:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_08_00PM.pdf"
+    "report_time_et": "2026-10-29 09:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-29_09_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2333,9 +2447,17 @@
       "team_name": "Los Angeles Lakers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "player_count": 3,
+      "report_status": "submitted",
+      "reports": [
+        {
+          "game_date": "2026-10-29",
+          "game_time_et": "10:00",
+          "matchup": "MEM@POR",
+          "player_count": 3,
+          "report_status": "submitted"
+        }
+      ],
       "team_abbreviation": "MEM",
       "team_name": "Memphis Grizzlies"
     },
@@ -2444,15 +2566,15 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-30",
           "game_time_et": "10:00",
           "matchup": "DEN@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "PHX",
