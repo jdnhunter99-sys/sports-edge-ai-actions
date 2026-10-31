@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fetch PropLine bulk odds and publish per-player JSON to the private data branch."""
-import hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
+import gzip, hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -124,6 +124,9 @@ def player_name_quality(value):
  tokens=player_name_tokens(value)
  return (len(tokens),sum(len(token) for token in tokens))
 
+def has_position(value):
+ return str(value or '').strip().lower() not in {'','none','null','n/a','na','—','-','unknown'}
+
 def cfb_name_parts(value):
  name=str(value or '').strip()
  match=re.search(r'\s+\(([A-Z0-9]{2,6})\)$',name)
@@ -208,7 +211,7 @@ def espn_roster_index(sport,events,cache_root):
   collect(payload.get('athletes') or [])
   write_json(path,{'fetched_at':datetime.now(timezone.utc).isoformat(),'athletes':rows})
   return team_id,rows
- by_id={}; by_name=defaultdict(list)
+ by_id={}; by_name=defaultdict(list); by_tokens=defaultdict(list)
  if team_ids:
   with ThreadPoolExecutor(max_workers=10) as pool:
    futures=[pool.submit(roster,team_id) for team_id in sorted(team_ids)]
@@ -223,36 +226,217 @@ def espn_roster_index(sport,events,cache_root):
      pos=athlete.get('position')
      info={**team_data,'name':str(name or '').strip(),'position':pos.get('abbreviation') if isinstance(pos,dict) else pos}
      if pid: by_id[pid]=info
-     if name: by_name[norm(name)].append(info)
+     if name:
+      by_name[norm(name)].append(info)
+      by_tokens[' '.join(player_name_tokens(name))].append(info)
+ if sport=='cfb':
+  # ESPN's team-roster endpoint omits some athletes who are still present in
+  # PropLine's event markets. Resolve those by their ESPN athlete ID, then
+  # cache only the small identity fields needed by the publisher.
+  athlete_cache_path=cache_dir/'athlete-profiles.json'
+  try:
+   cache_payload=json.loads(athlete_cache_path.read_text(encoding='utf-8'))
+   cached_profiles=cache_payload.get('athletes') if isinstance(cache_payload,dict) else {}
+   if not isinstance(cached_profiles,dict): cached_profiles={}
+  except (OSError,ValueError,TypeError,json.JSONDecodeError):
+   cached_profiles={}
+  wanted_ids=set()
+  supported_markets=set(SPORTS['cfb'][1].split())
+  for event in events:
+   if not isinstance(event,dict): continue
+   for book in event.get('bookmakers') or []:
+    if not isinstance(book,dict): continue
+    for market in book.get('markets') or []:
+     if not isinstance(market,dict) or market.get('key') not in supported_markets: continue
+     for outcome in market.get('outcomes') or []:
+      if not isinstance(outcome,dict) or not player_name_from_outcome(outcome): continue
+      raw_id=str(outcome.get('player_id') or outcome.get('athlete_id') or '').strip()
+      player_id=raw_id.split(':',1)[1] if raw_id.lower().startswith('espn:') else raw_id
+      existing=by_id.get(player_id)
+      clean_name,_=cfb_name_parts(player_name_from_outcome(outcome))
+      existing_matches=bool(existing and existing.get('name') and player_name_similarity(clean_name,existing.get('name')))
+      if player_id.isdigit() and not (existing_matches and has_position(existing.get('position'))):
+       wanted_ids.add(player_id)
+
+  profiles={}
+  now=datetime.now(timezone.utc)
+  stale_ids=[]
+  for player_id in wanted_ids:
+   saved=cached_profiles.get(player_id)
+   if isinstance(saved,dict):
+    try:
+     fetched=datetime.fromisoformat(str(saved.get('fetched_at','')).replace('Z','+00:00'))
+     if (now-fetched).total_seconds()<30*86400:
+      profiles[player_id]=saved
+      continue
+    except (ValueError,TypeError): pass
+   stale_ids.append(player_id)
+
+  def fetch_athlete_profile(player_id):
+   url=f'https://site.api.espn.com/apis/common/v3/sports/football/college-football/athletes/{player_id}'
+   req=urllib.request.Request(url,headers={
+    'Accept':'application/json','Accept-Encoding':'gzip',
+    'User-Agent':'RTMPro-Player-List-Cache/1.0',
+   })
+   try:
+    with urllib.request.urlopen(req,timeout=18) as res:
+     body=res.read()
+     if res.headers.get('Content-Encoding')=='gzip': body=gzip.decompress(body)
+    payload=json.loads(body)
+    athlete=payload.get('athlete') if isinstance(payload,dict) else None
+    if not isinstance(athlete,dict): return player_id,None
+    position=athlete.get('position')
+    team=athlete.get('team') if isinstance(athlete.get('team'),dict) else {}
+    info={
+     'id':str(team.get('id') or ''),
+     'player_id':str(athlete.get('id') or player_id),
+     'name':str(athlete.get('displayName') or athlete.get('fullName') or athlete.get('name') or '').strip(),
+     'position':position.get('abbreviation') if isinstance(position,dict) else position,
+     'team':team.get('abbreviation') or team.get('shortDisplayName') or team.get('displayName'),
+     'team_name':team.get('displayName') or team.get('name') or team.get('location'),
+     'fetched_at':now.isoformat(),
+    }
+    return player_id,info
+   except Exception:
+    return player_id,None
+
+  if stale_ids:
+   fetched_count=0
+   with ThreadPoolExecutor(max_workers=12) as pool:
+    futures=[pool.submit(fetch_athlete_profile,player_id) for player_id in stale_ids]
+    for future in as_completed(futures):
+     player_id,info=future.result()
+     if info:
+      profiles[player_id]=info
+      fetched_count+=1
+   print(f'cfb: ESPN athlete profile fallback resolved {fetched_count}/{len(stale_ids)} missing roster IDs',flush=True)
+
+  if profiles:
+   cached_profiles.update(profiles)
+   write_json(athlete_cache_path,{'updated_at':now.isoformat(),'athletes':cached_profiles})
+  for player_id,profile in profiles.items():
+   existing=by_id.get(player_id)
+   if existing and has_position(existing.get('position')) and existing.get('name') and profile.get('name') and player_name_similarity(existing.get('name'),profile.get('name')): continue
+   by_id[player_id]=profile
+   if profile.get('name'):
+    rows=by_name[norm(profile['name'])]
+    if not any(
+     str(row.get('player_id') or '')==str(profile.get('player_id') or '')
+     or (norm(row.get('name'))==norm(profile.get('name')) and str(row.get('id') or '')==str(profile.get('id') or ''))
+     for row in rows
+    ):
+     rows.append(profile)
+     by_tokens[' '.join(player_name_tokens(profile['name']))].append(profile)
+
+ # The CFB depth/status feed carries authoritative positions for some athletes
+ # missing from ESPN's roster API. Keep these rows as a final, team-aware source.
+ depth_positions_by_name=defaultdict(list)
+ if sport=='cfb':
+  depth_path=Path(__file__).resolve().parents[1]/'data'/'cfbdepth'/'injuries.json'
+  try:
+   depth_payload=json.loads(depth_path.read_text(encoding='utf-8'))
+   for team_row in depth_payload.get('teams') or []:
+    if not isinstance(team_row,dict): continue
+    aliases={norm(team_row.get(key)) for key in ('abbreviation','team_name','team_slug') if team_row.get(key)}
+    for group in ('active','cleared_history'):
+     for athlete in team_row.get(group) or []:
+      if not isinstance(athlete,dict): continue
+      athlete_name=str(athlete.get('player') or '').strip()
+      position=str(athlete.get('position') or '').strip()
+      if athlete_name and position:
+       row={'name':athlete_name,'position':position,'team_aliases':aliases}
+       depth_positions_by_name[norm(athlete_name)].append(row)
+       depth_positions_by_name[' '.join(player_name_tokens(athlete_name))].append(row)
+  except (OSError,ValueError,TypeError,json.JSONDecodeError) as exc:
+   print(f'cfb: depth-chart position fallback unavailable: {exc}',flush=True)
  by_abbr={norm(team.get('abbreviation')):{'id':str(team.get('id')),'team':team.get('abbreviation'),'team_name':team.get('displayName') or team.get('name')} for team in unique.values() if team.get('abbreviation')}
- return {'by_id':by_id,'by_name':dict(by_name),'event_teams':event_teams,'by_abbr':by_abbr}
+ return {'by_id':by_id,'by_name':dict(by_name),'event_teams':event_teams,'by_abbr':by_abbr,
+  'by_tokens':dict(by_tokens),'depth_positions_by_name':dict(depth_positions_by_name)}
+
+def cfb_depth_position_for(name,team_info,roster_index):
+ depth_index=roster_index.get('depth_positions_by_name',{})
+ rows=depth_index.get(norm(name),[]) or depth_index.get(' '.join(player_name_tokens(name)),[])
+ if not rows: return None
+ team_aliases={norm(team_info.get(key)) for key in ('team','team_name') if team_info.get(key)}
+ if team_info.get('id'):
+  espn_team=next((row for row in roster_index.get('by_abbr',{}).values() if str(row.get('id') or '')==str(team_info.get('id'))),None)
+  if espn_team:
+   for key in ('team','team_name'):
+    if espn_team.get(key): team_aliases.add(norm(espn_team[key]))
+ # PropLine abbreviations can differ from the depth feed's short code. Resolve
+ # those through ESPN's team directory before matching a same-name athlete.
+ for alias in list(team_aliases):
+  espn_team=roster_index.get('by_abbr',{}).get(alias)
+  if espn_team:
+   team_aliases.update(norm(espn_team.get(key)) for key in ('team','team_name') if espn_team.get(key))
+ def same_team_alias(left,right):
+  if left==right: return True
+  return min(len(left),len(right))>=6 and (left.startswith(right) or right.startswith(left))
+ matched=[row for row in rows if any(same_team_alias(alias,known) for alias in row['team_aliases'] for known in team_aliases)]
+ candidates=matched or rows
+ positions={row['position'].upper() for row in candidates if row.get('position')}
+ return next(iter(positions)) if len(positions)==1 else None
 
 def roster_team_for(sport,outcome,name,event,roster_index):
  direct=outcome.get('team') or outcome.get('team_abbr') or outcome.get('team_abbreviation')
  raw_id=str(outcome.get('player_id') or outcome.get('athlete_id') or '').strip()
  pid=raw_id.split(':',1)[1] if raw_id.lower().startswith('espn:') else raw_id
  candidate=roster_index.get('by_id',{}).get(pid)
+ clean,suffix=cfb_name_parts(name) if sport=='cfb' else (name,None)
+ if sport=='cfb' and candidate and candidate.get('name') and not player_name_similarity(clean,candidate.get('name')):
+  # Some provider rows carry stale/recycled IDs. Never attach another
+  # athlete's position just because the ID happens to resolve.
+  candidate=None
  allowed={str(team.get('id')) for team in roster_index.get('event_teams',{}).get(str(event.get('id') or ''),[])}
  direct_team=roster_index.get('by_abbr',{}).get(norm(direct),{}) if direct else {}
+ if direct and not direct_team:
+  direct_key=norm(direct)
+  participants=roster_index.get('event_teams',{}).get(str(event.get('id') or ''),[])
+  matching_teams=[]
+  for team in participants:
+   aliases={norm(team.get(key)) for key in ('abbreviation','displayName','shortDisplayName','name','location') if team.get(key)}
+   if direct_key in aliases or any(
+    min(len(direct_key),len(alias))>=6 and (direct_key.startswith(alias) or alias.startswith(direct_key))
+    for alias in aliases
+   ):
+    matching_teams.append(team)
+  matching_teams=list({str(team.get('id')):team for team in matching_teams}.values())
+  if len(matching_teams)==1:
+   team=matching_teams[0]
+   direct_team={'id':str(team.get('id')),'team':team.get('abbreviation'),'team_name':team.get('displayName') or team.get('name')}
  # ESPN IDs carry the canonical athlete identity. Use that name/team/position
  # when the ID belongs to this event and any provider team code agrees.
  if candidate and (not allowed or str(candidate.get('id')) in allowed):
   direct_team_id=str(direct_team.get('id') or '')
   candidate_team_id=str(candidate.get('id') or '')
   if not direct or not direct_team_id or direct_team_id==candidate_team_id:
-   return candidate
+   return {**candidate,'position':candidate.get('position') or outcome.get('position'),
+    'position_source':'espn' if has_position(candidate.get('position')) else 'propline'}
  if direct:
   known=direct_team or {}
-  return {**known,'team':direct,'position':outcome.get('position')}
- clean,suffix=cfb_name_parts(name) if sport=='cfb' else (name,None)
+  name_key=norm(clean)
+  candidates=roster_index.get('by_name',{}).get(name_key,[]) or roster_index.get('by_tokens',{}).get(' '.join(player_name_tokens(clean)),[])
+  if direct_team.get('id'):
+   candidates=[row for row in candidates if str(row.get('id') or '')==str(direct_team.get('id'))]
+  elif allowed:
+   candidates=[row for row in candidates if str(row.get('id') or '') in allowed]
+  if len(candidates)==1:
+   match=candidates[0]
+   return {**match,**known,'team':direct,'position':match.get('position') or outcome.get('position'),
+    'position_source':'espn' if has_position(match.get('position')) else 'propline'}
+  return {**known,'team':direct,'position':outcome.get('position'),'position_source':'propline'}
  if suffix and sport=='cfb':
-  return {**roster_index.get('by_abbr',{}).get(norm(suffix),{}),'team':roster_index.get('by_abbr',{}).get(norm(suffix),{}).get('team') or suffix,'position':outcome.get('position')}
- if sport not in ESPN_LEAGUES or not roster_index: return {'team':None,'position':outcome.get('position')}
- if candidate and (not allowed or str(candidate.get('id')) in allowed): return candidate
+  return {**roster_index.get('by_abbr',{}).get(norm(suffix),{}),'team':roster_index.get('by_abbr',{}).get(norm(suffix),{}).get('team') or suffix,'position':outcome.get('position'),'position_source':'propline'}
+ if sport not in ESPN_LEAGUES or not roster_index: return {'team':None,'position':outcome.get('position'),'position_source':'propline'}
+ if candidate and (not allowed or str(candidate.get('id')) in allowed):
+  return {**candidate,'position':candidate.get('position') or outcome.get('position'),
+   'position_source':'espn' if has_position(candidate.get('position')) else 'propline'}
  name_key=norm(clean)
- candidates=[row for row in roster_index.get('by_name',{}).get(name_key,[]) if not allowed or str(row.get('id')) in allowed]
- if len(candidates)==1: return candidates[0]
- return {'team':None,'position':outcome.get('position')}
+ candidates=roster_index.get('by_name',{}).get(name_key,[]) or roster_index.get('by_tokens',{}).get(' '.join(player_name_tokens(clean)),[])
+ candidates=[row for row in candidates if not allowed or str(row.get('id')) in allowed]
+ if len(candidates)==1:
+  return {**candidates[0],'position_source':'espn' if has_position(candidates[0].get('position')) else 'propline'}
+ return {'team':None,'position':outcome.get('position'),'position_source':'propline'}
 
 def opening_index(payload):
  idx={}
@@ -441,6 +625,10 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
      if is_non_player(sport,raw_name): continue
      player_id=outcome.get('player_id') or outcome.get('athlete_id')
      team_info=roster_team_for(sport,outcome,raw_name,ev,roster_index)
+     if sport=='cfb':
+      depth_position=cfb_depth_position_for(name,team_info,roster_index)
+      if depth_position and (team_info.get('position_source')!='espn' or not has_position(team_info.get('position'))):
+       team_info['position']=depth_position
      name=team_info.get('name') or name
      player_team=team_info.get('team') or team_suffix
      # Name + team is the stable identity in quote feeds; upstream IDs can be
