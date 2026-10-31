@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 60,
+  "listed_player_count": 63,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.45,
-      "matched": 27,
-      "no_current_season_row": 33,
+      "complete_coverage_rate": 0.4603,
+      "matched": 29,
+      "no_current_season_row": 34,
       "partial": 0,
-      "player_count": 60,
+      "player_count": 63,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -277,7 +277,7 @@
       "obpm": -3.1,
       "obpm_rank": 281,
       "player_name": "Jaylon Tyson",
-      "reason": "Injury/Illness - Right Ankle Sprain",
+      "reason": "Injury/Illness - Right Ankle Sprain Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "CLE",
       "team_name": "Cleveland Cavaliers",
       "usg_pct": 18.8,
@@ -491,6 +491,63 @@
       "team_name": "Memphis Grizzlies",
       "usg_pct": 32.0,
       "usg_pct_rank": 21
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.1,
+      "dbpm_rank": 51,
+      "game_date": "2026-10-31",
+      "game_time_et": null,
+      "matchup": "MIN@SAS",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.75,
+      "minutes_per_game_rank": 28,
+      "obpm": 5.4,
+      "obpm_rank": 35,
+      "player_name": "Anthony Edwards",
+      "reason": "Arthroscopy",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": 38.2,
+      "usg_pct_rank": 7
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-31",
+      "game_time_et": null,
+      "matchup": "MIN@SAS",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Donte DiVincenzo",
+      "reason": "Repair / Surgery Injury/Illness - Right Knee",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": 0.2,
+      "dbpm_rank": 151,
+      "game_date": "2026-10-31",
+      "game_time_et": null,
+      "matchup": "MIN@SAS",
+      "metrics_status": "matched",
+      "minutes_per_game": 30.0,
+      "minutes_per_game_rank": 79,
+      "obpm": -3.2,
+      "obpm_rank": 287,
+      "player_name": "Rudy Gobert",
+      "reason": "Injury/Illness - Low Back Spasms",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": 12.6,
+      "usg_pct_rank": 346
     },
     {
       "current_status": "Questionable",
@@ -816,7 +873,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-31",
@@ -892,7 +949,7 @@
       "usg_pct_rank": 94
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 1.3,
       "dbpm_rank": 84,
       "game_date": "2026-10-31",
@@ -1018,7 +1075,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Sean Pedulla",
-      "reason": "G League - Two-Way Injury/Illness - Right Patella",
+      "reason": "G League - Two-Way",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -1180,8 +1237,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-31",
-    "report_time_et": "2026-10-31 01:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-31_01_00PM.pdf"
+    "report_time_et": "2026-10-31 02:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-31_02_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1399,15 +1456,15 @@
       "team_name": "Milwaukee Bucks"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-31",
           "game_time_et": null,
           "matchup": "MIN@SAS",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "MIN",
