@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 63,
+  "listed_player_count": 69,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4603,
-      "matched": 29,
-      "no_current_season_row": 34,
+      "complete_coverage_rate": 0.4493,
+      "matched": 31,
+      "no_current_season_row": 38,
       "partial": 0,
-      "player_count": 63,
+      "player_count": 69,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -266,6 +266,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-10-31",
+      "game_time_et": "08:00",
+      "matchup": "CLE@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Ernest Udeh Jr.",
+      "reason": "G League - Two-Way Injury/Illness - Right Achilles Tendon",
+      "team_abbreviation": "CLE",
+      "team_name": "Cleveland Cavaliers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
       "dbpm": -1.1,
       "dbpm_rank": 245,
       "game_date": "2026-10-31",
@@ -277,7 +296,7 @@
       "obpm": -3.1,
       "obpm_rank": 281,
       "player_name": "Jaylon Tyson",
-      "reason": "Injury/Illness - Right Ankle Sprain Injury/Illness - Right Achilles Tendon",
+      "reason": "Injury/Illness - Right Ankle Sprain",
       "team_abbreviation": "CLE",
       "team_name": "Cleveland Cavaliers",
       "usg_pct": 18.8,
@@ -303,7 +322,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": -0.2,
       "dbpm_rank": 175,
       "game_date": "2026-10-31",
@@ -353,7 +372,7 @@
       "obpm": 1.1,
       "obpm_rank": 118,
       "player_name": "Fred VanVleet",
-      "reason": "Management",
+      "reason": "Injury/Illness - Right Knee Injury",
       "team_abbreviation": "HOU",
       "team_name": "Houston Rockets",
       "usg_pct": 18.4,
@@ -410,7 +429,7 @@
       "obpm": -0.4,
       "obpm_rank": 177,
       "player_name": "Reed Sheppard",
-      "reason": "Injury/Illness - Low Back Soreness Injury/Illness - Right Knee Injury",
+      "reason": "Injury/Illness - Low Back Soreness",
       "team_abbreviation": "HOU",
       "team_name": "Houston Rockets",
       "usg_pct": 21.8,
@@ -738,6 +757,101 @@
       "team_name": "Oklahoma City Thunder",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-01",
+      "game_time_et": "03:30",
+      "matchup": "BOS@ORL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Izaiyah Nelson",
+      "reason": "Recovery Injury/Illness - Right Partially Torn",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.3,
+      "dbpm_rank": 147,
+      "game_date": "2026-11-01",
+      "game_time_et": "03:30",
+      "matchup": "BOS@ORL",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.333333333333336,
+      "minutes_per_game_rank": 34,
+      "obpm": -4.5,
+      "obpm_rank": 325,
+      "player_name": "Jalen Suggs",
+      "reason": "/ Bone Bruise",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": 16.7,
+      "usg_pct_rank": 252
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-01",
+      "game_time_et": "03:30",
+      "matchup": "BOS@ORL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jonathan Isaac",
+      "reason": "Management Injury/Illness - Left Ankle Injury",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-01",
+      "game_time_et": "03:30",
+      "matchup": "BOS@ORL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Noah Penda",
+      "reason": "Hamstring Injury/Illness - Right Knee Contusion",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.9,
+      "dbpm_rank": 99,
+      "game_date": "2026-11-01",
+      "game_time_et": "03:30",
+      "matchup": "BOS@ORL",
+      "metrics_status": "matched",
+      "minutes_per_game": 34.0,
+      "minutes_per_game_rank": 26,
+      "obpm": 6.7,
+      "obpm_rank": 25,
+      "player_name": "Paolo Banchero",
+      "reason": "Ankle Sprain Injury/Illness - Left Knee Injury",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": 25.3,
+      "usg_pct_rank": 74
     },
     {
       "current_status": "Out",
@@ -1075,7 +1189,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Sean Pedulla",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Right Patella",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -1196,7 +1310,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -3.8,
       "dbpm_rank": 387,
       "game_date": "2026-10-31",
@@ -1237,8 +1351,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-31",
-    "report_time_et": "2026-10-31 02:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-31_02_00PM.pdf"
+    "report_time_et": "2026-10-31 02:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-31_02_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1316,14 +1430,14 @@
       "team_name": "Chicago Bulls"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-31",
           "game_time_et": "08:00",
           "matchup": "CLE@MIL",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
@@ -1508,15 +1622,15 @@
       "team_name": "Oklahoma City Thunder"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-01",
           "game_time_et": "03:30",
           "matchup": "BOS@ORL",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "ORL",
