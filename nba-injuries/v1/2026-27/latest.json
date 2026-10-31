@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 91,
+  "listed_player_count": 92,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4945,
-      "matched": 45,
+      "complete_coverage_rate": 0.5,
+      "matched": 46,
       "no_current_season_row": 46,
       "partial": 0,
-      "player_count": 91,
+      "player_count": 92,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -695,7 +695,7 @@
       "obpm": -0.4,
       "obpm_rank": 177,
       "player_name": "Reed Sheppard",
-      "reason": "Injury/Illness - Low Back Soreness",
+      "reason": "Injury/Illness - Low Back Soreness Injury/Illness - Right Knee Injury",
       "team_abbreviation": "HOU",
       "team_name": "Houston Rockets",
       "usg_pct": 21.8,
@@ -790,7 +790,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Johnny Furphy",
-      "reason": "Injury/Illness - Right ACL Repair /",
+      "reason": "Surgery",
       "team_abbreviation": "IND",
       "team_name": "Indiana Pacers",
       "usg_pct": null,
@@ -966,6 +966,25 @@
       "team_name": "Minnesota Timberwolves",
       "usg_pct": 12.6,
       "usg_pct_rank": 346
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.2,
+      "dbpm_rank": 151,
+      "game_date": "2026-10-31",
+      "game_time_et": "07:00",
+      "matchup": "ATL@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 32.25,
+      "minutes_per_game_rank": 49,
+      "obpm": 0.3,
+      "obpm_rank": 150,
+      "player_name": "Dejounte Murray",
+      "reason": "Personal Reasons",
+      "team_abbreviation": "NOP",
+      "team_name": "New Orleans Pelicans",
+      "usg_pct": 24.9,
+      "usg_pct_rank": 79
     },
     {
       "current_status": "Questionable",
@@ -1291,7 +1310,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 2.3,
       "dbpm_rank": 45,
       "game_date": "2026-10-31",
@@ -1310,7 +1329,7 @@
       "usg_pct_rank": 362
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -0.3,
       "dbpm_rank": 184,
       "game_date": "2026-10-31",
@@ -1367,7 +1386,7 @@
       "usg_pct_rank": 106
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-10-31",
@@ -1769,8 +1788,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-10-31",
-    "report_time_et": "2026-10-31 05:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-31_05_00PM.pdf"
+    "report_time_et": "2026-10-31 06:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-31_06_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2003,14 +2022,14 @@
       "team_name": "Minnesota Timberwolves"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-10-31",
           "game_time_et": "07:00",
           "matchup": "ATL@NOP",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
