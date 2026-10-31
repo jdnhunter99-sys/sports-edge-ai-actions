@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "12",
+      "Col2": "13",
       "Col3": "# New:",
-      "Col4": "5",
+      "Col4": "7",
       "Col5": "Impact:",
-      "Col6": "18",
+      "Col6": "17",
       "Col7": "Impact Avg:",
-      "Col8": "1.5",
+      "Col8": "1.3",
       "Col9": "Impact Rank:",
-      "Col10": "49",
+      "Col10": "60",
       "Col11": ""
     },
     {
@@ -136,26 +136,26 @@
       "Col1": "Matthew Hawn",
       "Col2": "",
       "Col3": "",
-      "Col4": "D",
+      "Col4": "O",
       "Col5": "OL",
-      "Col6": "FALSE",
+      "Col6": "TRUE",
       "Col7": "10.3",
-      "Col8": "2",
-      "Col9": "10/22/2026",
-      "Col10": "Official report 2026-10-22: out. Game 2026-10-24.",
+      "Col8": "4",
+      "Col9": "10/30/2026",
+      "Col10": "Official report 2026-10-30: out. Game 2026-10-31. Previous context: Official report 2026-10-22: out. Game 2026-10-24.",
       "Col11": "-1"
     },
     {
       "Col1": "Steve Angeli",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
+      "Col4": "P",
       "Col5": "QB",
       "Col6": "TRUE",
       "Col7": "13.9",
-      "Col8": "2",
-      "Col9": "10/28/2026",
-      "Col10": "Official report 2026-10-28: questionable. Game 2026-10-31.",
+      "Col8": "0",
+      "Col9": "10/30/2026",
+      "Col10": "Official report 2026-10-30: probable. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
       "Col11": "42"
     },
     {
@@ -175,13 +175,13 @@
       "Col1": "Kahlil Stewart",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
+      "Col4": "P",
       "Col5": "OL",
       "Col6": "TRUE",
       "Col7": "11.1",
-      "Col8": "1",
-      "Col9": "10/28/2026",
-      "Col10": "Official report 2026-10-28: questionable. Game 2026-10-31.",
+      "Col8": "0",
+      "Col9": "10/30/2026",
+      "Col10": "Official report 2026-10-30: probable. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
       "Col11": "88"
     },
     {
@@ -211,17 +211,17 @@
       "Col11": "25"
     },
     {
-      "Col1": "",
+      "Col1": "Carter Bashir",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
+      "Col4": "O",
+      "Col5": "TE",
+      "Col6": "TRUE",
+      "Col7": "8.1",
       "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col9": "10/30/2026",
+      "Col10": "Official report 2026-10-30: out. Game 2026-10-31.",
+      "Col11": "0"
     },
     {
       "Col1": "",
@@ -1384,15 +1384,15 @@
     ],
     [
       "#:",
-      "12",
+      "13",
       "# New:",
-      "5",
+      "7",
       "Impact:",
-      "18",
+      "17",
       "Impact Avg:",
-      "1.5",
+      "1.3",
       "Impact Rank:",
-      "49",
+      "60",
       ""
     ],
     [
@@ -1477,26 +1477,26 @@
       "Matthew Hawn",
       "",
       "",
-      "D",
+      "O",
       "OL",
-      "FALSE",
+      "TRUE",
       "10.3",
-      "2",
-      "10/22/2026",
-      "Official report 2026-10-22: out. Game 2026-10-24.",
+      "4",
+      "10/30/2026",
+      "Official report 2026-10-30: out. Game 2026-10-31. Previous context: Official report 2026-10-22: out. Game 2026-10-24.",
       "-1"
     ],
     [
       "Steve Angeli",
       "",
       "",
-      "Q",
+      "P",
       "QB",
       "TRUE",
       "13.9",
-      "2",
-      "10/28/2026",
-      "Official report 2026-10-28: questionable. Game 2026-10-31.",
+      "0",
+      "10/30/2026",
+      "Official report 2026-10-30: probable. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
       "42"
     ],
     [
@@ -1516,13 +1516,13 @@
       "Kahlil Stewart",
       "",
       "",
-      "Q",
+      "P",
       "OL",
       "TRUE",
       "11.1",
-      "1",
-      "10/28/2026",
-      "Official report 2026-10-28: questionable. Game 2026-10-31.",
+      "0",
+      "10/30/2026",
+      "Official report 2026-10-30: probable. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
       "88"
     ],
     [
@@ -1552,17 +1552,17 @@
       "25"
     ],
     [
+      "Carter Bashir",
       "",
       "",
-      "",
-      "",
-      "",
-      "",
-      "",
+      "O",
+      "TE",
+      "TRUE",
+      "8.1",
       "0",
-      "",
-      "",
-      ""
+      "10/30/2026",
+      "Official report 2026-10-30: out. Game 2026-10-31.",
+      "0"
     ],
     [
       "",
@@ -2697,5 +2697,5 @@
     ]
   ],
   "count": 103,
-  "timestamp": "2026-10-30T15:05:15.533Z"
+  "timestamp": "2026-10-31T14:05:24.541Z"
 }
