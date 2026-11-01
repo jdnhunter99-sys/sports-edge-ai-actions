@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 48,
+  "listed_player_count": 51,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5208,
-      "matched": 25,
-      "no_current_season_row": 23,
+      "complete_coverage_rate": 0.5294,
+      "matched": 27,
+      "no_current_season_row": 24,
       "partial": 0,
-      "player_count": 48,
+      "player_count": 51,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -187,6 +187,63 @@
       "team_name": "Boston Celtics",
       "usg_pct": 11.2,
       "usg_pct_rank": 391
+    },
+    {
+      "current_status": "Probable",
+      "dbpm": -2.4,
+      "dbpm_rank": 335,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "CHI@PHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 24.166666666666668,
+      "minutes_per_game_rank": 160,
+      "obpm": 0.7,
+      "obpm_rank": 144,
+      "player_name": "Jalen Smith",
+      "reason": "Injury/Illness - Left Finger Sprain",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": 18.7,
+      "usg_pct_rank": 204
+    },
+    {
+      "current_status": "Doubtful",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "CHI@PHI",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Nic Claxton",
+      "reason": "Injury/Illness - Left Hamstring Strain",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Probable",
+      "dbpm": -2.2,
+      "dbpm_rank": 323,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "CHI@PHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 13.0,
+      "minutes_per_game_rank": 302,
+      "obpm": -0.5,
+      "obpm_rank": 191,
+      "player_name": "Tobe Awaka",
+      "reason": "Injury/Illness - Left Ankle Sprain",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": 8.6,
+      "usg_pct_rank": 420
     },
     {
       "current_status": "Out",
@@ -398,7 +455,7 @@
       "usg_pct_rank": 415
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": -2.8,
       "dbpm_rank": 362,
       "game_date": "2026-11-01",
@@ -664,7 +721,7 @@
       "usg_pct_rank": 268
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -0.7,
       "dbpm_rank": 214,
       "game_date": "2026-11-01",
@@ -952,8 +1009,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-01",
-    "report_time_et": "2026-11-01 03:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-01_03_45PM.pdf"
+    "report_time_et": "2026-11-01 04:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-01_04_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1038,15 +1095,15 @@
       "team_name": "Charlotte Hornets"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": null,
           "matchup": "CHI@PHI",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "CHI",
