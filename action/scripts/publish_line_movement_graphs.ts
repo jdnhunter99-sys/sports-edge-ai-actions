@@ -3,10 +3,11 @@ import { canonicalCfbTeam } from '../base44/shared/cfbOddsTeams.ts';
 import { fetchMlbLineMovementRequest } from './line_movement_parsers/mlb.ts';
 import { fetchNFLLineMovementSlate } from './line_movement_parsers/nfl.ts';
 import { fetchNBALineMovementRequest } from './line_movement_parsers/nba.ts';
+import { fetchNCAABLineMovementRequest } from './line_movement_parsers/ncaab.ts';
 import { fetchWNBALineMovementRequest } from './line_movement_parsers/wnba.ts';
 import { fetchNHLLineMovementRequest } from './line_movement_parsers/nhl.ts';
 
-type SportKey = 'nfl' | 'ncaaf' | 'nba' | 'wnba' | 'nhl' | 'mlb';
+type SportKey = 'nfl' | 'ncaaf' | 'nba' | 'ncaab' | 'wnba' | 'nhl' | 'mlb';
 type GameRecord = Record<string, unknown> & {
   sport: SportKey;
   game_date: string;
@@ -21,9 +22,10 @@ type GameRecord = Record<string, unknown> & {
 
 const OUTPUT_ROOT = Deno.env.get('LINE_MOVEMENT_OUTPUT_DIR') || `${Deno.cwd()}/data/line-movement-graphs/v1`;
 const DATE_OFFSETS = Array.from({ length: 7 }, (_, index) => index);
-const SPORTS: SportKey[] = ['nfl', 'ncaaf', 'nba', 'wnba', 'nhl', 'mlb'];
+const SPORTS: SportKey[] = ['nfl', 'ncaaf', 'nba', 'ncaab', 'wnba', 'nhl', 'mlb'];
 const parsers: Partial<Record<SportKey, (request: Request) => Promise<Response>>> = {
   nba: fetchNBALineMovementRequest,
+  ncaab: fetchNCAABLineMovementRequest,
   wnba: fetchWNBALineMovementRequest,
   nhl: fetchNHLLineMovementRequest,
   mlb: fetchMlbLineMovementRequest,
