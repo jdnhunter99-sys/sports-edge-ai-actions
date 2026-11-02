@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fetch PropLine bulk odds and publish per-player JSON to the private data branch."""
-import gzip, hashlib, json, os, re, time, urllib.request, urllib.error, unicodedata
+import csv, gzip, hashlib, io, json, os, re, time, urllib.request, urllib.error, unicodedata
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -11,6 +11,7 @@ OPENING_WINDOW_DAYS=14
 SPORTS={
  'nfl':('football_nfl','player_1st_td player_2plus_td player_3plus_td player_anytime_td player_extra_points_made player_field_goals_made player_fumbles_lost player_kicking_points player_last_td player_longest_completion player_pass_attempts player_pass_completions player_pass_interceptions player_pass_rush_yds player_pass_tds player_pass_yds player_reception_longest player_receptions player_reception_yds player_rush_attempts player_rush_longest player_rush_reception_yds player_rush_tds player_rush_yds'),
  'nba':('basketball_nba','player_assists player_blocks player_double_double player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes'),
+ 'ncaab':('basketball_ncaab','player_assists player_blocks player_points player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes'),
  'mlb':('baseball_mlb','batter_1plus_hits batter_1plus_rbis batter_2plus_hits batter_2plus_home_runs batter_2plus_rbis batter_3plus_hits batter_3plus_rbis batter_4plus_hits batter_doubles batter_hits batter_hits_runs_rbis batter_home_runs batter_rbis batter_runs batter_singles batter_stolen_bases batter_strikeouts batter_total_bases batter_triples batter_walks pitcher_earned_runs pitcher_hits_allowed pitcher_outs pitcher_strikeouts pitcher_walks'),
  'wnba':('basketball_wnba','player_assists player_blocks player_double_double player_first_basket player_first_field_goal player_points player_points_10plus player_points_15plus player_points_assists player_points_rebounds player_points_rebounds_assists player_rebounds player_rebounds_assists player_steals player_threes player_triple_double player_turnovers'),
  'nhl':('hockey_nhl','player_goals player_first_goal player_goals_2plus player_goals_3plus player_shots_on_goal player_points_1plus player_points_2plus player_points_3plus goalie_saves player_blocked_shots'),
@@ -24,6 +25,7 @@ PLAYER_MARKETS={
  'mlb':{'batter_hits':'hits','batter_total_bases':'total_bases','batter_home_runs':'home_runs','batter_runs':'runs','batter_rbis':'rbi','batter_singles':'singles','batter_doubles':'doubles','batter_walks':'walks','pitcher_strikeouts':'strikeouts','batter_strikeouts':'strikeouts_batter','batter_stolen_bases':'stolen_bases','pitcher_outs':'pitcher_outs','pitcher_earned_runs':'earned_runs','pitcher_hits_allowed':'hits_allowed','pitcher_walks':'walks_allowed','batter_hits_runs_rbis':'hits_runs_rbis'},
  'wnba':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_blocks':'blocks','player_steals':'steals','player_turnovers':'turnovers','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists','player_rebounds_assists':'rebounds_assists','player_double_double':'double_double','player_triple_double':'triple_double','player_first_basket':'first_basket'},
  'nba':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_blocks':'blocks','player_steals':'steals','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists','player_rebounds_assists':'rebounds_assists'},
+ 'ncaab':{'player_points':'points','player_rebounds':'rebounds','player_assists':'assists','player_threes':'three_pointers_made','player_blocks':'blocks','player_steals':'steals','player_points_rebounds_assists':'pra','player_points_rebounds':'points_rebounds','player_points_assists':'points_assists','player_rebounds_assists':'rebounds_assists'},
  'nhl':{'player_goals':'goals','player_first_goal':'first_goal','player_goals_2plus':'goals_2plus','player_goals_3plus':'goals_3plus','player_shots_on_goal':'shots_on_goal','player_points_1plus':'points_1plus','player_points_2plus':'points_2plus','player_points_3plus':'points_3plus','goalie_saves':'goalie_saves','player_blocked_shots':'blocked_shots'},
 }
 def slug(s):
@@ -67,6 +69,12 @@ def fetch_closing(sport,event_id,key):
 def norm(v):
  return unicodedata.normalize('NFKD',str(v or '')).encode('ascii','ignore').decode().lower().strip()
 
+def team_match_key(value):
+ """Normalize provider team labels to ESPN school identities."""
+ tokens=re.sub(r'[^a-z0-9]+',' ',norm(value)).split()
+ tokens=[{'st':'state','mt':'mount','ft':'fort'}.get(token,token) for token in tokens]
+ return ''.join(tokens)
+
 def player_identity(value,name,team=None):
  raw=str(value or '').strip()
  if raw:
@@ -81,7 +89,64 @@ def player_name_tokens(value):
  name=re.sub(r'\s*\([^)]*\)\s*$', '', name)
  tokens=re.sub(r'[^a-z0-9]+',' ',norm(name)).split()
  while len(tokens)>1 and tokens[-1] in PLAYER_SUFFIXES: tokens.pop()
+ # Normalize initialed first names (T.Y. Harding -> Ty Harding).
+ initial_count=0
+ while initial_count<len(tokens) and len(tokens[initial_count])==1: initial_count+=1
+ if initial_count>1:
+  tokens=[''.join(tokens[:initial_count]),*tokens[initial_count:]]
  return tokens
+
+def cfb_roster_name_tokens(value):
+ tokens=player_name_tokens(value)
+ # PropLine shortens William "Pop" Watson III to Pop Watson III.
+ if len(tokens)>=2 and tokens[0]=='pop' and tokens[-1]=='watson':
+  tokens=['william',*tokens[1:]]
+ return tokens
+
+def roster_name_match(left,right):
+ a=cfb_roster_name_tokens(left); b=cfb_roster_name_tokens(right)
+ if not a or not b: return False
+ if a==b: return True
+ # Permit a shortened first name only when the surname matches exactly;
+ # event-team filtering below prevents cross-team name collisions.
+ return len(a)>=2 and len(b)>=2 and a[-1]==b[-1] and min(len(a[0]),len(b[0]))>=3 and (a[0].startswith(b[0]) or b[0].startswith(a[0]))
+
+def roster_candidates_for_name(roster_index,name,sport,allowed=None,team_id=None):
+ allowed={str(value) for value in (allowed or set())}
+ keys={norm(name),' '.join(player_name_tokens(name))}
+ if sport=='cfb': keys.add(' '.join(cfb_roster_name_tokens(name)))
+ exact=[]
+ for key in keys:
+  exact.extend(roster_index.get('by_name',{}).get(key,[]))
+  exact.extend(roster_index.get('by_tokens',{}).get(key,[]))
+ if exact:
+  allowed_exact=[row for row in exact if isinstance(row,dict) and (not team_id or str(row.get('id') or '')==str(team_id)) and (team_id or not allowed or str(row.get('id') or '') in allowed)]
+  if allowed_exact:
+   unique={}
+   for row in allowed_exact:
+    row_name=str(row.get('name') or '')
+    key=(str(row.get('id') or ''),' '.join(cfb_roster_name_tokens(row_name) if sport=='cfb' else player_name_tokens(row_name)))
+    existing=unique.get(key)
+    if not existing or (not has_position(existing.get('position')) and has_position(row.get('position'))): unique[key]=row
+   return list(unique.values())
+ if sport!='cfb': return []
+ rows=[]
+ for collection in (roster_index.get('by_id',{}).values(),*roster_index.get('by_name',{}).values(),*roster_index.get('by_tokens',{}).values()):
+  for row in collection:
+   if not isinstance(row,dict): continue
+   row_team=str(row.get('id') or '')
+   if team_id and row_team!=str(team_id): continue
+   if not team_id and allowed and row_team not in allowed: continue
+   rows.append(row)
+ unique={}
+ for row in rows:
+  row_name=str(row.get('name') or '')
+  if not row_name: continue
+  identity=(str(row.get('id') or ''),' '.join(cfb_roster_name_tokens(row_name)))
+  existing=unique.get(identity)
+  if not existing or (not has_position(existing.get('position')) and has_position(row.get('position'))): unique[identity]=row
+ rows=list(unique.values())
+ return [row for row in rows if roster_name_match(name,row.get('name'))]
 
 def player_name_similarity(left,right):
  a=player_name_tokens(left); b=player_name_tokens(right)
@@ -140,7 +205,7 @@ def is_non_player(sport,name):
 
 ESPN_LEAGUES={
  'nfl':('football','nfl'),'cfb':('football','college-football'),
- 'nba':('basketball','nba'),'wnba':('basketball','wnba'),
+ 'nba':('basketball','nba'),'wnba':('basketball','wnba'),'ncaab':('basketball','mens-college-basketball'),
  'nhl':('hockey','nhl'),
  'mlb':('baseball','mlb'),'epl':('soccer','eng.1'),
 }
@@ -179,13 +244,14 @@ def espn_roster_index(sport,events,cache_root):
  unique={str(team.get('id')):team for team in directory if isinstance(team,dict) and team.get('id')}
  aliases={}
  for team in unique.values():
-  for value in (team.get('displayName'),team.get('shortDisplayName'),team.get('name'),team.get('location'),team.get('abbreviation')):
-   if value: aliases[norm(value)]=team
+  for value in (team.get('displayName'),team.get('shortDisplayName'),team.get('shortName'),team.get('name'),
+                team.get('location'),team.get('nickname'),team.get('school'),team.get('abbreviation'),team.get('slug')):
+   if value: aliases[team_match_key(value)]=team
  event_teams={}; team_ids=set()
  for event in events:
   eid=str(event.get('id') or ''); matched=[]
   for side in ('home_team','away_team'):
-   raw=norm(event.get(side)); candidate=aliases.get(raw)
+   raw=team_match_key(event.get(side)); candidate=aliases.get(raw)
    if candidate is None and raw:
     matches=[team for alias,team in aliases.items() if len(alias)>3 and (alias in raw or raw in alias)]
     if len({str(team.get('id')) for team in matches})==1: candidate=matches[0]
@@ -230,6 +296,60 @@ def espn_roster_index(sport,events,cache_root):
       by_name[norm(name)].append(info)
       by_tokens[' '.join(player_name_tokens(name))].append(info)
  if sport=='cfb':
+  # ESPN's live team-roster endpoint misses some athletes even when their
+  # published CFB roster and position are available from SportsDataverse.
+  # Load only the event season(s); this is a small public CSV and needs no API
+  # key or parquet dependency.
+  cfb_seasons=set()
+  for event in events:
+   try:
+    event_date=datetime.fromisoformat(str(event.get('commence_time') or '').replace('Z','+00:00'))
+    cfb_seasons.add(event_date.year-1 if event_date.month<=3 else event_date.year)
+   except (ValueError,TypeError): pass
+  if not cfb_seasons: cfb_seasons.add(datetime.now(timezone.utc).year)
+  for cfb_season in sorted(cfb_seasons):
+   roster_url=f'https://raw.githubusercontent.com/sportsdataverse/cfbfastR-data/main/rosters/csv/cfb_rosters_{cfb_season}.csv'
+   try:
+    req=urllib.request.Request(roster_url,headers={
+     'Accept':'text/csv','User-Agent':'RTMPro-Player-List-Cache/1.0',
+    })
+    with urllib.request.urlopen(req,timeout=35) as res: roster_csv=res.read().decode('utf-8-sig')
+    added=0
+    for row in csv.DictReader(io.StringIO(roster_csv)):
+     name=' '.join((row.get('first_name') or '',row.get('last_name') or '')).strip()
+     position=str(row.get('position') or '').strip()
+     if not name or not has_position(position): continue
+     school=str(row.get('team') or '').strip()
+     school_key=team_match_key(school)
+     team=aliases.get(school_key)
+     if team is None and school_key:
+      matching=[value for alias,value in aliases.items() if len(alias)>=5 and (alias in school_key or school_key in alias)]
+      if len({str(value.get('id')) for value in matching})==1: team=matching[0]
+     player_id=str(row.get('athlete_id') or '').strip()
+     info={
+      'id':str(team.get('id') or '') if team else '',
+      'player_id':player_id,
+      'name':name,
+      'position':position,
+      'team':team.get('abbreviation') or team.get('shortDisplayName') or school if team else school,
+      'team_name':team.get('displayName') or school if team else school,
+      'headshot':str(row.get('headshot_url') or '').strip(),
+      'position_source':'sportsdataverse-roster',
+     }
+     existing=by_id.get(player_id) if player_id else None
+     # Keep ESPN's roster entry when it already has a valid position, but
+     # index the SportsDataverse row for names/teams ESPN omitted.
+     if player_id and (not existing or not has_position(existing.get('position'))): by_id[player_id]=info
+     name_rows=by_name[norm(name)]
+     if not any(str(value.get('id') or '')==str(info.get('id') or '') and roster_name_match(name,value.get('name') or '') for value in name_rows):
+      name_rows.append(info)
+      token_key=' '.join(cfb_roster_name_tokens(name))
+      by_tokens[token_key].append(info)
+      added+=1
+    print(f'cfb: SportsDataverse roster season {cfb_season} indexed {added} additional athlete identities',flush=True)
+   except Exception as exc:
+    print(f'cfb: SportsDataverse roster season {cfb_season} unavailable; using ESPN roster fallbacks: {exc}',flush=True)
+
   # ESPN's team-roster endpoint omits some athletes who are still present in
   # PropLine's event markets. Resolve those by their ESPN athlete ID, then
   # cache only the small identity fields needed by the publisher.
@@ -389,14 +509,19 @@ def roster_team_for(sport,outcome,name,event,roster_index):
   candidate=None
  allowed={str(team.get('id')) for team in roster_index.get('event_teams',{}).get(str(event.get('id') or ''),[])}
  direct_team=roster_index.get('by_abbr',{}).get(norm(direct),{}) if direct else {}
+ # PropLine occasionally attaches a stale team code. It must not prevent us
+ # from finding the player on one of the two actual event rosters.
+ if direct_team.get('id') and allowed and str(direct_team.get('id')) not in allowed:
+  direct=None
+  direct_team={}
  if direct and not direct_team:
-  direct_key=norm(direct)
+  direct_key=team_match_key(direct)
   participants=roster_index.get('event_teams',{}).get(str(event.get('id') or ''),[])
   matching_teams=[]
   for team in participants:
-   aliases={norm(team.get(key)) for key in ('abbreviation','displayName','shortDisplayName','name','location') if team.get(key)}
+   aliases={team_match_key(team.get(key)) for key in ('abbreviation','displayName','shortDisplayName','shortName','name','location','nickname','school','slug') if team.get(key)}
    if direct_key in aliases or any(
-    min(len(direct_key),len(alias))>=6 and (direct_key.startswith(alias) or alias.startswith(direct_key))
+    min(len(direct_key),len(alias))>=5 and (direct_key.startswith(alias) or alias.startswith(direct_key))
     for alias in aliases
    ):
     matching_teams.append(team)
@@ -411,31 +536,24 @@ def roster_team_for(sport,outcome,name,event,roster_index):
   candidate_team_id=str(candidate.get('id') or '')
   if not direct or not direct_team_id or direct_team_id==candidate_team_id:
    return {**candidate,'position':candidate.get('position') or outcome.get('position'),
-    'position_source':'espn' if has_position(candidate.get('position')) else 'propline'}
+     'position_source':candidate.get('position_source') or ('espn' if has_position(candidate.get('position')) else 'propline')}
  if direct:
   known=direct_team or {}
-  name_key=norm(clean)
-  candidates=roster_index.get('by_name',{}).get(name_key,[]) or roster_index.get('by_tokens',{}).get(' '.join(player_name_tokens(clean)),[])
-  if direct_team.get('id'):
-   candidates=[row for row in candidates if str(row.get('id') or '')==str(direct_team.get('id'))]
-  elif allowed:
-   candidates=[row for row in candidates if str(row.get('id') or '') in allowed]
+  candidates=roster_candidates_for_name(roster_index,clean,sport,allowed,direct_team.get('id'))
   if len(candidates)==1:
    match=candidates[0]
-   return {**match,**known,'team':direct,'position':match.get('position') or outcome.get('position'),
-    'position_source':'espn' if has_position(match.get('position')) else 'propline'}
+   return {**match,**known,'name':name,'team':direct,'position':match.get('position') or outcome.get('position'),
+    'position_source':match.get('position_source') or ('espn' if has_position(match.get('position')) else 'propline')}
   return {**known,'team':direct,'position':outcome.get('position'),'position_source':'propline'}
  if suffix and sport=='cfb':
   return {**roster_index.get('by_abbr',{}).get(norm(suffix),{}),'team':roster_index.get('by_abbr',{}).get(norm(suffix),{}).get('team') or suffix,'position':outcome.get('position'),'position_source':'propline'}
  if sport not in ESPN_LEAGUES or not roster_index: return {'team':None,'position':outcome.get('position'),'position_source':'propline'}
  if candidate and (not allowed or str(candidate.get('id')) in allowed):
   return {**candidate,'position':candidate.get('position') or outcome.get('position'),
-   'position_source':'espn' if has_position(candidate.get('position')) else 'propline'}
- name_key=norm(clean)
- candidates=roster_index.get('by_name',{}).get(name_key,[]) or roster_index.get('by_tokens',{}).get(' '.join(player_name_tokens(clean)),[])
- candidates=[row for row in candidates if not allowed or str(row.get('id')) in allowed]
+   'position_source':candidate.get('position_source') or ('espn' if has_position(candidate.get('position')) else 'propline')}
+ candidates=roster_candidates_for_name(roster_index,clean,sport,allowed)
  if len(candidates)==1:
-  return {**candidates[0],'position_source':'espn' if has_position(candidates[0].get('position')) else 'propline'}
+  return {**candidates[0],'name':name,'position_source':candidates[0].get('position_source') or ('espn' if has_position(candidates[0].get('position')) else 'propline')}
  return {'team':None,'position':outcome.get('position'),'position_source':'propline'}
 
 def opening_index(payload):
@@ -629,6 +747,12 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
       depth_position=cfb_depth_position_for(name,team_info,roster_index)
       if depth_position and (team_info.get('position_source')!='espn' or not has_position(team_info.get('position'))):
        team_info['position']=depth_position
+      # Passing yards and passing touchdowns are QB-only PropLine markets.
+      # This gives players without ESPN IDs/roster matches a reliable position
+      # from the market itself instead of leaving the published row blank.
+      if sport=='cfb' and not has_position(team_info.get('position')) and market.get('key') in {'player_pass_yds','player_pass_tds'}:
+       team_info['position']='QB'
+       team_info['position_source']='market'
      name=team_info.get('name') or name
      player_team=team_info.get('team') or team_suffix
      # Name + team is the stable identity in quote feeds; upstream IDs can be
@@ -662,6 +786,10 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
       # Keep live line/price authoritative. Opening/closing fields are metadata.
       row.update(opening)
      p['markets'].setdefault(market['key'],[]).append(row)
+  if sport=='cfb':
+   missing_positions=[f"{player.get('player')} ({player.get('team') or 'team unknown'})" for player in players.values() if not has_position(player.get('position'))]
+   if missing_positions:
+    print(f"cfb event {eid}: {len(missing_positions)} players still lack a roster position: {', '.join(missing_positions[:20])}",flush=True)
   for identity,player in players.items():
    name=player['player']
    identity_hash=hashlib.sha256(identity.encode('utf-8')).hexdigest()[:12]
