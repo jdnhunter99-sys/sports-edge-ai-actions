@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 120,
+  "listed_player_count": 121,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4917,
-      "matched": 59,
+      "complete_coverage_rate": 0.4959,
+      "matched": 60,
       "no_current_season_row": 61,
       "partial": 0,
-      "player_count": 120,
+      "player_count": 121,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -130,6 +130,25 @@
       "team_name": "Atlanta Hawks",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.0,
+      "dbpm_rank": 165,
+      "game_date": "2026-11-02",
+      "game_time_et": "07:30",
+      "matchup": "ATL@IND",
+      "metrics_status": "matched",
+      "minutes_per_game": 20.285714285714285,
+      "minutes_per_game_rank": 205,
+      "obpm": -2.7,
+      "obpm_rank": 272,
+      "player_name": "Kingston Flemings",
+      "reason": "League Suspension",
+      "team_abbreviation": "ATL",
+      "team_name": "Atlanta Hawks",
+      "usg_pct": 17.4,
+      "usg_pct_rank": 244
     },
     {
       "current_status": "Out",
@@ -1379,7 +1398,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Donte DiVincenzo",
-      "reason": "Repair / Surgery",
+      "reason": "Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "MIN",
       "team_name": "Minnesota Timberwolves",
       "usg_pct": null,
@@ -1759,7 +1778,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Dominick Barlow",
-      "reason": "Injury/Illness - Low Back Stress",
+      "reason": "Reaction Injury/Illness - Right Foot Plantar",
       "team_abbreviation": "PHI",
       "team_name": "Philadelphia 76ers",
       "usg_pct": null,
@@ -1911,7 +1930,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Ben Simmons",
-      "reason": "Repair / Surgery",
+      "reason": "Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -1968,7 +1987,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Maxime Raynaud",
-      "reason": "Subluxation Injury/Illness - Right Achilles Tendon",
+      "reason": "Subluxation",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -2320,8 +2339,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-01",
-    "report_time_et": "2026-11-01 09:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-01_09_00PM.pdf"
+    "report_time_et": "2026-11-01 10:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-01_10_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2332,14 +2351,14 @@
   "team_count": 30,
   "teams": [
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": "07:30",
           "matchup": "ATL@IND",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
