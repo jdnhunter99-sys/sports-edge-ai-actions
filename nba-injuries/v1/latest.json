@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 105,
+  "listed_player_count": 110,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5333,
-      "matched": 56,
-      "no_current_season_row": 49,
+      "complete_coverage_rate": 0.5455,
+      "matched": 60,
+      "no_current_season_row": 50,
       "partial": 0,
-      "player_count": 105,
+      "player_count": 110,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -269,6 +269,44 @@
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
+      "game_time_et": "08:30",
+      "matchup": "BOS@HOU",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Devin Carter",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 1.3,
+      "dbpm_rank": 88,
+      "game_date": "2026-11-02",
+      "game_time_et": "08:30",
+      "matchup": "BOS@HOU",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.0,
+      "minutes_per_game_rank": 70,
+      "obpm": 2.9,
+      "obpm_rank": 69,
+      "player_name": "Paul George",
+      "reason": "Rest",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": 27.3,
+      "usg_pct_rank": 46
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-02",
       "game_time_et": null,
       "matchup": "DET@CHA",
       "metrics_status": "no_current_season_row",
@@ -493,7 +531,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Doubtful",
       "dbpm": 0.9,
       "dbpm_rank": 111,
       "game_date": "2026-11-02",
@@ -543,7 +581,7 @@
       "obpm": -2.0,
       "obpm_rank": 248,
       "player_name": "Sergio de Larrea",
-      "reason": "Injury/Illness - Right Knee Sprain Injury/Illness - Left Knee Injury",
+      "reason": "Injury/Illness - Right Knee Sprain",
       "team_abbreviation": "DAL",
       "team_name": "Dallas Mavericks",
       "usg_pct": 20.3,
@@ -581,7 +619,7 @@
       "obpm": -3.9,
       "obpm_rank": 314,
       "player_name": "Alpha Diallo",
-      "reason": "Injury/Illness - Right Wrist Sprain",
+      "reason": "Injury/Illness - Right Wrist Sprain Injury/Illness - Bilateral Hamstring",
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets",
       "usg_pct": 11.8,
@@ -721,7 +759,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 2.0,
       "dbpm_rank": 59,
       "game_date": "2026-11-02",
@@ -1139,7 +1177,64 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Questionable",
+      "dbpm": 0.9,
+      "dbpm_rank": 111,
+      "game_date": "2026-11-02",
+      "game_time_et": "08:00",
+      "matchup": "MIL@MIN",
+      "metrics_status": "matched",
+      "minutes_per_game": 25.142857142857142,
+      "minutes_per_game_rank": 148,
+      "obpm": -1.2,
+      "obpm_rank": 213,
+      "player_name": "LaMelo Ball",
+      "reason": "Injury/Illness - Right Wrist Contusion Injury/Illness - Right Achilles Tendon",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": 28.1,
+      "usg_pct_rank": 37
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": 0.4,
+      "dbpm_rank": 135,
+      "game_date": "2026-11-02",
+      "game_time_et": "08:00",
+      "matchup": "MIL@MIN",
+      "metrics_status": "matched",
+      "minutes_per_game": 22.0,
+      "minutes_per_game_rank": 184,
+      "obpm": 0.7,
+      "obpm_rank": 144,
+      "player_name": "Terrence Shannon Jr",
+      "reason": "Injury/Illness - Left Hip Contusion",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": 21.6,
+      "usg_pct_rank": 138
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": 0.4,
+      "dbpm_rank": 135,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "NOP@MEM",
+      "metrics_status": "matched",
+      "minutes_per_game": 32.25,
+      "minutes_per_game_rank": 53,
+      "obpm": 0.8,
+      "obpm_rank": 136,
+      "player_name": "Dejounte Murray",
+      "reason": "Personal Reasons",
+      "team_abbreviation": "NOP",
+      "team_name": "New Orleans Pelicans",
+      "usg_pct": 24.9,
+      "usg_pct_rank": 79
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
@@ -1151,7 +1246,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jaron Pierre Jr.",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Left Ankle",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -1177,7 +1272,7 @@
       "usg_pct_rank": 184
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": -3.8,
       "dbpm_rank": 402,
       "game_date": "2026-11-02",
@@ -1196,7 +1291,7 @@
       "usg_pct_rank": 43
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
@@ -1215,7 +1310,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": -1.8,
       "dbpm_rank": 302,
       "game_date": "2026-11-02",
@@ -1246,7 +1341,7 @@
       "obpm": 8.0,
       "obpm_rank": 19,
       "player_name": "Yves Missi",
-      "reason": "Bone Bruise Injury/Illness - Bilateral Patella",
+      "reason": "Bone Bruise",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": 12.4,
@@ -1436,7 +1531,7 @@
       "obpm": -4.7,
       "obpm_rank": 349,
       "player_name": "Jalen Suggs",
-      "reason": "/ Bone Bruise Injury/Illness - Right Achilles Tendon",
+      "reason": "/ Bone Bruise",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 16.8,
@@ -1690,7 +1785,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
@@ -1880,7 +1975,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Out",
+      "current_status": "Questionable",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
@@ -2035,8 +2130,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-02",
-    "report_time_et": "2026-11-02 01:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_01_00PM.pdf"
+    "report_time_et": "2026-11-02 02:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_02_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2077,15 +2172,15 @@
       "team_name": "Brooklyn Nets"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 2,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": "08:30",
           "matchup": "BOS@HOU",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 2,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "BOS",
@@ -2294,14 +2389,14 @@
       "team_name": "Milwaukee Bucks"
     },
     {
-      "player_count": 2,
+      "player_count": 4,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": "08:00",
           "matchup": "MIL@MIN",
-          "player_count": 2,
+          "player_count": 4,
           "report_status": "submitted"
         }
       ],
@@ -2309,14 +2404,14 @@
       "team_name": "Minnesota Timberwolves"
     },
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": null,
           "matchup": "NOP@MEM",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
