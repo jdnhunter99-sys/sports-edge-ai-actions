@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 110,
+  "listed_player_count": 114,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5455,
-      "matched": 60,
-      "no_current_season_row": 50,
+      "complete_coverage_rate": 0.5439,
+      "matched": 62,
+      "no_current_season_row": 52,
       "partial": 0,
-      "player_count": 110,
+      "player_count": 114,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -1785,7 +1785,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Questionable",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
@@ -1914,6 +1914,82 @@
       "reason": "Injury/Illness - Left Calf Strain",
       "team_abbreviation": "SAS",
       "team_name": "San Antonio Spurs",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -0.1,
+      "dbpm_rank": 172,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "TOR@LAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 20.2,
+      "minutes_per_game_rank": 207,
+      "obpm": -5.0,
+      "obpm_rank": 358,
+      "player_name": "Jakob Poeltl",
+      "reason": "Injury/Illness - Left Shoulder Bursitis",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 9.4,
+      "usg_pct_rank": 415
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.5,
+      "dbpm_rank": 41,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "TOR@LAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 26.0,
+      "minutes_per_game_rank": 136,
+      "obpm": -1.5,
+      "obpm_rank": 227,
+      "player_name": "Kawhi Leonard",
+      "reason": "Management",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 34.8,
+      "usg_pct_rank": 10
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "TOR@LAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Malachi Smith",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "TOR@LAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Nate Bittle",
+      "reason": "Fracture Injury/Illness - Left Knee Injury",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
       "usg_pct": null,
       "usg_pct_rank": null
     },
@@ -2130,8 +2206,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-02",
-    "report_time_et": "2026-11-02 03:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_03_00PM.pdf"
+    "report_time_et": "2026-11-02 03:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_03_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2539,15 +2615,15 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": null,
           "matchup": "TOR@LAC",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "TOR",
