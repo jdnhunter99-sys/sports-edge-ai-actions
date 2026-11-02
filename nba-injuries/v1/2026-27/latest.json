@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 117,
+  "listed_player_count": 120,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4957,
-      "matched": 58,
-      "no_current_season_row": 59,
+      "complete_coverage_rate": 0.4917,
+      "matched": 59,
+      "no_current_season_row": 61,
       "partial": 0,
-      "player_count": 117,
+      "player_count": 120,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -353,7 +353,7 @@
       "obpm": 0.7,
       "obpm_rank": 144,
       "player_name": "Jalen Smith",
-      "reason": "Injury/Illness - Left Finger Sprain Injury/Illness - Low Back Stress",
+      "reason": "Injury/Illness - Left Finger Sprain",
       "team_abbreviation": "CHI",
       "team_name": "Chicago Bulls",
       "usg_pct": 18.7,
@@ -448,7 +448,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Khalifa Diop",
-      "reason": "G League - On Assignment",
+      "reason": "G League - On Assignment Injury/Illness - Low Back Stress",
       "team_abbreviation": "CLE",
       "team_name": "Cleveland Cavaliers",
       "usg_pct": null,
@@ -1379,7 +1379,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Donte DiVincenzo",
-      "reason": "Repair / Surgery Injury/Illness - Right Knee",
+      "reason": "Repair / Surgery",
       "team_abbreviation": "MIN",
       "team_name": "Minnesota Timberwolves",
       "usg_pct": null,
@@ -1759,7 +1759,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Dominick Barlow",
-      "reason": "Reaction",
+      "reason": "Injury/Illness - Low Back Stress",
       "team_abbreviation": "PHI",
       "team_name": "Philadelphia 76ers",
       "usg_pct": null,
@@ -1778,11 +1778,49 @@
       "obpm": -2.5,
       "obpm_rank": 263,
       "player_name": "Joel Embiid",
-      "reason": "Injury/Illness - Right Foot Plantar",
+      "reason": "Fascia Injury Management Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "PHI",
       "team_name": "Philadelphia 76ers",
       "usg_pct": 27.3,
       "usg_pct_rank": 48
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "PHX@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Drew Timme",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "PHX@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Mark Williams",
+      "reason": "Injury/Illness - Left Shoulder Surgery",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
     },
     {
       "current_status": "Out",
@@ -2011,6 +2049,25 @@
       "team_name": "San Antonio Spurs",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.0,
+      "dbpm_rank": 165,
+      "game_date": "2026-11-01",
+      "game_time_et": "09:00",
+      "matchup": "TOR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 20.2,
+      "minutes_per_game_rank": 206,
+      "obpm": -5.1,
+      "obpm_rank": 351,
+      "player_name": "Jakob Poeltl",
+      "reason": "Injury/Illness - Left Shoulder Bursitis",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 9.5,
+      "usg_pct_rank": 412
     },
     {
       "current_status": "Out",
@@ -2263,8 +2320,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-01",
-    "report_time_et": "2026-11-01 07:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-01_07_45PM.pdf"
+    "report_time_et": "2026-11-01 09:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-01_09_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2661,15 +2718,15 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 2,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": null,
           "matchup": "PHX@GSW",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 2,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "PHX",
@@ -2721,14 +2778,14 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 3,
+      "player_count": 4,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-01",
           "game_time_et": "09:00",
           "matchup": "TOR@LAL",
-          "player_count": 3,
+          "player_count": 4,
           "report_status": "submitted"
         },
         {
