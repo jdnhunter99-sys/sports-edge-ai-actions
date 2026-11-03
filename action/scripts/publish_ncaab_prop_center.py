@@ -134,6 +134,10 @@ def average(values):
     return rounded(sum(values) / len(values)) if values else None
 
 
+def ratio_pct(numerator, denominator):
+    return rounded(100 * numerator / denominator, 3) if denominator is not None and denominator > 0 and numerator is not None else None
+
+
 def summarize_player_games(games):
     games = [game for game in games if game.get('seasonTypeCode') == 2]
     if not games:
@@ -157,6 +161,55 @@ def summarize_player_games(games):
         'pointsAssistsPerGame': rounded((totals['points'] + totals['assists']) / count, 3),
         'reboundsAssistsPerGame': rounded((totals['rebounds'] + totals['assists']) / count, 3),
         'praPerGame': rounded((totals['points'] + totals['rebounds'] + totals['assists']) / count, 3),
+    })
+
+    # Rate stats use the same playing-time and team/opponent opportunity
+    # denominators as the standard basketball advanced-stat formulas. Keeping
+    # per-game context lets each timeframe (season/L5/L10/L15) be recalculated
+    # from its own games instead of averaging already-rounded rates.
+    ast_denominator = 0.0
+    rebound_numerator = rebound_denominator = 0.0
+    offensive_rebound_numerator = offensive_rebound_denominator = 0.0
+    defensive_rebound_numerator = defensive_rebound_denominator = 0.0
+    for game in games:
+        minutes = num(game.get('minutes'))
+        context = game.get('_rateContext') or {}
+        team_minutes = num(context.get('teamMinutes'))
+        team_factor = team_minutes / 5 if team_minutes and team_minutes > 0 else None
+        if not minutes or minutes <= 0 or not team_factor or team_factor <= 0:
+            continue
+
+        team_fgm = num(context.get('teamFieldGoalsMade'))
+        player_fgm = num(game.get('fieldGoalsMade'))
+        if team_fgm is not None and player_fgm is not None:
+            ast_denominator += (minutes / team_factor) * team_fgm - player_fgm
+
+        player_rebounds = num(game.get('rebounds'))
+        team_rebounds = num(context.get('teamRebounds'))
+        opponent_rebounds = num(context.get('opponentRebounds'))
+        if None not in (player_rebounds, team_rebounds, opponent_rebounds):
+            rebound_numerator += player_rebounds * team_factor
+            rebound_denominator += minutes * (team_rebounds + opponent_rebounds)
+
+        player_oreb = num(game.get('offensiveRebounds'))
+        team_oreb = num(context.get('teamOffensiveRebounds'))
+        opponent_dreb = num(context.get('opponentDefensiveRebounds'))
+        if None not in (player_oreb, team_oreb, opponent_dreb):
+            offensive_rebound_numerator += player_oreb * team_factor
+            offensive_rebound_denominator += minutes * (team_oreb + opponent_dreb)
+
+        player_dreb = num(game.get('defensiveRebounds'))
+        team_dreb = num(context.get('teamDefensiveRebounds'))
+        opponent_oreb = num(context.get('opponentOffensiveRebounds'))
+        if None not in (player_dreb, team_dreb, opponent_oreb):
+            defensive_rebound_numerator += player_dreb * team_factor
+            defensive_rebound_denominator += minutes * (team_dreb + opponent_oreb)
+
+    result.update({
+        'assistPct': ratio_pct(totals['assists'], ast_denominator),
+        'reboundsPct': ratio_pct(rebound_numerator, rebound_denominator),
+        'offensiveReboundPct': ratio_pct(offensive_rebound_numerator, offensive_rebound_denominator),
+        'defensiveReboundPct': ratio_pct(defensive_rebound_numerator, defensive_rebound_denominator),
     })
     return result
 
@@ -577,6 +630,34 @@ def normalize_game(row, team_row, season):
     }
 
 
+def aggregate_team_rate_context(team_row, player_rows):
+    """Return team totals needed to calculate player AST/REB opportunity rates."""
+    player_rows = player_rows or []
+
+    def player_total(field):
+        values = [num(row.get(field)) for row in player_rows]
+        values = [value for value in values if value is not None]
+        return sum(values) if values else None
+
+    def team_value(*aliases, fallback=None):
+        value = num(first(team_row or {}, *aliases))
+        return value if value is not None else fallback
+
+    offensive_rebounds = team_value('offensive_rebounds', 'team_offensive_rebounds', fallback=player_total('offensive_rebounds'))
+    defensive_rebounds = team_value('defensive_rebounds', 'team_defensive_rebounds', fallback=player_total('defensive_rebounds'))
+    rebounds = team_value('total_rebounds', 'rebounds', fallback=player_total('rebounds'))
+    if rebounds is None and offensive_rebounds is not None and defensive_rebounds is not None:
+        rebounds = offensive_rebounds + defensive_rebounds
+
+    return {
+        'teamMinutes': sum(num(row.get('minutes')) or 0 for row in player_rows),
+        'teamFieldGoalsMade': team_value('field_goals_made', 'team_field_goals_made', fallback=player_total('field_goals_made')),
+        'teamRebounds': rebounds,
+        'teamOffensiveRebounds': offensive_rebounds,
+        'teamDefensiveRebounds': defensive_rebounds,
+    }
+
+
 def make_pair_map(team_rows):
     by_game = defaultdict(list)
     for row in team_rows:
@@ -894,21 +975,33 @@ def build_team_directory(team_rows):
 
 
 def build_season(season, generated_at, required=True):
-    player_rows = fetch_release_rows('player', season, required=required)
+    all_player_rows = fetch_release_rows('player', season, required=required)
     all_team_rows = fetch_release_rows('team', season, required=required)
-    player_rows = [row for row in player_rows if text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS]
+    player_rows = [row for row in all_player_rows if text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS]
     team_rows = [row for row in all_team_rows if text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS]
     print(f'Filtered {season} release to {len(player_rows)} Division I player rows and {len(team_rows)} team rows', flush=True)
     team_by_game = {}
+    all_team_by_game = {}
     season_teams = {abbr(row.get('team_abbreviation')) for row in team_rows if abbr(row.get('team_abbreviation'))}
     TEAM_ABBRS.update(season_teams)
     for row in team_rows:
         gid=text(row.get('game_id')); tid=text(row.get('team_id')); team=abbr(row.get('team_abbreviation'))
         if gid and tid: team_by_game[(gid,'id:'+tid)]=row
         if gid and team: team_by_game[(gid,'abbr:'+team)]=row
+    for row in all_team_rows:
+        gid=text(row.get('game_id')); tid=text(row.get('team_id')); team=abbr(row.get('team_abbreviation'))
+        if gid and tid: all_team_by_game[(gid,'id:'+tid)]=row
+        if gid and team: all_team_by_game[(gid,'abbr:'+team)]=row
     players_by_game_team=defaultdict(list)
     for row in player_rows:
         players_by_game_team[(text(row.get('game_id')),text(row.get('team_id')))].append(row)
+    all_players_by_game_team=defaultdict(list)
+    for row in all_player_rows:
+        all_players_by_game_team[(text(row.get('game_id')),text(row.get('team_id')))].append(row)
+    team_rate_context_by_game_team={}
+    for (gid,tid), rows in all_players_by_game_team.items():
+        team_row=all_team_by_game.get((gid,'id:'+tid))
+        team_rate_context_by_game_team[(gid,tid)]=aggregate_team_rate_context(team_row,rows)
     normalized_by_id=defaultdict(list)
     profile_aggs=defaultdict(lambda:{
         'minutesTotal':0,'minutesGames':0,'usageTotal':0,'usageGames':0,
@@ -920,9 +1013,22 @@ def build_season(season, generated_at, required=True):
         if not active_player(row):
             continue
         gid=text(row.get('game_id')); tid=text(row.get('team_id')); team=abbr(row.get('team_abbreviation'))
-        team_row=team_by_game.get((gid,'id:'+tid)) or team_by_game.get((gid,'abbr:'+team))
+        team_row=all_team_by_game.get((gid,'id:'+tid)) or all_team_by_game.get((gid,'abbr:'+team)) or team_by_game.get((gid,'id:'+tid)) or team_by_game.get((gid,'abbr:'+team))
         game=normalize_game(row,team_row,season)
         game['usagePct']=derive_usage(row,team_row)
+        opponent_tid=text((team_row or {}).get('opponent_team_id'))
+        opponent_team=abbr(game.get('opponent'))
+        opponent_team_row=(all_team_by_game.get((gid,'id:'+opponent_tid)) if opponent_tid else None) or all_team_by_game.get((gid,'abbr:'+opponent_team))
+        if not opponent_tid and opponent_team_row:
+            opponent_tid=text(opponent_team_row.get('team_id'))
+        own_rate_context=team_rate_context_by_game_team.get((gid,tid),{})
+        opponent_rate_context=team_rate_context_by_game_team.get((gid,opponent_tid),{}) if opponent_tid else {}
+        game['_rateContext']={
+            **own_rate_context,
+            'opponentRebounds':opponent_rate_context.get('teamRebounds') if opponent_rate_context.get('teamRebounds') is not None else num(first(team_row or {}, 'opponent_total_rebounds', 'opponent_rebounds')),
+            'opponentOffensiveRebounds':opponent_rate_context.get('teamOffensiveRebounds') if opponent_rate_context.get('teamOffensiveRebounds') is not None else num(first(team_row or {}, 'opponent_offensive_rebounds', 'opponent_oreb')),
+            'opponentDefensiveRebounds':opponent_rate_context.get('teamDefensiveRebounds') if opponent_rate_context.get('teamDefensiveRebounds') is not None else num(first(team_row or {}, 'opponent_defensive_rebounds', 'opponent_dreb')),
+        }
         game['teammates']=[normalize_teammate(candidate) for candidate in players_by_game_team.get((gid,tid),[]) if text(candidate.get('athlete_id')) != text(row.get('athlete_id')) and active_player(candidate)]
         game['teammateIds']=[t['id'] for t in game['teammates'] if t['id']]
         game['teammateNames']=[t['name'] for t in game['teammates'] if t['name']]
@@ -947,7 +1053,7 @@ def build_season(season, generated_at, required=True):
         if game['opponent'] and game['gameDate']:
             old=opponent_latest.get(game['opponent'],{}).get(identity)
             if old is None or game['gameDate'] > old['gameDate']:
-                compact_game={key:value for key,value in game.items() if key not in ('teammates','teammateIds','teammateNames')}
+                compact_game={key:value for key,value in game.items() if key not in ('teammates','teammateIds','teammateNames','_rateContext')}
                 opponent_latest.setdefault(game['opponent'],{})[identity]=compact_game
     profiles={}
     for identity,agg in profile_aggs.items():
@@ -960,6 +1066,12 @@ def build_season(season, generated_at, required=True):
         points_total = agg['totals'].get('points', 0)
         rebounds_total = agg['totals'].get('rebounds', 0)
         assists_total = agg['totals'].get('assists', 0)
+        frame_summaries = {
+            'all': summarize_player_games(regular_games),
+            'l5': summarize_player_games(regular_games[-5:]),
+            'l10': summarize_player_games(regular_games[-10:]),
+            'l15': summarize_player_games(regular_games[-15:]),
+        }
         profiles[identity]={
             'espnPlayerId':identity if str(identity).isdigit() else None,
             'playerName':agg['playerName'],'position':agg['position'],'team':agg['team'],'headshot':agg['headshot'] or None,
@@ -974,12 +1086,11 @@ def build_season(season, generated_at, required=True):
             'pointsAssistsPerGame':rounded((points_total + assists_total) / games_played, 3),
             'reboundsAssistsPerGame':rounded((rebounds_total + assists_total) / games_played, 3),
             'praPerGame':rounded((points_total + rebounds_total + assists_total) / games_played, 3),
-            'frames': {
-                'all': summarize_player_games(regular_games),
-                'l5': summarize_player_games(regular_games[-5:]),
-                'l10': summarize_player_games(regular_games[-10:]),
-                'l15': summarize_player_games(regular_games[-15:]),
-            },
+            'assistPct':frame_summaries['all'].get('assistPct'),
+            'reboundsPct':frame_summaries['all'].get('reboundsPct'),
+            'offensiveReboundPct':frame_summaries['all'].get('offensiveReboundPct'),
+            'defensiveReboundPct':frame_summaries['all'].get('defensiveReboundPct'),
+            'frames':frame_summaries,
         }
     shooting_zones_by_player, shooting_zone_defense = fetch_shooting_zone_data(season, all_team_rows, team_rows)
     profile_by_position={bucket:build_profiles(team_rows,player_rows,bucket) for bucket in ('G','F','C')}
@@ -994,6 +1105,7 @@ def build_season(season, generated_at, required=True):
         teammate_directory=build_teammate_directory(games)
         for game in games:
             game.pop('teammates',None)
+            game.pop('_rateContext',None)
         payload={
             'success':True,'schemaVersion':1,'season':season,
             'source':'sportsdataverse-espn-player-box','playerProfile':{
