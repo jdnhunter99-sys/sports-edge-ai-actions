@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,11 +43,11 @@
     },
     {
       "Col1": "#:",
-      "Col2": "24",
+      "Col2": "22",
       "Col3": "# New:",
       "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "29",
+      "Col6": "27",
       "Col7": "Impact Avg:",
       "Col8": "1.2",
       "Col9": "Impact Rank:",
@@ -101,7 +101,7 @@
       "Col5": "RB",
       "Col6": "FALSE",
       "Col7": "10.2",
-      "Col8": "1",
+      "Col8": "0",
       "Col9": "9/12/2026",
       "Col10": "Did not suit up for week 1 game after undisclosed injury. Missed week two. Leaving as out.",
       "Col11": "0"
@@ -198,19 +198,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Jamin Guilbert",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "OL",
-      "Col6": "FALSE",
-      "Col7": "9.4",
-      "Col8": "1",
-      "Col9": "10/30/2026",
-      "Col10": "Official report 2026-10-30: questionable. Game 2026-10-30. Previous context: Official report 2026-10-10: out.",
-      "Col11": "14"
-    },
-    {
       "Col1": "Davis May",
       "Col2": "",
       "Col3": "",
@@ -296,23 +283,10 @@
       "Col5": "TE",
       "Col6": "FALSE",
       "Col7": "9.9",
-      "Col8": "3",
+      "Col8": "2",
       "Col9": "10/24/2026",
       "Col10": "Official report 2026-10-24: out. Game 2026-10-24.",
       "Col11": "0"
-    },
-    {
-      "Col1": "Donovan Turner",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "S",
-      "Col6": "FALSE",
-      "Col7": "7.9",
-      "Col8": "1",
-      "Col9": "10/30/2026",
-      "Col10": "Official report 2026-10-30: questionable. Game 2026-10-30.",
-      "Col11": "17"
     },
     {
       "Col1": "Dylan Gooden",
@@ -365,6 +339,32 @@
       "Col9": "10/30/2026",
       "Col10": "Official report 2026-10-30: out. Game 2026-10-30.",
       "Col11": "0"
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -884,6 +884,45 @@
       "Col8": "Impact",
       "Col9": "Update Date",
       "Col10": "Update Notes",
+      "Col11": ""
+    },
+    {
+      "Col1": "Jamin Guilbert",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "9.4",
+      "Col8": "1",
+      "Col9": "11/2/2026",
+      "Col10": "Cleared from the injury/status report on 11/02/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Donovan Turner",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "S",
+      "Col6": "",
+      "Col7": "7.9",
+      "Col8": "1",
+      "Col9": "11/2/2026",
+      "Col10": "Cleared from the injury/status report on 11/02/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Jamin Guilbert",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "",
+      "Col9": "",
+      "Col10": "",
       "Col11": ""
     },
     {
@@ -1449,11 +1488,11 @@
     ],
     [
       "#:",
-      "24",
+      "22",
       "# New:",
       "0",
       "Impact:",
-      "29",
+      "27",
       "Impact Avg:",
       "1.2",
       "Impact Rank:",
@@ -1507,7 +1546,7 @@
       "RB",
       "FALSE",
       "10.2",
-      "1",
+      "0",
       "9/12/2026",
       "Did not suit up for week 1 game after undisclosed injury. Missed week two. Leaving as out.",
       "0"
@@ -1604,19 +1643,6 @@
       "0"
     ],
     [
-      "Jamin Guilbert",
-      "",
-      "",
-      "Q",
-      "OL",
-      "FALSE",
-      "9.4",
-      "1",
-      "10/30/2026",
-      "Official report 2026-10-30: questionable. Game 2026-10-30. Previous context: Official report 2026-10-10: out.",
-      "14"
-    ],
-    [
       "Davis May",
       "",
       "",
@@ -1702,23 +1728,10 @@
       "TE",
       "FALSE",
       "9.9",
-      "3",
+      "2",
       "10/24/2026",
       "Official report 2026-10-24: out. Game 2026-10-24.",
       "0"
-    ],
-    [
-      "Donovan Turner",
-      "",
-      "",
-      "Q",
-      "S",
-      "FALSE",
-      "7.9",
-      "1",
-      "10/30/2026",
-      "Official report 2026-10-30: questionable. Game 2026-10-30.",
-      "17"
     ],
     [
       "Dylan Gooden",
@@ -1771,6 +1784,32 @@
       "10/30/2026",
       "Official report 2026-10-30: out. Game 2026-10-30.",
       "0"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2290,6 +2329,45 @@
       "Impact",
       "Update Date",
       "Update Notes",
+      ""
+    ],
+    [
+      "Jamin Guilbert",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "9.4",
+      "1",
+      "11/2/2026",
+      "Cleared from the injury/status report on 11/02/2026",
+      ""
+    ],
+    [
+      "Donovan Turner",
+      "",
+      "",
+      "Cleared",
+      "S",
+      "",
+      "7.9",
+      "1",
+      "11/2/2026",
+      "Cleared from the injury/status report on 11/02/2026",
+      ""
+    ],
+    [
+      "Jamin Guilbert",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       ""
     ],
     [
@@ -2826,6 +2904,6 @@
       ""
     ]
   ],
-  "count": 108,
-  "timestamp": "2026-11-02T19:06:54.785Z"
+  "count": 111,
+  "timestamp": "2026-11-03T15:07:21.691Z"
 }
