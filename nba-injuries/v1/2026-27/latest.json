@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 129,
+  "listed_player_count": 130,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5349,
-      "matched": 69,
+      "complete_coverage_rate": 0.5385,
+      "matched": 70,
       "no_current_season_row": 60,
       "partial": 0,
-      "player_count": 129,
+      "player_count": 130,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -930,7 +930,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 0.0,
       "dbpm_rank": 162,
       "game_date": "2026-11-02",
@@ -1310,7 +1310,26 @@
       "usg_pct_rank": 280
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
+      "dbpm": -2.4,
+      "dbpm_rank": 340,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "NOP@MEM",
+      "metrics_status": "matched",
+      "minutes_per_game": 20.0,
+      "minutes_per_game_rank": 211,
+      "obpm": -4.4,
+      "obpm_rank": 335,
+      "player_name": "Javon Small",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies",
+      "usg_pct": 18.2,
+      "usg_pct_rank": 215
+    },
+    {
+      "current_status": "Out",
       "dbpm": 0.0,
       "dbpm_rank": 162,
       "game_date": "2026-11-02",
@@ -1329,7 +1348,7 @@
       "usg_pct_rank": 276
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": 1.3,
       "dbpm_rank": 88,
       "game_date": "2026-11-02",
@@ -1443,7 +1462,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 0.9,
       "dbpm_rank": 111,
       "game_date": "2026-11-02",
@@ -1899,7 +1918,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 0.5,
       "dbpm_rank": 131,
       "game_date": "2026-11-02",
@@ -2063,7 +2082,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Dylan Cardwell",
-      "reason": "Injury/Illness - Left Calf Strain Injury/Illness - Right Elbow",
+      "reason": "Injury/Illness - Left Calf Strain",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -2127,7 +2146,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -2.3,
       "dbpm_rank": 334,
       "game_date": "2026-11-02",
@@ -2139,7 +2158,7 @@
       "obpm": 3.4,
       "obpm_rank": 57,
       "player_name": "Zach LaVine",
-      "reason": "Inflammation / Soreness",
+      "reason": null,
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": 26.0,
@@ -2491,8 +2510,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-02",
-    "report_time_et": "2026-11-02 06:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_06_45PM.pdf"
+    "report_time_et": "2026-11-02 07:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_07_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2713,14 +2732,14 @@
       "team_name": "Los Angeles Lakers"
     },
     {
-      "player_count": 2,
+      "player_count": 3,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": null,
           "matchup": "NOP@MEM",
-          "player_count": 2,
+          "player_count": 3,
           "report_status": "submitted"
         }
       ],
