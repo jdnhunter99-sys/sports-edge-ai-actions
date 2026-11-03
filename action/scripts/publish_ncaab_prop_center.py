@@ -1017,10 +1017,28 @@ def build_season(season, generated_at, required=True):
     print(f'Built {len(normalized_by_id)} player files and {len(profiles)} regular-season player profiles for {season}',flush=True)
     team_profiles = build_team_profiles([row for row in all_team_rows if season_type(row) == 2])
     team_directory, team_aliases = build_team_directory(team_rows)
-    torvik_ratings = fetch_torvik_player_ratings(season)
-    matched_ratings = attach_torvik_player_ratings(profiles, torvik_ratings, team_aliases)
-    if not matched_ratings:
-        raise RuntimeError(f'No Bart Torvik player ratings matched SportsDataverse NCAAB profiles for {season}; refusing to publish blank heat-map ratings')
+    # Bart Torvik is an optional enrichment. Its endpoint can return HTTP 403
+    # from GitHub Actions, and the SportsDataverse box-score dataset already
+    # contains the core player/team data needed to publish the prop center.
+    # Do not discard a complete SportsDataverse build because ratings are
+    # temporarily unavailable; preserve ratings when the endpoint is reachable.
+    try:
+        torvik_ratings = fetch_torvik_player_ratings(season)
+    except Exception as error:
+        torvik_ratings = []
+        print(
+            f'WARN Bart Torvik player ratings unavailable for {season}; '
+            f'publishing SportsDataverse data without this optional enrichment: {error}',
+            flush=True,
+        )
+    if torvik_ratings:
+        matched_ratings = attach_torvik_player_ratings(profiles, torvik_ratings, team_aliases)
+        if not matched_ratings:
+            print(
+                f'WARN Bart Torvik returned ratings for {season}, but none matched '
+                'SportsDataverse player profiles; continuing without the optional enrichment',
+                flush=True,
+            )
     return {'season':season,'profiles':profiles,'teamProfiles':team_profiles,'teamDirectory':team_directory,'teamAliases':team_aliases,'opponentLatest':opponent_latest,'playerLookup':player_lookup,'opponentProfilesByPosition':profile_by_position,'shootingZonesByPlayer':shooting_zones_by_player,'shootingZoneDefense':shooting_zone_defense,'teamCount':len({abbr(r.get("team_abbreviation")) for r in team_rows if abbr(r.get("team_abbreviation")) in TEAM_ABBRS})}
 
 
