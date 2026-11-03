@@ -6,8 +6,8 @@
 1. This HTTP collector replaces the earlier Playwright Pikkit collector; keep only one Pikkit workflow enabled.
 2. Add GitHub Actions secret `PIKKIT_AUTH_TOKEN` containing a fresh authorization header value. Do not commit it, publish it, or share it in chat.
 3. In Settings → Actions → General, enable **Read and write permissions** for workflows.
-4. Actions → **Pikkit Consensus HTTP Publisher** → **Run workflow**. For the first test choose `NCAAFB`; the days input defaults to `1` and can be increased when needed.
-5. Successful runs publish a lightweight `data/<league>.json` index and one full event file at `data/events/<league>/<event_id>.json` per game to the `Pikkit-Consensus` branch. The index `detail_path` points to each event file; all timestamps are UTC. The GitHub workflow has no cron schedule; Base44 dispatches it hourly with all five frontend leagues and `days=1`.
+4. Actions → **Pikkit Consensus HTTP Publisher** → **Run workflow**. For a focused test choose `NCAAB` or another supported league. The days input defaults to `7`; daily leagues including NCAAB are capped at one schedule day, while NFL/NCAAFB use their current weekly schedule.
+5. Successful runs publish a lightweight `data/<league>.json` index and one full event file at `data/events/<league>/<event_id>.json` per game to the `Pikkit-Consensus` branch. The index `detail_path` points to each event file; all timestamps are UTC. The GitHub workflow has no cron schedule; the hourly Base44 trigger dispatches all seven frontend leagues: MLB, NFL, NCAAFB, NBA, NCAAB, WNBA, and NHL.
 
 ## What is collected
 - `/events/all?query_date=YYYY-MM-DD&league_offset=<cursor>`, following the returned `league_offset` until missing; event IDs deduplicated across the chosen dates.
@@ -33,7 +33,7 @@ Run this from the Actions repository root:
 ```bash
 read -s -p 'Pikkit token: ' PIKKIT_AUTH_TOKEN; echo
 export PIKKIT_AUTH_TOKEN
-python3 scripts/collect.py --leagues NCAAFB --days 2
+python3 scripts/collect.py --leagues NCAAB --days 1
 unset PIKKIT_AUTH_TOKEN
 ```
 
