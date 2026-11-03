@@ -29,8 +29,12 @@ def pikkit_league_code(value):
     return 'NCAAM' if code == 'NCAAB' else code
 
 
-# Browser-confirmed 2026-10-14 week selectors. Both advance once every seven days.
-WEEK_ANCHORS = {'NFL': (dt.date(2026, 10, 14), 6), 'NCAAFB': (dt.date(2026, 10, 14), 7)}
+# Browser-confirmed 2026 selectors. NFL and college football use different
+# weekly boundaries: the NCAAFB schedule rolls to its next week on Tuesday.
+# Anchoring NCAAFB to Tuesday keeps Tuesday games (such as the Nov. 3 week-10
+# slate) in the new week instead of leaving them out of the previous week's
+# published consensus index.
+WEEK_ANCHORS = {'NFL': (dt.date(2026, 10, 14), 6), 'NCAAFB': (dt.date(2026, 10, 13), 7)}
 
 
 class NoCommunityData(Exception):
