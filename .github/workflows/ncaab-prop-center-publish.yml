@@ -1,4 +1,4 @@
-name: NCAAB Prop Center Data
+name: NCAAB Team Stats
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
             git -C data checkout -B "$DATA_BRANCH" FETCH_HEAD
           fi
 
-      - name: Fetch SportsDataverse box scores and build NCAAB prop-center JSON
+      - name: Fetch SportsDataverse data and build NCAAB Team Stats JSON
         env:
           NCAAB_PROP_CENTER_OUTPUT_DIR: ${{ github.workspace }}/data
         run: python action/action/scripts/publish_ncaab_prop_center.py
@@ -72,6 +72,6 @@ jobs:
             echo 'NCAAB prop-center JSON is unchanged.'
             exit 0
           fi
-          git commit -qm 'Refresh NCAAB prop-center JSON'
+          git commit -qm 'Refresh NCAAB Team Stats JSON'
           token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
           git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" push --quiet origin "HEAD:${DATA_BRANCH}"
