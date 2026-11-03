@@ -3,6 +3,7 @@
 import csv
 import datetime as dt
 import gzip
+import http.client
 import io
 import json
 import math
@@ -23,8 +24,10 @@ if not OUTPUT_DIR_VALUE:
 OUTPUT_DIR = Path(OUTPUT_DIR_VALUE).expanduser()
 RELEASE_API = 'https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/'
 RELEASES = {'player': 'espn_mens_college_basketball_player_boxscores', 'team': 'espn_mens_college_basketball_team_boxscores'}
+SHOTS_RELEASE = 'espn_mens_college_basketball_shots'
 RELEASE_CACHE = {}
 PROFILE_FRAMES = ('all', 'l5', 'l10', 'l15')
+SHOOTING_ZONE_KEYS = ('restricted_area', 'paint_non_restricted', 'mid_range', 'above_break_3', 'left_corner_3', 'right_corner_3')
 TEAM_ABBRS = set()
 DIVISION_ONE_TEAM_IDS = set()
 HEADERS = {'User-Agent': 'SportsEdgeAI-NCAAB-Prop-Center-Publisher/1.0', 'Accept': 'application/json, text/csv, application/octet-stream, */*'}
@@ -205,6 +208,177 @@ def fetch_release_rows(kind, season, required=True):
         return []
     print(f'Loaded {len(rows)} rows from {asset["name"]}', flush=True)
     return rows
+
+
+def shooting_zone_for_attempt(x, y, shot_value):
+    """Map ESPN's normalized shot coordinates to the six prop-center zones.
+
+    hoopR documents these ESPN coordinates in feet from center court, with
+    shots taken at the right-hand basket rotated 180 degrees. The college lane
+    is 12 feet wide, versus 16 feet in the NBA.
+    """
+    if x is None or y is None or shot_value not in (2, 3):
+        return None
+    if x > 0:
+        x, y = -x, -y
+    if x < -47 or x > 0 or abs(y) > 25:
+        return None
+
+    if shot_value == 3:
+        if x <= -33 and abs(y) >= 20:
+            return 'left_corner_3' if y < 0 else 'right_corner_3'
+        return 'above_break_3'
+
+    distance_from_basket = math.sqrt((x + 41.75) ** 2 + y ** 2)
+    if distance_from_basket <= 4:
+        return 'restricted_area'
+    if abs(y) <= 6 and x <= -28:
+        return 'paint_non_restricted'
+    return 'mid_range'
+
+
+def fetch_shooting_zone_data(season, all_team_rows, division_one_rows):
+    """Aggregate ESPN shot locations into player profiles and team defense ranks."""
+    release_key = f'tag:{SHOTS_RELEASE}'
+    try:
+        if release_key not in RELEASE_CACHE:
+            RELEASE_CACHE[release_key] = json.loads(request_bytes(
+                RELEASE_API + urllib.parse.quote(SHOTS_RELEASE, safe=''),
+                'application/vnd.github+json', timeout=30,
+            ).decode('utf-8'))
+    except (OSError, RuntimeError, ValueError, urllib.error.URLError, TimeoutError) as error:
+        print(f'WARN NCAAB shot-location release lookup failed ({error}); publishing empty shooting-zone data', flush=True)
+        return {}, {}
+    release = RELEASE_CACHE[release_key]
+    wanted_name = f'shots_{season}.csv'
+    asset = next((item for item in release.get('assets', []) if str(item.get('name', '')).lower() == wanted_name), None)
+    if not asset:
+        print(f'WARN no SportsDataverse NCAAB shot-location CSV for {season}; publishing empty shooting-zone data', flush=True)
+        return {}, {}
+
+    team_ids_by_game = defaultdict(set)
+    division_one_team_abbr = {}
+    regular_game_ids = set()
+    for row in all_team_rows:
+        if season_type(row) != 2:
+            continue
+        game_id = text(row.get('game_id'))
+        team_id = text(row.get('team_id'))
+        if not game_id or not team_id:
+            continue
+        team_ids_by_game[game_id].add(team_id)
+        if team_id in DIVISION_ONE_TEAM_IDS:
+            regular_game_ids.add(game_id)
+    for row in division_one_rows:
+        team_id = text(row.get('team_id'))
+        team_abbr = abbr(row.get('team_abbreviation'))
+        if team_id in DIVISION_ONE_TEAM_IDS and team_abbr:
+            division_one_team_abbr[team_id] = team_abbr
+
+    def empty_zone_totals():
+        return {zone: {'attempts': 0, 'makes': 0, 'points': 0} for zone in SHOOTING_ZONE_KEYS}
+
+    player_totals = defaultdict(empty_zone_totals)
+    player_games = defaultdict(set)
+    defense_totals = defaultdict(empty_zone_totals)
+    defense_games = defaultdict(set)
+    headers = dict(HEADERS)
+    headers['Accept'] = 'application/octet-stream'
+    request = urllib.request.Request(asset['browser_download_url'], headers=headers)
+    attempt_rows = 0
+    try:
+        # Stream the release CSV: the completed 2025-26 asset is over 120 MB.
+        with urllib.request.urlopen(request, timeout=240) as response:
+            text_stream = io.TextIOWrapper(response, encoding='utf-8-sig', errors='replace', newline='')
+            reader = csv.DictReader(text_stream)
+            for source in reader:
+                attempt_rows += 1
+                game_id = text(source.get('game_id'))
+                team_id = text(source.get('team_id'))
+                player_id = text(source.get('athlete_id_1'))
+                if game_id not in regular_game_ids or not team_id:
+                    continue
+                shot_value = num(source.get('score_value'))
+                if shot_value not in (2, 3):
+                    continue
+                zone = shooting_zone_for_attempt(num(source.get('coordinate_x')), num(source.get('coordinate_y')), int(shot_value))
+                if not zone:
+                    continue
+                made = bool_value(source.get('scoring_play')) is True
+                points = int(shot_value) if made else 0
+
+                if team_id in DIVISION_ONE_TEAM_IDS and player_id:
+                    player_totals[player_id][zone]['attempts'] += 1
+                    player_totals[player_id][zone]['makes'] += int(made)
+                    player_totals[player_id][zone]['points'] += points
+                    player_games[player_id].add(game_id)
+
+                for defense_team_id in team_ids_by_game.get(game_id, ()):
+                    if defense_team_id == team_id or defense_team_id not in DIVISION_ONE_TEAM_IDS:
+                        continue
+                    defense_abbr = division_one_team_abbr.get(defense_team_id)
+                    if not defense_abbr:
+                        continue
+                    defense_totals[defense_abbr][zone]['attempts'] += 1
+                    defense_totals[defense_abbr][zone]['makes'] += int(made)
+                    defense_totals[defense_abbr][zone]['points'] += points
+                    defense_games[defense_abbr].add(game_id)
+    except (urllib.error.URLError, TimeoutError, OSError, http.client.HTTPException, csv.Error, UnicodeError) as error:
+        print(f'WARN NCAAB {season} shot-location download/parse failed ({error}); publishing empty shooting-zone data', flush=True)
+        return {}, {}
+
+    player_zones = {}
+    for player_id, zones in player_totals.items():
+        total_attempts = sum(item['attempts'] for item in zones.values())
+        total_points = sum(item['points'] for item in zones.values())
+        player_zones[player_id] = {
+            'shotGames': len(player_games[player_id]),
+            'zones': {
+                zone: {
+                    **values,
+                    'fg_pct': rounded(100 * values['makes'] / values['attempts'], 2) if values['attempts'] else None,
+                    'attempt_share_pct': rounded(100 * values['attempts'] / total_attempts, 2) if total_attempts else None,
+                    'points_share_pct': rounded(100 * values['points'] / total_points, 2) if total_points else None,
+                }
+                for zone, values in zones.items()
+            },
+        }
+
+    team_zones = {}
+    for team_abbr, zones in defense_totals.items():
+        games = len(defense_games[team_abbr])
+        if games <= 0:
+            continue
+        team_zones[team_abbr] = {
+            'gamesSampled': games,
+            'zones': {
+                zone: {
+                    'points_allowed': values['points'],
+                    'points_allowed_per_game': rounded(values['points'] / games, 4),
+                    'attempts_allowed': values['attempts'],
+                    'attempts_allowed_per_game': rounded(values['attempts'] / games, 4),
+                    'fg_pct_allowed': rounded(100 * values['makes'] / values['attempts'], 2) if values['attempts'] else None,
+                }
+                for zone, values in zones.items()
+            },
+        }
+
+    for zone in SHOOTING_ZONE_KEYS:
+        ranked = sorted(
+            ((team, values['zones'][zone]['points_allowed_per_game']) for team, values in team_zones.items()),
+            key=lambda item: (item[1], item[0]),
+        )
+        rank_count = len(ranked)
+        for rank, (team, _) in enumerate(ranked, start=1):
+            team_zones[team]['zones'][zone]['rank'] = rank
+            team_zones[team]['zones'][zone]['rankTeamCount'] = rank_count
+
+    print(
+        f'NCAAB {season} shooting zones: scanned {attempt_rows} ESPN shot rows, '
+        f'aggregated {len(player_zones)} players and {len(team_zones)} D-I defenses',
+        flush=True,
+    )
+    return player_zones, team_zones
 
 
 def fetch_torvik_player_ratings(season):
@@ -807,6 +981,7 @@ def build_season(season, generated_at, required=True):
                 'l15': summarize_player_games(regular_games[-15:]),
             },
         }
+    shooting_zones_by_player, shooting_zone_defense = fetch_shooting_zone_data(season, all_team_rows, team_rows)
     profile_by_position={bucket:build_profiles(team_rows,player_rows,bucket) for bucket in ('G','F','C')}
     player_lookup={'byId':{},'byName':{}}
     root=OUTPUT_DIR/'ncaab-prop-center'/'v1'
@@ -846,7 +1021,7 @@ def build_season(season, generated_at, required=True):
     matched_ratings = attach_torvik_player_ratings(profiles, torvik_ratings, team_aliases)
     if not matched_ratings:
         raise RuntimeError(f'No Bart Torvik player ratings matched SportsDataverse NCAAB profiles for {season}; refusing to publish blank heat-map ratings')
-    return {'season':season,'profiles':profiles,'teamProfiles':team_profiles,'teamDirectory':team_directory,'teamAliases':team_aliases,'opponentLatest':opponent_latest,'playerLookup':player_lookup,'opponentProfilesByPosition':profile_by_position,'teamCount':len({abbr(r.get("team_abbreviation")) for r in team_rows if abbr(r.get("team_abbreviation")) in TEAM_ABBRS})}
+    return {'season':season,'profiles':profiles,'teamProfiles':team_profiles,'teamDirectory':team_directory,'teamAliases':team_aliases,'opponentLatest':opponent_latest,'playerLookup':player_lookup,'opponentProfilesByPosition':profile_by_position,'shootingZonesByPlayer':shooting_zones_by_player,'shootingZoneDefense':shooting_zone_defense,'teamCount':len({abbr(r.get("team_abbreviation")) for r in team_rows if abbr(r.get("team_abbreviation")) in TEAM_ABBRS})}
 
 
 def build_teammate_directory(games):
@@ -923,6 +1098,19 @@ def main():
         except (OSError,ValueError,json.JSONDecodeError):
             pass
     player_profiles=build_opponent_dataset(seasons,current,previous)
+    shooting_zone_paths = {}
+    for season_data in seasons:
+        season_key = str(season_data['season'])
+        zone_path = f'shooting-zones/{season_key}.json.gz'
+        write_json(root/zone_path, {
+            'success':True,
+            'schemaVersion':1,
+            'season':season_data['season'],
+            'source':'sportsdataverse-espn-mens-college-basketball-shots',
+            'players':season_data.get('shootingZonesByPlayer') or {},
+            'teams':season_data.get('shootingZoneDefense') or {},
+        })
+        shooting_zone_paths[season_key] = zone_path
     team_directory={}
     team_aliases={}
     for season_data in seasons:
@@ -941,6 +1129,7 @@ def main():
         'source':'sportsdataverse-espn-ncaab-player-and-team-boxscores','playerLookup':lookup,
         'opponentProfilesBySeason':{str(item['season']):item['opponentProfilesByPosition'] for item in seasons},
         'teamProfilesBySeason':{str(item['season']):item['teamProfiles'] for item in seasons},
+        'shootingZonePathsBySeason':shooting_zone_paths,
         'playerProfiles':player_profiles,
         'teamDirectory':team_directory,'teamAliases':team_aliases,
         'seasons':{str(item['season']):{'playerCount':len(item['profiles']),'teamCount':item['teamCount']} for item in seasons},
