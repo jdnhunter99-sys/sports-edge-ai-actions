@@ -417,22 +417,44 @@ def build_team_profiles(team_rows):
         team = abbr(row.get('team_abbreviation'))
         if game_id:
             by_game[game_id].append(row)
-        if team and iso_date(row.get('game_date')):
+        if team and text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS and iso_date(row.get('game_date')):
             by_team[team].append(row)
-    frames = ('all', 'l5', 'l10', 'l15', 'home', 'away')
+    pair_map = make_pair_map(team_rows)
+    frames = ('all', 'l3', 'l5', 'l10', 'l15', 'home', 'away')
     profiles = {}
-    metric_fields = {
-        'pointsFor': ('team_score', False), 'pointsAllowed': ('opponent_team_score', True),
-        'fieldGoalsMade': ('field_goals_made', False), 'fieldGoalsAttempted': ('field_goals_attempted', False),
-        'fieldGoalPct': ('field_goal_pct', False), 'threePointersMade': ('three_point_field_goals_made', False),
-        'threePointersAttempted': ('three_point_field_goals_attempted', False), 'threePointPct': ('three_point_field_goal_pct', False),
-        'freeThrowsMade': ('free_throws_made', False), 'freeThrowsAttempted': ('free_throws_attempted', False),
-        'freeThrowPct': ('free_throw_pct', False), 'rebounds': ('total_rebounds', False),
-        'offensiveRebounds': ('offensive_rebounds', False), 'defensiveRebounds': ('defensive_rebounds', False),
-        'assists': ('assists', False), 'steals': ('steals', False), 'blocks': ('blocks', False),
-        'turnovers': ('total_turnovers', True), 'fouls': ('fouls', True), 'pointsInPaint': ('points_in_paint', False),
-        'fastBreakPoints': ('fast_break_points', False), 'turnoverPoints': ('turnover_points', False),
-    }
+
+    def field_total(rows, *aliases):
+        observed = [num(first(row, *aliases)) for row in rows]
+        observed = [value for value in observed if value is not None]
+        return sum(observed) if observed else None
+
+    def rate(numerator, denominator):
+        if numerator is None or denominator is None or denominator == 0:
+            return None
+        return rounded(numerator / denominator, 6)
+
+    def estimate_possessions(team, opponent):
+        fga = num(first(team, 'field_goals_attempted')) or 0
+        fgm = num(first(team, 'field_goals_made')) or 0
+        fta = num(first(team, 'free_throws_attempted')) or 0
+        oreb = num(first(team, 'offensive_rebounds')) or 0
+        tov = num(first(team, 'turnovers', 'total_turnovers', 'team_turnovers')) or 0
+        if not opponent:
+            return fga + 0.4 * fta - oreb + tov
+
+        opp_fga = num(first(opponent, 'field_goals_attempted')) or 0
+        opp_fgm = num(first(opponent, 'field_goals_made')) or 0
+        opp_fta = num(first(opponent, 'free_throws_attempted')) or 0
+        opp_oreb = num(first(opponent, 'offensive_rebounds')) or 0
+        opp_tov = num(first(opponent, 'turnovers', 'total_turnovers', 'team_turnovers')) or 0
+        dreb = num(first(team, 'defensive_rebounds')) or 0
+        opp_dreb = num(first(opponent, 'defensive_rebounds')) or 0
+        team_orb_rate = oreb / (oreb + opp_dreb) if oreb + opp_dreb else 0
+        opp_orb_rate = opp_oreb / (opp_oreb + dreb) if opp_oreb + dreb else 0
+        team_poss = fga + 0.4 * fta - 1.07 * team_orb_rate * (fga - fgm) + tov
+        opp_poss = opp_fga + 0.4 * opp_fta - 1.07 * opp_orb_rate * (opp_fga - opp_fgm) + opp_tov
+        return 0.5 * (team_poss + opp_poss)
+
     for team, unsorted in by_team.items():
         rows = sorted(unsorted, key=lambda row: iso_date(row.get('game_date')))
         team_frames = {}
@@ -446,42 +468,114 @@ def build_team_profiles(team_rows):
             if not sample:
                 team_frames[frame] = {'games': 0, 'values': {}, 'ranks': {}, 'rankTeamCounts': {}}
                 continue
-            values = {}
+            game_pairs = []
+            for row in sample:
+                game_id = text(row.get('game_id'))
+                team_id = text(row.get('team_id')) or team
+                game_pairs.append((row, pair_map.get((game_id, team_id))))
+            opponent_rows = [opponent for _, opponent in game_pairs if opponent]
+            gp = len(sample)
+
+            own_pts = field_total(sample, 'team_score')
+            opp_pts = field_total(sample, 'opponent_team_score')
+            fgm = field_total(sample, 'field_goals_made')
+            fga = field_total(sample, 'field_goals_attempted')
+            three_m = field_total(sample, 'three_point_field_goals_made')
+            three_a = field_total(sample, 'three_point_field_goals_attempted')
+            ftm = field_total(sample, 'free_throws_made')
+            fta = field_total(sample, 'free_throws_attempted')
+            oreb = field_total(sample, 'offensive_rebounds')
+            dreb = field_total(sample, 'defensive_rebounds')
+            tov = field_total(sample, 'turnovers', 'total_turnovers', 'team_turnovers')
+            ast = field_total(sample, 'assists')
+            opp_fgm = field_total(opponent_rows, 'field_goals_made')
+            opp_fga = field_total(opponent_rows, 'field_goals_attempted')
+            opp_three_m = field_total(opponent_rows, 'three_point_field_goals_made')
+            opp_three_a = field_total(opponent_rows, 'three_point_field_goals_attempted')
+            opp_ftm = field_total(opponent_rows, 'free_throws_made')
+            opp_fta = field_total(opponent_rows, 'free_throws_attempted')
+            opp_oreb = field_total(opponent_rows, 'offensive_rebounds')
+            opp_dreb = field_total(opponent_rows, 'defensive_rebounds')
+            opp_tov = field_total(opponent_rows, 'turnovers', 'total_turnovers', 'team_turnovers')
+            poss_values = [estimate_possessions(row, opponent) for row, opponent in game_pairs]
+            poss_values = [value for value in poss_values if value and value > 0]
+            poss_total = sum(poss_values) if poss_values else None
+            opp_gp = len(opponent_rows)
+
+            def per_game(total, games=gp):
+                return rounded(total / games, 3) if total is not None and games else None
+
+            def opponent_average(*aliases):
+                return per_game(field_total(opponent_rows, *aliases), opp_gp)
+
             team_results = []
-            for out_key, (field, lower_better) in metric_fields.items():
-                observed = [num(row.get(field)) for row in sample]
-                observed = [value for value in observed if value is not None]
-                values[out_key] = rounded(sum(observed) / len(observed), 3) if observed else None
             for row in sample:
                 score = num(row.get('team_score'))
                 opponent_score = num(row.get('opponent_team_score'))
                 if score is not None and opponent_score is not None:
                     team_results.append('W' if score > opponent_score else 'L' if score < opponent_score else 'T')
+
+            values = {
+                'pointsPerGame': per_game(own_pts),
+                'offensiveRating': rate(own_pts * 100, poss_total) if own_pts is not None else None,
+                'pace': per_game(poss_total),
+                'fieldGoalsMade': per_game(fgm), 'fieldGoalsAttempted': per_game(fga),
+                'fieldGoalPct': rate(fgm, fga), 'twoPointPct': rate((fgm - three_m) if fgm is not None and three_m is not None else None, (fga - three_a) if fga is not None and three_a is not None else None),
+                'threePointersMade': per_game(three_m), 'threePointersAttempted': per_game(three_a),
+                'threePointPct': rate(three_m, three_a), 'threePointAttemptRate': rate(three_a, fga),
+                'freeThrowsMade': per_game(ftm), 'freeThrowsAttempted': per_game(fta),
+                'freeThrowPct': rate(ftm, fta), 'freeThrowAttemptRate': rate(fta, fga),
+                'effectiveFgPct': rate((fgm + 0.5 * three_m) if fgm is not None and three_m is not None else None, fga),
+                'trueShootingPct': rate(own_pts, 2 * (fga + 0.44 * fta)) if own_pts is not None and fga is not None and fta is not None else None,
+                'assists': per_game(ast), 'assistToTurnover': rate(ast, tov),
+                'turnovers': per_game(tov), 'turnoverPct': rate(tov, poss_total),
+                'offensiveRebounds': per_game(oreb),
+                'offensiveReboundPct': rate(oreb, oreb + opp_dreb) if oreb is not None and opp_dreb is not None else None,
+                'assistPct': rate(ast, fgm),
+                'totalReboundPct': rate((oreb + dreb) if oreb is not None and dreb is not None else None, (oreb + dreb + opp_oreb + opp_dreb) if None not in (oreb, dreb, opp_oreb, opp_dreb) else None),
+                'pointsInPaint': per_game(field_total(sample, 'points_in_paint')),
+                'fastBreakPoints': per_game(field_total(sample, 'fast_break_points')),
+                'pointsOffTurnovers': per_game(field_total(sample, 'turnover_points', 'points_off_turnovers')),
+                'pointsAllowedPerGame': per_game(opp_pts),
+                'defensiveRating': rate(opp_pts * 100, poss_total) if opp_pts is not None else None,
+                'opponentFieldGoalPct': rate(opp_fgm, opp_fga),
+                'opponentTwoPointPct': rate((opp_fgm - opp_three_m) if opp_fgm is not None and opp_three_m is not None else None, (opp_fga - opp_three_a) if opp_fga is not None and opp_three_a is not None else None),
+                'opponentThreePointPct': rate(opp_three_m, opp_three_a),
+                'opponentThreePointAttemptRate': rate(opp_three_a, opp_fga),
+                'opponentFreeThrowPct': rate(opp_ftm, opp_fta),
+                'opponentFreeThrowRate': rate(opp_fta, opp_fga),
+                'opponentEffectiveFgPct': rate((opp_fgm + 0.5 * opp_three_m) if opp_fgm is not None and opp_three_m is not None else None, opp_fga),
+                'opponentTrueShootingPct': rate(opp_pts, 2 * (opp_fga + 0.44 * opp_fta)) if opp_pts is not None and opp_fga is not None and opp_fta is not None else None,
+                'opponentTurnovers': per_game(opp_tov, opp_gp),
+                'opponentTurnoverPct': rate(opp_tov, poss_total),
+                'defensiveRebounds': per_game(dreb),
+                'defensiveReboundPct': rate(dreb, dreb + opp_oreb) if dreb is not None and opp_oreb is not None else None,
+                'offensiveReboundsAllowed': per_game(opp_oreb, opp_gp),
+                'steals': per_game(field_total(sample, 'steals')),
+                'blocks': per_game(field_total(sample, 'blocks')),
+                'fouls': per_game(field_total(sample, 'fouls')),
+                'pointsInPaintAllowed': opponent_average('points_in_paint'),
+                'fastBreakPointsAllowed': opponent_average('fast_break_points'),
+                'pointsAllowedOffTurnovers': opponent_average('turnover_points', 'points_off_turnovers'),
+                'opponentAssists': per_game(field_total(opponent_rows, 'assists'), opp_gp),
+                'opponentTotalRebounds': per_game(field_total(opponent_rows, 'total_rebounds'), opp_gp),
+                'opponentDefensiveRebounds': per_game(opp_dreb, opp_gp),
+            }
             values.update({
                 'wins': team_results.count('W'), 'losses': team_results.count('L'),
                 'ties': team_results.count('T'), 'record': f"{team_results.count('W')}-{team_results.count('L')}-{team_results.count('T')}",
                 'winPct': rounded(100 * team_results.count('W') / len(team_results), 1) if team_results else None,
             })
-            # Add opponent shooting and scoring indicators from the matching game row.
-            opponent_rows = []
-            for row in sample:
-                gid = text(row.get('game_id'))
-                opponent = abbr(row.get('opponent_team_abbreviation'))
-                peer = next((candidate for candidate in by_game.get(gid, []) if abbr(candidate.get('team_abbreviation')) == opponent), None)
-                if peer:
-                    opponent_rows.append(peer)
-            for out_key, field in (
-                ('fieldGoalPctAllowed', 'field_goal_pct'), ('threePointPctAllowed', 'three_point_field_goal_pct'),
-                ('freeThrowPctAllowed', 'free_throw_pct'), ('opponentAssists', 'assists'),
-                ('opponentRebounds', 'total_rebounds'), ('opponentTurnovers', 'total_turnovers'),
-                ('opponentPointsInPaint', 'points_in_paint'),
-            ):
-                observed = [num(row.get(field)) for row in opponent_rows]
-                observed = [value for value in observed if value is not None]
-                values[out_key] = rounded(sum(observed) / len(observed), 3) if observed else None
             team_frames[frame] = {'games': len(sample), 'values': values, 'ranks': {}, 'rankTeamCounts': {}}
         profiles[team] = team_frames
-    lower_metrics = {'pointsAllowed', 'fieldGoalPctAllowed', 'threePointPctAllowed', 'freeThrowPctAllowed', 'opponentAssists', 'opponentRebounds', 'opponentPointsInPaint', 'turnovers', 'fouls'}
+    lower_metrics = {
+        'turnovers', 'turnoverPct', 'pointsAllowedPerGame', 'defensiveRating', 'opponentFieldGoalPct',
+        'opponentTwoPointPct', 'opponentThreePointPct', 'opponentThreePointAttemptRate',
+        'opponentFreeThrowPct', 'opponentFreeThrowRate', 'opponentEffectiveFgPct',
+        'opponentTrueShootingPct', 'offensiveReboundsAllowed', 'fouls', 'pointsInPaintAllowed',
+        'fastBreakPointsAllowed', 'pointsAllowedOffTurnovers', 'opponentAssists',
+        'opponentTotalRebounds', 'opponentDefensiveRebounds',
+    }
     for frame in frames:
         metric_keys = {key for frame_data in profiles.values() for key in frame_data[frame]['values']}
         for metric in metric_keys:
@@ -525,9 +619,9 @@ def build_team_directory(team_rows):
 
 def build_season(season, generated_at, required=True):
     player_rows = fetch_release_rows('player', season, required=required)
-    team_rows = fetch_release_rows('team', season, required=required)
+    all_team_rows = fetch_release_rows('team', season, required=required)
     player_rows = [row for row in player_rows if text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS]
-    team_rows = [row for row in team_rows if text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS]
+    team_rows = [row for row in all_team_rows if text(row.get('team_id')) in DIVISION_ONE_TEAM_IDS]
     print(f'Filtered {season} release to {len(player_rows)} Division I player rows and {len(team_rows)} team rows', flush=True)
     team_by_game = {}
     season_teams = {abbr(row.get('team_abbreviation')) for row in team_rows if abbr(row.get('team_abbreviation'))}
@@ -644,7 +738,7 @@ def build_season(season, generated_at, required=True):
     if required and not profiles:
         raise RuntimeError(f'No regular-season NCAAB player profiles were built for required season {season}')
     print(f'Built {len(normalized_by_id)} player files and {len(profiles)} regular-season player profiles for {season}',flush=True)
-    team_profiles = build_team_profiles([row for row in team_rows if season_type(row) == 2])
+    team_profiles = build_team_profiles([row for row in all_team_rows if season_type(row) == 2])
     team_directory, team_aliases = build_team_directory(team_rows)
     return {'season':season,'profiles':profiles,'teamProfiles':team_profiles,'teamDirectory':team_directory,'teamAliases':team_aliases,'opponentLatest':opponent_latest,'playerLookup':player_lookup,'opponentProfilesByPosition':profile_by_position,'teamCount':len({abbr(r.get("team_abbreviation")) for r in team_rows if abbr(r.get("team_abbreviation")) in TEAM_ABBRS})}
 
