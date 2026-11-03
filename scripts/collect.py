@@ -167,7 +167,7 @@ def main():
     parser.add_argument('--start-date', default=os.getenv('START_DATE', dt.datetime.now(dt.timezone.utc).date().isoformat()))
     parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '7')),
                         help='Date window for non-football leagues; football uses its selected week')
-    parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAB,NCAAFB,MLB,NBA,NFL,NHL')
+    parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAB,NCAAFB,MLB,NBA,NFL,NHL (NCAAB is always included)')
     parser.add_argument('--out', default='data')
     parser.add_argument('--nfl-week', type=int, default=int(os.environ['NFL_WEEK']) if os.environ.get('NFL_WEEK') else None)
     parser.add_argument('--ncaafb-week', type=int, default=int(os.environ['NCAAFB_WEEK']) if os.environ.get('NCAAFB_WEEK') else None)
@@ -189,6 +189,9 @@ def main():
     captured_at = dt.datetime.now(dt.timezone.utc).isoformat()
     all_events = {}
     requested_leagues = set(DEFAULT_LEAGUES) if leagues_filter is None else leagues_filter
+    # Older Base44 dispatches may still send the six-sport list. Keep the
+    # NCAAB feed enabled even when a caller passes an explicit legacy list.
+    requested_leagues.add('NCAAB')
     for league in sorted(requested_leagues):
         if league in FOOTBALL_LEAGUES:
             override = args.nfl_week if league == 'NFL' else args.ncaafb_week
