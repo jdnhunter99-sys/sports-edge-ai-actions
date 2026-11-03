@@ -28,6 +28,17 @@ PROFILE_FRAMES = ('all', 'l5', 'l10', 'l15')
 TEAM_ABBRS = set()
 DIVISION_ONE_TEAM_IDS = set()
 HEADERS = {'User-Agent': 'SportsEdgeAI-NCAAB-Prop-Center-Publisher/1.0', 'Accept': 'application/json, text/csv, application/octet-stream, */*'}
+TORVIK_PLAYER_COLUMNS = (
+    'player_name', 'team', 'conf', 'games', 'min_pct', 'o_rtg', 'usage', 'e_fg',
+    'ts_pct', 'orb_pct', 'drb_pct', 'ast_pct', 'to_pct', 'ftm', 'fta', 'ft_pct',
+    'two_pm', 'two_pa', 'two_p_pct', 'three_pm', 'three_pa', 'three_p_pct',
+    'blk_pct', 'stl_pct', 'ftr', 'class', 'height', 'number', 'porpag', 'adj_oe',
+    'pfr', 'year', 'player_id', 'hometown', 'rec_rank', 'ast_to', 'rim_made',
+    'rim_attempts', 'mid_made', 'mid_attempts', 'rim_pct', 'mid_pct', 'dunks_made',
+    'dunks_attempts', 'dunks_pct', 'pick', 'drtg', 'adrtg', 'dporpag', 'stops',
+    'bpm', 'obpm', 'dbpm', 'gbpm', 'minutes', 'ogbpm', 'dgbpm', 'oreb', 'dreb',
+    'treb', 'ast', 'stl', 'blk', 'pts', 'role', 'threat', 'recruit_date',
+)
 
 
 def normalize_header(value):
@@ -151,10 +162,11 @@ def first(row, *keys):
     return next((row.get(k) for k in keys if row.get(k) not in (None, '')), None)
 
 
-def request_bytes(url, accept=None, timeout=90, attempts=4):
+def request_bytes(url, accept=None, timeout=90, attempts=4, request_headers=None):
     headers = dict(HEADERS)
     if accept:
         headers['Accept'] = accept
+    headers.update(request_headers or {})
     last = None
     for attempt in range(attempts):
         try:
@@ -193,6 +205,96 @@ def fetch_release_rows(kind, season, required=True):
         return []
     print(f'Loaded {len(rows)} rows from {asset["name"]}', flush=True)
     return rows
+
+
+def fetch_torvik_player_ratings(season):
+    """Load Bart Torvik's public player season ratings (4-digit ending year)."""
+    url = f'https://barttorvik.com/getadvstats.php?year={season}&csv=1'
+    payload = request_bytes(
+        url,
+        'text/csv,text/plain,application/octet-stream,*/*',
+        timeout=90,
+        attempts=3,
+        request_headers={
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            'Referer': f'https://barttorvik.com/playerstat.php?year={season}',
+        },
+    )
+    rows = []
+    for values in csv.reader(io.StringIO(payload.decode('utf-8-sig', errors='replace'))):
+        if len(values) < len(TORVIK_PLAYER_COLUMNS):
+            continue
+        record = dict(zip(TORVIK_PLAYER_COLUMNS, values))
+        name = text(record.get('player_name'))
+        offensive_rating = num(record.get('o_rtg'))
+        defensive_rating = num(record.get('drtg'))
+        if name and offensive_rating is not None and defensive_rating is not None:
+            rows.append({
+                'playerName': name,
+                'teamName': text(record.get('team')),
+                'offensiveRating': rounded(offensive_rating, 3),
+                'defensiveRating': rounded(defensive_rating, 3),
+                'netRating': rounded(offensive_rating - defensive_rating, 3),
+            })
+    if not rows:
+        raise RuntimeError(f'Bart Torvik player rating CSV for {season} contained no usable player ratings')
+    return rows
+
+
+def team_alias_variants(value):
+    """Expand common Saint/State abbreviations for safe provider name matching."""
+    base = normalize_name(value)
+    if not base:
+        return set()
+    variants = {base}
+    variants.add(re.sub(r'\bst\b', 'state', base))
+    variants.add(re.sub(r'\bst\b', 'saint', base))
+    variants.add(re.sub(r'\bstate\b', 'st', base))
+    variants.add(re.sub(r'\bsaint\b', 'st', base))
+    return {variant for variant in variants if variant}
+
+
+def attach_torvik_player_ratings(profiles, rating_rows, team_aliases):
+    """Join Bart Torvik ratings to ESPN-ID player profiles by normalized name/team."""
+    profiles_by_name = defaultdict(list)
+    for profile_id, profile in profiles.items():
+        name = normalize_player_lookup_name(profile.get('playerName'))
+        if name:
+            profiles_by_name[name].append((str(profile_id), profile))
+
+    teams_by_alias = defaultdict(set)
+    for alias, team_abbr in (team_aliases or {}).items():
+        for variant in team_alias_variants(alias):
+            teams_by_alias[variant].add(abbr(team_abbr))
+
+    matched = 0
+    for rating in rating_rows:
+        name_key = normalize_player_lookup_name(rating.get('playerName'))
+        candidates = profiles_by_name.get(name_key, [])
+        if not candidates:
+            continue
+
+        provider_teams = set()
+        for variant in team_alias_variants(rating.get('teamName')):
+            provider_teams.update(teams_by_alias.get(variant, set()))
+        provider_teams.discard('')
+        team_matches = [entry for entry in candidates if abbr(entry[1].get('team')) in provider_teams]
+        target = team_matches[0] if len(team_matches) == 1 else candidates[0] if len(candidates) == 1 else None
+        if not target:
+            continue
+
+        profile = target[1]
+        ratings = {
+            'offensiveRating': rating['offensiveRating'],
+            'defensiveRating': rating['defensiveRating'],
+            'netRating': rating['netRating'],
+        }
+        profile.update(ratings)
+        for frame in (profile.get('frames') or {}).values():
+            frame.update(ratings)
+        matched += 1
+    print(f'Bart Torvik player ratings: matched {matched}/{len(rating_rows)} rows to SportsDataverse player profiles', flush=True)
+    return matched
 
 
 def fetch_division_one_team_ids():
@@ -740,6 +842,10 @@ def build_season(season, generated_at, required=True):
     print(f'Built {len(normalized_by_id)} player files and {len(profiles)} regular-season player profiles for {season}',flush=True)
     team_profiles = build_team_profiles([row for row in all_team_rows if season_type(row) == 2])
     team_directory, team_aliases = build_team_directory(team_rows)
+    torvik_ratings = fetch_torvik_player_ratings(season)
+    matched_ratings = attach_torvik_player_ratings(profiles, torvik_ratings, team_aliases)
+    if not matched_ratings:
+        raise RuntimeError(f'No Bart Torvik player ratings matched SportsDataverse NCAAB profiles for {season}; refusing to publish blank heat-map ratings')
     return {'season':season,'profiles':profiles,'teamProfiles':team_profiles,'teamDirectory':team_directory,'teamAliases':team_aliases,'opponentLatest':opponent_latest,'playerLookup':player_lookup,'opponentProfilesByPosition':profile_by_position,'teamCount':len({abbr(r.get("team_abbreviation")) for r in team_rows if abbr(r.get("team_abbreviation")) in TEAM_ABBRS})}
 
 
