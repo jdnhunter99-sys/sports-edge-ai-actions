@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 130,
+  "listed_player_count": 132,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5385,
-      "matched": 70,
+      "complete_coverage_rate": 0.5455,
+      "matched": 72,
       "no_current_season_row": 60,
       "partial": 0,
-      "player_count": 130,
+      "player_count": 132,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -607,7 +607,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 2.1,
       "dbpm_rank": 54,
       "game_date": "2026-11-02",
@@ -771,7 +771,7 @@
       "obpm": -2.1,
       "obpm_rank": 251,
       "player_name": "Al Horford",
-      "reason": "Injury Management Injury/Illness - Left Patellar Tendon",
+      "reason": "Injury/Illness - Bilateral Low Back",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": 12.5,
@@ -828,7 +828,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jimmy Butler III",
-      "reason": "Surgery Injury/Illness - Bilateral Low Back",
+      "reason": "Surgery",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -1957,6 +1957,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": -2.6,
+      "dbpm_rank": 356,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "PHX@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 6.333333333333333,
+      "minutes_per_game_rank": 365,
+      "obpm": 0.4,
+      "obpm_rank": 160,
+      "player_name": "Duop Reath",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": 18.1,
+      "usg_pct_rank": 217
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-02",
@@ -1973,6 +1992,25 @@
       "team_name": "Phoenix Suns",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 11.5,
+      "dbpm_rank": 3,
+      "game_date": "2026-11-02",
+      "game_time_et": null,
+      "matchup": "PHX@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 7.0,
+      "minutes_per_game_rank": 354,
+      "obpm": 5.9,
+      "obpm_rank": 31,
+      "player_name": "Pat Spencer",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": 18.7,
+      "usg_pct_rank": 200
     },
     {
       "current_status": "Out",
@@ -2203,7 +2241,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -0.1,
       "dbpm_rank": 172,
       "game_date": "2026-11-02",
@@ -2279,7 +2317,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -0.1,
       "dbpm_rank": 172,
       "game_date": "2026-11-02",
@@ -2510,8 +2548,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-02",
-    "report_time_et": "2026-11-02 09:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_09_00PM.pdf"
+    "report_time_et": "2026-11-02 09:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-02_09_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2859,14 +2897,14 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 2,
+      "player_count": 4,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-02",
           "game_time_et": null,
           "matchup": "PHX@GSW",
-          "player_count": 2,
+          "player_count": 4,
           "report_status": "submitted"
         }
       ],
