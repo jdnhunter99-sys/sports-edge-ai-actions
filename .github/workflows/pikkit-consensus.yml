@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       leagues:
-        description: 'Pikkit league codes, comma separated, or all (NCAAB is always included)'
+        description: 'League codes, comma separated, or all (NCAAB is always included and queried from Pikkit as NCAAM)'
         default: 'all'
         required: false
       days:

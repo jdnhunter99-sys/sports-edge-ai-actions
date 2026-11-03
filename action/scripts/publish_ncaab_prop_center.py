@@ -708,7 +708,10 @@ def main():
     print(f'NCAAB prop-center publisher: seasons={previous},{current}; generated={generated_at}',flush=True)
     global DIVISION_ONE_TEAM_IDS
     DIVISION_ONE_TEAM_IDS = fetch_division_one_team_ids()
-    seasons=[build_season(previous,generated_at,required=True),build_season(current,generated_at,required=False)]
+    # The current-season file is part of the published contract. Do not report
+    # a successful refresh with an empty current season when SportsDataverse
+    # has released the season asset.
+    seasons=[build_season(previous,generated_at,required=True),build_season(current,generated_at,required=True)]
     current_data=next(item for item in seasons if item['season']==current)
     existing_manifest=root/'latest.json'
     if existing_manifest.exists() and not current_data['profiles']:

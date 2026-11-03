@@ -17,6 +17,18 @@ MARKETS = {'moneyline': ('home', 'away'), 'spread': ('home', 'away'), 'total': (
 SPORT_DAY_WINDOWS = {'MLB': 1, 'NBA': 1, 'NCAAB': 1, 'WNBA': 1, 'NHL': 1}
 FOOTBALL_LEAGUES = ('NFL', 'NCAAFB')
 DEFAULT_LEAGUES = ('MLB', 'NCAAFB', 'NBA', 'NCAAB', 'NFL', 'WNBA', 'NHL')
+# Pikkit calls men's college basketball NCAAM. Keep the app's published feed
+# code as NCAAB so existing frontend readers continue to use ncaab.json.
+def canonical_league_code(value):
+    code = str(value or '').strip().upper()
+    return 'NCAAB' if code == 'NCAAM' else code
+
+
+def pikkit_league_code(value):
+    code = canonical_league_code(value)
+    return 'NCAAM' if code == 'NCAAB' else code
+
+
 # Browser-confirmed 2026-10-14 week selectors. Both advance once every seven days.
 WEEK_ANCHORS = {'NFL': (dt.date(2026, 10, 14), 6), 'NCAAFB': (dt.date(2026, 10, 14), 7)}
 
@@ -76,7 +88,7 @@ def discover_league(league, date_selector, token, utc_offset=-5, request=fetch_j
             raise RuntimeError(f'{league} pagination loop/limit at {offset}')
         seen_offsets.add(offset)
         path = '/league/events?' + urlencode({
-            'league': league.lower(), 'date': date_selector,
+            'league': pikkit_league_code(league).lower(), 'date': date_selector,
             'offset': offset, 'utc_hour_offset': utc_offset,
         })
         response = request(path, token)
@@ -97,7 +109,7 @@ def discover_league(league, date_selector, token, utc_offset=-5, request=fetch_j
             event = item.get('value')
             if not isinstance(event, dict) or not event.get('_id'):
                 continue
-            reported = str(((event.get('event_info') or {}).get('league') or {}).get('short') or '').upper()
+            reported = canonical_league_code(((event.get('event_info') or {}).get('league') or {}).get('short'))
             if reported and reported != league:
                 raise RuntimeError(f'{league} schedule contains {reported} event')
             events[event['_id']] = event
@@ -151,7 +163,7 @@ def extract(event_id, listing, payload, timestamp):
         market_data[market] = out
     if not any(market_data.values()):
         raise ValueError('No consensus market data')
-    lg = (evt_info.get('league') or {}).get('short') or (listing.get('event_info') or {}).get('league', {}).get('short')
+    lg = canonical_league_code((evt_info.get('league') or {}).get('short') or (listing.get('event_info') or {}).get('league', {}).get('short'))
     return {
         'event_id': event_id, 'league': lg, 'start_time': info.get('start_time') or listing.get('start_time'),
         'status': info.get('status') or listing.get('status'),
@@ -167,7 +179,7 @@ def main():
     parser.add_argument('--start-date', default=os.getenv('START_DATE', dt.datetime.now(dt.timezone.utc).date().isoformat()))
     parser.add_argument('--days', type=int, default=int(os.getenv('DAYS_AHEAD', '7')),
                         help='Date window for non-football leagues; football uses its selected week')
-    parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated Pikkit league labels e.g. NCAAB,NCAAFB,MLB,NBA,NFL,NHL (NCAAB is always included)')
+    parser.add_argument('--leagues', default=os.getenv('LEAGUES', 'all'), help='all or comma-separated league codes e.g. NCAAB,NCAAFB,MLB,NBA,NFL,NHL (NCAAB is always included and sent to Pikkit as NCAAM)')
     parser.add_argument('--out', default='data')
     parser.add_argument('--nfl-week', type=int, default=int(os.environ['NFL_WEEK']) if os.environ.get('NFL_WEEK') else None)
     parser.add_argument('--ncaafb-week', type=int, default=int(os.environ['NCAAFB_WEEK']) if os.environ.get('NCAAFB_WEEK') else None)
@@ -184,7 +196,7 @@ def main():
         parser.error('--days must be 1–14; delays must be nonnegative and event-delay-max must be at least event-delay-min')
     start = dt.date.fromisoformat(args.start_date)
     leagues_filter = None if args.leagues.lower() == 'all' else {
-        value.strip().upper() for value in args.leagues.split(',') if value.strip()
+        canonical_league_code(value) for value in args.leagues.split(',') if value.strip()
     }
     captured_at = dt.datetime.now(dt.timezone.utc).isoformat()
     all_events = {}
@@ -222,7 +234,7 @@ def main():
             by_league.setdefault(result['league'] or 'UNKNOWN', []).append(result)
             print(f'[{count}/{len(selected)}] OK {event_id}', flush=True)
         except NoCommunityData as exc:
-            listing_league = ((listing.get('event_info') or {}).get('league') or {}).get('short') or 'UNKNOWN'
+            listing_league = canonical_league_code(((listing.get('event_info') or {}).get('league') or {}).get('short')) or 'UNKNOWN'
             by_league.setdefault(listing_league, [])
             print(f'[{count}/{len(selected)}] SKIP {event_id}: {exc}', flush=True)
         except Exception as exc:
