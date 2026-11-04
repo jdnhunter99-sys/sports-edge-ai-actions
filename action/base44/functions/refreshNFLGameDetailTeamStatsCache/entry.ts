@@ -10,12 +10,12 @@ export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
     const requested = Array.isArray(input?.timeframes) ? input.timeframes : [];
     const timeframes = [...new Set(requested.map((value: unknown) => {
       const raw = String(value || '').trim();
-      return /^l(5|10|15)$/i.test(raw) ? raw.toUpperCase() : raw;
+      return /^l(3|5|10|15)$/i.test(raw) ? raw.toUpperCase() : raw;
     }))];
     if (!timeframes.length || timeframes.some((timeframe: string) =>
-      !/^\d{4}$/.test(timeframe) && !['L5', 'L10', 'L15'].includes(timeframe)
+      !/^\d{4}$/.test(timeframe) && !['L3', 'L5', 'L10', 'L15'].includes(timeframe)
     )) {
-      return Response.json({ ok: false, error: 'Provide one or more four-digit seasons and/or L5, L10, L15 timeframes.' }, { status: 400 });
+      return Response.json({ ok: false, error: 'Provide one or more four-digit seasons and/or L3, L5, L10, L15 timeframes.' }, { status: 400 });
     }
 
     const currentYear = new Date().getFullYear();
@@ -1857,7 +1857,7 @@ function safeDiv(a, b) {
 }
 
 function isRollingGameWindow(timeframe) {
-  return ['L5', 'L10', 'L15'].includes(String(timeframe || '').trim().toUpperCase());
+  return ['L3', 'L5', 'L10', 'L15'].includes(String(timeframe || '').trim().toUpperCase());
 }
 
 function hasTeamSpecificRollingSelection(ranges) {
@@ -4251,8 +4251,8 @@ async function writeNFLLeagueContextCache(base44, season, week, context, timefra
 }
 
 function computeSeasonRanges(schedules, statsSeason, timeframe) {
-  if (timeframe !== 'L5' && timeframe !== 'L10' && timeframe !== 'L15') return [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
-  const n = timeframe === 'L5' ? 5 : timeframe === 'L10' ? 10 : 15;
+  if (timeframe !== 'L3' && timeframe !== 'L5' && timeframe !== 'L10' && timeframe !== 'L15') return [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
+  const n = timeframe === 'L3' ? 3 : timeframe === 'L5' ? 5 : timeframe === 'L10' ? 10 : 15;
   const gamesByTeam = new Map(NFL_CANONICAL_TEAMS.map((team) => [team, []]));
 
   for (const game of schedules || []) {
@@ -4370,7 +4370,7 @@ teams.add(homeTeam);
   } else {
     try { schedules = await loadSchedules(); } catch (err) { warnings.push(`Schedule load failed: ${err?.message || String(err)}`); }
     seasonRanges = computeSeasonRanges(schedules, statsSeason, timeframe);
-    if (['L5', 'L10', 'L15'].includes(timeframe) && !seasonRanges.length) {
+    if (['L3', 'L5', 'L10', 'L15'].includes(timeframe) && !seasonRanges.length) {
       throw new Error(`Could not select completed regular-season games for ${timeframe}; refusing to publish a misleading rolling window.`);
     }
     const seasonsToLoad = [...new Set(seasonRanges.map((r) => r.season))];

@@ -7,7 +7,7 @@ if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
-const TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
+const TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15'];
 const currentSeason = (() => {
   const now = new Date();
   return now.getUTCMonth() + 1 >= 8 ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
@@ -212,7 +212,7 @@ let refreshedSeasonCount = 0;
 await refreshSeason(currentSeason, false);
 refreshedSeasonCount++;
 if (refreshPrevious || !historicalAlreadyPresent) {
-  // The prior season is part of the current season's rolling L5/L10/L15
+  // The prior season is part of the current season's rolling L3/L5/L10/L15
   // windows. If the new source cannot rebuild it, fail before updating the
   // index so the published cache never mixes CFBD and SportsDataverse data.
   await refreshSeason(previousSeason, true);

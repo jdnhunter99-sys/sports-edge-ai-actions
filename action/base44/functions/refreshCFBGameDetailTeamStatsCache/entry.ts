@@ -9,7 +9,7 @@ import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateC
 import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.ts';
 
 const CFB_SOURCE = new SportsDataverseCfbSource();
-const DEFAULT_TIMEFRAMES = ['season', 'L5', 'L10', 'L15'];
+const DEFAULT_TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15'];
 const MAX_TEAMS_PER_RUN = 180;
 // Bump the published cache contract when source parsing or coverage logic changes
 // so the publisher rebuilds current and prior-season logs used by rolling windows.
@@ -270,7 +270,7 @@ function todayCentral(): string {
 function normalizeRequestedTimeframe(value: any): string | null {
   const raw = String(value || '').trim().toUpperCase();
   if (raw === 'SEASON') return 'season';
-  if (['L5', 'L10', 'L15'].includes(raw)) return raw;
+  if (['L3', 'L5', 'L10', 'L15'].includes(raw)) return raw;
   return null;
 }
 
@@ -2430,7 +2430,7 @@ function rankLeague(statsByTeam: Map<string, any>) {
 }
 
 // Fetch the previous season's game-level logs for rolling windows. Season
-// summaries cannot be blended here: L5/L10/L15 must take each team's actual
+// summaries cannot be blended here: L3/L5/L10/L15 must take each team's actual
 // most recent games, including games played before the season boundary.
 async function fetchPriorSeasonLogs(season: number) {
   const fbsTeamKeys = await fetchFbsTeamKeys(season);
@@ -2635,7 +2635,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       : DEFAULT_TIMEFRAMES;
     const timeframes = [...new Set(requestedTimeframes)] as string[];
     if (!timeframes.length) {
-      return Response.json({ ok: false, error: 'timeframes must be season, L5, L10, or L15' }, { status: 400 });
+      return Response.json({ ok: false, error: 'timeframes must be season, L3, L5, L10, or L15' }, { status: 400 });
     }
 
     // Lightweight verification mode used after deployments. It proves which
@@ -3063,7 +3063,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           // the box scores used to count games; use it only to fill unavailable
           // fields, never to overwrite the game-log aggregate.
           // Rolling windows must derive from their exact selected game logs.
-          // Season summaries cannot supplement L5/L10/L15 without reusing a
+          // Season summaries cannot supplement L3/L5/L10/L15 without reusing a
           // different sample, so unavailable rolling metrics stay null.
           const mergedStats = windowSize > 0
             ? stats

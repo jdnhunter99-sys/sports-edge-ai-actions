@@ -11,8 +11,8 @@ const sportRoot = `${outputRoot.replace(/\/$/, '')}/nfl-team-stats`;
 const cacheRoot = `${sportRoot}/v${CACHE_VERSION}`;
 const updatedAt = new Date().toISOString();
 
-// Match the two season selectors currently shown in NFL game detail.
-const TIMEFRAMES = ['2025', '2026', 'L5', 'L10', 'L15'];
+// Match the year and rolling windows currently shown in NFL game detail.
+const TIMEFRAMES = ['2025', '2026', 'L3', 'L5', 'L10', 'L15'];
 
 type RecordValue = Record<string, any>;
 
@@ -159,7 +159,7 @@ const publishedFrames = refreshResult.frames || [];
 const seasonQbStatsBySeason: Record<string, Record<string, any[]>> = {};
 
 // QB cards are season summaries, independent of the team-stat timeframe
-// selector. Reuse each season frame's QB rows in its L5/L10/L15 files so any
+// selector. Reuse each season frame's QB rows in its rolling-window files so any
 // single frame read contains both the selected team stats and season QB cards.
 for (const season of [...new Set(publishedFrames.map((frame: any) => Number(frame.season)))]) {
   if (!Number.isInteger(season)) continue;
