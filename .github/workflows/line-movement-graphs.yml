@@ -36,6 +36,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            line-movement-graphs/v1
+          sparse-checkout-cone-mode: true
           path: data
 
       - name: Configure data commit identity

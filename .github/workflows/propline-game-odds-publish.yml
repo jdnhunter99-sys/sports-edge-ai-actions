@@ -36,6 +36,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            game-odds
+            game-card-odds/v2
+            NCAAB Dashboard
+          sparse-checkout-cone-mode: true
           path: data
 
       - name: Configure data commit identity
