@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 126,
+  "listed_player_count": 125,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5476,
-      "matched": 69,
+      "complete_coverage_rate": 0.544,
+      "matched": 68,
       "no_current_season_row": 57,
       "partial": 0,
-      "player_count": 126,
+      "player_count": 125,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -75,7 +75,7 @@
       "usg_pct_rank": 72
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-04",
@@ -113,7 +113,7 @@
       "usg_pct_rank": 186
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-04",
@@ -151,7 +151,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": 4.4,
       "dbpm_rank": 19,
       "game_date": "2026-11-04",
@@ -1227,7 +1227,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Brandon Ingram",
-      "reason": "Injury/Illness - Right Heel Surgery Injury/Illness - Left Rotator Cuff",
+      "reason": "Injury/Illness - Right Heel Surgery",
       "team_abbreviation": "LAC",
       "team_name": "LA Clippers",
       "usg_pct": null,
@@ -1348,25 +1348,6 @@
       "usg_pct_rank": 150
     },
     {
-      "current_status": "Available",
-      "dbpm": 0.3,
-      "dbpm_rank": 147,
-      "game_date": "2026-11-04",
-      "game_time_et": "10:30",
-      "matchup": "MIA@LAC",
-      "metrics_status": "matched",
-      "minutes_per_game": 9.8,
-      "minutes_per_game_rank": 333,
-      "obpm": -3.7,
-      "obpm_rank": 325,
-      "player_name": "Dru Smith",
-      "reason": "Injury/Illness - Facial Laceration Injury/Illness - Right Knee Injury",
-      "team_abbreviation": "MIA",
-      "team_name": "Miami Heat",
-      "usg_pct": 13.2,
-      "usg_pct_rank": 351
-    },
-    {
       "current_status": "Probable",
       "dbpm": 0.0,
       "dbpm_rank": 174,
@@ -1386,7 +1367,7 @@
       "usg_pct_rank": 15
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 2.5,
       "dbpm_rank": 36,
       "game_date": "2026-11-04",
@@ -1398,7 +1379,7 @@
       "obpm": -2.7,
       "obpm_rank": 284,
       "player_name": "Myron Gardner",
-      "reason": "Contusion",
+      "reason": "Contusion Injury/Illness - Right Knee Injury",
       "team_abbreviation": "MIA",
       "team_name": "Miami Heat",
       "usg_pct": 17.2,
@@ -2434,8 +2415,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-04",
-    "report_time_et": "2026-11-04 02:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_02_00PM.pdf"
+    "report_time_et": "2026-11-04 03:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_03_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2671,14 +2652,14 @@
       "team_name": "Memphis Grizzlies"
     },
     {
-      "player_count": 3,
+      "player_count": 2,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-04",
           "game_time_et": "10:30",
           "matchup": "MIA@LAC",
-          "player_count": 3,
+          "player_count": 2,
           "report_status": "submitted"
         },
         {
