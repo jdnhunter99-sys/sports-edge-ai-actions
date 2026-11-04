@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 121,
+  "listed_player_count": 126,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5537,
-      "matched": 67,
-      "no_current_season_row": 54,
+      "complete_coverage_rate": 0.5476,
+      "matched": 69,
+      "no_current_season_row": 57,
       "partial": 0,
-      "player_count": 121,
+      "player_count": 126,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -702,7 +702,7 @@
       "usg_pct_rank": 261
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Doubtful",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-04",
@@ -930,7 +930,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 2.0,
       "dbpm_rank": 56,
       "game_date": "2026-11-04",
@@ -1265,7 +1265,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Yanic Konan Niederhauser",
-      "reason": "Injury/Illness - Right Lisfranc Surgery",
+      "reason": "Injury/Illness - Right Lisfranc Surgery Injury/Illness - Right High Ankle",
       "team_abbreviation": "LAC",
       "team_name": "LA Clippers",
       "usg_pct": null,
@@ -1519,7 +1519,7 @@
       "usg_pct_rank": 179
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": -3.5,
       "dbpm_rank": 411,
       "game_date": "2026-11-04",
@@ -1557,7 +1557,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Questionable",
       "dbpm": -1.8,
       "dbpm_rank": 322,
       "game_date": "2026-11-04",
@@ -1726,6 +1726,101 @@
       "team_name": "Oklahoma City Thunder",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-05",
+      "game_time_et": "09:00",
+      "matchup": "ORL@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Izaiyah Nelson",
+      "reason": "Recovery Injury/Illness - Right Partially Torn",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.1,
+      "dbpm_rank": 163,
+      "game_date": "2026-11-05",
+      "game_time_et": "09:00",
+      "matchup": "ORL@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.333333333333336,
+      "minutes_per_game_rank": 34,
+      "obpm": -4.7,
+      "obpm_rank": 358,
+      "player_name": "Jalen Suggs",
+      "reason": "/ Bone Bruise",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": 17.0,
+      "usg_pct_rank": 257
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-05",
+      "game_time_et": "09:00",
+      "matchup": "ORL@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jonathan Isaac",
+      "reason": "Management Injury/Illness - Left Ankle Injury",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-05",
+      "game_time_et": "09:00",
+      "matchup": "ORL@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Noah Penda",
+      "reason": "Hamstring Injury/Illness - Right Knee Contusion",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.6,
+      "dbpm_rank": 130,
+      "game_date": "2026-11-05",
+      "game_time_et": "09:00",
+      "matchup": "ORL@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 34.0,
+      "minutes_per_game_rank": 21,
+      "obpm": 6.4,
+      "obpm_rank": 25,
+      "player_name": "Paolo Banchero",
+      "reason": "Sprain Injury/Illness - Left Knee Injury",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": 25.7,
+      "usg_pct_rank": 71
     },
     {
       "current_status": "Out",
@@ -2339,8 +2434,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-04",
-    "report_time_et": "2026-11-04 01:15 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_01_15PM.pdf"
+    "report_time_et": "2026-11-04 02:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_02_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2673,15 +2768,15 @@
       "team_name": "Oklahoma City Thunder"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-05",
           "game_time_et": "09:00",
           "matchup": "ORL@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "ORL",
