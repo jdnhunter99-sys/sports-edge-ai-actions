@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 125,
+  "listed_player_count": 127,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.544,
-      "matched": 68,
+      "complete_coverage_rate": 0.5512,
+      "matched": 70,
       "no_current_season_row": 57,
       "partial": 0,
-      "player_count": 125,
+      "player_count": 127,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -1234,6 +1234,25 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Questionable",
+      "dbpm": 1.6,
+      "dbpm_rank": 68,
+      "game_date": "2026-11-04",
+      "game_time_et": "10:30",
+      "matchup": "MIA@LAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 22.142857142857142,
+      "minutes_per_game_rank": 185,
+      "obpm": -0.9,
+      "obpm_rank": 214,
+      "player_name": "Isaiah Jackson",
+      "reason": "Injury/Illness - Left Groin Soreness Injury/Illness - Left Rotator Cuff",
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers",
+      "usg_pct": 18.2,
+      "usg_pct_rank": 217
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -1880,7 +1899,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -4.8,
       "dbpm_rank": 430,
       "game_date": "2026-11-04",
@@ -1995,6 +2014,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": -1.2,
+      "dbpm_rank": 275,
+      "game_date": "2026-11-04",
+      "game_time_et": "10:00",
+      "matchup": "LAL@SAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 12.166666666666666,
+      "minutes_per_game_rank": 310,
+      "obpm": -3.4,
+      "obpm_rank": 310,
+      "player_name": "Daeqwon Plowden",
+      "reason": "Injury/Illness - Illness Injury/Illness - Right Patella",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": 9.0,
+      "usg_pct_rank": 427
+    },
+    {
+      "current_status": "Out",
       "dbpm": -2.8,
       "dbpm_rank": 385,
       "game_date": "2026-11-04",
@@ -2032,7 +2070,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": 0.4,
       "dbpm_rank": 143,
       "game_date": "2026-11-04",
@@ -2044,7 +2082,7 @@
       "obpm": -0.4,
       "obpm_rank": 194,
       "player_name": "Precious Achiuwa",
-      "reason": "Injury/Illness - Left Ankle Soreness",
+      "reason": null,
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": 16.5,
@@ -2063,7 +2101,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Sean Pedulla",
-      "reason": "G League - Two-Way Injury/Illness - Right Patella",
+      "reason": "G League - Two-Way",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -2415,8 +2453,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-04",
-    "report_time_et": "2026-11-04 03:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_03_00PM.pdf"
+    "report_time_et": "2026-11-04 04:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_04_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2607,14 +2645,14 @@
       "team_name": "Indiana Pacers"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-04",
           "game_time_et": "10:30",
           "matchup": "MIA@LAC",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
@@ -2816,14 +2854,14 @@
       "team_name": "Portland Trail Blazers"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-04",
           "game_time_et": "10:00",
           "matchup": "LAL@SAC",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
