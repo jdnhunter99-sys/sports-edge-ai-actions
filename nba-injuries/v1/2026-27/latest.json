@@ -2300,9 +2300,9 @@
   ],
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
-    "report_date": "2026-11-03",
-    "report_time_et": "2026-11-03 11:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-03_11_00PM.pdf"
+    "report_date": "2026-11-04",
+    "report_time_et": "2026-11-04 12:00 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_12_00AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2449,8 +2449,16 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-05",
+          "game_time_et": "10:00",
+          "matchup": "MIA@GSW",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors"
     },
@@ -2531,7 +2539,7 @@
     },
     {
       "player_count": 3,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-04",
@@ -2539,6 +2547,13 @@
           "matchup": "MIA@LAC",
           "player_count": 3,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-05",
+          "game_time_et": "10:00",
+          "matchup": "MIA@GSW",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "MIA",
@@ -2613,8 +2628,16 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-05",
+          "game_time_et": "09:00",
+          "matchup": "ORL@PHX",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic"
     },
@@ -2635,7 +2658,7 @@
     },
     {
       "player_count": 3,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-04",
@@ -2643,6 +2666,13 @@
           "matchup": "POR@PHX",
           "player_count": 3,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-05",
+          "game_time_et": "09:00",
+          "matchup": "ORL@PHX",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "PHX",
