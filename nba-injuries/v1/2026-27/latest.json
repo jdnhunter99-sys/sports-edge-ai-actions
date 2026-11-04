@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 94,
+  "listed_player_count": 98,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5638,
-      "matched": 53,
-      "no_current_season_row": 41,
+      "complete_coverage_rate": 0.5612,
+      "matched": 55,
+      "no_current_season_row": 43,
       "partial": 0,
-      "player_count": 94,
+      "player_count": 98,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -755,6 +755,82 @@
       "reason": "Injury/Illness - Right Heel Bursitis Injury/Illness - Right Hip Soreness /",
       "team_abbreviation": "DAL",
       "team_name": "Dallas Mavericks",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Probable",
+      "dbpm": 0.8,
+      "dbpm_rank": 116,
+      "game_date": "2026-11-04",
+      "game_time_et": null,
+      "matchup": "TOR@DEN",
+      "metrics_status": "matched",
+      "minutes_per_game": 14.0,
+      "minutes_per_game_rank": 291,
+      "obpm": -5.6,
+      "obpm_rank": 377,
+      "player_name": "Alpha Diallo",
+      "reason": "Injury/Illness - Right Wrist Sprain Injury/Illness - Lower Body Injury",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 10.9,
+      "usg_pct_rank": 404
+    },
+    {
+      "current_status": "Probable",
+      "dbpm": -2.3,
+      "dbpm_rank": 359,
+      "game_date": "2026-11-04",
+      "game_time_et": null,
+      "matchup": "TOR@DEN",
+      "metrics_status": "matched",
+      "minutes_per_game": 26.333333333333332,
+      "minutes_per_game_rank": 131,
+      "obpm": -3.3,
+      "obpm_rank": 304,
+      "player_name": "Cameron Johnson",
+      "reason": "Management Injury/Illness - Bilateral Hamstring",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 15.4,
+      "usg_pct_rank": 302
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-04",
+      "game_time_et": null,
+      "matchup": "TOR@DEN",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Julian Strawther",
+      "reason": "Injury/Illness - Left Knee Sprain",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-04",
+      "game_time_et": null,
+      "matchup": "TOR@DEN",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Spencer Jones",
+      "reason": "Injury Management",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
       "usg_pct": null,
       "usg_pct_rank": null
     },
@@ -1826,8 +1902,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-03",
-    "report_time_et": "2026-11-03 06:30 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-03_06_30PM.pdf"
+    "report_time_et": "2026-11-03 06:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-03_06_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1943,15 +2019,15 @@
       "team_name": "Dallas Mavericks"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-04",
           "game_time_et": null,
           "matchup": "TOR@DEN",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "DEN",
