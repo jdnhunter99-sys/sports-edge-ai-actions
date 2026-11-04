@@ -674,6 +674,24 @@ def main():
         'games': card_games,
     })
     print(f'Published unified all-book main game-card odds: {len(card_games)} games', flush=True)
+
+    # NCAAB's dashboard needs to know which ESPN slate games are actually
+    # priced before it renders cards. Keep a compact league-only feed beside
+    # the shared game-card payload so the frontend can make that decision in
+    # one request. `build_game_card_odds` only returns rows with usable books.
+    ncaab_games = [game for game in card_games if game.get('sport') == 'ncaab' and game.get('books')]
+    write_json(root / 'NCAAB Dashboard' / 'latest.json', {
+        'schema_version': 1,
+        'sport': 'ncaab',
+        'generated_at': stamp,
+        'updated_at': stamp,
+        'source': 'PropLine API',
+        'line_selection': 'main_full_game_only',
+        'markets': ['h2h', 'spreads', 'totals'],
+        'game_count': len(ncaab_games),
+        'games': ncaab_games,
+    })
+    print(f'Published NCAAB dashboard odds list: {len(ncaab_games)} games', flush=True)
     print('Published PropLine game odds', stamp, flush=True)
 
 

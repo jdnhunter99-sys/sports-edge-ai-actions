@@ -71,6 +71,16 @@ jobs:
           if not payload.get("generated_at") or not isinstance(payload.get("games"), list) or not payload["games"]:
               raise SystemExit("Refusing to replace published game-card odds with an empty or incomplete feed")
           print(f"Validated replacement game-card feed: {len(payload['games'])} games")
+
+          ncaab_path = Path("${{ runner.temp }}/propline-game-odds-output/NCAAB Dashboard/latest.json")
+          ncaab = json.loads(ncaab_path.read_text(encoding="utf-8"))
+          if ncaab.get("schema_version") != 1 or ncaab.get("sport") != "ncaab":
+              raise SystemExit("Refusing to publish NCAAB dashboard odds with an unexpected schema")
+          if not ncaab.get("generated_at") or not isinstance(ncaab.get("games"), list):
+              raise SystemExit("Refusing to publish an invalid NCAAB dashboard odds list")
+          if any(game.get("sport") != "ncaab" or not game.get("books") for game in ncaab["games"]):
+              raise SystemExit("NCAAB dashboard odds list contains a non-NCAAB or unpriced game")
+          print(f"Validated NCAAB dashboard odds list: {len(ncaab['games'])} games")
           PY
 
       - name: Publish validated odds without removing the current file
@@ -79,6 +89,7 @@ jobs:
           set -euo pipefail
           output_dir="$RUNNER_TEMP/propline-game-odds-output"
           test -s "$output_dir/game-card-odds/v2/latest.json"
+          test -s "$output_dir/NCAAB Dashboard/latest.json"
           test -d "$output_dir/game-odds"
 
           # Keep the last published payload as a fallback for clients while
@@ -93,7 +104,11 @@ jobs:
           cp "$output_dir/game-card-odds/v2/latest.json" game-card-odds/v2/latest.json.tmp
           mv game-card-odds/v2/latest.json.tmp game-card-odds/v2/latest.json
 
-          git add game-odds game-card-odds/v2/latest.json game-card-odds/v2/previous.json
+          mkdir -p 'NCAAB Dashboard'
+          cp "$output_dir/NCAAB Dashboard/latest.json" 'NCAAB Dashboard/latest.json.tmp'
+          mv 'NCAAB Dashboard/latest.json.tmp' 'NCAAB Dashboard/latest.json'
+
+          git add game-odds game-card-odds/v2/latest.json game-card-odds/v2/previous.json 'NCAAB Dashboard/latest.json'
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Publish PropLine game odds and all-book main-line feed'
           git push --quiet origin HEAD:propline-data
