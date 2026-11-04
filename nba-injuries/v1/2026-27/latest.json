@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 119,
+  "listed_player_count": 121,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5546,
-      "matched": 66,
-      "no_current_season_row": 53,
+      "complete_coverage_rate": 0.5537,
+      "matched": 67,
+      "no_current_season_row": 54,
       "partial": 0,
-      "player_count": 119,
+      "player_count": 121,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -151,7 +151,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Doubtful",
       "dbpm": 4.4,
       "dbpm_rank": 19,
       "game_date": "2026-11-04",
@@ -360,7 +360,7 @@
       "usg_pct_rank": 439
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -0.6,
       "dbpm_rank": 221,
       "game_date": "2026-11-04",
@@ -429,14 +429,14 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Grant Williams",
-      "reason": "Injury/Illness - Right Hamstring Strain",
+      "reason": "G League - On Assignment",
       "team_abbreviation": "CHA",
       "team_name": "Charlotte Hornets",
       "usg_pct": null,
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-04",
@@ -835,7 +835,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -3.8,
       "dbpm_rank": 417,
       "game_date": "2026-11-04",
@@ -854,7 +854,7 @@
       "usg_pct_rank": 439
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 2.3,
       "dbpm_rank": 42,
       "game_date": "2026-11-04",
@@ -1405,6 +1405,25 @@
       "usg_pct_rank": 251
     },
     {
+      "current_status": "Questionable",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-04",
+      "game_time_et": null,
+      "matchup": "MIL@BOS",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Kam Jones",
+      "reason": "Injury/Illness - Right Ankle Sprain",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Out",
       "dbpm": 2.1,
       "dbpm_rank": 49,
@@ -1531,7 +1550,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Malik Dia",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Left Knee Contusion /",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -1576,7 +1595,7 @@
       "usg_pct_rank": 375
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 2.6,
       "dbpm_rank": 33,
       "game_date": "2026-11-04",
@@ -1816,7 +1835,7 @@
       "obpm": 3.5,
       "obpm_rank": 56,
       "player_name": "Ja Morant",
-      "reason": "Injury/Illness - Left Hamstring Strain Injury/Illness - Right Meniscus",
+      "reason": "Injury/Illness - Left Hamstring Strain",
       "team_abbreviation": "POR",
       "team_name": "Portland Trail Blazers",
       "usg_pct": 22.3,
@@ -2120,7 +2139,7 @@
       "obpm": -2.0,
       "obpm_rank": 257,
       "player_name": "Jaren Jackson Jr.",
-      "reason": "Injury/Illness - Right MCL Tear Injury/Illness - Right 2nd Plantar",
+      "reason": "Injury/Illness - Right MCL Tear",
       "team_abbreviation": "UTA",
       "team_name": "Utah Jazz",
       "usg_pct": 26.4,
@@ -2222,6 +2241,25 @@
       "usg_pct_rank": 439
     },
     {
+      "current_status": "Questionable",
+      "dbpm": 2.1,
+      "dbpm_rank": 49,
+      "game_date": "2026-11-04",
+      "game_time_et": "07:00",
+      "matchup": "ATL@WAS",
+      "metrics_status": "matched",
+      "minutes_per_game": 27.285714285714285,
+      "minutes_per_game_rank": 115,
+      "obpm": -3.7,
+      "obpm_rank": 325,
+      "player_name": "Bilal Coulibaly",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "WAS",
+      "team_name": "Washington Wizards",
+      "usg_pct": 11.6,
+      "usg_pct_rank": 393
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -2301,8 +2339,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-04",
-    "report_time_et": "2026-11-04 12:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_12_00PM.pdf"
+    "report_time_et": "2026-11-04 01:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_01_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2560,9 +2598,17 @@
       "team_name": "Miami Heat"
     },
     {
-      "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "player_count": 1,
+      "report_status": "submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-04",
+          "game_time_et": null,
+          "matchup": "MIL@BOS",
+          "player_count": 1,
+          "report_status": "submitted"
+        }
+      ],
       "team_abbreviation": "MIL",
       "team_name": "Milwaukee Bucks"
     },
@@ -2754,14 +2800,14 @@
       "team_name": "Utah Jazz"
     },
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-04",
           "game_time_et": "07:00",
           "matchup": "ATL@WAS",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
