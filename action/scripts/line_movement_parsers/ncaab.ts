@@ -429,14 +429,20 @@ function parseLineMovementTableRows(html, { awayAbbr, homeAbbr }) {
       ...rowHtml.matchAll(/<span[^>]*class=["'][^"']*data-moneyline[^"']*["'][^>]*>\s*([+-]?\d+|even|ev)\s*<\/span>/gi),
     ];
 
-    if (moneylineMatches.length < 2) continue;
-
     const spreadInfo = parseSpreadFromText(rowText, { awayAbbr, homeAbbr });
     const totalInfo = parseTotalFromText(rowText);
-    const awayML = parseMoneylineValue(moneylineMatches[moneylineMatches.length - 2]?.[1]);
-    const homeML = parseMoneylineValue(moneylineMatches[moneylineMatches.length - 1]?.[1]);
+    // Some NCAAB events have spread/total history but no moneyline history.
+    // Keep those rows so the publisher can still produce the available graphs.
+    const awayML = moneylineMatches.length >= 2
+      ? parseMoneylineValue(moneylineMatches[moneylineMatches.length - 2]?.[1])
+      : null;
+    const homeML = moneylineMatches.length >= 2
+      ? parseMoneylineValue(moneylineMatches[moneylineMatches.length - 1]?.[1])
+      : null;
 
-    if (awayML == null && homeML == null) continue;
+    const hasSpread = spreadInfo.awaySpread != null || spreadInfo.homeSpread != null;
+    const hasTotal = totalInfo.total != null;
+    if (awayML == null && homeML == null && !hasSpread && !hasTotal) continue;
 
     out.push({
       time: timeMatch[1],
