@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 134,
+  "listed_player_count": 135,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5448,
-      "matched": 73,
+      "complete_coverage_rate": 0.5481,
+      "matched": 74,
       "no_current_season_row": 61,
       "partial": 0,
-      "player_count": 134,
+      "player_count": 135,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -798,6 +798,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": -1.9,
+      "dbpm_rank": 329,
+      "game_date": "2026-11-04",
+      "game_time_et": null,
+      "matchup": "TOR@DEN",
+      "metrics_status": "matched",
+      "minutes_per_game": 25.0,
+      "minutes_per_game_rank": 148,
+      "obpm": -4.2,
+      "obpm_rank": 344,
+      "player_name": "DeMar DeRozan",
+      "reason": "Injury/Illness - Low Back Spasms",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 20.8,
+      "usg_pct_rank": 156
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-04",
@@ -961,7 +980,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jimmy Butler III",
-      "reason": "Surgery",
+      "reason": "Surgery Injury/Illness - Left Patellar Tendon",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -1310,7 +1329,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 1.6,
       "dbpm_rank": 68,
       "game_date": "2026-11-04",
@@ -1493,7 +1512,7 @@
       "obpm": 6.4,
       "obpm_rank": 25,
       "player_name": "Giannis Antetokounmpo",
-      "reason": "Injury/Illness - Right Wrist Sprain",
+      "reason": "Injury/Illness - Right Wrist Sprain Injury/Illness - Right Quadriceps",
       "team_abbreviation": "MIA",
       "team_name": "Miami Heat",
       "usg_pct": 34.1,
@@ -2586,8 +2605,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-04",
-    "report_time_et": "2026-11-04 08:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_08_45PM.pdf"
+    "report_time_et": "2026-11-04 10:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-04_10_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2703,14 +2722,14 @@
       "team_name": "Dallas Mavericks"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-04",
           "game_time_et": null,
           "matchup": "TOR@DEN",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
