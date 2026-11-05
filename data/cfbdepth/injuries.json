@@ -1,14 +1,24 @@
 {
-  "fetched_at": "2026-11-05T20:07:29.188780+00:00",
+  "fetched_at": "2026-11-05T21:05:51.936956+00:00",
   "complete": true,
   "registry_team_count": 138,
   "requested_teams": 138,
-  "successful_teams": 137,
-  "refreshed_teams": 137,
-  "stale_teams": 1,
+  "successful_teams": 135,
+  "refreshed_teams": 135,
+  "stale_teams": 3,
   "errors": [
     {
-      "team_slug": "wmu",
+      "team_slug": "osu",
+      "error": "Invalid API response",
+      "using_last_known_data": true
+    },
+    {
+      "team_slug": "ucf",
+      "error": "Invalid API response",
+      "using_last_known_data": true
+    },
+    {
+      "team_slug": "miami-fl",
       "error": "Invalid API response",
       "using_last_known_data": true
     }
@@ -694,8 +704,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:02:23.972Z",
-      "fetched_at": "2026-11-05T20:06:36.438533+00:00",
+      "source_timestamp": "2026-11-05T21:03:21.112Z",
+      "fetched_at": "2026-11-05T21:05:06.579464+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1i306mpNEcSrKCBn39bs9LdJaFdVsB9l8z2KMLKJxltc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/air-force/injury-status"
     },
@@ -2399,8 +2409,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:59.392Z",
-      "fetched_at": "2026-11-05T20:07:00.241271+00:00",
+      "source_timestamp": "2026-11-05T21:05:27.412Z",
+      "fetched_at": "2026-11-05T21:05:28.815237+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1C68UkzlObBXUhsK7Pt1zf5kqb7Vy_G7rrrD-2y3wswo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/akron/injury-status"
     },
@@ -2841,8 +2851,8 @@
       ],
       "cleared_history": [],
       "warnings": [],
-      "source_timestamp": "2026-11-05T20:05:10.659Z",
-      "fetched_at": "2026-11-05T20:05:12.795906+00:00",
+      "source_timestamp": "2026-11-05T21:02:17.453Z",
+      "fetched_at": "2026-11-05T21:03:36.703716+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/12jj5lTJkL19Sw-2R-Pf6eC7hVqZsRZOcwE74oDVXX9U/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/alabama/injury-status"
     },
@@ -3796,8 +3806,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:14.096Z",
-      "fetched_at": "2026-11-05T20:07:16.188269+00:00",
+      "source_timestamp": "2026-11-05T21:05:38.707Z",
+      "fetched_at": "2026-11-05T21:05:39.911627+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1lbYIwc-dHyUmVsE6KPTrKwFbY6toL4d4t6xm_8cV57k/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/app-state/injury-status"
     },
@@ -5351,8 +5361,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:36.710Z",
-      "fetched_at": "2026-11-05T20:05:36.808710+00:00",
+      "source_timestamp": "2026-11-05T21:01:32.178Z",
+      "fetched_at": "2026-11-05T21:04:11.785973+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1UOIm15-S7j-2V-hX1kPNgVIdryp8AJ32EfdTAmgWdxo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/arizona/injury-status"
     },
@@ -6516,8 +6526,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:36.966Z",
-      "fetched_at": "2026-11-05T20:05:37.041883+00:00",
+      "source_timestamp": "2026-11-05T21:02:55.185Z",
+      "fetched_at": "2026-11-05T21:04:11.936199+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1GoSx5mY4lZpwcw3auswzwPk8JF9A3_RscCzGZV98ies/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/arizona-state/injury-status"
     },
@@ -6961,8 +6971,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:04:00.299Z",
-      "fetched_at": "2026-11-05T20:07:15.184846+00:00",
+      "source_timestamp": "2026-11-05T21:05:40.764Z",
+      "fetched_at": "2026-11-05T21:05:41.751349+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1nsLgfhMslZsiSzwZcvEVz06nmwL7in0aWHjSwKHzwxg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ark-state/injury-status"
     },
@@ -8036,8 +8046,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:10.450Z",
-      "fetched_at": "2026-11-05T20:05:10.529248+00:00",
+      "source_timestamp": "2026-11-05T21:03:37.813Z",
+      "fetched_at": "2026-11-05T21:03:39.232038+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/165PAmaTAWvJvJi7HMQnZpJK7rm9clb1zDlabLBtBR8A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/arkansas/injury-status"
     },
@@ -9381,8 +9391,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:21.075Z",
-      "fetched_at": "2026-11-05T20:06:22.381676+00:00",
+      "source_timestamp": "2026-11-05T21:04:55.998Z",
+      "fetched_at": "2026-11-05T21:04:57.038228+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1BW-hlcHIwqc8ePeTU_66j8MhJ_fluW8VHDoIpAaIBnA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/army/injury-status"
     },
@@ -10186,8 +10196,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:11.499Z",
-      "fetched_at": "2026-11-05T20:05:11.562660+00:00",
+      "source_timestamp": "2026-11-05T21:03:37.860Z",
+      "fetched_at": "2026-11-05T21:03:38.655084+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1OHB8Oki3HsSJniqcRD4_SBk_YpBN6SIvvrW_iLguu7Q/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/auburn/injury-status"
     },
@@ -11501,8 +11511,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:00.672Z",
-      "fetched_at": "2026-11-05T20:07:01.924662+00:00",
+      "source_timestamp": "2026-11-05T21:03:58.776Z",
+      "fetched_at": "2026-11-05T21:05:27.020135+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1rYfrb9tbQtwKSETlfjHp-EMcXfSNMhRuuVmUzwuTSco/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ball-state/injury-status"
     },
@@ -12126,8 +12136,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:37.999Z",
-      "fetched_at": "2026-11-05T20:05:38.061462+00:00",
+      "source_timestamp": "2026-11-05T21:04:12.921Z",
+      "fetched_at": "2026-11-05T21:04:14.034566+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vcUrkCZohNjhV0dRTEd1GTu-d4Ufea44mdVZ0ClxIfY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/baylor/injury-status"
     },
@@ -13501,8 +13511,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:51.704Z",
-      "fetched_at": "2026-11-05T20:05:53.074220+00:00",
+      "source_timestamp": "2026-11-05T21:04:34.673Z",
+      "fetched_at": "2026-11-05T21:04:35.908015+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Q_xPvCj3xfa3e6bpQmz6LM61-5Db0DYpDDRYmFxhFDA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/bc/injury-status"
     },
@@ -14456,8 +14466,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:01.304Z",
-      "fetched_at": "2026-11-05T20:07:02.375585+00:00",
+      "source_timestamp": "2026-11-05T21:05:28.102Z",
+      "fetched_at": "2026-11-05T21:05:28.945033+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1qK4M7ywH4qDvUSpz5aUuhbavOLEGj3I4juQj7UUsC40/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/bgsu/injury-status"
     },
@@ -15141,8 +15151,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:10.822Z",
-      "fetched_at": "2026-11-05T20:06:11.817311+00:00",
+      "source_timestamp": "2026-11-05T21:04:51.241Z",
+      "fetched_at": "2026-11-05T21:04:52.151904+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/12z1DWRqwb8ra8uDnihNby-qvE3XIJh3cFXmhCVncBPM/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/boise/injury-status"
     },
@@ -16756,8 +16766,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:03.179Z",
-      "fetched_at": "2026-11-05T20:07:04.783597+00:00",
+      "source_timestamp": "2026-11-05T21:05:30.082Z",
+      "fetched_at": "2026-11-05T21:05:31.475853+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1D5uQYHG-agpPULqxe83vMcIN6kX-mibSaa9BpwYNhwI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/buffalo/injury-status"
     },
@@ -17951,8 +17961,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:38.428Z",
-      "fetched_at": "2026-11-05T20:05:38.507910+00:00",
+      "source_timestamp": "2026-11-05T21:04:13.859Z",
+      "fetched_at": "2026-11-05T21:04:15.519438+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1y1ppN-mbXD4KMcTAMERYE63lVc1kjDotyveNmVx9xP8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/byu/injury-status"
     },
@@ -19416,8 +19426,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:53.016Z",
-      "fetched_at": "2026-11-05T20:05:54.846765+00:00",
+      "source_timestamp": "2026-11-05T21:04:34.885Z",
+      "fetched_at": "2026-11-05T21:04:36.146513+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1gE6YHMiqzfL9EyauiWp9KRZ6X94_9feQUnNR0VvT05k/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/cal/injury-status"
     },
@@ -20041,8 +20051,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:22.904Z",
-      "fetched_at": "2026-11-05T20:06:24.117113+00:00",
+      "source_timestamp": "2026-11-05T21:04:58.190Z",
+      "fetched_at": "2026-11-05T21:04:59.513979+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/19u1TFI18Z7YoJmeZEL3JU3VriCPhQeqXm9IRrCIGnfk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/charlotte/injury-status"
     },
@@ -20906,8 +20916,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:39.972Z",
-      "fetched_at": "2026-11-05T20:05:40.040917+00:00",
+      "source_timestamp": "2026-11-05T21:04:15.786Z",
+      "fetched_at": "2026-11-05T21:04:17.456577+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1z_6SWvl03Nh4paRN5KynL8lX8uUZG03INHv98B0bdzs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/cincinnati/injury-status"
     },
@@ -22041,8 +22051,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:54.390Z",
-      "fetched_at": "2026-11-05T20:05:55.424889+00:00",
+      "source_timestamp": "2026-11-05T21:04:36.829Z",
+      "fetched_at": "2026-11-05T21:04:37.727189+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1i_dmZWXcwYXGSSjXNXeEyV1lacf_ZX1DhkG9vzPPk3o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/clemson/injury-status"
     },
@@ -23326,8 +23336,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:03.663Z",
-      "fetched_at": "2026-11-05T20:07:04.589956+00:00",
+      "source_timestamp": "2026-11-05T21:02:12.599Z",
+      "fetched_at": "2026-11-05T21:05:29.096284+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1YldFNM2MUpHCyaCr5ODBl2dk_OyjuIqruUCzUDvIkXA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/cmu/injury-status"
     },
@@ -24221,8 +24231,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:16.540Z",
-      "fetched_at": "2026-11-05T20:07:17.780145+00:00",
+      "source_timestamp": "2026-11-05T21:05:41.074Z",
+      "fetched_at": "2026-11-05T21:05:42.193511+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/132AtH8UOj7ujfIUg3OjgcXoxMJXiueD_waxsHQGhelU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/coastal/injury-status"
     },
@@ -26256,8 +26266,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:39.992Z",
-      "fetched_at": "2026-11-05T20:05:40.076203+00:00",
+      "source_timestamp": "2026-11-05T21:04:16.674Z",
+      "fetched_at": "2026-11-05T21:04:18.173524+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1OqIkzlyKEXi-rO6Gc2dfIsCJj0ljiFLwb-VnL0J8jFE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/colorado/injury-status"
     },
@@ -28051,8 +28061,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:13.149Z",
-      "fetched_at": "2026-11-05T20:06:14.277705+00:00",
+      "source_timestamp": "2026-11-05T21:01:32.073Z",
+      "fetched_at": "2026-11-05T21:04:50.148208+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1bwU26Tcf6R4_z2u8fO95GJHFprMSZwZ2PuRJHTLWqO8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/colorado-state/injury-status"
     },
@@ -28286,8 +28296,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:46.244Z",
-      "fetched_at": "2026-11-05T20:06:47.436251+00:00",
+      "source_timestamp": "2026-11-05T21:01:31.958Z",
+      "fetched_at": "2026-11-05T21:05:14.990821+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1SYmj6S6IrDfj6iuCLD1gB2NcSKPtpC7t4J6jaKUF7Fg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/delaware/injury-status"
     },
@@ -29014,7 +29024,7 @@
           "original_injury_date": null,
           "projected_return": null,
           "raw_columns": {
-            "Col1": "Blake Rohrer ",
+            "Col1": "Blake Rohrer",
             "Col2": "",
             "Col3": "",
             "Col4": "Cleared",
@@ -29481,8 +29491,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:55.863Z",
-      "fetched_at": "2026-11-05T20:05:56.765380+00:00",
+      "source_timestamp": "2026-11-05T21:04:37.782Z",
+      "fetched_at": "2026-11-05T21:04:38.776618+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1rJFQB3T_3ZMO7-BhOeh52cqBN5Gk8HNJlROD4Yck1HQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/duke/injury-status"
     },
@@ -30346,8 +30356,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:23.619Z",
-      "fetched_at": "2026-11-05T20:06:24.731570+00:00",
+      "source_timestamp": "2026-11-05T21:04:58.130Z",
+      "fetched_at": "2026-11-05T21:04:59.137310+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1I2wpbHTd0_zsjDo8NAfyjseqRfS0nALoqaWpE-xK8IU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ecu/injury-status"
     },
@@ -33251,8 +33261,8 @@
       "warnings": [
         "Source reports 25 injuries; found 24 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:05.940Z",
-      "fetched_at": "2026-11-05T20:07:07.139299+00:00",
+      "source_timestamp": "2026-11-05T21:05:30.170Z",
+      "fetched_at": "2026-11-05T21:05:31.113778+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1l8zCg4Ynqx-05ycDRe8Q0ph_T0Pl-hlc__6JRDtoEJ4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/emu/injury-status"
     },
@@ -34026,8 +34036,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:24.870Z",
-      "fetched_at": "2026-11-05T20:06:26.119346+00:00",
+      "source_timestamp": "2026-11-05T21:00:51.842Z",
+      "fetched_at": "2026-11-05T21:04:59.337591+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vyYKKdiyPloSkERbPS0EBZUl9WcjTCM-dCa6rGabnkQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fau/injury-status"
     },
@@ -34681,8 +34691,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:47.352Z",
-      "fetched_at": "2026-11-05T20:06:48.475986+00:00",
+      "source_timestamp": "2026-11-05T21:05:15.990Z",
+      "fetched_at": "2026-11-05T21:05:17.419555+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1CC6pGdupSwtWnzxZXkelJBphadLbxdLDvis3l01zKMw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fiu/injury-status"
     },
@@ -35726,8 +35736,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:12.931Z",
-      "fetched_at": "2026-11-05T20:05:13.039212+00:00",
+      "source_timestamp": "2026-11-05T21:03:40.318Z",
+      "fetched_at": "2026-11-05T21:03:41.221329+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1FHy7x3Xha03HNJdEf8hWvDDKehmz0bRIxFvJjs9PJQI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/florida/injury-status"
     },
@@ -36531,8 +36541,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:13.196Z",
-      "fetched_at": "2026-11-05T20:06:14.350690+00:00",
+      "source_timestamp": "2026-11-05T21:01:35.453Z",
+      "fetched_at": "2026-11-05T21:04:50.319250+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1oWESEDf-Oa8Ix9rr7D9IQymExppwL5PPWkXla2mae5A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fresno/injury-status"
     },
@@ -38446,8 +38456,8 @@
       "warnings": [
         "Source reports 21 injuries; found 20 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:58.894Z",
-      "fetched_at": "2026-11-05T20:06:00.104443+00:00",
+      "source_timestamp": "2026-11-05T21:04:25.032Z",
+      "fetched_at": "2026-11-05T21:04:37.950378+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/179PlAJfrD19KFRIzqlUWgu5b3iEmkxEWLGUAMPlXCjA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fsu/injury-status"
     },
@@ -39311,8 +39321,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:17.265Z",
-      "fetched_at": "2026-11-05T20:07:18.333640+00:00",
+      "source_timestamp": "2026-11-05T21:05:42.573Z",
+      "fetched_at": "2026-11-05T21:05:43.444230+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1aeYnT2-TaFhPZqK4Xtlylc_WZXLWv9ajne6A-7V6nBo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ga-southern/injury-status"
     },
@@ -39936,8 +39946,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:18.983Z",
-      "fetched_at": "2026-11-05T20:07:20.151859+00:00",
+      "source_timestamp": "2026-11-05T21:05:43.512Z",
+      "fetched_at": "2026-11-05T21:05:44.577455+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1A_DXwkDtxB-Q_Xbgvg4t8yM0TdqG67d00NbRY01hpaI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ga-state/injury-status"
     },
@@ -41461,8 +41471,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:57.968Z",
-      "fetched_at": "2026-11-05T20:05:58.986360+00:00",
+      "source_timestamp": "2026-11-05T21:01:36.792Z",
+      "fetched_at": "2026-11-05T21:04:38.097607+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1fWggkNcsOftR-dlahKrviZUSFzzamgKB4LIblzvxC40/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/georgia-tech/injury-status"
     },
@@ -42236,8 +42246,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:02:24.831Z",
-      "fetched_at": "2026-11-05T20:06:36.639607+00:00",
+      "source_timestamp": "2026-11-05T21:03:22.692Z",
+      "fetched_at": "2026-11-05T21:05:06.796640+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1dz4rif6-GsPcbhHQEeRHTzi4V3rI_yZAq5rjjawrlvI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/hawaii/injury-status"
     },
@@ -43521,8 +43531,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:41.552Z",
-      "fetched_at": "2026-11-05T20:05:41.638549+00:00",
+      "source_timestamp": "2026-11-05T21:04:19.126Z",
+      "fetched_at": "2026-11-05T21:04:20.489011+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1VXzXdWcA9CBbJ28w06GF-RvPS1ZyumTH6W1W3_OF1S0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/houston/injury-status"
     },
@@ -45163,8 +45173,8 @@
       "warnings": [
         "Source reports 19 injuries; found 18 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:22.729Z",
-      "fetched_at": "2026-11-05T20:05:22.808067+00:00",
+      "source_timestamp": "2026-11-05T21:03:52.037Z",
+      "fetched_at": "2026-11-05T21:03:53.554113+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1w0OF6cu1LjpyhLGSX63FVJQiwZ2RZCDgTlNmxyTLPo8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/illinois/injury-status"
     },
@@ -45908,8 +45918,8 @@
       "warnings": [
         "Source reports 3 injuries; found 2 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:23.328Z",
-      "fetched_at": "2026-11-05T20:05:23.397653+00:00",
+      "source_timestamp": "2026-11-05T21:03:52.450Z",
+      "fetched_at": "2026-11-05T21:03:53.625238+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1lyp3JrYJs-aN8pVHDRqgffPp3p6GGeODUU4s_8zSwyI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/indiana/injury-status"
     },
@@ -47103,8 +47113,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:24.400Z",
-      "fetched_at": "2026-11-05T20:05:24.473608+00:00",
+      "source_timestamp": "2026-11-05T21:03:54.567Z",
+      "fetched_at": "2026-11-05T21:03:55.772310+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vuTHs9As9H0b34eRlzqSLtzpgjWASSEF7s_Goo9EKZY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/iowa/injury-status"
     },
@@ -48628,8 +48638,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:40.965Z",
-      "fetched_at": "2026-11-05T20:05:41.045492+00:00",
+      "source_timestamp": "2026-11-05T21:04:19.064Z",
+      "fetched_at": "2026-11-05T21:04:19.996662+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ydLpO0FFNhdwUrYrqriF1GzouzyaelWHIo9iDCkUngE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/iowa-state/injury-status"
     },
@@ -49553,8 +49563,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:48.729Z",
-      "fetched_at": "2026-11-05T20:06:50.412574+00:00",
+      "source_timestamp": "2026-11-05T21:05:17.375Z",
+      "fetched_at": "2026-11-05T21:05:19.592589+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1n6Rq1lU031e48FQPY5IARIT8m2u6dSiFH1R42wnzx54/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/jax-state/injury-status"
     },
@@ -50268,8 +50278,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:19.830Z",
-      "fetched_at": "2026-11-05T20:07:21.081834+00:00",
+      "source_timestamp": "2026-11-05T21:04:02.811Z",
+      "fetched_at": "2026-11-05T21:05:43.577875+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15yc_YZkqi5cEmrAWTnKxuqOi3RUBepNdO86CJi05JcA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/jmu/injury-status"
     },
@@ -51163,8 +51173,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:43.023Z",
-      "fetched_at": "2026-11-05T20:05:43.091896+00:00",
+      "source_timestamp": "2026-11-05T21:04:22.137Z",
+      "fetched_at": "2026-11-05T21:04:23.715787+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1hyzsWT_hWQPwZs_1h1LKTvpjy8SuOX04RERz6bube6Q/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/k-state/injury-status"
     },
@@ -52568,8 +52578,8 @@
       "warnings": [
         "Source reports 25 injuries; found 24 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:42.508Z",
-      "fetched_at": "2026-11-05T20:05:42.588784+00:00",
+      "source_timestamp": "2026-11-05T21:04:22.295Z",
+      "fetched_at": "2026-11-05T21:04:23.286617+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1_te3ng972ZNJ8EDcsXGKqiLDr671nZBz3qi30KgCIG4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kansas/injury-status"
     },
@@ -52983,8 +52993,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:49.462Z",
-      "fetched_at": "2026-11-05T20:06:50.784272+00:00",
+      "source_timestamp": "2026-11-05T21:01:35.361Z",
+      "fetched_at": "2026-11-05T21:05:17.579941+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1HdAxNPBTKRi-Ma0dnu7own_kEY4H-vj8H7QHS3p9b9k/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kennesaw-state/injury-status"
     },
@@ -53998,8 +54008,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:06.284Z",
-      "fetched_at": "2026-11-05T20:07:07.324456+00:00",
+      "source_timestamp": "2026-11-05T21:05:32.225Z",
+      "fetched_at": "2026-11-05T21:05:33.280563+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15SxcAumJ5YG5cJnFx2sGQAycJ2kQnWFfilnAYyFz-Hc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kent-state/injury-status"
     },
@@ -55493,8 +55503,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:14.469Z",
-      "fetched_at": "2026-11-05T20:05:14.552389+00:00",
+      "source_timestamp": "2026-11-05T21:03:40.522Z",
+      "fetched_at": "2026-11-05T21:03:41.539320+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1DnKZ2qQhVg3yLlLCB-ciymJePhVenVq3ZBCFxJ1h7Zg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kentucky/injury-status"
     },
@@ -55509,7 +55519,7 @@
         "new_count": 0,
         "impact": 4,
         "impact_average": 1,
-        "impact_rank": 131
+        "impact_rank": 130
       },
       "active": [
         {
@@ -56088,8 +56098,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:22.294Z",
-      "fetched_at": "2026-11-05T20:07:23.619911+00:00",
+      "source_timestamp": "2026-11-05T21:05:46.168Z",
+      "fetched_at": "2026-11-05T21:05:47.706254+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1kzKM_Ki-7DPfi5CB6nRi-QuLxLvF-j7enA_Dm8jTwsw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/la-tech/injury-status"
     },
@@ -56653,8 +56663,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:51.591Z",
-      "fetched_at": "2026-11-05T20:06:53.020457+00:00",
+      "source_timestamp": "2026-11-05T21:05:19.297Z",
+      "fetched_at": "2026-11-05T21:05:20.555852+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/179RJ0bqoHQNTmvk-Aa63FuQHuAwzIkn60CYr4JMsRaE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/liberty/injury-status"
     },
@@ -57668,8 +57678,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:21.350Z",
-      "fetched_at": "2026-11-05T20:07:22.451580+00:00",
+      "source_timestamp": "2026-11-05T21:05:44.542Z",
+      "fetched_at": "2026-11-05T21:05:45.624351+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/178-uIFrYU1HLO550b1EppLsk6kvbhMb6OeVcbXwXYL8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/louisiana/injury-status"
     },
@@ -57803,7 +57813,7 @@
             "Col7": "7.0",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU.",
             "Col11": "0"
           }
         },
@@ -57833,7 +57843,7 @@
             "Col7": "9.4",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU.",
             "Col11": "0"
           }
         },
@@ -57863,7 +57873,7 @@
             "Col7": "3.0",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU.",
             "Col11": "0"
           }
         },
@@ -57893,7 +57903,7 @@
             "Col7": "9.6",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU.",
             "Col11": "0"
           }
         },
@@ -59883,8 +59893,8 @@
       "warnings": [
         "Source reports 19 injuries; found 18 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:00.287Z",
-      "fetched_at": "2026-11-05T20:06:01.319798+00:00",
+      "source_timestamp": "2026-11-05T21:04:39.805Z",
+      "fetched_at": "2026-11-05T21:04:41.081095+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15BjOKxFbNcTeSmQX9tFLKjw74HvYbvgKTkugeduk6Gg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/louisville/injury-status"
     },
@@ -61138,8 +61148,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:15.637Z",
-      "fetched_at": "2026-11-05T20:05:15.715405+00:00",
+      "source_timestamp": "2026-11-05T21:03:42.139Z",
+      "fetched_at": "2026-11-05T21:03:43.397204+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/124ypb1P6x2JU1EciUbwkK1L78QCtp6JbbuyqWudfeJQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/lsu/injury-status"
     },
@@ -61673,8 +61683,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:02:24.326Z",
-      "fetched_at": "2026-11-05T20:07:24.203375+00:00",
+      "source_timestamp": "2026-11-05T21:03:21.265Z",
+      "fetched_at": "2026-11-05T21:05:48.013433+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1MqzQbHDyvwJtTyeSdJXN37M16MlbBm0Lxtg9j4hbUgU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/marshall/injury-status"
     },
@@ -61778,7 +61788,7 @@
             "Col7": "8.8",
             "Col8": "0",
             "Col9": "9/4/2026",
-            "Col10": "Ongoing legal issues will keep him from debuting.",
+            "Col10": "Ongoing legal issues will keep him from debuting. ",
             "Col11": "0"
           }
         },
@@ -63138,8 +63148,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:25.311Z",
-      "fetched_at": "2026-11-05T20:05:25.388786+00:00",
+      "source_timestamp": "2026-11-05T21:03:54.716Z",
+      "fetched_at": "2026-11-05T21:03:55.843167+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ckR-zmoR6psioof3SaxXG-mhCCUMsY3_i-nETe_9NIE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/maryland/injury-status"
     },
@@ -63553,8 +63563,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:25.851Z",
-      "fetched_at": "2026-11-05T20:06:26.941075+00:00",
+      "source_timestamp": "2026-11-05T21:05:00.350Z",
+      "fetched_at": "2026-11-05T21:05:01.393529+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1jRP6Itf7MziG_iTMVJuOtYA1x9Zeews2UoySF1cmhTU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/memphis/injury-status"
     },
@@ -64181,7 +64191,9 @@
       "source_timestamp": "2026-11-05T20:03:56.843Z",
       "fetched_at": "2026-11-05T20:06:00.402966+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/174iAR9wmYDU4DoigI38at254Vw-WTf0ARvQ11JjLwYE/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/miami-fl/injury-status"
+      "page_url": "https://cfbdepth.com/miami-fl/injury-status",
+      "data_stale": true,
+      "last_fetch_error": "Invalid API response"
     },
     {
       "team_slug": "miami-oh",
@@ -64223,7 +64235,7 @@
             "Col7": "10.2",
             "Col8": "0",
             "Col9": "8/24/2026",
-            "Col10": "Was expected to be the starter, but suffered a season-ending injury late in fall camp. ",
+            "Col10": "Was expected to be the starter, but suffered a season-ending injury late in fall camp.",
             "Col11": "0"
           }
         },
@@ -65283,8 +65295,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:08.533Z",
-      "fetched_at": "2026-11-05T20:07:10.122566+00:00",
+      "source_timestamp": "2026-11-05T21:05:32.722Z",
+      "fetched_at": "2026-11-05T21:05:33.794025+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1SRlzpJbmwpOBN8xFrZ7nBxWbrrp7umLar1GKvqQ3d-4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/miami-oh/injury-status"
     },
@@ -66868,8 +66880,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:26.047Z",
-      "fetched_at": "2026-11-05T20:05:26.127803+00:00",
+      "source_timestamp": "2026-11-05T21:03:56.852Z",
+      "fetched_at": "2026-11-05T21:03:57.798223+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1XjHH2MDBU76TpDUMQByXToWetVbjls7o72IjCzdM42o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/michigan/injury-status"
     },
@@ -68063,8 +68075,8 @@
       "warnings": [
         "Source reports 19 injuries; found 18 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:26.737Z",
-      "fetched_at": "2026-11-05T20:05:26.811326+00:00",
+      "source_timestamp": "2026-11-05T21:03:57.126Z",
+      "fetched_at": "2026-11-05T21:03:58.236970+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15G1Jy8xIeFbNYviMeVqz_nv-EFc7YP3rK6aIg405_ew/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/michigan-state/injury-status"
     },
@@ -69078,8 +69090,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:27.793Z",
-      "fetched_at": "2026-11-05T20:05:27.862843+00:00",
+      "source_timestamp": "2026-11-05T21:03:59.188Z",
+      "fetched_at": "2026-11-05T21:04:00.401125+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Cg2VxJGHKK8H6PLLHNK0wxAn9GfbICSKYSK_17bCXHs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/minnesota/injury-status"
     },
@@ -69823,8 +69835,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:16.020Z",
-      "fetched_at": "2026-11-05T20:05:16.091089+00:00",
+      "source_timestamp": "2026-11-05T21:03:42.657Z",
+      "fetched_at": "2026-11-05T21:03:44.280486+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vMQX5fM6ZlUmcvUL4kgd2HDQVjXNmaDRaU5RHknGgwE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/mississippi-state/injury-status"
     },
@@ -71168,8 +71180,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:17.151Z",
-      "fetched_at": "2026-11-05T20:05:17.242287+00:00",
+      "source_timestamp": "2026-11-05T21:02:06.894Z",
+      "fetched_at": "2026-11-05T21:03:43.596147+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1E1Fmq0YDkSDlWhGbzbE68Q5Ce28H3MB5w-sOAqrO4Kk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/missouri/injury-status"
     },
@@ -71973,8 +71985,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:55.758Z",
-      "fetched_at": "2026-11-05T20:06:56.997723+00:00",
+      "source_timestamp": "2026-11-05T21:05:21.890Z",
+      "fetched_at": "2026-11-05T21:05:23.257366+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1IxDuXwzfaVEr7dgsnSxbm3hnU1TMC8v0LM_FpyFicww/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/mo-state/injury-status"
     },
@@ -72358,8 +72370,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:51.995Z",
-      "fetched_at": "2026-11-05T20:06:52.886932+00:00",
+      "source_timestamp": "2026-11-05T21:05:20.761Z",
+      "fetched_at": "2026-11-05T21:05:21.980943+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1HQ-jGhEtQybpbCkLMNQp2Tb4tJJL907r6onO6ssyePI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/mtsu/injury-status"
     },
@@ -72893,8 +72905,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:27.429Z",
-      "fetched_at": "2026-11-05T20:06:28.695511+00:00",
+      "source_timestamp": "2026-11-05T21:01:39.162Z",
+      "fetched_at": "2026-11-05T21:04:59.698843+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1FktQWAgehwgeK2mHsH6zTeAXs9zA4y8kf-mY5Gtyjhk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/navy/injury-status"
     },
@@ -74058,8 +74070,8 @@
       "warnings": [
         "Source reports 19 injuries; found 18 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:02.292Z",
-      "fetched_at": "2026-11-05T20:06:03.377961+00:00",
+      "source_timestamp": "2026-11-05T21:04:41.852Z",
+      "fetched_at": "2026-11-05T21:04:43.341410+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1YMoHWWBnsFim8jHNp4hjUIut9H6uEm5hcfRnRfOlZto/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nc-state/injury-status"
     },
@@ -75013,8 +75025,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:38.279Z",
-      "fetched_at": "2026-11-05T20:06:39.461388+00:00",
+      "source_timestamp": "2026-11-05T21:01:21.580Z",
+      "fetched_at": "2026-11-05T21:05:09.149970+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/11ljTl7K5sVzfVsesa0fV-ywdiOoeJIGl9PujzfwTPQQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ndsu/injury-status"
     },
@@ -75968,8 +75980,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:28.090Z",
-      "fetched_at": "2026-11-05T20:05:28.166883+00:00",
+      "source_timestamp": "2026-11-05T21:03:59.507Z",
+      "fetched_at": "2026-11-05T21:04:00.731285+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1MiulSJGedr-mZ33CsE5fjQu72BHfDSPYqjRaEweuqf4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nebraska/injury-status"
     },
@@ -76473,8 +76485,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:16.652Z",
-      "fetched_at": "2026-11-05T20:06:36.692185+00:00",
+      "source_timestamp": "2026-11-05T21:05:07.823Z",
+      "fetched_at": "2026-11-05T21:05:08.988062+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1x_9D-ikg9vVuzZlYdKqavKgYBVvNvNaK4dsEqyFcduI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nevada/injury-status"
     },
@@ -77458,8 +77470,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:38.464Z",
-      "fetched_at": "2026-11-05T20:06:39.860436+00:00",
+      "source_timestamp": "2026-11-05T21:05:10.812Z",
+      "fetched_at": "2026-11-05T21:05:12.145592+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1QPI0MMfWohPVlAlR13279agP74bYSsGdDCCFaQOPTyg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/niu/injury-status"
     },
@@ -77993,8 +78005,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:54.280Z",
-      "fetched_at": "2026-11-05T20:06:55.440898+00:00",
+      "source_timestamp": "2026-11-05T21:05:23.199Z",
+      "fetched_at": "2026-11-05T21:05:24.499357+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1E4xetDQ2IJABso955YPPsOdic7hNiSPHstzsYwCx2m4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nm-state/injury-status"
     },
@@ -79068,8 +79080,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:29.084Z",
-      "fetched_at": "2026-11-05T20:05:29.153954+00:00",
+      "source_timestamp": "2026-11-05T21:04:01.724Z",
+      "fetched_at": "2026-11-05T21:04:02.994112+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1xUEOMZvVZqc6HMnxPMRyzwCJ7pL9kC2mzWSfSlJ7WzE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/northwestern/injury-status"
     },
@@ -79933,8 +79945,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:20.422Z",
-      "fetched_at": "2026-11-05T20:06:21.424760+00:00",
+      "source_timestamp": "2026-11-05T21:04:55.786Z",
+      "fetched_at": "2026-11-05T21:04:56.766642+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1_-_-1KkF5-GJBlFVTXufc8TeTADWK7fiiqXGjiAIFas/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/notre-dame/injury-status"
     },
@@ -79949,7 +79961,7 @@
         "new_count": 2,
         "impact": 5,
         "impact_average": 0.7,
-        "impact_rank": 127
+        "impact_rank": 126
       },
       "active": [
         {
@@ -81038,8 +81050,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:25.594Z",
-      "fetched_at": "2026-11-05T20:07:26.793103+00:00",
+      "source_timestamp": "2026-11-05T21:05:50.665Z",
+      "fetched_at": "2026-11-05T21:05:51.753007+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1jw3awi-pDe3iLK4897F4cxjKpWDfwqniDzvJ_I3lyRo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/odu/injury-status"
     },
@@ -81813,8 +81825,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:09.000Z",
-      "fetched_at": "2026-11-05T20:07:10.130078+00:00",
+      "source_timestamp": "2026-11-05T21:05:34.373Z",
+      "fetched_at": "2026-11-05T21:05:35.401879+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1q7g_0w2b_iQGkYVUW2jTZnKF7kOsjCXkoybMcuyHq6o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ohio/injury-status"
     },
@@ -82468,8 +82480,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:44.357Z",
-      "fetched_at": "2026-11-05T20:05:44.426526+00:00",
+      "source_timestamp": "2026-11-05T21:04:24.906Z",
+      "fetched_at": "2026-11-05T21:04:27.310059+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15QNRp0ux06PYSgG5oAJyq-UexYEllPyXEHcnIAAA8AY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ok-state/injury-status"
     },
@@ -83783,8 +83795,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:17.461Z",
-      "fetched_at": "2026-11-05T20:05:17.539454+00:00",
+      "source_timestamp": "2026-11-05T21:03:44.961Z",
+      "fetched_at": "2026-11-05T21:03:46.241523+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/19njnAWtOHnr0_8ohW0ON27M7TaFaCFSyIfEWPm4w8XY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/oklahoma/injury-status"
     },
@@ -85428,8 +85440,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:18.377Z",
-      "fetched_at": "2026-11-05T20:05:18.468013+00:00",
+      "source_timestamp": "2026-11-05T21:03:45.733Z",
+      "fetched_at": "2026-11-05T21:03:46.899860+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/19mnQGlBjcV3YnlSyoRpHqYiWYqjv_An6mQiTmq1kbpw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/olemiss/injury-status"
     },
@@ -86443,8 +86455,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:30.646Z",
-      "fetched_at": "2026-11-05T20:05:30.719005+00:00",
+      "source_timestamp": "2026-11-05T21:04:02.265Z",
+      "fetched_at": "2026-11-05T21:04:03.414628+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1YW_KH6WVHzNwAn-_iAxtkQK-mTTxiGNqLmbl0i45FtE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/oregon/injury-status"
     },
@@ -87638,8 +87650,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:15.394Z",
-      "fetched_at": "2026-11-05T20:06:16.461974+00:00",
+      "source_timestamp": "2026-11-05T21:02:03.826Z",
+      "fetched_at": "2026-11-05T21:04:50.471083+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1wSlQoMgRHugwTi3xcmP-iSpx5Jc_NR6ywEu4bt3W2sk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/oregon-state/injury-status"
     },
@@ -89016,7 +89028,9 @@
       "source_timestamp": "2026-11-05T20:05:29.214Z",
       "fetched_at": "2026-11-05T20:05:29.293442+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ECt0uX1hUeERomKviNv0KpVV4P3_Nn0v4UzWlG0lfAM/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/osu/injury-status"
+      "page_url": "https://cfbdepth.com/osu/injury-status",
+      "data_stale": true,
+      "last_fetch_error": "Invalid API response"
     },
     {
       "team_slug": "penn-state",
@@ -90928,8 +90942,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:30.615Z",
-      "fetched_at": "2026-11-05T20:05:30.700596+00:00",
+      "source_timestamp": "2026-11-05T21:04:04.269Z",
+      "fetched_at": "2026-11-05T21:04:05.485227+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1CZ6wtO9GYb68AiH536sFfBMUQmklE8hGV1oQ61pojvU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/penn-state/injury-status"
     },
@@ -91003,7 +91017,7 @@
             "Col7": "13.4",
             "Col8": "2",
             "Col9": "10/2/2026",
-            "Col10": "Injured in-game week five; Confirmed to be out for the seaon with an ACL tear.",
+            "Col10": "Injured in-game week five; Confirmed to be out for the seaon with an ACL tear. ",
             "Col11": "0"
           }
         },
@@ -91033,7 +91047,7 @@
             "Col7": "9.3",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -91063,7 +91077,7 @@
             "Col7": "9.8",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -91093,7 +91107,7 @@
             "Col7": "11.8",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -91123,7 +91137,7 @@
             "Col7": "9.4",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -91153,7 +91167,7 @@
             "Col7": "10.1",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -91183,7 +91197,7 @@
             "Col7": "9.0",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -91973,8 +91987,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:05.005Z",
-      "fetched_at": "2026-11-05T20:06:06.349894+00:00",
+      "source_timestamp": "2026-11-05T21:04:42.819Z",
+      "fetched_at": "2026-11-05T21:04:44.033366+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1zlCisLkB_nKvDkYhJnOraW3mJ9rBz_WMhqmB0WOlo_A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/pitt/injury-status"
     },
@@ -92478,8 +92492,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:32.290Z",
-      "fetched_at": "2026-11-05T20:05:32.367214+00:00",
+      "source_timestamp": "2026-11-05T21:04:04.790Z",
+      "fetched_at": "2026-11-05T21:04:06.505747+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1K7iqbjZIQ3cNW_633xSW-dbCzkbmrkgHzs-g7k5WQR4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/purdue/injury-status"
     },
@@ -93193,8 +93207,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:30.396Z",
-      "fetched_at": "2026-11-05T20:06:31.518296+00:00",
+      "source_timestamp": "2026-11-05T21:05:02.472Z",
+      "fetched_at": "2026-11-05T21:05:03.894904+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ks9A9ldisBPnuV8o6O1iwVZG83EpotxcKzvfZcUQck0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/rice/injury-status"
     },
@@ -94658,8 +94672,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:31.986Z",
-      "fetched_at": "2026-11-05T20:05:32.066665+00:00",
+      "source_timestamp": "2026-11-05T21:04:06.689Z",
+      "fetched_at": "2026-11-05T21:04:07.814540+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/11vIZjiY9SWGoe3B-U5rYDKokJ5Ka-7jQ4SUJ6H3Gpaw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/rutgers/injury-status"
     },
@@ -96633,8 +96647,8 @@
       "warnings": [
         "Source reports 23 injuries; found 22 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:11.455Z",
-      "fetched_at": "2026-11-05T20:07:12.750240+00:00",
+      "source_timestamp": "2026-11-05T21:05:35.269Z",
+      "fetched_at": "2026-11-05T21:05:36.576955+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15_EfkCXjXMKwRUagm4AMzf54nfKpoJSBydLNmFzK-88/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sac-state/injury-status"
     },
@@ -97228,8 +97242,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:57.013Z",
-      "fetched_at": "2026-11-05T20:06:58.254379+00:00",
+      "source_timestamp": "2026-11-05T21:05:24.771Z",
+      "fetched_at": "2026-11-05T21:05:26.100604+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1hcZjhnB9oBwgrX3Zgm576itC7zXL0Zfx6r99u6QUIu0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sam-houston/injury-status"
     },
@@ -100403,8 +100417,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:15.590Z",
-      "fetched_at": "2026-11-05T20:06:16.921913+00:00",
+      "source_timestamp": "2026-11-05T21:04:51.652Z",
+      "fetched_at": "2026-11-05T21:04:52.737772+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1fBGuaJDwBMMhEuZjeIbSgDV9rmQCg1ErcK9JRgwaMPo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sdsu/injury-status"
     },
@@ -101028,8 +101042,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:40.791Z",
-      "fetched_at": "2026-11-05T20:06:41.744551+00:00",
+      "source_timestamp": "2026-11-05T21:05:10.363Z",
+      "fetched_at": "2026-11-05T21:05:11.455739+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1VBr3Cvtc2kKdsNiJPHEioRTyW6-LuLy-zpDjDNDHYFg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sjsu/injury-status"
     },
@@ -101133,7 +101147,7 @@
             "Col7": "12.5",
             "Col8": "2",
             "Col9": "10/2/2026",
-            "Col10": "Reported as OFS in Week 5. ",
+            "Col10": "Reported as OFS in Week 5.",
             "Col11": "0"
           }
         },
@@ -101983,8 +101997,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:03:08.388Z",
-      "fetched_at": "2026-11-05T20:06:03.674401+00:00",
+      "source_timestamp": "2026-11-05T21:04:44.507Z",
+      "fetched_at": "2026-11-05T21:04:45.584196+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/18m_ayZeFBtdG8zI5SvAG0MOxlmqrsGYEwu-PHtN5NEc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/smu/injury-status"
     },
@@ -103088,8 +103102,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:18.573Z",
-      "fetched_at": "2026-11-05T20:05:18.649206+00:00",
+      "source_timestamp": "2026-11-05T21:03:47.516Z",
+      "fetched_at": "2026-11-05T21:03:48.582965+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1NgyW7DC6fFPiHjTUfEdxTA22AYZNlR6q_MPgJsuXCpo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/south-carolina/injury-status"
     },
@@ -103683,8 +103697,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:17.764Z",
-      "fetched_at": "2026-11-05T20:07:27.056567+00:00",
+      "source_timestamp": "2026-11-05T21:02:01.495Z",
+      "fetched_at": "2026-11-05T21:05:51.861095+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ErChNPMcKTfc2woi8eJbFIgMeamsRaUnYGjBx-53OD4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/southern-miss/injury-status"
     },
@@ -105298,8 +105312,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:04.795Z",
-      "fetched_at": "2026-11-05T20:06:05.957826+00:00",
+      "source_timestamp": "2026-11-05T21:04:45.097Z",
+      "fetched_at": "2026-11-05T21:04:46.034091+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1uqb1mEt5hcyoWoljf153zqooDCYkvkafgy9Hw0uE1js/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/stanford/injury-status"
     },
@@ -106913,8 +106927,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:07.385Z",
-      "fetched_at": "2026-11-05T20:06:08.764630+00:00",
+      "source_timestamp": "2026-11-05T21:04:46.814Z",
+      "fetched_at": "2026-11-05T21:04:47.949777+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1a-mILH5Gx0zsC-63bfFxJZeLpyBQ9m_kLn0UARFYUDI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/syracuse/injury-status"
     },
@@ -108288,8 +108302,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:44.492Z",
-      "fetched_at": "2026-11-05T20:05:44.571573+00:00",
+      "source_timestamp": "2026-11-05T21:04:24.724Z",
+      "fetched_at": "2026-11-05T21:04:25.928790+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1raeHY553LAXA2fFwUk7E0SOvwhgNqVpNM4_fvL45GeY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tcu/injury-status"
     },
@@ -109303,8 +109317,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:33.177Z",
-      "fetched_at": "2026-11-05T20:06:34.260277+00:00",
+      "source_timestamp": "2026-11-05T21:01:39.432Z",
+      "fetched_at": "2026-11-05T21:05:04.160504+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1TPynIkX-Eiu1-uQBorftiVEjRlD_4iGnOCbBicOK6Oo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/temple/injury-status"
     },
@@ -110048,8 +110062,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:19.751Z",
-      "fetched_at": "2026-11-05T20:05:19.822388+00:00",
+      "source_timestamp": "2026-11-05T21:02:36.485Z",
+      "fetched_at": "2026-11-05T21:03:47.043851+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1VWMQkmNhuo3ZnRicTSZCj5BA5rAof9_FquKvxi53ZjA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tennessee/injury-status"
     },
@@ -110219,7 +110233,7 @@
         },
         {
           "player": "Hollywood Smothers",
-          "status": "O",
+          "status": "OFS",
           "position": "RB",
           "is_new": true,
           "rating": 14.9,
@@ -110237,7 +110251,7 @@
             "Col1": "Hollywood Smothers",
             "Col2": "",
             "Col3": "",
-            "Col4": "O",
+            "Col4": "OFS",
             "Col5": "RB",
             "Col6": "TRUE",
             "Col7": "14.9",
@@ -111033,8 +111047,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:20.259Z",
-      "fetched_at": "2026-11-05T20:05:20.335091+00:00",
+      "source_timestamp": "2026-11-05T21:03:48.090Z",
+      "fetched_at": "2026-11-05T21:03:49.001629+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1migINlNe_fMS2nIMHIthX5nefB9ztbuhDpnEHFFib98/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/texas/injury-status"
     },
@@ -111838,8 +111852,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:21.143Z",
-      "fetched_at": "2026-11-05T20:05:21.213646+00:00",
+      "source_timestamp": "2026-11-05T21:03:49.569Z",
+      "fetched_at": "2026-11-05T21:03:50.684166+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1f0NcS3t38sRk532daXU9mjVZDiCe9kuImlhQvie9DWE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/texas-am/injury-status"
     },
@@ -113573,8 +113587,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:46.190Z",
-      "fetched_at": "2026-11-05T20:05:47.598411+00:00",
+      "source_timestamp": "2026-11-05T21:04:27.098Z",
+      "fetched_at": "2026-11-05T21:04:28.136070+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1MphM8oi0uHgo-KDy8lSWxAOvpUJhoiNJbvDG6B5OV_c/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/texas-tech/injury-status"
     },
@@ -114528,8 +114542,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:11.552Z",
-      "fetched_at": "2026-11-05T20:07:10.376793+00:00",
+      "source_timestamp": "2026-11-05T21:05:36.741Z",
+      "fetched_at": "2026-11-05T21:05:37.507213+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Pi1iZsfEsL-wZR28UJ0g7g-Y8s5emjAZ7hijmOchL4A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/toledo/injury-status"
     },
@@ -115033,8 +115047,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:28.174Z",
-      "fetched_at": "2026-11-05T20:07:29.187236+00:00",
+      "source_timestamp": "2026-11-05T21:01:40.554Z",
+      "fetched_at": "2026-11-05T21:05:51.935557+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1eEvmaPcmdS5d72cOy-2bgAeoE9_IolqvUwJvWgp_ty0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/troy/injury-status"
     },
@@ -115838,8 +115852,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:33.002Z",
-      "fetched_at": "2026-11-05T20:06:34.400643+00:00",
+      "source_timestamp": "2026-11-05T21:01:44.612Z",
+      "fetched_at": "2026-11-05T21:05:04.033492+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1P6aT6zd_Z9wdiGQhdeadjIBPU97byLhDTZaUqimhKBw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tulane/injury-status"
     },
@@ -116343,8 +116357,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:20.012Z",
-      "fetched_at": "2026-11-05T20:06:34.517363+00:00",
+      "source_timestamp": "2026-11-05T21:05:05.114Z",
+      "fetched_at": "2026-11-05T21:05:06.185664+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1TK9p3QiJvPxDwuWVJr2GQKkU-C3jMnUYW78Dib8AVgc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tulsa/injury-status"
     },
@@ -117688,8 +117702,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:02:29.255Z",
-      "fetched_at": "2026-11-05T20:06:16.709649+00:00",
+      "source_timestamp": "2026-11-05T21:03:27.771Z",
+      "fetched_at": "2026-11-05T21:04:52.320001+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1noA6BhJgzSNNz7odUMwx1w-m9PfL7tHNKzKVEhFwbSE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tx-state/injury-status"
     },
@@ -118193,8 +118207,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:35.486Z",
-      "fetched_at": "2026-11-05T20:06:36.389101+00:00",
+      "source_timestamp": "2026-11-05T21:05:05.183Z",
+      "fetched_at": "2026-11-05T21:05:06.183828+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ffW0nUJ-9SWvecjFFr5trhBB6mH9uZA4JGPajVOl1vE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uab/injury-status"
     },
@@ -119961,7 +119975,9 @@
       "source_timestamp": "2026-11-05T20:05:45.912Z",
       "fetched_at": "2026-11-05T20:05:47.210856+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/17f13idbBkoHKWZ6NPr5ROSI6SUCN4I9-OfbNRpqNOC8/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/ucf/injury-status"
+      "page_url": "https://cfbdepth.com/ucf/injury-status",
+      "data_stale": true,
+      "last_fetch_error": "Invalid API response"
     },
     {
       "team_slug": "ucla",
@@ -120943,8 +120959,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:33.303Z",
-      "fetched_at": "2026-11-05T20:05:33.376060+00:00",
+      "source_timestamp": "2026-11-05T21:04:07.317Z",
+      "fetched_at": "2026-11-05T21:04:08.602467+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1GkkgkuNfIMJPVEXKGbEh3Gb3wx_3Ow0Vs0apIaHqAQU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ucla/injury-status"
     },
@@ -121118,8 +121134,8 @@
       "warnings": [
         "Source reports 3 injuries; found 2 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:18.141Z",
-      "fetched_at": "2026-11-05T20:06:19.311941+00:00",
+      "source_timestamp": "2026-11-05T21:04:53.723Z",
+      "fetched_at": "2026-11-05T21:04:54.722972+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1EFeavmsiwzk41PxdqBD2SeF5bkqaiHIOtE3ydThPsWQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uconn/injury-status"
     },
@@ -121863,8 +121879,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:14.634Z",
-      "fetched_at": "2026-11-05T20:05:14.710800+00:00",
+      "source_timestamp": "2026-11-05T21:02:52.276Z",
+      "fetched_at": "2026-11-05T21:03:39.452093+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1X2Cjoe2VsjxpMyDnFzdfCP-MyJcfN5QE9RyXL4KDjl0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uga/injury-status"
     },
@@ -122818,8 +122834,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:23.829Z",
-      "fetched_at": "2026-11-05T20:07:24.843062+00:00",
+      "source_timestamp": "2026-11-05T21:05:46.887Z",
+      "fetched_at": "2026-11-05T21:05:48.565606+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1fpZ79YI_ckV2qoql9pxdI_QYvOG7Np1D7O1gCo87L5I/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ulm/injury-status"
     },
@@ -123533,8 +123549,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:03:04.697Z",
-      "fetched_at": "2026-11-05T20:07:07.412263+00:00",
+      "source_timestamp": "2026-11-05T21:04:17.974Z",
+      "fetched_at": "2026-11-05T21:05:31.660181+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1qE-Bteh9UNJdRb1tVIIFVGN-GfOxRJsVWZ9TZS78xhE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/umass/injury-status"
     },
@@ -124938,8 +124954,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:02.022Z",
-      "fetched_at": "2026-11-05T20:06:03.419368+00:00",
+      "source_timestamp": "2026-11-05T21:04:40.306Z",
+      "fetched_at": "2026-11-05T21:04:41.663382+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Z7-TOYOO7dCnn-vH3Krh7u876hk8NpOwhuqyXFqum88/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unc/injury-status"
     },
@@ -126313,8 +126329,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:41.661Z",
-      "fetched_at": "2026-11-05T20:06:42.686125+00:00",
+      "source_timestamp": "2026-11-05T21:05:12.533Z",
+      "fetched_at": "2026-11-05T21:05:13.569000+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/113wa62njoSaa_k7q-sNRmWvFpspCML9YFJTyNSuOUjs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unlv/injury-status"
     },
@@ -127508,8 +127524,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:02:29.487Z",
-      "fetched_at": "2026-11-05T20:06:36.889405+00:00",
+      "source_timestamp": "2026-11-05T21:03:29.535Z",
+      "fetched_at": "2026-11-05T21:05:08.930950+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1QzDXAckmRZB0RbnJqrVlxe7IJNMsS0d_CaTMpqdbI54/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unm/injury-status"
     },
@@ -128253,8 +128269,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:28.214Z",
-      "fetched_at": "2026-11-05T20:06:29.284238+00:00",
+      "source_timestamp": "2026-11-05T21:05:00.640Z",
+      "fetched_at": "2026-11-05T21:05:01.581125+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1BVWDZBmtdtoQJ7pdTQHi3K4ZQWxLu8hFOZ4paBbR6oc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unt/injury-status"
     },
@@ -129448,8 +129464,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:07:26.183Z",
-      "fetched_at": "2026-11-05T20:07:27.343926+00:00",
+      "source_timestamp": "2026-11-05T21:05:50.687Z",
+      "fetched_at": "2026-11-05T21:05:51.710285+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1NfqFK3lyOfgVibiJW6pUaEWenV9pupRxdNi811oInpA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/usa/injury-status"
     },
@@ -131033,8 +131049,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:33.776Z",
-      "fetched_at": "2026-11-05T20:05:33.855639+00:00",
+      "source_timestamp": "2026-11-05T21:04:09.084Z",
+      "fetched_at": "2026-11-05T21:04:10.668141+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1qo1GghbgxTF4NgwbL8tVQtaR1-ykxPO8ZgJcde88Brk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/usc/injury-status"
     },
@@ -131958,8 +131974,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:30.555Z",
-      "fetched_at": "2026-11-05T20:06:31.684314+00:00",
+      "source_timestamp": "2026-11-05T21:05:02.733Z",
+      "fetched_at": "2026-11-05T21:05:03.832182+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1or7tk_iin2UAv6EkSybVpTE-5p7Vih1QrodyEo8WwxU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/usf/injury-status"
     },
@@ -132611,8 +132627,8 @@
         }
       ],
       "warnings": [],
-      "source_timestamp": "2026-11-05T20:05:48.949Z",
-      "fetched_at": "2026-11-05T20:05:50.216540+00:00",
+      "source_timestamp": "2026-11-05T21:04:29.259Z",
+      "fetched_at": "2026-11-05T21:04:30.270522+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1lnYXi5ZPN3BELuM1e_tV8dlalyOPvqZmK3LEyUCuzSQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utah/injury-status"
     },
@@ -133866,8 +133882,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:02:30.116Z",
-      "fetched_at": "2026-11-05T20:06:16.957470+00:00",
+      "source_timestamp": "2026-11-05T21:03:27.960Z",
+      "fetched_at": "2026-11-05T21:04:52.491343+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1bVABRemPc5x0-Gf-VpuyQNmu_jUebWiD7S6WkxF2KB4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utah-state/injury-status"
     },
@@ -134911,8 +134927,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:43.749Z",
-      "fetched_at": "2026-11-05T20:06:44.976370+00:00",
+      "source_timestamp": "2026-11-05T21:05:13.413Z",
+      "fetched_at": "2026-11-05T21:05:14.706979+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1NRuiKNoq_IIfppAFmMWXYpzve-nzTWpKMAxXWpbrf9o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utep/injury-status"
     },
@@ -135356,8 +135372,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:35.492Z",
-      "fetched_at": "2026-11-05T20:06:36.188395+00:00",
+      "source_timestamp": "2026-11-05T21:05:07.592Z",
+      "fetched_at": "2026-11-05T21:05:08.757312+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1XlPoyHbTk3iv-aX02KbOGwRu30O6TfFZ1ubmUsz0KWk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utsa/injury-status"
     },
@@ -137061,8 +137077,8 @@
       "warnings": [
         "Source reports 25 injuries; found 24 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:07.752Z",
-      "fetched_at": "2026-11-05T20:06:08.726620+00:00",
+      "source_timestamp": "2026-11-05T21:04:47.277Z",
+      "fetched_at": "2026-11-05T21:04:48.179752+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ln-SgjNQQmnU_4-fGVljy_44Y69b1SFFMR19otxNc3I/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uva/injury-status"
     },
@@ -137956,8 +137972,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:22.036Z",
-      "fetched_at": "2026-11-05T20:05:22.214284+00:00",
+      "source_timestamp": "2026-11-05T21:03:50.301Z",
+      "fetched_at": "2026-11-05T21:03:51.454184+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1p1EEZZhr-uzhMWUSRLl0_407IiYGjXJsVG5r241FCnU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/vanderbilt/injury-status"
     },
@@ -139001,8 +139017,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:03:46.778Z",
-      "fetched_at": "2026-11-05T20:06:08.982385+00:00",
+      "source_timestamp": "2026-11-05T21:04:49.117Z",
+      "fetched_at": "2026-11-05T21:04:49.908608+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/16JTJ88BDwF9180tYg9Yawn0qEEcisDqKUYsFiiT_gvA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/virginia-tech/injury-status"
     },
@@ -139596,8 +139612,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:10.560Z",
-      "fetched_at": "2026-11-05T20:06:11.660589+00:00",
+      "source_timestamp": "2026-11-05T21:04:49.065Z",
+      "fetched_at": "2026-11-05T21:04:49.953351+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1oNdOe7Y6h5dC2lujWw7750LgNPJrk1h3i5IHAFmfUFg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wake/injury-status"
     },
@@ -140701,8 +140717,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:18.293Z",
-      "fetched_at": "2026-11-05T20:06:19.598073+00:00",
+      "source_timestamp": "2026-11-05T21:04:53.839Z",
+      "fetched_at": "2026-11-05T21:04:55.031067+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ODvyCZjYE2eVpgKQS48WJyJkjvRBLGNYr1rqDjZq38E/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wash-state/injury-status"
     },
@@ -142166,8 +142182,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:35.590Z",
-      "fetched_at": "2026-11-05T20:05:35.665268+00:00",
+      "source_timestamp": "2026-11-05T21:04:09.897Z",
+      "fetched_at": "2026-11-05T21:04:11.579483+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1C6qdAK1dGsrtoT3R_SUht8e5F4lJodsTmBQAMYY23jI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/washington/injury-status"
     },
@@ -143481,8 +143497,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:49.833Z",
-      "fetched_at": "2026-11-05T20:05:50.980706+00:00",
+      "source_timestamp": "2026-11-05T21:04:32.022Z",
+      "fetched_at": "2026-11-05T21:04:33.178593+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1iPDiE2tNtGAeg7OJfkyzidOZPZW8QbsnqbkrkVad2sg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/west-virginia/injury-status"
     },
@@ -144736,8 +144752,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:05:35.178Z",
-      "fetched_at": "2026-11-05T20:05:35.258543+00:00",
+      "source_timestamp": "2026-11-05T21:04:11.703Z",
+      "fetched_at": "2026-11-05T21:04:12.655539+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1bTMS7SPxjqWxR8FC4rFieJ6BkJaO4aQcBossvcTnB2Q/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wisconsin/injury-status"
     },
@@ -145181,8 +145197,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:57.990Z",
-      "fetched_at": "2026-11-05T20:06:59.235163+00:00",
+      "source_timestamp": "2026-11-05T21:05:25.576Z",
+      "fetched_at": "2026-11-05T21:05:26.873148+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1C1W8v2aXVwHR9WE2GH5VdezhknzfW2XBRx4BTvFceUE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wku/injury-status"
     },
@@ -145896,12 +145912,10 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-05T19:07:41.311Z",
-      "fetched_at": "2026-11-05T19:07:42.274403+00:00",
+      "source_timestamp": "2026-11-05T21:05:37.838Z",
+      "fetched_at": "2026-11-05T21:05:39.629713+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1yz9_G0kOyQbcQyK6HvrYimOBAPyGAcThfLt5hLLfVwc/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/wmu/injury-status",
-      "data_stale": true,
-      "last_fetch_error": "Invalid API response"
+      "page_url": "https://cfbdepth.com/wmu/injury-status"
     },
     {
       "team_slug": "wyoming",
@@ -146763,8 +146777,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-05T20:06:44.385Z",
-      "fetched_at": "2026-11-05T20:06:46.092448+00:00",
+      "source_timestamp": "2026-11-05T21:05:14.952Z",
+      "fetched_at": "2026-11-05T21:05:16.168193+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1FjJXFFVb1ocvzLZ1hXS4whMr2s3WN85l_evpYS35fHs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wyoming/injury-status"
     }
