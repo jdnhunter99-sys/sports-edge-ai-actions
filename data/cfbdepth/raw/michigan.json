@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "10",
+      "Col2": "15",
       "Col3": "# New:",
-      "Col4": "0",
+      "Col4": "5",
       "Col5": "Impact:",
-      "Col6": "8",
+      "Col6": "18",
       "Col7": "Impact Avg:",
-      "Col8": "0.8",
+      "Col8": "1.2",
       "Col9": "Impact Rank:",
-      "Col10": "108",
+      "Col10": "50",
       "Col11": ""
     },
     {
@@ -149,13 +149,13 @@
       "Col1": "Dom Nichols",
       "Col2": "",
       "Col3": "",
-      "Col4": "GTD",
+      "Col4": "Q",
       "Col5": "DE",
       "Col6": "FALSE",
       "Col7": "15.0",
-      "Col8": "0",
-      "Col9": "10/31/2026",
-      "Col10": "Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-24: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
+      "Col8": "2",
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-24: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
       "Col11": "0"
     },
     {
@@ -175,79 +175,79 @@
       "Col1": "John Henry Daley",
       "Col2": "",
       "Col3": "",
-      "Col4": "GTD",
+      "Col4": "Q",
       "Col5": "DE",
       "Col6": "FALSE",
       "Col7": "16.5",
-      "Col8": "0",
-      "Col9": "10/31/2026",
-      "Col10": "Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
+      "Col8": "2",
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
       "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Rod Moore",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "S",
+      "Col6": "TRUE",
+      "Col7": "14.6",
+      "Col8": "2",
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Jordan Young",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "S",
+      "Col6": "TRUE",
+      "Col7": "12.4",
+      "Col8": "1",
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "Col11": "0"
     },
     {
-      "Col1": "",
+      "Col1": "Jake Guarnera",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
+      "Col4": "P",
+      "Col5": "OL",
+      "Col6": "TRUE",
+      "Col7": "13.2",
       "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: probable. Game 2026-11-07.",
+      "Col11": "74"
     },
     {
-      "Col1": "",
+      "Col1": "Brady Norton",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "OL",
+      "Col6": "TRUE",
+      "Col7": "12.5",
+      "Col8": "2",
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "Col11": "48"
     },
     {
-      "Col1": "",
+      "Col1": "Hogan Hansen",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "Q",
+      "Col5": "TE",
+      "Col6": "TRUE",
+      "Col7": "13.4",
+      "Col8": "2",
+      "Col9": "11/4/2026",
+      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "Col11": "28"
     },
     {
       "Col1": "",
@@ -1411,23 +1411,41 @@
     [
       "",
       "#00274c",
-      "Michigan"
+      "Michigan",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET"
+      "INJURY / STATUS UPDATE SHEET",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "#:",
-      "10",
+      "15",
       "# New:",
-      "0",
+      "5",
       "Impact:",
-      "8",
+      "18",
       "Impact Avg:",
-      "0.8",
+      "1.2",
       "Impact Rank:",
-      "108"
+      "50",
+      ""
     ],
     [
       "Player Name",
@@ -1524,13 +1542,13 @@
       "Dom Nichols",
       "",
       "",
-      "GTD",
+      "Q",
       "DE",
       "FALSE",
       "15.0",
-      "0",
-      "10/31/2026",
-      "Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-24: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
+      "2",
+      "11/4/2026",
+      "Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-24: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24.",
       "0"
     ],
     [
@@ -1550,14 +1568,79 @@
       "John Henry Daley",
       "",
       "",
-      "GTD",
+      "Q",
       "DE",
       "FALSE",
       "16.5",
+      "2",
+      "11/4/2026",
+      "Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
+      "0"
+    ],
+    [
+      "Rod Moore",
+      "",
+      "",
+      "Q",
+      "S",
+      "TRUE",
+      "14.6",
+      "2",
+      "11/4/2026",
+      "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "0"
+    ],
+    [
+      "Jordan Young",
+      "",
+      "",
+      "Q",
+      "S",
+      "TRUE",
+      "12.4",
+      "1",
+      "11/4/2026",
+      "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "0"
+    ],
+    [
+      "Jake Guarnera",
+      "",
+      "",
+      "P",
+      "OL",
+      "TRUE",
+      "13.2",
       "0",
-      "10/31/2026",
-      "Official report 2026-10-31: game time decision. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31.",
-      "0"
+      "11/4/2026",
+      "Official report 2026-11-04: probable. Game 2026-11-07.",
+      "74"
+    ],
+    [
+      "Brady Norton",
+      "",
+      "",
+      "Q",
+      "OL",
+      "TRUE",
+      "12.5",
+      "2",
+      "11/4/2026",
+      "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "48"
+    ],
+    [
+      "Hogan Hansen",
+      "",
+      "",
+      "Q",
+      "TE",
+      "TRUE",
+      "13.4",
+      "2",
+      "11/4/2026",
+      "Official report 2026-11-04: questionable. Game 2026-11-07.",
+      "28"
     ],
     [
       "",
@@ -1567,527 +1650,621 @@
       "",
       "",
       "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
       "0",
       "",
       "",
+      ""
+    ],
+    [
       "",
       "",
       "",
       "",
-      "0"
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "0",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "Player Name",
@@ -2099,7 +2276,8 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes"
+      "Update Notes",
+      ""
     ],
     [
       "Enow Etta",
@@ -2111,7 +2289,8 @@
       "13.6",
       "0",
       "11/3/2026",
-      "Cleared from the injury/status report on 11/03/2026"
+      "Cleared from the injury/status report on 11/03/2026",
+      ""
     ],
     [
       "Jake Guarnera",
@@ -2123,7 +2302,8 @@
       "13.6",
       "0",
       "10/31/2026",
-      "Cleared from the injury/status report on 10/31/2026"
+      "Cleared from the injury/status report on 10/31/2026",
+      ""
     ],
     [
       "Blake Frazier",
@@ -2135,7 +2315,8 @@
       "13.3",
       "1",
       "10/31/2026",
-      "Cleared from the injury/status report on 10/31/2026"
+      "Cleared from the injury/status report on 10/31/2026",
+      ""
     ],
     [
       "Troy Bowles",
@@ -2147,7 +2328,8 @@
       "14.5",
       "0",
       "10/31/2026",
-      "Cleared from the injury/status report on 10/31/2026"
+      "Cleared from the injury/status report on 10/31/2026",
+      ""
     ],
     [
       "Jordan Young",
@@ -2159,7 +2341,8 @@
       "12.4",
       "1",
       "10/31/2026",
-      "Cleared from the injury/status report on 10/31/2026"
+      "Cleared from the injury/status report on 10/31/2026",
+      ""
     ],
     [
       "Rod Moore",
@@ -2171,7 +2354,8 @@
       "14.6",
       "1",
       "10/31/2026",
-      "Cleared from the injury/status report on 10/31/2026"
+      "Cleared from the injury/status report on 10/31/2026",
+      ""
     ],
     [
       "Zack Marshall",
@@ -2183,7 +2367,8 @@
       "10.6",
       "3",
       "10/29/2026",
-      "Cleared from the injury/status report on 10/29/2026"
+      "Cleared from the injury/status report on 10/29/2026",
+      ""
     ],
     [
       "Mason Bonner",
@@ -2195,10 +2380,21 @@
       "10.2",
       "3",
       "10/29/2026",
-      "Cleared from the injury/status report on 10/29/2026"
+      "Cleared from the injury/status report on 10/29/2026",
+      ""
     ],
     [
-      "Mason Bonner"
+      "Mason Bonner",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "Enow Etta",
@@ -2210,7 +2406,8 @@
       "13.4",
       "0",
       "10/25/2026",
-      "Cleared from the injury/status report on 10/25/2026"
+      "Cleared from the injury/status report on 10/25/2026",
+      ""
     ],
     [
       "Brady Norton",
@@ -2222,7 +2419,8 @@
       "12.5",
       "1",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026"
+      "Cleared from the injury/status report on 10/24/2026",
+      ""
     ],
     [
       "Andrew Babalola",
@@ -2234,7 +2432,8 @@
       "13.6",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026"
+      "Cleared from the injury/status report on 10/24/2026",
+      ""
     ],
     [
       "Aisea Moa",
@@ -2246,7 +2445,8 @@
       "13.2",
       "1",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026"
+      "Cleared from the injury/status report on 10/24/2026",
+      ""
     ],
     [
       "Jake Guarnera",
@@ -2258,10 +2458,21 @@
       "13.7",
       "1",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026"
+      "Cleared from the injury/status report on 10/24/2026",
+      ""
     ],
     [
-      "Jake Guarnera"
+      "Jake Guarnera",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "Zack Marshall",
@@ -2273,7 +2484,8 @@
       "10.6",
       "3",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026"
+      "Cleared from the injury/status report on 10/22/2026",
+      ""
     ],
     [
       "John Henry Daley",
@@ -2285,7 +2497,8 @@
       "16.7",
       "2",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Andrew Babalola",
@@ -2297,7 +2510,8 @@
       "13.6",
       "1",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Nathan Efobi",
@@ -2309,7 +2523,8 @@
       "13.0",
       "0",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Aisea Moa",
@@ -2321,7 +2536,8 @@
       "13.4",
       "1",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Dom Nichols",
@@ -2333,7 +2549,8 @@
       "15.1",
       "2",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Andrew Marsh",
@@ -2345,7 +2562,8 @@
       "14.6",
       "0",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Manuel Beigel",
@@ -2357,7 +2575,8 @@
       "15.3",
       "2",
       "10/15/2026",
-      "Cleared from the injury/status report on 10/15/2026"
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
     ],
     [
       "Houston Ka'aha'aina-Torres",
@@ -2369,7 +2588,8 @@
       "10.7",
       "0",
       "10/15/2026",
-      "Cleared from the injury/status report on 10/15/2026"
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
     ],
     [
       "Chase Taylor",
@@ -2381,7 +2601,8 @@
       "12.1",
       "1",
       "10/15/2026",
-      "Cleared from the injury/status report on 10/15/2026"
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
     ],
     [
       "Jonathan Brown",
@@ -2393,7 +2614,8 @@
       "9.9",
       "0",
       "10/15/2026",
-      "Cleared from the injury/status report on 10/15/2026"
+      "Cleared from the injury/status report on 10/15/2026",
+      ""
     ],
     [
       "John Henry Daley",
@@ -2405,7 +2627,8 @@
       "16.8",
       "2",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026"
+      "Cleared from the injury/status report on 10/03/2026",
+      ""
     ],
     [
       "Blake Frazier",
@@ -2417,7 +2640,8 @@
       "13.2",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026"
+      "Cleared from the injury/status report on 10/03/2026",
+      ""
     ],
     [
       "Dom Nichols",
@@ -2429,7 +2653,8 @@
       "15.4",
       "2",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026"
+      "Cleared from the injury/status report on 10/03/2026",
+      ""
     ],
     [
       "Andrew Marsh",
@@ -2441,7 +2666,8 @@
       "14.8",
       "2",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026"
+      "Cleared from the injury/status report on 10/03/2026",
+      ""
     ],
     [
       "Logan Forbes",
@@ -2453,7 +2679,8 @@
       "4.9",
       "0",
       "9/26/2026",
-      "Cleared from the injury/status report on 09/26/2026"
+      "Cleared from the injury/status report on 09/26/2026",
+      ""
     ],
     [
       "Zeke Berry",
@@ -2465,7 +2692,8 @@
       "12.5",
       "1",
       "9/26/2026",
-      "Cleared from the injury/status report on 09/26/2026"
+      "Cleared from the injury/status report on 09/26/2026",
+      ""
     ],
     [
       "Dom Nichols",
@@ -2477,7 +2705,8 @@
       "15.2",
       "2",
       "9/26/2026",
-      "Cleared from the injury/status report on 09/26/2026"
+      "Cleared from the injury/status report on 09/26/2026",
+      ""
     ],
     [
       "Jordan Marshall",
@@ -2489,7 +2718,8 @@
       "15.9",
       "2",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Evan Link",
@@ -2501,7 +2731,8 @@
       "11.7",
       "1",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Carter Meadows",
@@ -2513,7 +2744,8 @@
       "13.4",
       "1",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Hogan Hansen",
@@ -2525,7 +2757,8 @@
       "11.1",
       "1",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "John Henry Daley",
@@ -2537,7 +2770,8 @@
       "17.4",
       "0",
       "9/1/2026",
-      "Cleared from the injury/status report on 09/01/2026"
+      "Cleared from the injury/status report on 09/01/2026",
+      ""
     ],
     [
       "Rod Moore",
@@ -2549,7 +2783,8 @@
       "14.9",
       "0",
       "9/1/2026",
-      "Cleared from the injury/status report on 09/01/2026"
+      "Cleared from the injury/status report on 09/01/2026",
+      ""
     ],
     [
       "Andrew Babalola",
@@ -2561,9 +2796,10 @@
       "13.6",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026"
+      "Cleared from the injury/status report on 08/10/2026",
+      ""
     ]
   ],
   "count": 107,
-  "timestamp": "2026-11-05T03:04:38.589Z"
+  "timestamp": "2026-11-05T04:05:31.501Z"
 }
