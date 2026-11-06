@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 93,
+  "listed_player_count": 98,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5699,
-      "matched": 53,
-      "no_current_season_row": 40,
+      "complete_coverage_rate": 0.5714,
+      "matched": 56,
+      "no_current_season_row": 42,
       "partial": 0,
-      "player_count": 93,
+      "player_count": 98,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -719,6 +719,101 @@
       "team_name": "Dallas Mavericks",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -0.4,
+      "dbpm_rank": 215,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 3.1666666666666665,
+      "minutes_per_game_rank": 422,
+      "obpm": -0.6,
+      "obpm_rank": 206,
+      "player_name": "Bruce Thornton",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": 22.4,
+      "usg_pct_rank": 116
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.1,
+      "dbpm_rank": 48,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 14.166666666666666,
+      "minutes_per_game_rank": 296,
+      "obpm": 0.6,
+      "obpm_rank": 147,
+      "player_name": "Clint Capela",
+      "reason": "Injury/Illness - Right Ankle Sprain",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": 10.0,
+      "usg_pct_rank": 422
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Julian Phillips",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Quadir Copeland",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.7,
+      "dbpm_rank": 28,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 8.0,
+      "minutes_per_game_rank": 353,
+      "obpm": 0.4,
+      "obpm_rank": 153,
+      "player_name": "Steven Adams",
+      "reason": "Injury/Illness - Right Soleus Strain",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": 10.7,
+      "usg_pct_rank": 411
     },
     {
       "current_status": "Out",
@@ -1807,8 +1902,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-06",
-    "report_time_et": "2026-11-06 02:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_45PM.pdf"
+    "report_time_et": "2026-11-06 03:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_03_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1967,15 +2062,15 @@
       "team_name": "Golden State Warriors"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-07",
           "game_time_et": "09:00",
           "matchup": "HOU@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "HOU",
