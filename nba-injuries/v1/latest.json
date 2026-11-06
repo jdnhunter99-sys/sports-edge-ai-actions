@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 92,
+  "listed_player_count": 93,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5652,
-      "matched": 52,
+      "complete_coverage_rate": 0.5699,
+      "matched": 53,
       "no_current_season_row": 40,
       "partial": 0,
-      "player_count": 92,
+      "player_count": 93,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -624,6 +624,25 @@
       "team_name": "Dallas Mavericks",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Probable",
+      "dbpm": 0.6,
+      "dbpm_rank": 128,
+      "game_date": "2026-11-06",
+      "game_time_et": null,
+      "matchup": "UTA@DAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 29.833333333333332,
+      "minutes_per_game_rank": 93,
+      "obpm": 6.3,
+      "obpm_rank": 26,
+      "player_name": "Kyrie Irving",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "DAL",
+      "team_name": "Dallas Mavericks",
+      "usg_pct": 28.8,
+      "usg_pct_rank": 30
     },
     {
       "current_status": "Probable",
@@ -1788,8 +1807,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-06",
-    "report_time_et": "2026-11-06 01:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_01_45PM.pdf"
+    "report_time_et": "2026-11-06 02:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1896,14 +1915,14 @@
       "team_name": "Cleveland Cavaliers"
     },
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-06",
           "game_time_et": null,
           "matchup": "UTA@DAL",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
