@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 89,
+  "listed_player_count": 90,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5506,
-      "matched": 49,
+      "complete_coverage_rate": 0.5556,
+      "matched": 50,
       "no_current_season_row": 40,
       "partial": 0,
-      "player_count": 89,
+      "player_count": 90,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -341,7 +341,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Out",
+      "current_status": "Available",
       "dbpm": -3.7,
       "dbpm_rank": 423,
       "game_date": "2026-11-06",
@@ -353,7 +353,7 @@
       "obpm": -4.0,
       "obpm_rank": 343,
       "player_name": "Hannes Steinbach",
-      "reason": "G League - On Assignment",
+      "reason": null,
       "team_abbreviation": "CHA",
       "team_name": "Charlotte Hornets",
       "usg_pct": 19.1,
@@ -790,7 +790,7 @@
       "obpm": 2.5,
       "obpm_rank": 83,
       "player_name": "Isaiah Stewart",
-      "reason": "Bruise Injury/Illness - Left Adductor / Groin",
+      "reason": "Bruise",
       "team_abbreviation": "MEM",
       "team_name": "Memphis Grizzlies",
       "usg_pct": 19.0,
@@ -1481,6 +1481,25 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Questionable",
+      "dbpm": 3.1,
+      "dbpm_rank": 21,
+      "game_date": "2026-11-06",
+      "game_time_et": null,
+      "matchup": "TOR@MIL",
+      "metrics_status": "matched",
+      "minutes_per_game": 6.0,
+      "minutes_per_game_rank": 377,
+      "obpm": -2.8,
+      "obpm_rank": 297,
+      "player_name": "Kyle Anderson",
+      "reason": "Injury/Illness - Illness Injury/Illness - Left Adductor / Groin",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 11.1,
+      "usg_pct_rank": 409
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -1731,8 +1750,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-06",
-    "report_time_et": "2026-11-06 10:00 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_10_00AM.pdf"
+    "report_time_et": "2026-11-06 10:45 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_10_45AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2151,14 +2170,14 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-06",
           "game_time_et": null,
           "matchup": "TOR@MIL",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
