@@ -75,7 +75,21 @@ jobs:
           PY
           mapfile -t cached_paths < "$RUNNER_TEMP/propline-cached-event-paths"
           if ((${#cached_paths[@]})); then
-            git sparse-checkout add --no-cone "${cached_paths[@]}"
+            # `sparse-checkout add` does not support --no-cone. Re-set the
+            # non-cone pattern list and retain the index/fallback files needed
+            # by later steps while adding the referenced event caches.
+            git sparse-checkout set --no-cone \
+              /game-odds/nfl/index.json \
+              /game-odds/cfb/index.json \
+              /game-odds/nba/index.json \
+              /game-odds/wnba/index.json \
+              /game-odds/nhl/index.json \
+              /game-odds/mlb/index.json \
+              /game-odds/ncaab/index.json \
+              /game-card-odds/v2/latest.json \
+              /game-card-odds/v2/previous.json \
+              '/NCAAB Dashboard/latest.json' \
+              "${cached_paths[@]}"
           fi
 
       - name: Configure data commit identity
@@ -154,7 +168,7 @@ jobs:
               print(value)
           PY
           mapfile -t publish_paths < "$RUNNER_TEMP/propline-publish-paths"
-          git sparse-checkout add --no-cone "${publish_paths[@]}"
+          git sparse-checkout set --no-cone "${publish_paths[@]}"
 
           mkdir -p game-odds game-card-odds/v2
           cp -a "$output_dir/game-odds/." game-odds/
