@@ -786,10 +786,6 @@ def build_sport(sport,events,root,stamp,key,roster_index=None):
       # Keep live line/price authoritative. Opening/closing fields are metadata.
       row.update(opening)
      p['markets'].setdefault(market['key'],[]).append(row)
-  if sport=='cfb':
-   missing_positions=[f"{player.get('player')} ({player.get('team') or 'team unknown'})" for player in players.values() if not has_position(player.get('position'))]
-   if missing_positions:
-    print(f"cfb event {eid}: {len(missing_positions)} players still lack a roster position: {', '.join(missing_positions[:20])}",flush=True)
   for identity,player in players.items():
    name=player['player']
    identity_hash=hashlib.sha256(identity.encode('utf-8')).hexdigest()[:12]

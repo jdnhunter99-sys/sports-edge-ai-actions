@@ -7,9 +7,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: propline-private-data-publisher
-  queue: max
-  cancel-in-progress: false
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   publish:
@@ -36,7 +35,7 @@ jobs:
           set -euo pipefail
           token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
           git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" clone \
-            --quiet --filter=blob:none --depth=1 --no-checkout \
+            --quiet --filter=tree:0 --depth=1 --no-checkout --no-tags \
             --single-branch --branch propline-data \
             "https://github.com/${DATA_REPOSITORY}.git" data
           git -C data sparse-checkout init --cone
@@ -69,7 +68,6 @@ jobs:
           git reset --quiet
           # Replace only the generated PropLine trees. Refuse to publish if the
           # sparse checkout has staged changes outside the paths this workflow owns.
-          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
           git rm --cached --sparse -r --ignore-unmatch -- \
             'Player Odds' 'Player Lists' versions player-lists
           git add --sparse -A -- 'Player Odds' 'Player Lists' manifest.json team-rosters
@@ -82,5 +80,4 @@ jobs:
           done
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Publish complete PropLine JSON generation'
-          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" \
-            push --quiet origin HEAD:propline-data
+          bash ../action/scripts/push_data_branch.sh propline-data

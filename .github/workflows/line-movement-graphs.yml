@@ -7,8 +7,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: propline-private-data-publisher
-  queue: max
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
@@ -34,7 +33,7 @@ jobs:
           repository: ${{ github.repository }}
           ref: propline-data
           token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true
+          persist-credentials: false
           fetch-depth: 1
           filter: blob:none
           sparse-checkout: |
@@ -55,8 +54,10 @@ jobs:
 
       - name: Publish updated per-game graph files
         working-directory: data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add line-movement-graphs/v1
           if git diff --cached --quiet; then exit 0; fi
           git commit -qm 'Publish ScoresAndOdds line movement graphs'
-          git push --quiet origin HEAD:propline-data
+          bash ../action/scripts/push_data_branch.sh propline-data

@@ -7,8 +7,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: propline-private-data-publisher
-  queue: max
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
@@ -74,5 +73,4 @@ jobs:
             exit 0
           fi
           git commit -qm 'Refresh MLB prop-center JSON'
-          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
-          git -c http.extraheader="AUTHORIZATION: basic ${token_auth}" push --quiet origin "HEAD:${DATA_BRANCH}"
+          bash ../action/scripts/push_data_branch.sh "$DATA_BRANCH"
