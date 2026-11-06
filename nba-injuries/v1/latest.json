@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 105,
+  "listed_player_count": 89,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5238,
-      "matched": 55,
-      "no_current_season_row": 50,
+      "complete_coverage_rate": 0.5506,
+      "matched": 49,
+      "no_current_season_row": 40,
       "partial": 0,
-      "player_count": 105,
+      "player_count": 89,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -703,82 +703,6 @@
     },
     {
       "current_status": "Out",
-      "dbpm": -0.8,
-      "dbpm_rank": 245,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "matched",
-      "minutes_per_game": 20.166666666666668,
-      "minutes_per_game_rank": 211,
-      "obpm": -1.9,
-      "obpm_rank": 251,
-      "player_name": "Gui Santos",
-      "reason": "Injury/Illness - Left Knee Tendinitis",
-      "team_abbreviation": "GSW",
-      "team_name": "Golden State Warriors",
-      "usg_pct": 14.3,
-      "usg_pct_rank": 325
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Jimmy Butler III",
-      "reason": "Surgery",
-      "team_abbreviation": "GSW",
-      "team_name": "Golden State Warriors",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Kristaps Porzingis",
-      "reason": "Not With Team",
-      "team_abbreviation": "GSW",
-      "team_name": "Golden State Warriors",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Moses Moody",
-      "reason": "Injury/Illness - Left Patellar Tendon",
-      "team_abbreviation": "GSW",
-      "team_name": "Golden State Warriors",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
       "dbpm": -1.8,
       "dbpm_rank": 335,
       "game_date": "2026-11-06",
@@ -890,63 +814,6 @@
       "team_name": "Memphis Grizzlies",
       "usg_pct": 20.9,
       "usg_pct_rank": 149
-    },
-    {
-      "current_status": "Available",
-      "dbpm": 0.4,
-      "dbpm_rank": 143,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "matched",
-      "minutes_per_game": 32.875,
-      "minutes_per_game_rank": 45,
-      "obpm": 6.0,
-      "obpm_rank": 29,
-      "player_name": "Giannis Antetokounmpo",
-      "reason": "Injury/Illness - Right Wrist Sprain",
-      "team_abbreviation": "MIA",
-      "team_name": "Miami Heat",
-      "usg_pct": 33.6,
-      "usg_pct_rank": 12
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Tre Donaldson",
-      "reason": "G League - Two-Way",
-      "team_abbreviation": "MIA",
-      "team_name": "Miami Heat",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "10:00",
-      "matchup": "MIA@GSW",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Vladislav Goldin",
-      "reason": "G League - Two-Way Injury/Illness - Right ACL Repair /",
-      "team_abbreviation": "MIA",
-      "team_name": "Miami Heat",
-      "usg_pct": null,
-      "usg_pct_rank": null
     },
     {
       "current_status": "Out",
@@ -1291,101 +1158,6 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Izaiyah Nelson",
-      "reason": "Recovery Injury/Illness - Right Partially Torn",
-      "team_abbreviation": "ORL",
-      "team_name": "Orlando Magic",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": 0.2,
-      "dbpm_rank": 162,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "matched",
-      "minutes_per_game": 33.333333333333336,
-      "minutes_per_game_rank": 36,
-      "obpm": -4.8,
-      "obpm_rank": 367,
-      "player_name": "Jalen Suggs",
-      "reason": "/ Bone Bruise",
-      "team_abbreviation": "ORL",
-      "team_name": "Orlando Magic",
-      "usg_pct": 17.0,
-      "usg_pct_rank": 258
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Jonathan Isaac",
-      "reason": "Management Injury/Illness - Left Ankle Injury",
-      "team_abbreviation": "ORL",
-      "team_name": "Orlando Magic",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Noah Penda",
-      "reason": "Hamstring Injury/Illness - Right Knee Contusion",
-      "team_abbreviation": "ORL",
-      "team_name": "Orlando Magic",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": 0.8,
-      "dbpm_rank": 115,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "matched",
-      "minutes_per_game": 34.0,
-      "minutes_per_game_rank": 22,
-      "obpm": 6.3,
-      "obpm_rank": 27,
-      "player_name": "Paolo Banchero",
-      "reason": "Sprain Injury/Illness - Left Knee Injury",
-      "team_abbreviation": "ORL",
-      "team_name": "Orlando Magic",
-      "usg_pct": 25.7,
-      "usg_pct_rank": 66
-    },
-    {
       "current_status": "Doubtful",
       "dbpm": 1.1,
       "dbpm_rank": 102,
@@ -1441,82 +1213,6 @@
       "team_name": "Philadelphia 76ers",
       "usg_pct": null,
       "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Drew Timme",
-      "reason": "G League - Two-Way",
-      "team_abbreviation": "PHX",
-      "team_name": "Phoenix Suns",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": 0.2,
-      "dbpm_rank": 162,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "matched",
-      "minutes_per_game": 18.6,
-      "minutes_per_game_rank": 232,
-      "obpm": 1.8,
-      "obpm_rank": 107,
-      "player_name": "Jordan Goodwin",
-      "reason": "Injury/Illness - Right Calf Soreness",
-      "team_abbreviation": "PHX",
-      "team_name": "Phoenix Suns",
-      "usg_pct": 17.1,
-      "usg_pct_rank": 255
-    },
-    {
-      "current_status": "Out",
-      "dbpm": null,
-      "dbpm_rank": null,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "no_current_season_row",
-      "minutes_per_game": null,
-      "minutes_per_game_rank": null,
-      "obpm": null,
-      "obpm_rank": null,
-      "player_name": "Mark Williams",
-      "reason": "Injury/Illness - Left Shoulder Surgery",
-      "team_abbreviation": "PHX",
-      "team_name": "Phoenix Suns",
-      "usg_pct": null,
-      "usg_pct_rank": null
-    },
-    {
-      "current_status": "Out",
-      "dbpm": -4.6,
-      "dbpm_rank": 434,
-      "game_date": "2026-11-05",
-      "game_time_et": "09:00",
-      "matchup": "ORL@PHX",
-      "metrics_status": "matched",
-      "minutes_per_game": 7.5,
-      "minutes_per_game_rank": 360,
-      "obpm": -11.8,
-      "obpm_rank": 441,
-      "player_name": "Rasheer Fleming",
-      "reason": "Injury/Illness - Left Ankle Sprain",
-      "team_abbreviation": "PHX",
-      "team_name": "Phoenix Suns",
-      "usg_pct": 19.7,
-      "usg_pct_rank": 175
     },
     {
       "current_status": "Out",
@@ -2034,9 +1730,9 @@
   ],
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
-    "report_date": "2026-11-05",
-    "report_time_et": "2026-11-05 11:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-05_11_00PM.pdf"
+    "report_date": "2026-11-06",
+    "report_time_et": "2026-11-06 12:00 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_12_00AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2048,7 +1744,7 @@
   "teams": [
     {
       "player_count": 8,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-06",
@@ -2056,6 +1752,13 @@
           "matchup": "WAS@ATL",
           "player_count": 8,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "07:30",
+          "matchup": "BKN@ATL",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "ATL",
@@ -2063,8 +1766,16 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "07:30",
+          "matchup": "BKN@ATL",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "BKN",
       "team_name": "Brooklyn Nets"
     },
@@ -2107,7 +1818,7 @@
     },
     {
       "player_count": 7,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-06",
@@ -2115,6 +1826,13 @@
           "matchup": "PHI@CLE",
           "player_count": 7,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "08:00",
+          "matchup": "NYK@CLE",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "CLE",
@@ -2137,8 +1855,16 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "05:00",
+          "matchup": "DEN@IND",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets"
     },
@@ -2150,15 +1876,15 @@
       "team_name": "Detroit Pistons"
     },
     {
-      "player_count": 4,
-      "report_status": "submitted",
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
       "reports": [
         {
-          "game_date": "2026-11-05",
-          "game_time_et": "10:00",
-          "matchup": "MIA@GSW",
-          "player_count": 4,
-          "report_status": "submitted"
+          "game_date": "2026-11-07",
+          "game_time_et": "08:30",
+          "matchup": "ORL@GSW",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "GSW",
@@ -2166,15 +1892,31 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "09:00",
+          "matchup": "HOU@PHX",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "HOU",
       "team_name": "Houston Rockets"
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "05:00",
+          "matchup": "DEN@IND",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "IND",
       "team_name": "Indiana Pacers"
     },
@@ -2216,17 +1958,9 @@
       "team_name": "Memphis Grizzlies"
     },
     {
-      "player_count": 3,
-      "report_status": "submitted",
-      "reports": [
-        {
-          "game_date": "2026-11-05",
-          "game_time_et": "10:00",
-          "matchup": "MIA@GSW",
-          "player_count": 3,
-          "report_status": "submitted"
-        }
-      ],
+      "player_count": 0,
+      "report_status": "not_in_report",
+      "reports": [],
       "team_abbreviation": "MIA",
       "team_name": "Miami Heat"
     },
@@ -2277,14 +2011,22 @@
     },
     {
       "player_count": 0,
-      "report_status": "not_in_report",
-      "reports": [],
+      "report_status": "not_yet_submitted",
+      "reports": [
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "08:00",
+          "matchup": "NYK@CLE",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
+        }
+      ],
       "team_abbreviation": "NYK",
       "team_name": "New York Knicks"
     },
     {
       "player_count": 6,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-06",
@@ -2292,21 +2034,28 @@
           "matchup": "OKC@MEM",
           "player_count": 6,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": null,
+          "matchup": "WAS@OKC",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "OKC",
       "team_name": "Oklahoma City Thunder"
     },
     {
-      "player_count": 5,
-      "report_status": "submitted",
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
       "reports": [
         {
-          "game_date": "2026-11-05",
-          "game_time_et": "09:00",
-          "matchup": "ORL@PHX",
-          "player_count": 5,
-          "report_status": "submitted"
+          "game_date": "2026-11-07",
+          "game_time_et": "08:30",
+          "matchup": "ORL@GSW",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "ORL",
@@ -2328,15 +2077,15 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 4,
-      "report_status": "submitted",
+      "player_count": 0,
+      "report_status": "not_yet_submitted",
       "reports": [
         {
-          "game_date": "2026-11-05",
+          "game_date": "2026-11-07",
           "game_time_et": "09:00",
-          "matchup": "ORL@PHX",
-          "player_count": 4,
-          "report_status": "submitted"
+          "matchup": "HOU@PHX",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "PHX",
@@ -2344,7 +2093,7 @@
     },
     {
       "player_count": 4,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-06",
@@ -2352,6 +2101,13 @@
           "matchup": "POR@LAL",
           "player_count": 4,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "10:00",
+          "matchup": "SAS@POR",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "POR",
@@ -2374,7 +2130,7 @@
     },
     {
       "player_count": 4,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-06",
@@ -2382,6 +2138,13 @@
           "matchup": "SAS@SAC",
           "player_count": 4,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": "10:00",
+          "matchup": "SAS@POR",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "SAS",
@@ -2419,7 +2182,7 @@
     },
     {
       "player_count": 6,
-      "report_status": "submitted",
+      "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-06",
@@ -2427,6 +2190,13 @@
           "matchup": "WAS@ATL",
           "player_count": 6,
           "report_status": "submitted"
+        },
+        {
+          "game_date": "2026-11-07",
+          "game_time_et": null,
+          "matchup": "WAS@OKC",
+          "player_count": 0,
+          "report_status": "not_yet_submitted"
         }
       ],
       "team_abbreviation": "WAS",
