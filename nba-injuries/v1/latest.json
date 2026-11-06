@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 95,
+  "listed_player_count": 105,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4947,
-      "matched": 47,
-      "no_current_season_row": 48,
+      "complete_coverage_rate": 0.5238,
+      "matched": 55,
+      "no_current_season_row": 50,
       "partial": 0,
-      "player_count": 95,
+      "player_count": 105,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -486,7 +486,7 @@
       "obpm": 2.5,
       "obpm_rank": 83,
       "player_name": "Jarrett Allen",
-      "reason": "Injury/Illness - Right Contusion",
+      "reason": "Injury/Illness - Right Knee Contusion",
       "team_abbreviation": "CLE",
       "team_name": "Cleveland Cavaliers",
       "usg_pct": 18.0,
@@ -733,7 +733,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jimmy Butler III",
-      "reason": "Surgery Injury/Illness - Left Patellar Tendon",
+      "reason": "Surgery",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -771,11 +771,87 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Moses Moody",
-      "reason": "Repair / Surgery",
+      "reason": "Injury/Illness - Left Patellar Tendon",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -1.8,
+      "dbpm_rank": 335,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 2.4,
+      "minutes_per_game_rank": 435,
+      "obpm": -10.9,
+      "obpm_rank": 437,
+      "player_name": "Bronny James",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 17.9,
+      "usg_pct_rank": 221
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -7.7,
+      "dbpm_rank": 448,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 1.3333333333333333,
+      "minutes_per_game_rank": 446,
+      "obpm": -12.4,
+      "obpm_rank": 443,
+      "player_name": "Cameron Carr",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 10.7,
+      "usg_pct_rank": 412
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -0.6,
+      "dbpm_rank": 230,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 23.444444444444443,
+      "minutes_per_game_rank": 170,
+      "obpm": 0.2,
+      "obpm_rank": 164,
+      "player_name": "Sandro Mamukelashvili",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 15.8,
+      "usg_pct_rank": 288
+    },
+    {
+      "current_status": "Available",
+      "dbpm": 1.1,
+      "dbpm_rank": 102,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 30.555555555555557,
+      "minutes_per_game_rank": 80,
+      "obpm": 2.2,
+      "obpm_rank": 90,
+      "player_name": "Walker Kessler",
+      "reason": "Injury/Illness - Left Finger Splint",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 16.2,
+      "usg_pct_rank": 277
     },
     {
       "current_status": "Out",
@@ -790,7 +866,7 @@
       "obpm": 2.4,
       "obpm_rank": 86,
       "player_name": "Isaiah Stewart",
-      "reason": "Bruise Injury/Illness - Right Avulsion",
+      "reason": "Bruise Injury/Illness - Left Adductor / Groin",
       "team_abbreviation": "MEM",
       "team_name": "Memphis Grizzlies",
       "usg_pct": 19.0,
@@ -1368,6 +1444,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-05",
+      "game_time_et": "09:00",
+      "matchup": "ORL@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Drew Timme",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
       "dbpm": 0.2,
       "dbpm_rank": 162,
       "game_date": "2026-11-05",
@@ -1422,6 +1517,82 @@
       "team_name": "Phoenix Suns",
       "usg_pct": 19.7,
       "usg_pct_rank": 175
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.7,
+      "dbpm_rank": 118,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 25.75,
+      "minutes_per_game_rank": 139,
+      "obpm": 3.5,
+      "obpm_rank": 63,
+      "player_name": "Ja Morant",
+      "reason": "Injury/Illness - Left Hamstring Strain Injury/Illness - Right Meniscus",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 22.2,
+      "usg_pct_rank": 127
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 1.4,
+      "dbpm_rank": 86,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 5.0,
+      "minutes_per_game_rank": 391,
+      "obpm": 12.6,
+      "obpm_rank": 8,
+      "player_name": "John Tonje",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 23.6,
+      "usg_pct_rank": 92
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Shaedon Sharpe",
+      "reason": "Surgery",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 1.6,
+      "dbpm_rank": 69,
+      "game_date": "2026-11-06",
+      "game_time_et": "10:00",
+      "matchup": "POR@LAL",
+      "metrics_status": "matched",
+      "minutes_per_game": 10.285714285714286,
+      "minutes_per_game_rank": 331,
+      "obpm": -5.4,
+      "obpm_rank": 379,
+      "player_name": "Vit Krejci",
+      "reason": "Injury/Illness - Left Ankle Fracture",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 14.0,
+      "usg_pct_rank": 333
     },
     {
       "current_status": "Out",
@@ -1652,6 +1823,25 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Questionable",
+      "dbpm": -0.3,
+      "dbpm_rank": 201,
+      "game_date": "2026-11-06",
+      "game_time_et": null,
+      "matchup": "TOR@MIL",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.25,
+      "minutes_per_game_rank": 37,
+      "obpm": 0.8,
+      "obpm_rank": 139,
+      "player_name": "Scottie Barnes",
+      "reason": "Soreness / Tightness Injury/Illness - Right Avulsion",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 32.0,
+      "usg_pct_rank": 17
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -1683,7 +1873,7 @@
       "obpm": -2.0,
       "obpm_rank": 256,
       "player_name": "Jaren Jackson Jr.",
-      "reason": "Injury/Illness - Right MCL Tear",
+      "reason": "Injury/Illness - Right MCL Tear Injury/Illness - Right 2nd Plantar",
       "team_abbreviation": "UTA",
       "team_name": "Utah Jazz",
       "usg_pct": 26.3,
@@ -1845,8 +2035,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-05",
-    "report_time_et": "2026-11-05 07:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-05_07_45PM.pdf"
+    "report_time_et": "2026-11-05 09:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-05_09_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1996,15 +2186,15 @@
       "team_name": "LA Clippers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-06",
           "game_time_et": "10:00",
           "matchup": "POR@LAL",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "LAL",
@@ -2138,14 +2328,14 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 3,
+      "player_count": 4,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-05",
           "game_time_et": "09:00",
           "matchup": "ORL@PHX",
-          "player_count": 3,
+          "player_count": 4,
           "report_status": "submitted"
         }
       ],
@@ -2153,15 +2343,15 @@
       "team_name": "Phoenix Suns"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-06",
           "game_time_et": "10:00",
           "matchup": "POR@LAL",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "POR",
@@ -2198,14 +2388,14 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-06",
           "game_time_et": null,
           "matchup": "TOR@MIL",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
