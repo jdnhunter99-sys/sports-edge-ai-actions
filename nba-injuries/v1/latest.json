@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 33,
+  "listed_player_count": 34,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5758,
-      "matched": 19,
+      "complete_coverage_rate": 0.5882,
+      "matched": 20,
       "no_current_season_row": 14,
       "partial": 0,
-      "player_count": 33,
+      "player_count": 34,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -56,7 +56,7 @@
       "usg_pct_rank": 416
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -2.7,
       "dbpm_rank": 393,
       "game_date": "2026-11-07",
@@ -130,6 +130,25 @@
       "team_name": "Brooklyn Nets",
       "usg_pct": 42.9,
       "usg_pct_rank": 1
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -1.2,
+      "dbpm_rank": 303,
+      "game_date": "2026-11-07",
+      "game_time_et": "07:30",
+      "matchup": "BKN@ATL",
+      "metrics_status": "matched",
+      "minutes_per_game": 21.0,
+      "minutes_per_game_rank": 202,
+      "obpm": -4.2,
+      "obpm_rank": 354,
+      "player_name": "Noah Clowney",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "BKN",
+      "team_name": "Brooklyn Nets",
+      "usg_pct": 12.4,
+      "usg_pct_rank": 382
     },
     {
       "current_status": "Out",
@@ -667,8 +686,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-07",
-    "report_time_et": "2026-11-07 08:45 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_08_45AM.pdf"
+    "report_time_et": "2026-11-07 10:00 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_10_00AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -694,14 +713,14 @@
       "team_name": "Atlanta Hawks"
     },
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-07",
           "game_time_et": "07:30",
           "matchup": "BKN@ATL",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         },
         {
