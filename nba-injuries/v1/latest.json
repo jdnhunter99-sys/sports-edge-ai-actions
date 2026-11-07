@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 65,
+  "listed_player_count": 69,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5846,
-      "matched": 38,
-      "no_current_season_row": 27,
+      "complete_coverage_rate": 0.5797,
+      "matched": 40,
+      "no_current_season_row": 29,
       "partial": 0,
-      "player_count": 65,
+      "player_count": 69,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -740,7 +740,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -1.9,
       "dbpm_rank": 348,
       "game_date": "2026-11-07",
@@ -759,7 +759,7 @@
       "usg_pct_rank": 227
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-07",
@@ -1158,6 +1158,82 @@
       "usg_pct_rank": 175
     },
     {
+      "current_status": "Out",
+      "dbpm": -2.7,
+      "dbpm_rank": 393,
+      "game_date": "2026-11-07",
+      "game_time_et": "10:00",
+      "matchup": "SAS@POR",
+      "metrics_status": "matched",
+      "minutes_per_game": 2.0,
+      "minutes_per_game_rank": 444,
+      "obpm": 10.6,
+      "obpm_rank": 10,
+      "player_name": "Ja'Kobi Gillespie",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": 41.7,
+      "usg_pct_rank": 2
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-07",
+      "game_time_et": "10:00",
+      "matchup": "SAS@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jayden Quaintance",
+      "reason": "Injury/Illness - Right Knee Surgery",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 13.7,
+      "dbpm_rank": 1,
+      "game_date": "2026-11-07",
+      "game_time_et": "10:00",
+      "matchup": "SAS@POR",
+      "metrics_status": "matched",
+      "minutes_per_game": 1.0,
+      "minutes_per_game_rank": 453,
+      "obpm": 13.4,
+      "obpm_rank": 6,
+      "player_name": "Maliq Brown",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": 0.0,
+      "usg_pct_rank": 448
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-07",
+      "game_time_et": "10:00",
+      "matchup": "SAS@POR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Tobias Harris",
+      "reason": "Injury/Illness - Left Calf Strain",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Questionable",
       "dbpm": -0.3,
       "dbpm_rank": 219,
@@ -1275,8 +1351,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-07",
-    "report_time_et": "2026-11-07 02:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_02_45PM.pdf"
+    "report_time_et": "2026-11-07 03:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_03_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1668,15 +1744,15 @@
       "team_name": "Sacramento Kings"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-07",
           "game_time_et": "10:00",
           "matchup": "SAS@POR",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "SAS",
