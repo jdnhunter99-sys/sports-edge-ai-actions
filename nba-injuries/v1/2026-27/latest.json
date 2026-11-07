@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 124,
+  "listed_player_count": 128,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5726,
-      "matched": 71,
-      "no_current_season_row": 53,
+      "complete_coverage_rate": 0.5781,
+      "matched": 74,
+      "no_current_season_row": 54,
       "partial": 0,
-      "player_count": 124,
+      "player_count": 128,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -740,7 +740,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": 0.6,
       "dbpm_rank": 128,
       "game_date": "2026-11-06",
@@ -759,7 +759,7 @@
       "usg_pct_rank": 30
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": -1.0,
       "dbpm_rank": 274,
       "game_date": "2026-11-06",
@@ -778,7 +778,7 @@
       "usg_pct_rank": 261
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-06",
@@ -1254,6 +1254,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": 5.9,
+      "dbpm_rank": 9,
+      "game_date": "2026-11-06",
+      "game_time_et": null,
+      "matchup": "OKC@MEM",
+      "metrics_status": "matched",
+      "minutes_per_game": 3.0,
+      "minutes_per_game_rank": 423,
+      "obpm": -12.3,
+      "obpm_rank": 443,
+      "player_name": "Carson Cooper",
+      "reason": "G League - Two-Way Injury/Illness - Lumbar Disc",
+      "team_abbreviation": "MEM",
+      "team_name": "Memphis Grizzlies",
+      "usg_pct": 25.9,
+      "usg_pct_rank": 62
+    },
+    {
+      "current_status": "Out",
       "dbpm": 0.2,
       "dbpm_rank": 167,
       "game_date": "2026-11-06",
@@ -1607,7 +1626,7 @@
       "obpm": -4.9,
       "obpm_rank": 369,
       "player_name": "Jaylin Williams",
-      "reason": "Injury/Illness - Low back Spasms Injury/Illness - Lumbar Disc",
+      "reason": "Injury/Illness - Low back Spasms",
       "team_abbreviation": "OKC",
       "team_name": "Oklahoma City Thunder",
       "usg_pct": 11.5,
@@ -1683,7 +1702,7 @@
       "obpm": -4.9,
       "obpm_rank": 369,
       "player_name": "Jalen Suggs",
-      "reason": "Injury/Illness - Right Knee Contusion",
+      "reason": "/ Bone Bruise Injury/Illness - Right ACL Repair /",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 16.9,
@@ -1802,6 +1821,63 @@
       "team_name": "Philadelphia 76ers",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Doubtful",
+      "dbpm": 0.4,
+      "dbpm_rank": 143,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 18.6,
+      "minutes_per_game_rank": 231,
+      "obpm": 2.1,
+      "obpm_rank": 93,
+      "player_name": "Jordan Goodwin",
+      "reason": "Management",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": 17.2,
+      "usg_pct_rank": 252
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Mark Williams",
+      "reason": "Injury/Illness - Left Shoulder Surgery",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -4.5,
+      "dbpm_rank": 433,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 7.5,
+      "minutes_per_game_rank": 361,
+      "obpm": -11.6,
+      "obpm_rank": 441,
+      "player_name": "Rasheer Fleming",
+      "reason": "Injury/Illness - Left Ankle Sprain Injury/Illness - Right Calf Injury",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": 19.8,
+      "usg_pct_rank": 172
     },
     {
       "current_status": "Out",
@@ -2396,8 +2472,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-06",
-    "report_time_et": "2026-11-06 07:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_07_00PM.pdf"
+    "report_time_et": "2026-11-06 07:15 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_07_15PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2608,14 +2684,14 @@
       "team_name": "Los Angeles Lakers"
     },
     {
-      "player_count": 2,
+      "player_count": 3,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-06",
           "game_time_et": null,
           "matchup": "OKC@MEM",
-          "player_count": 2,
+          "player_count": 3,
           "report_status": "submitted"
         }
       ],
@@ -2742,15 +2818,15 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-07",
           "game_time_et": "09:00",
           "matchup": "HOU@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "PHX",
