@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 89,
+  "listed_player_count": 99,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.618,
-      "matched": 55,
-      "no_current_season_row": 34,
+      "complete_coverage_rate": 0.596,
+      "matched": 59,
+      "no_current_season_row": 40,
       "partial": 0,
-      "player_count": 89,
+      "player_count": 99,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -75,7 +75,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": 1.8,
       "dbpm_rank": 61,
       "game_date": "2026-11-07",
@@ -94,7 +94,7 @@
       "usg_pct_rank": 72
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-07",
@@ -170,7 +170,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 4.4,
       "dbpm_rank": 12,
       "game_date": "2026-11-07",
@@ -320,6 +320,82 @@
       "team_name": "Brooklyn Nets",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Amari Williams",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Christopher Cenac Jr.",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Devin Carter",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -2.0,
+      "dbpm_rank": 358,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "matched",
+      "minutes_per_game": 2.0,
+      "minutes_per_game_rank": 444,
+      "obpm": -5.7,
+      "obpm_rank": 387,
+      "player_name": "Dillon Mitchell",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": 0.0,
+      "usg_pct_rank": 448
     },
     {
       "current_status": "Out",
@@ -1082,6 +1158,120 @@
       "usg_pct_rank": 81
     },
     {
+      "current_status": "Questionable",
+      "dbpm": 0.7,
+      "dbpm_rank": 125,
+      "game_date": "2026-11-08",
+      "game_time_et": "06:00",
+      "matchup": "LAL@DET",
+      "metrics_status": "matched",
+      "minutes_per_game": 36.0,
+      "minutes_per_game_rank": 5,
+      "obpm": 11.7,
+      "obpm_rank": 9,
+      "player_name": "Luka Doncic",
+      "reason": "Injury/Illness - Low Back Tightness",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 40.7,
+      "usg_pct_rank": 3
+    },
+    {
+      "current_status": "Available",
+      "dbpm": 0.8,
+      "dbpm_rank": 120,
+      "game_date": "2026-11-08",
+      "game_time_et": "06:00",
+      "matchup": "LAL@DET",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.2,
+      "minutes_per_game_rank": 68,
+      "obpm": 2.5,
+      "obpm_rank": 85,
+      "player_name": "Walker Kessler",
+      "reason": "Injury/Illness - Left Finger Splint",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 15.9,
+      "usg_pct_rank": 290
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -3.9,
+      "dbpm_rank": 433,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "matched",
+      "minutes_per_game": 5.0,
+      "minutes_per_game_rank": 394,
+      "obpm": 5.0,
+      "obpm_rank": 37,
+      "player_name": "Bogoljub Markovic",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": 8.1,
+      "usg_pct_rank": 441
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Cormac Ryan",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Kam Jones",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Pete Nance",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -1113,7 +1303,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Malik Dia",
-      "reason": "G League - Two-Way Injury/Illness - Left Knee Contusion /",
+      "reason": "G League - Two-Way",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -1731,8 +1921,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-07",
-    "report_time_et": "2026-11-07 04:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_04_45PM.pdf"
+    "report_time_et": "2026-11-07 05:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_05_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1780,15 +1970,15 @@
       "team_name": "Brooklyn Nets"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "08:00",
           "matchup": "BOS@MIL",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "BOS",
@@ -1937,15 +2127,15 @@
       "team_name": "LA Clippers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 2,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "06:00",
           "matchup": "LAL@DET",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 2,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "LAL",
@@ -1974,15 +2164,15 @@
       "team_name": "Miami Heat"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "08:00",
           "matchup": "BOS@MIL",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "MIL",
