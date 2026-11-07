@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 64,
+  "listed_player_count": 65,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5781,
-      "matched": 37,
+      "complete_coverage_rate": 0.5846,
+      "matched": 38,
       "no_current_season_row": 27,
       "partial": 0,
-      "player_count": 64,
+      "player_count": 65,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -562,7 +562,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jimmy Butler III",
-      "reason": "Surgery",
+      "reason": "Injury/Illness - Right ACL Repair /",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -988,6 +988,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": -1.9,
+      "dbpm_rank": 348,
+      "game_date": "2026-11-07",
+      "game_time_et": "08:30",
+      "matchup": "ORL@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 34.5,
+      "minutes_per_game_rank": 16,
+      "obpm": -1.8,
+      "obpm_rank": 248,
+      "player_name": "Desmond Bane",
+      "reason": "Injury/Illness - Illness Injury/Illness - Left Knee Injury",
+      "team_abbreviation": "ORL",
+      "team_name": "Orlando Magic",
+      "usg_pct": 23.1,
+      "usg_pct_rank": 103
+    },
+    {
+      "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-07",
@@ -1018,7 +1037,7 @@
       "obpm": -5.0,
       "obpm_rank": 380,
       "player_name": "Jalen Suggs",
-      "reason": "/ Bone Bruise Injury/Illness - Right ACL Repair /",
+      "reason": "/ Bone Bruise",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 16.9,
@@ -1075,7 +1094,7 @@
       "obpm": 6.1,
       "obpm_rank": 24,
       "player_name": "Paolo Banchero",
-      "reason": "Sprain Injury/Illness - Left Knee Injury",
+      "reason": "Sprain",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 25.5,
@@ -1256,8 +1275,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-07",
-    "report_time_et": "2026-11-07 02:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_02_00PM.pdf"
+    "report_time_et": "2026-11-07 02:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_02_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1574,14 +1593,14 @@
       "team_name": "Oklahoma City Thunder"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-07",
           "game_time_et": "08:30",
           "matchup": "ORL@GSW",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
