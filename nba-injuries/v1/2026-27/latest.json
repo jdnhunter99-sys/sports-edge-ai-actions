@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 113,
+  "listed_player_count": 124,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5752,
-      "matched": 65,
-      "no_current_season_row": 48,
+      "complete_coverage_rate": 0.5484,
+      "matched": 68,
+      "no_current_season_row": 56,
       "partial": 0,
-      "player_count": 113,
+      "player_count": 124,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -1158,6 +1158,101 @@
       "usg_pct_rank": 81
     },
     {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": null,
+      "matchup": "NOP@LAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Bradley Beal",
+      "reason": "Management",
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": null,
+      "matchup": "NOP@LAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Brandon Ingram",
+      "reason": "Injury/Illness - Right Heel Surgery",
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 1.9,
+      "dbpm_rank": 55,
+      "game_date": "2026-11-08",
+      "game_time_et": null,
+      "matchup": "NOP@LAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 21.0,
+      "minutes_per_game_rank": 202,
+      "obpm": -2.0,
+      "obpm_rank": 264,
+      "player_name": "Isaiah Jackson",
+      "reason": "Injury/Illness - Left Groin Soreness Injury/Illness - Left Rotator Cuff",
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers",
+      "usg_pct": 18.7,
+      "usg_pct_rank": 206
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": null,
+      "matchup": "NOP@LAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jordan Miller",
+      "reason": "Surgery",
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": null,
+      "matchup": "NOP@LAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Yanic Konan Niederhauser",
+      "reason": "Injury/Illness - Right Lisfranc Surgery",
+      "team_abbreviation": "LAC",
+      "team_name": "LA Clippers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Questionable",
       "dbpm": 0.7,
       "dbpm_rank": 125,
@@ -1379,7 +1474,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jaron Pierre Jr.",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Right Knee Injury",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -1747,7 +1842,26 @@
       "usg_pct_rank": 45
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-07",
+      "game_time_et": "09:00",
+      "matchup": "HOU@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Drew Timme",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
       "dbpm": 0.4,
       "dbpm_rank": 156,
       "game_date": "2026-11-07",
@@ -1785,7 +1899,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -4.5,
       "dbpm_rank": 437,
       "game_date": "2026-11-07",
@@ -1897,6 +2011,101 @@
       "team_name": "Portland Trail Blazers",
       "usg_pct": 14.1,
       "usg_pct_rank": 336
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Ben Simmons",
+      "reason": "Repair / Surgery",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -0.8,
+      "dbpm_rank": 263,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 17.25,
+      "minutes_per_game_rank": 255,
+      "obpm": -4.7,
+      "obpm_rank": 372,
+      "player_name": "Jonathan Mogbo",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": 12.7,
+      "usg_pct_rank": 373
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -2.9,
+      "dbpm_rank": 402,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 27.0,
+      "minutes_per_game_rank": 120,
+      "obpm": -5.9,
+      "obpm_rank": 392,
+      "player_name": "Keegan Murray",
+      "reason": "Injury/Illness - Left Ankle Capsulitis",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": 15.3,
+      "usg_pct_rank": 309
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Maxime Raynaud",
+      "reason": "Subluxation Injury/Illness - Right Achilles Tendon",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Sean Pedulla",
+      "reason": "G League - Two-Way Injury/Illness - Right Patella",
+      "team_abbreviation": "SAC",
+      "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
     },
     {
       "current_status": "Out",
@@ -2187,8 +2396,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-07",
-    "report_time_et": "2026-11-07 07:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_07_45PM.pdf"
+    "report_time_et": "2026-11-07 09:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_09_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2378,15 +2587,15 @@
       "team_name": "Indiana Pacers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": null,
           "matchup": "NOP@LAC",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "LAC",
@@ -2535,14 +2744,14 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 3,
+      "player_count": 4,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-07",
           "game_time_et": "09:00",
           "matchup": "HOU@PHX",
-          "player_count": 3,
+          "player_count": 4,
           "report_status": "submitted"
         }
       ],
@@ -2565,15 +2774,15 @@
       "team_name": "Portland Trail Blazers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "09:00",
           "matchup": "MIA@SAC",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "SAC",
