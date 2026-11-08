@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 111,
+  "listed_player_count": 113,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5856,
+      "complete_coverage_rate": 0.5752,
       "matched": 65,
-      "no_current_season_row": 46,
+      "no_current_season_row": 48,
       "partial": 0,
-      "player_count": 111,
+      "player_count": 113,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -854,7 +854,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 2.8,
       "dbpm_rank": 27,
       "game_date": "2026-11-07",
@@ -892,7 +892,7 @@
       "usg_pct_rank": 244
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -0.5,
       "dbpm_rank": 238,
       "game_date": "2026-11-07",
@@ -1194,6 +1194,44 @@
       "team_name": "Los Angeles Lakers",
       "usg_pct": 15.9,
       "usg_pct_rank": 290
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Tre Donaldson",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MIA",
+      "team_name": "Miami Heat",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-08",
+      "game_time_et": "09:00",
+      "matchup": "MIA@SAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Vladislav Goldin",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "MIA",
+      "team_name": "Miami Heat",
+      "usg_pct": null,
+      "usg_pct_rank": null
     },
     {
       "current_status": "Out",
@@ -2149,8 +2187,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-07",
-    "report_time_et": "2026-11-07 06:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_06_45PM.pdf"
+    "report_time_et": "2026-11-07 07:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-07_07_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2377,15 +2415,15 @@
       "team_name": "Memphis Grizzlies"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 2,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "09:00",
           "matchup": "MIA@SAC",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 2,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "MIA",
