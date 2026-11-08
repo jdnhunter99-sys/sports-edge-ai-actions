@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 54,
+  "listed_player_count": 56,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5,
-      "matched": 27,
+      "complete_coverage_rate": 0.5179,
+      "matched": 29,
       "no_current_season_row": 27,
       "partial": 0,
-      "player_count": 54,
+      "player_count": 56,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -111,6 +111,25 @@
       "team_name": "Boston Celtics",
       "usg_pct": 0.0,
       "usg_pct_rank": 451
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -0.9,
+      "dbpm_rank": 274,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "matched",
+      "minutes_per_game": 18.875,
+      "minutes_per_game_rank": 229,
+      "obpm": -3.5,
+      "obpm_rank": 338,
+      "player_name": "Mitchell Robinson",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": 13.0,
+      "usg_pct_rank": 366
     },
     {
       "current_status": "Out",
@@ -512,7 +531,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 0.7,
       "dbpm_rank": 125,
       "game_date": "2026-11-08",
@@ -626,6 +645,25 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Questionable",
+      "dbpm": -2.9,
+      "dbpm_rank": 404,
+      "game_date": "2026-11-08",
+      "game_time_et": "08:00",
+      "matchup": "BOS@MIL",
+      "metrics_status": "matched",
+      "minutes_per_game": 6.5,
+      "minutes_per_game_rank": 382,
+      "obpm": 0.7,
+      "obpm_rank": 146,
+      "player_name": "Gary Trent Jr.",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": 15.6,
+      "usg_pct_rank": 298
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -733,7 +771,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jaron Pierre Jr.",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Right Knee Injury",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -752,7 +790,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Malik Dia",
-      "reason": "G League - Two-Way Injury/Illness - Left Knee Contusion /",
+      "reason": "G League - Two-Way",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -1066,8 +1104,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-08",
-    "report_time_et": "2026-11-08 01:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_01_00PM.pdf"
+    "report_time_et": "2026-11-08 01:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_01_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1108,14 +1146,14 @@
       "team_name": "Brooklyn Nets"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "08:00",
           "matchup": "BOS@MIL",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
@@ -1339,14 +1377,14 @@
       "team_name": "Miami Heat"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "08:00",
           "matchup": "BOS@MIL",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
