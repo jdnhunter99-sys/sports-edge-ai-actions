@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 52,
+  "listed_player_count": 53,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4808,
-      "matched": 25,
+      "complete_coverage_rate": 0.4906,
+      "matched": 26,
       "no_current_season_row": 27,
       "partial": 0,
-      "player_count": 52,
+      "player_count": 53,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -190,6 +190,25 @@
     },
     {
       "current_status": "Questionable",
+      "dbpm": -2.4,
+      "dbpm_rank": 386,
+      "game_date": "2026-11-08",
+      "game_time_et": "03:30",
+      "matchup": "PHI@CHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 28.75,
+      "minutes_per_game_rank": 107,
+      "obpm": -0.2,
+      "obpm_rank": 187,
+      "player_name": "Norman Powell",
+      "reason": "Inflammation / Soreness",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": 25.2,
+      "usg_pct_rank": 77
+    },
+    {
+      "current_status": "Questionable",
       "dbpm": -1.7,
       "dbpm_rank": 338,
       "game_date": "2026-11-08",
@@ -220,7 +239,7 @@
       "obpm": -8.0,
       "obpm_rank": 419,
       "player_name": "Zach Collins",
-      "reason": "Injury/Illness - Respiratory Illness",
+      "reason": "Injury/Illness - Respiratory Illness Injury/Illness - Right Shoulder",
       "team_abbreviation": "CHI",
       "team_name": "Chicago Bulls",
       "usg_pct": 13.2,
@@ -410,7 +429,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Bradley Beal",
-      "reason": "Management",
+      "reason": "Injury/Illness - Right Knee Injury",
       "team_abbreviation": "LAC",
       "team_name": "LA Clippers",
       "usg_pct": null,
@@ -714,7 +733,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jaron Pierre Jr.",
-      "reason": "G League - Two-Way Injury/Illness - Right Knee Injury",
+      "reason": "G League - Two-Way",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -1028,8 +1047,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-08",
-    "report_time_et": "2026-11-08 08:45 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_08_45AM.pdf"
+    "report_time_et": "2026-11-08 09:45 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_09_45AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1100,14 +1119,14 @@
       "team_name": "Charlotte Hornets"
     },
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "03:30",
           "matchup": "PHI@CHI",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
