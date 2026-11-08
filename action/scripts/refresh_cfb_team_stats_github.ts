@@ -7,7 +7,7 @@ if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
-const TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15'];
+const TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'];
 const currentSeason = (() => {
   const now = new Date();
   return now.getUTCMonth() + 1 >= 8 ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
@@ -133,6 +133,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   for (const timeframe of TIMEFRAMES) {
     const teamPayloads: Record<string, TeamRecord> = {};
     let latest = '';
+    let frameTeamCount = 0;
     for (const row of teamRows.values()) {
       if (Number(row?.season) !== season || String(row?.timeframe) !== timeframe || row?.side !== 'team') continue;
       let payload: TeamRecord;
@@ -142,9 +143,14 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       if (!['passed', 'completed_with_discrepancies'].includes(String(payload?.integrity?.status || ''))) {
         throw new Error(`${payload?.team || row.team_abbr} ${timeframe} has no completed integrity validation; refusing to publish.`);
       }
-      if (Number(payload?.teamsRanked) !== Number(result.fbsTeamCount)) {
-        throw new Error(`${payload?.team || row.team_abbr} ${timeframe} was ranked against ${payload?.teamsRanked} teams, expected ${result.fbsTeamCount}.`);
+      const rankedCount = Number(payload?.teamsRanked);
+      if (!Number.isInteger(rankedCount) || rankedCount < 120 || rankedCount > 138) {
+        throw new Error(`${payload?.team || row.team_abbr} ${timeframe} has an invalid rank population of ${payload?.teamsRanked} teams.`);
       }
+      if (frameTeamCount && frameTeamCount !== rankedCount) {
+        throw new Error(`Mixed rank populations detected while materializing ${season} ${timeframe}.`);
+      }
+      frameTeamCount = rankedCount;
       const rowSnapshotId = String(payload?.snapshotId || '');
       if (!rowSnapshotId) throw new Error(`${payload?.team || row.team_abbr} ${timeframe} is missing its source snapshot ID.`);
       if (snapshotId && rowSnapshotId !== snapshotId) {
@@ -160,8 +166,8 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       if (String(row.scraped_at || '') > latest) latest = String(row.scraped_at);
     }
     if (!Object.keys(teamPayloads).length) throw new Error(`No team records were materialized for ${season} ${timeframe}`);
-    if (Object.keys(teamPayloads).length !== Number(result.fbsTeamCount)) {
-      throw new Error(`Refusing to publish incomplete ${season} ${timeframe}: ${Object.keys(teamPayloads).length}/${result.fbsTeamCount} eligible FBS teams.`);
+    if (Object.keys(teamPayloads).length !== frameTeamCount) {
+      throw new Error(`Refusing to publish incomplete ${season} ${timeframe}: ${Object.keys(teamPayloads).length}/${frameTeamCount} ranked FBS teams.`);
     }
     const virginiaTechKey = normalizeCFBSchool('VT');
     if (!teamPayloads[virginiaTechKey]) {
@@ -185,12 +191,12 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       snapshot_id: snapshotId,
       rank_population: 'eligible FBS teams with at least one completed game in the selected timeframe',
       metric_definitions: result.metricDefinitions || {},
-      team_count: Object.keys(teamPayloads).length,
+      team_count: frameTeamCount,
       teams: teamPayloads,
     })}\n`);
     writtenFrames[timeframe] = {
       path,
-      teams: Object.keys(teamPayloads).length,
+      teams: frameTeamCount,
       scraped_at: latest || result.scrapedAt || new Date().toISOString(),
     };
   }

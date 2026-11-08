@@ -10,12 +10,12 @@ export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
     const requested = Array.isArray(input?.timeframes) ? input.timeframes : [];
     const timeframes = [...new Set(requested.map((value: unknown) => {
       const raw = String(value || '').trim();
-      return /^l(3|5|10|15)$/i.test(raw) ? raw.toUpperCase() : raw;
+      return /^l(3|5|10|15)$/i.test(raw) || /^(home|away)$/i.test(raw) ? raw.toUpperCase() : raw;
     }))];
     if (!timeframes.length || timeframes.some((timeframe: string) =>
-      !/^\d{4}$/.test(timeframe) && !['L3', 'L5', 'L10', 'L15'].includes(timeframe)
+      !/^\d{4}$/.test(timeframe) && !['L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'].includes(timeframe)
     )) {
-      return Response.json({ ok: false, error: 'Provide one or more four-digit seasons and/or L3, L5, L10, L15 timeframes.' }, { status: 400 });
+      return Response.json({ ok: false, error: 'Provide one or more four-digit seasons and/or L3, L5, L10, L15, HOME, AWAY timeframes.' }, { status: 400 });
     }
 
     const currentYear = new Date().getFullYear();
@@ -4251,14 +4251,16 @@ async function writeNFLLeagueContextCache(base44, season, week, context, timefra
 }
 
 function computeSeasonRanges(schedules, statsSeason, timeframe) {
-  if (timeframe !== 'L3' && timeframe !== 'L5' && timeframe !== 'L10' && timeframe !== 'L15') return [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
+  const splitSide = timeframe === 'HOME' ? 'home' : timeframe === 'AWAY' ? 'away' : '';
+  const isRolling = timeframe === 'L3' || timeframe === 'L5' || timeframe === 'L10' || timeframe === 'L15';
+  if (!isRolling && !splitSide) return [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
   const n = timeframe === 'L3' ? 3 : timeframe === 'L5' ? 5 : timeframe === 'L10' ? 10 : 15;
   const gamesByTeam = new Map(NFL_CANONICAL_TEAMS.map((team) => [team, []]));
 
   for (const game of schedules || []) {
     const season = num(game.season, NaN);
     const week = num(game.week, NaN);
-    if (!Number.isFinite(season) || season > statsSeason || season < statsSeason - 2) continue;
+    if (!Number.isFinite(season) || season > statsSeason || (splitSide ? season !== statsSeason : season < statsSeason - 2)) continue;
     if (String(game.game_type || '').trim().toUpperCase() !== 'REG' || week < 1 || week > 18) continue;
     const awayScore = num(game.away_score, NaN);
     const homeScore = num(game.home_score, NaN);
@@ -4277,17 +4279,18 @@ function computeSeasonRanges(schedules, statsSeason, timeframe) {
       gameday: String(firstValue(game, ['gameday', 'game_date'], '') || '').slice(0, 10),
       gametime: String(firstValue(game, ['gametime'], '') || ''),
     };
-    gamesByTeam.get(away).push(entry);
-    gamesByTeam.get(home).push(entry);
+    if (!splitSide || splitSide === 'away') gamesByTeam.get(away).push(entry);
+    if (!splitSide || splitSide === 'home') gamesByTeam.get(home).push(entry);
   }
 
   const seasonRanges = new Map();
   for (const team of NFL_CANONICAL_TEAMS) {
-    const selected = (gamesByTeam.get(team) || [])
-      .sort((a, b) => a.season - b.season || a.week - b.week || a.gameday.localeCompare(b.gameday) || a.gametime.localeCompare(b.gametime) || a.gameId.localeCompare(b.gameId))
-      .slice(-n);
-    if (selected.length < n) {
-      throw new Error(`Not enough completed regular-season games for ${team}: found ${selected.length}, expected ${n} for ${timeframe}.`);
+    const ordered = (gamesByTeam.get(team) || [])
+      .sort((a, b) => a.season - b.season || a.week - b.week || a.gameday.localeCompare(b.gameday) || a.gametime.localeCompare(b.gametime) || a.gameId.localeCompare(b.gameId));
+    const selected = splitSide ? ordered : ordered.slice(-n);
+    const requiredGames = splitSide ? 1 : n;
+    if (selected.length < requiredGames) {
+      throw new Error(`Not enough completed regular-season games for ${team}: found ${selected.length}, expected ${requiredGames} for ${timeframe}.`);
     }
     for (const game of selected) {
       let range = seasonRanges.get(game.season);

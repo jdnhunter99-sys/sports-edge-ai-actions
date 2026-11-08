@@ -12,7 +12,7 @@ const cacheRoot = `${sportRoot}/v${CACHE_VERSION}`;
 const updatedAt = new Date().toISOString();
 
 // Match the year and rolling windows currently shown in NFL game detail.
-const TIMEFRAMES = ['2025', '2026', 'L3', 'L5', 'L10', 'L15'];
+const TIMEFRAMES = ['2025', '2026', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'];
 
 type RecordValue = Record<string, any>;
 

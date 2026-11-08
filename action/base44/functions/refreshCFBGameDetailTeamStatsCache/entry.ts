@@ -9,11 +9,11 @@ import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateC
 import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.ts';
 
 const CFB_SOURCE = new SportsDataverseCfbSource();
-const DEFAULT_TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15'];
+const DEFAULT_TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'];
 const MAX_TEAMS_PER_RUN = 180;
 // Bump the published cache contract when source parsing or coverage logic changes
 // so the publisher rebuilds current and prior-season logs used by rolling windows.
-export const CFB_TEAM_STATS_CACHE_VERSION = 35;
+export const CFB_TEAM_STATS_CACHE_VERSION = 36;
 const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const CURRENT_SOURCE_MAX_AGE_MS = 55 * 60 * 1000;
 const HISTORICAL_SOURCE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
@@ -270,7 +270,7 @@ function todayCentral(): string {
 function normalizeRequestedTimeframe(value: any): string | null {
   const raw = String(value || '').trim().toUpperCase();
   if (raw === 'SEASON') return 'season';
-  if (['L3', 'L5', 'L10', 'L15'].includes(raw)) return raw;
+  if (['L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'].includes(raw)) return raw;
   return null;
 }
 
@@ -598,6 +598,8 @@ interface TeamGame {
   gameId: string;
   date: string;
   week: number;
+  homeAway?: 'home' | 'away';
+  opponentKey?: string;
   pointsFor: number;
   pointsAgainst: number;
   lineScores?: number[];
@@ -2831,6 +2833,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
 
         const homeLog: TeamGame = {
           gameId: String(game.id), date: gameDate, week, pointsFor: homePoints, pointsAgainst: awayPoints,
+          homeAway: 'home', opponentKey: awayKey,
           lineScores: Array.isArray(scheduleGame?.homeLineScores) ? scheduleGame.homeLineScores : [],
           opponentLineScores: Array.isArray(scheduleGame?.awayLineScores) ? scheduleGame.awayLineScores : [],
           own: homeTotals, opp: awayTotals,
@@ -2843,6 +2846,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         };
         const awayLog: TeamGame = {
           gameId: String(game.id), date: gameDate, week, pointsFor: awayPoints, pointsAgainst: homePoints,
+          homeAway: 'away', opponentKey: homeKey,
           lineScores: Array.isArray(scheduleGame?.awayLineScores) ? scheduleGame.awayLineScores : [],
           opponentLineScores: Array.isArray(scheduleGame?.homeLineScores) ? scheduleGame.homeLineScores : [],
           own: awayTotals, opp: homeTotals,
@@ -2967,10 +2971,6 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       allTeamKeys.sort();
     }
 
-    const sliceKeys = requestedTeams.length
-      ? requestedTeams.filter((key: string) => allTeamKeys.includes(key))
-      : allTeamKeys.slice(offset, offset + limit);
-
     const scrapedAt = new Date().toISOString();
     const results: any[] = [];
     const errors: string[] = [];
@@ -2981,12 +2981,20 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
 
     for (const timeframe of timeframes) {
       const upper = String(timeframe).toUpperCase();
+      const locationSplit = upper === 'HOME' || upper === 'AWAY';
+      const splitSide = upper.toLowerCase();
+      const frameTeamKeys = locationSplit
+        ? allTeamKeys.filter((key) => (logs.get(key) || []).some((game) => game.homeAway === splitSide))
+        : allTeamKeys;
+      const sliceKeys = requestedTeams.length
+        ? requestedTeams.filter((key: string) => frameTeamKeys.includes(key))
+        : frameTeamKeys.slice(offset, offset + limit);
       const windowSize = upper === 'SEASON' ? 0 : n(upper.replace(/^L/, ''), 0);
       const startWeek = windowSize ? Math.max(1, maxCompletedWeek - windowSize + 1) : 1;
       const advancedWindowKey = `${startWeek}-${maxCompletedWeek}`;
       let advancedMap = new Map<string, any>();
       let standardMap = new Map<string, Record<string, any>>();
-      if (!windowSize) {
+      if (!windowSize && !locationSplit) {
         advancedMap = advancedWindowCache.get(advancedWindowKey) || new Map();
         if (!advancedWindowCache.has(advancedWindowKey)) {
           const advancedSourceKey = `cfb_game_detail_source_v${CACHE_VERSION}_advanced_${season}_${startWeek}_${maxCompletedWeek}_${cacheDate}`;
@@ -3049,13 +3057,15 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       }
 
       const statsByTeam = new Map<string, any>();
-      for (const key of allTeamKeys) {
+      for (const key of frameTeamKeys) {
         const currentSeasonGames = logs.get(key) || [];
         const previousSeasonGames = priorSeasonLogs.get(key) || [];
         const allGames = windowSize
           ? [...previousSeasonGames, ...currentSeasonGames].sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId))
           : currentSeasonGames;
-        const selected = windowSize ? allGames.slice(-windowSize) : allGames;
+        const selected = locationSplit
+          ? currentSeasonGames.filter((game) => game.homeAway === splitSide)
+          : windowSize ? allGames.slice(-windowSize) : allGames;
         const stats = computeStats(selected);
         if (stats) {
           // Keep every standard value on the same exact game sample. SportsDataverse/ESPN's
@@ -3065,7 +3075,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           // Rolling windows must derive from their exact selected game logs.
           // Season summaries cannot supplement L3/L5/L10/L15 without reusing a
           // different sample, so unavailable rolling metrics stay null.
-          const mergedStats = windowSize > 0
+          const mergedStats = windowSize > 0 || locationSplit
             ? stats
             : supplementMissingStats(stats, standardMap?.get(key), advancedMap?.get(key));
           const teamName = teamNames.get(key) || cfbDisplayName(key);
@@ -3105,8 +3115,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           statsByTeam.set(key, mergedStats);
         }
       }
-      if (statsByTeam.size !== allTeamKeys.length) {
-        throw new Error(`CFB ${timeframe} frame is incomplete: ${statsByTeam.size}/${allTeamKeys.length} eligible FBS teams calculated.`);
+      if (statsByTeam.size !== frameTeamKeys.length) {
+        throw new Error(`CFB ${timeframe} frame is incomplete: ${statsByTeam.size}/${frameTeamKeys.length} eligible FBS teams calculated.`);
       }
       const ranks = rankLeague(statsByTeam);
 
@@ -3129,6 +3139,10 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           games: stats.games,
           opponents: opponentsByTeam.get(key) || [],
           opponentCount: (opponentsByTeam.get(key) || []).length,
+          opponentContexts: locationSplit ? selected.map((game) => ({
+            teamKey: game.opponentKey,
+            timeframe: game.homeAway === 'away' ? 'HOME' : 'AWAY',
+          })).filter((context) => context.teamKey) : [],
           metricDefinitions: METRIC_DEFINITIONS,
           stats: {
             offense: stats.offense,
