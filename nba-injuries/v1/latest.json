@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 53,
+  "listed_player_count": 54,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.4906,
-      "matched": 26,
+      "complete_coverage_rate": 0.5,
+      "matched": 27,
       "no_current_season_row": 27,
       "partial": 0,
-      "player_count": 53,
+      "player_count": 54,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -429,7 +429,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Bradley Beal",
-      "reason": "Injury/Illness - Right Knee Injury",
+      "reason": "Management",
       "team_abbreviation": "LAC",
       "team_name": "LA Clippers",
       "usg_pct": null,
@@ -1007,6 +1007,25 @@
     },
     {
       "current_status": "Questionable",
+      "dbpm": -1.1,
+      "dbpm_rank": 294,
+      "game_date": "2026-11-08",
+      "game_time_et": "07:00",
+      "matchup": "UTA@MIN",
+      "metrics_status": "matched",
+      "minutes_per_game": 32.333333333333336,
+      "minutes_per_game_rank": 55,
+      "obpm": 1.4,
+      "obpm_rank": 118,
+      "player_name": "Keyonte George",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "UTA",
+      "team_name": "Utah Jazz",
+      "usg_pct": 29.4,
+      "usg_pct_rank": 23
+    },
+    {
+      "current_status": "Questionable",
       "dbpm": -1.3,
       "dbpm_rank": 313,
       "game_date": "2026-11-08",
@@ -1047,8 +1066,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-08",
-    "report_time_et": "2026-11-08 10:45 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_10_45AM.pdf"
+    "report_time_et": "2026-11-08 12:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_12_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1475,14 +1494,14 @@
       "team_name": "Toronto Raptors"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-08",
           "game_time_et": "07:00",
           "matchup": "UTA@MIN",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
