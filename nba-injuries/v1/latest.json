@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 64,
+  "listed_player_count": 67,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5938,
-      "matched": 38,
+      "complete_coverage_rate": 0.6119,
+      "matched": 41,
       "no_current_season_row": 26,
       "partial": 0,
-      "player_count": 64,
+      "player_count": 67,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -163,7 +163,7 @@
       "obpm": 4.1,
       "obpm_rank": 46,
       "player_name": "RayJ Dennis",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Left Knee",
       "team_abbreviation": "ATL",
       "team_name": "Atlanta Hawks",
       "usg_pct": 19.9,
@@ -265,7 +265,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Out",
+      "current_status": "Questionable",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-09",
@@ -284,7 +284,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Doubtful",
       "dbpm": 0.4,
       "dbpm_rank": 166,
       "game_date": "2026-11-09",
@@ -303,7 +303,7 @@
       "usg_pct_rank": 391
     },
     {
-      "current_status": "Out",
+      "current_status": "Questionable",
       "dbpm": 3.4,
       "dbpm_rank": 17,
       "game_date": "2026-11-09",
@@ -448,7 +448,7 @@
       "obpm": -1.4,
       "obpm_rank": 249,
       "player_name": "Aaron Gordon",
-      "reason": "Management Injury/Illness - Lower Body Injury",
+      "reason": "Injury/Illness - Lower Body Injury",
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets",
       "usg_pct": 18.6,
@@ -505,7 +505,7 @@
       "obpm": -3.2,
       "obpm_rank": 333,
       "player_name": "DeMar DeRozan",
-      "reason": "Injury/Illness - Low Back Spasms Injury/Illness - Lower Body Injury",
+      "reason": "Injury/Illness - Low Back Spasms",
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets",
       "usg_pct": 20.8,
@@ -600,7 +600,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jimmy Butler III",
-      "reason": "Surgery",
+      "reason": "Surgery Injury/Illness - Left Patellar Tendon",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -833,6 +833,63 @@
       "team_name": "Indiana Pacers",
       "usg_pct": 25.1,
       "usg_pct_rank": 77
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -2.2,
+      "dbpm_rank": 376,
+      "game_date": "2026-11-09",
+      "game_time_et": null,
+      "matchup": "LAL@ATL",
+      "metrics_status": "matched",
+      "minutes_per_game": 36.18181818181818,
+      "minutes_per_game_rank": 5,
+      "obpm": 3.1,
+      "obpm_rank": 67,
+      "player_name": "Austin Reaves",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 27.0,
+      "usg_pct_rank": 52
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -0.7,
+      "dbpm_rank": 268,
+      "game_date": "2026-11-09",
+      "game_time_et": null,
+      "matchup": "LAL@ATL",
+      "metrics_status": "matched",
+      "minutes_per_game": 26.09090909090909,
+      "minutes_per_game_rank": 127,
+      "obpm": -1.9,
+      "obpm_rank": 268,
+      "player_name": "Quentin Grimes",
+      "reason": "Injury/Illness - Right Finger Sprain",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 14.1,
+      "usg_pct_rank": 338
+    },
+    {
+      "current_status": "Available",
+      "dbpm": 0.8,
+      "dbpm_rank": 119,
+      "game_date": "2026-11-09",
+      "game_time_et": null,
+      "matchup": "LAL@ATL",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.0,
+      "minutes_per_game_rank": 70,
+      "obpm": 2.5,
+      "obpm_rank": 82,
+      "player_name": "Walker Kessler",
+      "reason": "Injury/Illness - Left Finger Splint",
+      "team_abbreviation": "LAL",
+      "team_name": "Los Angeles Lakers",
+      "usg_pct": 16.4,
+      "usg_pct_rank": 278
     },
     {
       "current_status": "Out",
@@ -1256,8 +1313,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-09",
-    "report_time_et": "2026-11-09 12:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_12_00PM.pdf"
+    "report_time_et": "2026-11-09 01:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_01_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1447,15 +1504,15 @@
       "team_name": "LA Clippers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": null,
           "matchup": "LAL@ATL",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "LAL",
