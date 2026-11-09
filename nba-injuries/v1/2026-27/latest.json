@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 114,
+  "listed_player_count": 121,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
       "complete_coverage_rate": 0.5702,
-      "matched": 65,
-      "no_current_season_row": 49,
+      "matched": 69,
+      "no_current_season_row": 52,
       "partial": 0,
-      "player_count": 114,
+      "player_count": 121,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -360,7 +360,7 @@
       "usg_pct_rank": 451
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -0.9,
       "dbpm_rank": 274,
       "game_date": "2026-11-08",
@@ -1766,6 +1766,44 @@
       "usg_pct_rank": 46
     },
     {
+      "current_status": "Questionable",
+      "dbpm": 0.6,
+      "dbpm_rank": 137,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 18.6,
+      "minutes_per_game_rank": 233,
+      "obpm": 2.2,
+      "obpm_rank": 89,
+      "player_name": "Jordan Goodwin",
+      "reason": "Management",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": 17.3,
+      "usg_pct_rank": 246
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Mark Williams",
+      "reason": "Injury/Illness - Left Shoulder Surgery",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
       "current_status": "Out",
       "dbpm": null,
       "dbpm_rank": null,
@@ -1876,6 +1914,101 @@
       "reason": "G League - Two-Way Injury/Illness - Right Patella",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": 1.9,
+      "dbpm_rank": 57,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 30.0,
+      "minutes_per_game_rank": 87,
+      "obpm": -0.2,
+      "obpm_rank": 187,
+      "player_name": "Devin Vassell",
+      "reason": "Tightness Injury/Illness - Right Calf Injury",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": 16.3,
+      "usg_pct_rank": 283
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -2.5,
+      "dbpm_rank": 390,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 2.0,
+      "minutes_per_game_rank": 448,
+      "obpm": 10.8,
+      "obpm_rank": 10,
+      "player_name": "Ja'Kobi Gillespie",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": 41.5,
+      "usg_pct_rank": 2
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jayden Quaintance",
+      "reason": "Injury/Illness - Right Knee Surgery Injury/Illness - Left Adductor",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 13.9,
+      "dbpm_rank": 1,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "matched",
+      "minutes_per_game": 1.0,
+      "minutes_per_game_rank": 456,
+      "obpm": 13.7,
+      "obpm_rank": 6,
+      "player_name": "Maliq Brown",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
+      "usg_pct": 0.0,
+      "usg_pct_rank": 451
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-09",
+      "game_time_et": "09:00",
+      "matchup": "SAS@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Tobias Harris",
+      "reason": "Injury/Illness - Left Calf Strain",
+      "team_abbreviation": "SAS",
+      "team_name": "San Antonio Spurs",
       "usg_pct": null,
       "usg_pct_rank": null
     },
@@ -2206,8 +2339,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-08",
-    "report_time_et": "2026-11-08 07:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_07_00PM.pdf"
+    "report_time_et": "2026-11-08 07:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_07_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2567,15 +2700,15 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 2,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": "09:00",
           "matchup": "SAS@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 2,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "PHX",
@@ -2604,15 +2737,15 @@
       "team_name": "Sacramento Kings"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": "09:00",
           "matchup": "SAS@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "SAS",
