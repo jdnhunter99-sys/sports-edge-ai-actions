@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 79,
+  "listed_player_count": 80,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6329,
-      "matched": 50,
+      "complete_coverage_rate": 0.6375,
+      "matched": 51,
       "no_current_season_row": 29,
       "partial": 0,
-      "player_count": 79,
+      "player_count": 80,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -531,7 +531,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": -0.6,
       "dbpm_rank": 255,
       "game_date": "2026-11-09",
@@ -543,14 +543,14 @@
       "obpm": -1.4,
       "obpm_rank": 249,
       "player_name": "Aaron Gordon",
-      "reason": "Management Injury/Illness - Lower Body Injury",
+      "reason": "Management",
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets",
       "usg_pct": 18.6,
       "usg_pct_rank": 207
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": -1.4,
       "dbpm_rank": 326,
       "game_date": "2026-11-09",
@@ -562,14 +562,14 @@
       "obpm": -1.1,
       "obpm_rank": 230,
       "player_name": "Cameron Johnson",
-      "reason": "Management",
+      "reason": "Injury/Illness - Right Ankle Sprain",
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets",
       "usg_pct": 16.6,
       "usg_pct_rank": 268
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": 0.4,
       "dbpm_rank": 166,
       "game_date": "2026-11-09",
@@ -588,7 +588,7 @@
       "usg_pct_rank": 304
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": -1.3,
       "dbpm_rank": 315,
       "game_date": "2026-11-09",
@@ -600,14 +600,14 @@
       "obpm": -3.2,
       "obpm_rank": 333,
       "player_name": "DeMar DeRozan",
-      "reason": "Injury/Illness - Low Back Spasms Injury/Illness - Lower Body Injury",
+      "reason": "Injury/Illness - Low Back Spasms Injury/Illness - Left Calf Injury",
       "team_abbreviation": "DEN",
       "team_name": "Denver Nuggets",
       "usg_pct": 20.8,
       "usg_pct_rank": 152
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": -0.9,
       "dbpm_rank": 279,
       "game_date": "2026-11-09",
@@ -645,7 +645,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Probable",
       "dbpm": 2.5,
       "dbpm_rank": 43,
       "game_date": "2026-11-09",
@@ -759,6 +759,25 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Questionable",
+      "dbpm": -0.5,
+      "dbpm_rank": 247,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 13.3,
+      "minutes_per_game_rank": 312,
+      "obpm": -5.5,
+      "obpm_rank": 389,
+      "player_name": "Gary Payton II",
+      "reason": "Inflammation",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": 17.9,
+      "usg_pct_rank": 230
+    },
+    {
       "current_status": "Probable",
       "dbpm": -0.6,
       "dbpm_rank": 255,
@@ -828,7 +847,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Moses Moody",
-      "reason": "Repair / Surgery",
+      "reason": "Repair / Surgery Injury/Illness - Left Knee",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -1196,7 +1215,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 2.0,
       "dbpm_rank": 58,
       "game_date": "2026-11-09",
@@ -1541,8 +1560,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-09",
-    "report_time_et": "2026-11-09 01:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_01_45PM.pdf"
+    "report_time_et": "2026-11-09 03:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_03_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1672,14 +1691,14 @@
       "team_name": "Detroit Pistons"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": "10:00",
           "matchup": "NOP@GSW",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
