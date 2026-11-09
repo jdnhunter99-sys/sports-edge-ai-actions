@@ -10,12 +10,13 @@ export async function handleNFLTeamStatsRefresh(req: Request, base44: any) {
     const requested = Array.isArray(input?.timeframes) ? input.timeframes : [];
     const timeframes = [...new Set(requested.map((value: unknown) => {
       const raw = String(value || '').trim();
-      return /^l(3|5|10|15)$/i.test(raw) || /^(home|away)$/i.test(raw) ? raw.toUpperCase() : raw;
+      return /^(?:l(3|5|10|15)(?:_(home|away))?|home|away|\d{4}_(home|away))$/i.test(raw) ? raw.toUpperCase() : raw;
     }))];
     if (!timeframes.length || timeframes.some((timeframe: string) =>
-      !/^\d{4}$/.test(timeframe) && !['L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'].includes(timeframe)
+      !/^\d{4}$/.test(timeframe) && !['L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'].includes(timeframe) &&
+      !/^(?:L3|L5|L10|L15)_(?:HOME|AWAY)$/.test(timeframe) && !/^\d{4}_(?:HOME|AWAY)$/.test(timeframe)
     )) {
-      return Response.json({ ok: false, error: 'Provide one or more four-digit seasons and/or L3, L5, L10, L15, HOME, AWAY timeframes.' }, { status: 400 });
+      return Response.json({ ok: false, error: 'Provide seasons, L3/L5/L10/L15, HOME/AWAY, or a timeframe combined with _HOME/_AWAY.' }, { status: 400 });
     }
 
     const currentYear = new Date().getFullYear();
@@ -223,7 +224,8 @@ async function writeRefreshTeamStatsRecord(base44: any, { season, week, timefram
 
 function resolveRefreshStatsSeason(currentYear: number, timeframe: string) {
   const clean = String(timeframe || 'season');
-  if (/^\d{4}$/.test(clean)) return Number(clean);
+  const year = clean.match(/^(\d{4})(?:_(?:HOME|AWAY))?$/);
+  if (year) return Number(year[1]);
   return new Date().getMonth() < 8 ? currentYear - 1 : currentYear;
 }
 
@@ -1857,7 +1859,7 @@ function safeDiv(a, b) {
 }
 
 function isRollingGameWindow(timeframe) {
-  return ['L3', 'L5', 'L10', 'L15'].includes(String(timeframe || '').trim().toUpperCase());
+  return /^L(?:3|5|10|15)(?:_(?:HOME|AWAY))?$/.test(String(timeframe || '').trim().toUpperCase());
 }
 
 function hasTeamSpecificRollingSelection(ranges) {
@@ -4251,16 +4253,21 @@ async function writeNFLLeagueContextCache(base44, season, week, context, timefra
 }
 
 function computeSeasonRanges(schedules, statsSeason, timeframe) {
-  const splitSide = timeframe === 'HOME' ? 'home' : timeframe === 'AWAY' ? 'away' : '';
-  const isRolling = timeframe === 'L3' || timeframe === 'L5' || timeframe === 'L10' || timeframe === 'L15';
+  const upper = String(timeframe || '').toUpperCase();
+  const rollingMatch = upper.match(/^L(3|5|10|15)(?:_(HOME|AWAY))?$/);
+  const yearSplit = upper.match(/^\d{4}_(HOME|AWAY)$/);
+  const splitSide = upper === 'HOME' ? 'home' : upper === 'AWAY' ? 'away' : (rollingMatch?.[2] || yearSplit?.[1] || '').toLowerCase();
+  const isRolling = Boolean(rollingMatch);
   if (!isRolling && !splitSide) return [{ season: statsSeason, minWeek: 0, maxWeek: 999 }];
-  const n = timeframe === 'L3' ? 3 : timeframe === 'L5' ? 5 : timeframe === 'L10' ? 10 : 15;
+  const windowSize = isRolling ? Number(rollingMatch[1]) : 0;
+  const isYearSpecific = /^\d{4}(?:_(?:HOME|AWAY))?$/.test(upper) || upper === 'HOME' || upper === 'AWAY';
   const gamesByTeam = new Map(NFL_CANONICAL_TEAMS.map((team) => [team, []]));
 
   for (const game of schedules || []) {
     const season = num(game.season, NaN);
     const week = num(game.week, NaN);
-    if (!Number.isFinite(season) || season > statsSeason || (splitSide ? season !== statsSeason : season < statsSeason - 2)) continue;
+    if (!Number.isFinite(season) || season > statsSeason ||
+      (isYearSpecific ? season !== statsSeason : season < statsSeason - 2)) continue;
     if (String(game.game_type || '').trim().toUpperCase() !== 'REG' || week < 1 || week > 18) continue;
     const awayScore = num(game.away_score, NaN);
     const homeScore = num(game.home_score, NaN);
@@ -4287,8 +4294,8 @@ function computeSeasonRanges(schedules, statsSeason, timeframe) {
   for (const team of NFL_CANONICAL_TEAMS) {
     const ordered = (gamesByTeam.get(team) || [])
       .sort((a, b) => a.season - b.season || a.week - b.week || a.gameday.localeCompare(b.gameday) || a.gametime.localeCompare(b.gametime) || a.gameId.localeCompare(b.gameId));
-    const selected = splitSide ? ordered : ordered.slice(-n);
-    const requiredGames = splitSide ? 1 : n;
+    const selected = isRolling ? ordered.slice(-windowSize) : ordered;
+    const requiredGames = isRolling ? windowSize : 1;
     if (selected.length < requiredGames) {
       throw new Error(`Not enough completed regular-season games for ${team}: found ${selected.length}, expected ${requiredGames} for ${timeframe}.`);
     }
@@ -4373,7 +4380,7 @@ teams.add(homeTeam);
   } else {
     try { schedules = await loadSchedules(); } catch (err) { warnings.push(`Schedule load failed: ${err?.message || String(err)}`); }
     seasonRanges = computeSeasonRanges(schedules, statsSeason, timeframe);
-    if (['L3', 'L5', 'L10', 'L15'].includes(timeframe) && !seasonRanges.length) {
+    if (isRollingGameWindow(timeframe) && !seasonRanges.length) {
       throw new Error(`Could not select completed regular-season games for ${timeframe}; refusing to publish a misleading rolling window.`);
     }
     const seasonsToLoad = [...new Set(seasonRanges.map((r) => r.season))];

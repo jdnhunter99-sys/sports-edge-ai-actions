@@ -11,8 +11,21 @@ const sportRoot = `${outputRoot.replace(/\/$/, '')}/nfl-team-stats`;
 const cacheRoot = `${sportRoot}/v${CACHE_VERSION}`;
 const updatedAt = new Date().toISOString();
 
-// Match the year and rolling windows currently shown in NFL game detail.
-const TIMEFRAMES = ['2025', '2026', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'];
+// Publish year, rolling, and venue-specific frames. Rolling venue frames are
+// computed from each team's most recent completed games at that venue.
+const currentYear = new Date().getFullYear();
+const SEASONS = [currentYear - 1, currentYear];
+const ROLLING = ['L3', 'L5', 'L10', 'L15'];
+const ROLLING_VENUE = ['L3', 'L5', 'L10'];
+const TIMEFRAMES = [
+  ...SEASONS.map(String),
+  ...ROLLING,
+  'HOME', 'AWAY',
+  // HOME/AWAY already represents the current year; publish an explicit
+  // year-suffixed pair only for the prior year selected in the UI.
+  ...[`${SEASONS[0]}_HOME`, `${SEASONS[0]}_AWAY`],
+  ...ROLLING_VENUE.flatMap((frame) => [`${frame}_HOME`, `${frame}_AWAY`]),
+];
 
 type RecordValue = Record<string, any>;
 

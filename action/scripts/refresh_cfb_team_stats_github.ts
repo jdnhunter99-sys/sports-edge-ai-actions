@@ -7,7 +7,8 @@ if (!outputRoot) throw new Error('CFB_STATS_OUTPUT_DIR is required');
 const CACHE_VERSION = CFB_TEAM_STATS_CACHE_VERSION;
 const cacheRoot = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/v${CACHE_VERSION}`;
 const indexPath = `${outputRoot.replace(/\/$/, '')}/cfb-team-stats/index.json`;
-const TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'];
+const TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY', 'L3_HOME', 'L3_AWAY', 'L5_HOME', 'L5_AWAY', 'L10_HOME', 'L10_AWAY'];
+const PREVIOUS_SEASON_TIMEFRAMES = TIMEFRAMES.filter((timeframe) => !/^L(?:3|5|10|15)_(?:HOME|AWAY)$/.test(timeframe));
 const currentSeason = (() => {
   const now = new Date();
   return now.getUTCMonth() + 1 >= 8 ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
@@ -95,6 +96,7 @@ const base44Adapter = {
 async function refreshSeason(season: number, isPrevious: boolean) {
   teamRows.clear();
   const priorSeasonLogs = await readJson<any>(gameLogPath(season - 1), null);
+  const seasonTimeframes = isPrevious ? PREVIOUS_SEASON_TIMEFRAMES : TIMEFRAMES;
   const request = new Request('https://github-actions.local/cfb-stats-refresh', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -103,7 +105,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
       previousSeason: isPrevious,
       priorSeasonLogs,
       includeGameLogs: true,
-      timeframes: TIMEFRAMES,
+      timeframes: seasonTimeframes,
       limit: 180,
       offset: 0,
       force: true,
@@ -130,7 +132,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
 
   const writtenFrames: Record<string, FrameManifest> = {};
   let snapshotId = '';
-  for (const timeframe of TIMEFRAMES) {
+  for (const timeframe of seasonTimeframes) {
     const teamPayloads: Record<string, TeamRecord> = {};
     let latest = '';
     let frameTeamCount = 0;
@@ -210,7 +212,7 @@ async function refreshSeason(season: number, isPrevious: boolean) {
   return result;
 }
 
-const historicalFramePaths = TIMEFRAMES.map((timeframe) => seasons[String(previousSeason)]?.timeframes?.[timeframe]?.path || '');
+const historicalFramePaths = PREVIOUS_SEASON_TIMEFRAMES.map((timeframe) => seasons[String(previousSeason)]?.timeframes?.[timeframe]?.path || '');
 const historicalHasCurrentVersion = historicalFramePaths.every((path) => path.includes(`/v${CACHE_VERSION}/${previousSeason}/`));
 const historicalGameLogsExist = await Deno.stat(gameLogPath(previousSeason)).then(() => true).catch(() => false);
 const historicalAlreadyPresent = historicalHasCurrentVersion && historicalGameLogsExist;

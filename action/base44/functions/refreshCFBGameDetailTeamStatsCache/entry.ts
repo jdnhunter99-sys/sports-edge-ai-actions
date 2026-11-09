@@ -9,7 +9,7 @@ import { rankCFBRows, validateCFBGameCoverage, validateCFBTeamDefense, validateC
 import { SportsDataverseCfbSource } from '../../shared/sportsDataverseCfbSource.ts';
 
 const CFB_SOURCE = new SportsDataverseCfbSource();
-const DEFAULT_TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'];
+const DEFAULT_TIMEFRAMES = ['season', 'L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY', 'L3_HOME', 'L3_AWAY', 'L5_HOME', 'L5_AWAY', 'L10_HOME', 'L10_AWAY'];
 const MAX_TEAMS_PER_RUN = 180;
 // Bump the published cache contract when source parsing or coverage logic changes
 // so the publisher rebuilds current and prior-season logs used by rolling windows.
@@ -270,7 +270,7 @@ function todayCentral(): string {
 function normalizeRequestedTimeframe(value: any): string | null {
   const raw = String(value || '').trim().toUpperCase();
   if (raw === 'SEASON') return 'season';
-  if (['L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'].includes(raw)) return raw;
+  if (['L3', 'L5', 'L10', 'L15', 'HOME', 'AWAY'].includes(raw) || /^L(?:3|5|10|15)_(?:HOME|AWAY)$/.test(raw)) return raw;
   return null;
 }
 
@@ -2637,7 +2637,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       : DEFAULT_TIMEFRAMES;
     const timeframes = [...new Set(requestedTimeframes)] as string[];
     if (!timeframes.length) {
-      return Response.json({ ok: false, error: 'timeframes must be season, L3, L5, L10, or L15' }, { status: 400 });
+      return Response.json({ ok: false, error: 'timeframes must be season, L3/L5/L10/L15, HOME/AWAY, or a rolling timeframe combined with _HOME/_AWAY' }, { status: 400 });
     }
 
     // Lightweight verification mode used after deployments. It proves which
@@ -2981,15 +2981,21 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
 
     for (const timeframe of timeframes) {
       const upper = String(timeframe).toUpperCase();
-      const locationSplit = upper === 'HOME' || upper === 'AWAY';
-      const splitSide = upper.toLowerCase();
+      const rollingMatch = upper.match(/^L(3|5|10|15)(?:_(HOME|AWAY))?$/);
+      const splitSide = upper === 'HOME' ? 'home' : upper === 'AWAY' ? 'away' : (rollingMatch?.[2] || '').toLowerCase();
+      const locationSplit = Boolean(splitSide);
+      const windowSize = Number(rollingMatch?.[1] || 0);
       const frameTeamKeys = locationSplit
-        ? allTeamKeys.filter((key) => (logs.get(key) || []).some((game) => game.homeAway === splitSide))
+        ? allTeamKeys.filter((key) => {
+          const frameGames = windowSize
+            ? [...(priorSeasonLogs.get(key) || []), ...(logs.get(key) || [])]
+            : (logs.get(key) || []);
+          return frameGames.some((game) => game.homeAway === splitSide);
+        })
         : allTeamKeys;
       const sliceKeys = requestedTeams.length
         ? requestedTeams.filter((key: string) => frameTeamKeys.includes(key))
         : frameTeamKeys.slice(offset, offset + limit);
-      const windowSize = upper === 'SEASON' ? 0 : n(upper.replace(/^L/, ''), 0);
       const startWeek = windowSize ? Math.max(1, maxCompletedWeek - windowSize + 1) : 1;
       const advancedWindowKey = `${startWeek}-${maxCompletedWeek}`;
       let advancedMap = new Map<string, any>();
@@ -3063,8 +3069,10 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const allGames = windowSize
           ? [...previousSeasonGames, ...currentSeasonGames].sort((a, b) => a.date.localeCompare(b.date) || a.gameId.localeCompare(b.gameId))
           : currentSeasonGames;
+        const venueGames = (windowSize ? allGames : currentSeasonGames)
+          .filter((game) => game.homeAway === splitSide);
         const selected = locationSplit
-          ? currentSeasonGames.filter((game) => game.homeAway === splitSide)
+          ? (windowSize ? venueGames.slice(-windowSize) : venueGames)
           : windowSize ? allGames.slice(-windowSize) : allGames;
         const stats = computeStats(selected);
         if (stats) {
@@ -3137,8 +3145,12 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           season,
           timeframe,
           games: stats.games,
-          opponents: opponentsByTeam.get(key) || [],
-          opponentCount: (opponentsByTeam.get(key) || []).length,
+          opponents: windowSize || locationSplit
+            ? selected.map((game) => game.opponentKey).filter(Boolean)
+            : (opponentsByTeam.get(key) || []),
+          opponentCount: windowSize || locationSplit
+            ? selected.filter((game) => game.opponentKey).length
+            : (opponentsByTeam.get(key) || []).length,
           opponentContexts: locationSplit ? selected.map((game) => ({
             teamKey: game.opponentKey,
             timeframe: game.homeAway === 'away' ? 'HOME' : 'AWAY',
