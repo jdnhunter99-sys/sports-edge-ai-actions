@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 121,
+  "listed_player_count": 126,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5702,
-      "matched": 69,
-      "no_current_season_row": 52,
+      "complete_coverage_rate": 0.5635,
+      "matched": 71,
+      "no_current_season_row": 55,
       "partial": 0,
-      "player_count": 121,
+      "player_count": 126,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -1082,6 +1082,101 @@
       "usg_pct_rank": null
     },
     {
+      "current_status": "Probable",
+      "dbpm": -0.7,
+      "dbpm_rank": 255,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 18.857142857142858,
+      "minutes_per_game_rank": 230,
+      "obpm": -2.6,
+      "obpm_rank": 299,
+      "player_name": "Gui Santos",
+      "reason": "Injury/Illness - Left Knee Tendinitis",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": 14.9,
+      "usg_pct_rank": 318
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Jimmy Butler III",
+      "reason": "Surgery Injury/Illness - Left Patellar Tendon",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Kristaps Porzingis",
+      "reason": "Not With Team",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Moses Moody",
+      "reason": "Repair / Surgery",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -0.7,
+      "dbpm_rank": 255,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 17.2,
+      "minutes_per_game_rank": 258,
+      "obpm": -1.1,
+      "obpm_rank": 229,
+      "player_name": "Will Richard",
+      "reason": "Injury/Illness - Left Thumb UCL Tear",
+      "team_abbreviation": "GSW",
+      "team_name": "Golden State Warriors",
+      "usg_pct": 11.5,
+      "usg_pct_rank": 410
+    },
+    {
       "current_status": "Out",
       "dbpm": 2.4,
       "dbpm_rank": 40,
@@ -1823,7 +1918,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 0.5,
       "dbpm_rank": 150,
       "game_date": "2026-11-08",
@@ -1842,7 +1937,7 @@
       "usg_pct_rank": 264
     },
     {
-      "current_status": "Out",
+      "current_status": "Available",
       "dbpm": -0.8,
       "dbpm_rank": 268,
       "game_date": "2026-11-08",
@@ -1854,7 +1949,7 @@
       "obpm": -4.7,
       "obpm_rank": 376,
       "player_name": "Jonathan Mogbo",
-      "reason": "G League - Two-Way",
+      "reason": null,
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": 12.7,
@@ -2339,8 +2434,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-08",
-    "report_time_et": "2026-11-08 07:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_07_45PM.pdf"
+    "report_time_et": "2026-11-08 08:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-08_08_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2500,15 +2595,15 @@
       "team_name": "Detroit Pistons"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": "10:00",
           "matchup": "NOP@GSW",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "GSW",
