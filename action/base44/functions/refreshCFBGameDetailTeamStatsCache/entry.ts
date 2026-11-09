@@ -3063,6 +3063,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       }
 
       const statsByTeam = new Map<string, any>();
+      const selectedGamesByTeam = new Map<string, TeamGame[]>();
       for (const key of frameTeamKeys) {
         const currentSeasonGames = logs.get(key) || [];
         const previousSeasonGames = priorSeasonLogs.get(key) || [];
@@ -3074,6 +3075,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         const selected = locationSplit
           ? (windowSize ? venueGames.slice(-windowSize) : venueGames)
           : windowSize ? allGames.slice(-windowSize) : allGames;
+        selectedGamesByTeam.set(key, selected);
         const stats = computeStats(selected);
         if (stats) {
           // Keep every standard value on the same exact game sample. SportsDataverse/ESPN's
@@ -3131,6 +3133,7 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       for (const key of sliceKeys) {
         const stats = statsByTeam.get(key);
         if (!stats) continue;
+        const selectedGames = selectedGamesByTeam.get(key) || [];
         const teamName = teamNames.get(key) || cfbDisplayName(key);
         const rankPayload: any = { offense: {}, defense: {}, special_teams: {} };
         for (const side of ['offense', 'defense', 'special_teams'] as const) {
@@ -3146,12 +3149,12 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
           timeframe,
           games: stats.games,
           opponents: windowSize || locationSplit
-            ? selected.map((game) => game.opponentKey).filter(Boolean)
+            ? selectedGames.map((game) => game.opponentKey).filter(Boolean)
             : (opponentsByTeam.get(key) || []),
           opponentCount: windowSize || locationSplit
-            ? selected.filter((game) => game.opponentKey).length
+            ? selectedGames.filter((game) => game.opponentKey).length
             : (opponentsByTeam.get(key) || []).length,
-          opponentContexts: locationSplit ? selected.map((game) => ({
+          opponentContexts: locationSplit ? selectedGames.map((game) => ({
             teamKey: game.opponentKey,
             timeframe: game.homeAway === 'away' ? 'HOME' : 'AWAY',
           })).filter((context) => context.teamKey) : [],
