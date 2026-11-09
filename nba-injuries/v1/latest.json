@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 89,
+  "listed_player_count": 90,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.618,
-      "matched": 55,
+      "complete_coverage_rate": 0.6222,
+      "matched": 56,
       "no_current_season_row": 34,
       "partial": 0,
-      "player_count": 89,
+      "player_count": 90,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -847,7 +847,7 @@
       "obpm": -5.5,
       "obpm_rank": 389,
       "player_name": "Gary Payton II",
-      "reason": "Injury/Illness - Left Knee",
+      "reason": "Inflammation",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": 17.9,
@@ -1303,7 +1303,7 @@
       "obpm": -0.8,
       "obpm_rank": 218,
       "player_name": "Trendon Watford",
-      "reason": "Injury/Illness - Right Ankle Sprain Injury/Illness - Right ACL Repair /",
+      "reason": "Injury/Illness - Right Ankle Sprain",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": 14.7,
@@ -1346,6 +1346,25 @@
       "team_name": "New Orleans Pelicans",
       "usg_pct": 12.6,
       "usg_pct_rank": 382
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.5,
+      "dbpm_rank": 153,
+      "game_date": "2026-11-09",
+      "game_time_et": "10:00",
+      "matchup": "NOP@GSW",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.0,
+      "minutes_per_game_rank": 40,
+      "obpm": 3.5,
+      "obpm_rank": 59,
+      "player_name": "Zion Williamson",
+      "reason": "Rest Injury/Illness - Right ACL Repair /",
+      "team_abbreviation": "NOP",
+      "team_name": "New Orleans Pelicans",
+      "usg_pct": 21.8,
+      "usg_pct_rank": 126
     },
     {
       "current_status": "Questionable",
@@ -1538,7 +1557,7 @@
       "usg_pct_rank": 8
     },
     {
-      "current_status": "Out",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-09",
@@ -1557,7 +1576,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Out",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-09",
@@ -1731,8 +1750,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-09",
-    "report_time_et": "2026-11-09 04:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_04_00PM.pdf"
+    "report_time_et": "2026-11-09 04:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_04_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1989,14 +2008,14 @@
       "team_name": "Minnesota Timberwolves"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": "10:00",
           "matchup": "NOP@GSW",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
