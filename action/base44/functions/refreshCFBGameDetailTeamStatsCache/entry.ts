@@ -2978,6 +2978,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
     const advancedWindowCache = new Map<string, Map<string, any>>();
     const standardWindowCache = new Map<string, Map<string, Record<string, any>>>();
     const maxCompletedWeek = Math.max(...completedWeeks);
+    let requestedTeamCount = requestedTeams.length;
+    let materializedTeamCount = 0;
 
     for (const timeframe of timeframes) {
       const upper = String(timeframe).toUpperCase();
@@ -2996,6 +2998,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
       const sliceKeys = requestedTeams.length
         ? requestedTeams.filter((key: string) => frameTeamKeys.includes(key))
         : frameTeamKeys.slice(offset, offset + limit);
+      requestedTeamCount = Math.max(requestedTeamCount, sliceKeys.length);
+      materializedTeamCount = Math.max(materializedTeamCount, sliceKeys.length);
       const startWeek = windowSize ? Math.max(1, maxCompletedWeek - windowSize + 1) : 1;
       const advancedWindowKey = `${startWeek}-${maxCompletedWeek}`;
       let advancedMap = new Map<string, any>();
@@ -3230,8 +3234,8 @@ export async function handleCFBTeamStatsRefresh(req: Request, injectedBase44: an
         discrepancies: boxCoverageDiscrepancies,
       },
       fbsTeamCount: allTeamKeys.length,
-      requestedTeamCount: requestedTeams.length || sliceKeys.length,
-      materializedTeamCount: sliceKeys.length,
+      requestedTeamCount,
+      materializedTeamCount,
       cachedRecords: results.length,
       results,
       errors,
