@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "7",
+      "Col2": "5",
       "Col3": "# New:",
-      "Col4": "4",
+      "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "12",
+      "Col6": "10",
       "Col7": "Impact Avg:",
-      "Col8": "1.7",
+      "Col8": "1.9",
       "Col9": "Impact Rank:",
-      "Col10": "84",
+      "Col10": "96",
       "Col11": ""
     },
     {
@@ -81,29 +81,42 @@
       "Col11": "0"
     },
     {
-      "Col1": "Cooper Hoch",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "WR",
-      "Col6": "FALSE",
-      "Col7": "12.1",
-      "Col8": "0",
-      "Col9": "10/15/2026",
-      "Col10": "Official report 2026-10-15: questionable. Game 2026-10-18.",
-      "Col11": "4"
-    },
-    {
       "Col1": "Jase Nix",
       "Col2": "",
       "Col3": "",
       "Col4": "O",
       "Col5": "WR",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "10.3",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "11/7/2026",
       "Col10": "Official report 2026-11-07: out. Game 2026-11-07. Previous context: Official report 2026-11-05: questionable. Game 2026-11-07. Previous context: Official report 2026-10-29: out. Game 2026-10-31.",
+      "Col11": "0"
+    },
+    {
+      "Col1": "Joseph Harbert",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "OFS",
+      "Col5": "OL",
+      "Col6": "FALSE",
+      "Col7": "11.2",
+      "Col8": "3",
+      "Col9": "11/5/2026",
+      "Col10": "Official report 2026-11-05: season ending. Game 2026-11-07.",
+      "Col11": "0"
+    },
+    {
+      "Col1": "Charles Cox III",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Q",
+      "Col5": "S",
+      "Col6": "FALSE",
+      "Col7": "8.8",
+      "Col8": "1",
+      "Col9": "11/5/2026",
+      "Col10": "Official report 2026-11-05: questionable. Game 2026-11-07.",
       "Col11": "0"
     },
     {
@@ -120,43 +133,30 @@
       "Col11": ""
     },
     {
-      "Col1": "Joseph Harbert",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "OFS",
-      "Col5": "OL",
-      "Col6": "TRUE",
-      "Col7": "11.2",
-      "Col8": "4",
-      "Col9": "11/5/2026",
-      "Col10": "Official report 2026-11-05: season ending. Game 2026-11-07.",
-      "Col11": "0"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
-      "Col1": "Charles Cox III",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
-      "Col5": "S",
-      "Col6": "TRUE",
-      "Col7": "8.8",
-      "Col8": "1",
-      "Col9": "11/5/2026",
-      "Col10": "Official report 2026-11-05: questionable. Game 2026-11-07.",
-      "Col11": "0"
-    },
-    {
-      "Col1": "Tyler Chen",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "OL",
-      "Col6": "TRUE",
-      "Col7": "11.5",
-      "Col8": "1",
-      "Col9": "11/5/2026",
-      "Col10": "Official report 2026-11-05: questionable. Game 2026-11-07.",
-      "Col11": "62"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,32 @@
       "Col11": ""
     },
     {
+      "Col1": "Cooper Hoch",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "WR",
+      "Col6": "",
+      "Col7": "12.1",
+      "Col8": "0",
+      "Col9": "11/9/2026",
+      "Col10": "Cleared from the injury/status report on 11/09/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Tyler Chen",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "OL",
+      "Col6": "",
+      "Col7": "11.5",
+      "Col8": "1",
+      "Col9": "11/9/2026",
+      "Col10": "Cleared from the injury/status report on 11/09/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Kamaehu Kopa-Kaawalauole",
       "Col2": "",
       "Col3": "",
@@ -1137,15 +1163,15 @@
     ],
     [
       "#:",
-      "7",
+      "5",
       "# New:",
-      "4",
+      "0",
       "Impact:",
-      "12",
+      "10",
       "Impact Avg:",
-      "1.7",
+      "1.9",
       "Impact Rank:",
-      "84",
+      "96",
       ""
     ],
     [
@@ -1175,29 +1201,42 @@
       "0"
     ],
     [
-      "Cooper Hoch",
-      "",
-      "",
-      "Q",
-      "WR",
-      "FALSE",
-      "12.1",
-      "0",
-      "10/15/2026",
-      "Official report 2026-10-15: questionable. Game 2026-10-18.",
-      "4"
-    ],
-    [
       "Jase Nix",
       "",
       "",
       "O",
       "WR",
-      "TRUE",
+      "FALSE",
       "10.3",
-      "4",
+      "3",
       "11/7/2026",
       "Official report 2026-11-07: out. Game 2026-11-07. Previous context: Official report 2026-11-05: questionable. Game 2026-11-07. Previous context: Official report 2026-10-29: out. Game 2026-10-31.",
+      "0"
+    ],
+    [
+      "Joseph Harbert",
+      "",
+      "",
+      "OFS",
+      "OL",
+      "FALSE",
+      "11.2",
+      "3",
+      "11/5/2026",
+      "Official report 2026-11-05: season ending. Game 2026-11-07.",
+      "0"
+    ],
+    [
+      "Charles Cox III",
+      "",
+      "",
+      "Q",
+      "S",
+      "FALSE",
+      "8.8",
+      "1",
+      "11/5/2026",
+      "Official report 2026-11-05: questionable. Game 2026-11-07.",
       "0"
     ],
     [
@@ -1214,43 +1253,30 @@
       ""
     ],
     [
-      "Joseph Harbert",
       "",
       "",
-      "OFS",
-      "OL",
-      "TRUE",
-      "11.2",
-      "4",
-      "11/5/2026",
-      "Official report 2026-11-05: season ending. Game 2026-11-07.",
-      "0"
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
-      "Charles Cox III",
       "",
       "",
-      "Q",
-      "S",
-      "TRUE",
-      "8.8",
-      "1",
-      "11/5/2026",
-      "Official report 2026-11-05: questionable. Game 2026-11-07.",
-      "0"
-    ],
-    [
-      "Tyler Chen",
       "",
       "",
-      "Q",
-      "OL",
-      "TRUE",
-      "11.5",
-      "1",
-      "11/5/2026",
-      "Official report 2026-11-05: questionable. Game 2026-11-07.",
-      "62"
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1981,6 +2007,32 @@
       ""
     ],
     [
+      "Cooper Hoch",
+      "",
+      "",
+      "Cleared",
+      "WR",
+      "",
+      "12.1",
+      "0",
+      "11/9/2026",
+      "Cleared from the injury/status report on 11/09/2026",
+      ""
+    ],
+    [
+      "Tyler Chen",
+      "",
+      "",
+      "Cleared",
+      "OL",
+      "",
+      "11.5",
+      "1",
+      "11/9/2026",
+      "Cleared from the injury/status report on 11/09/2026",
+      ""
+    ],
+    [
       "Kamaehu Kopa-Kaawalauole",
       "",
       "",
@@ -2202,6 +2254,6 @@
       ""
     ]
   ],
-  "count": 84,
-  "timestamp": "2026-11-09T18:07:40.419Z"
+  "count": 86,
+  "timestamp": "2026-11-09T20:04:51.849Z"
 }
