@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 63,
+  "listed_player_count": 64,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5873,
-      "matched": 37,
+      "complete_coverage_rate": 0.5938,
+      "matched": 38,
       "no_current_season_row": 26,
       "partial": 0,
-      "player_count": 63,
+      "player_count": 64,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -638,7 +638,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Moses Moody",
-      "reason": "Injury/Illness - Left Patellar Tendon",
+      "reason": "Repair / Surgery",
       "team_abbreviation": "GSW",
       "team_name": "Golden State Warriors",
       "usg_pct": null,
@@ -700,6 +700,25 @@
       "team_name": "Houston Rockets",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.5,
+      "dbpm_rank": 153,
+      "game_date": "2026-11-09",
+      "game_time_et": "08:30",
+      "matchup": "DEN@HOU",
+      "metrics_status": "matched",
+      "minutes_per_game": 7.0,
+      "minutes_per_game_rank": 379,
+      "obpm": 1.5,
+      "obpm_rank": 111,
+      "player_name": "Oscar Tshiebwe",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": 13.9,
+      "usg_pct_rank": 345
     },
     {
       "current_status": "Out",
@@ -1237,8 +1256,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-09",
-    "report_time_et": "2026-11-09 09:00 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_09_00AM.pdf"
+    "report_time_et": "2026-11-09 10:00 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-09_10_00AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1383,14 +1402,14 @@
       "team_name": "Golden State Warriors"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-09",
           "game_time_et": "08:30",
           "matchup": "DEN@HOU",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
