@@ -51,7 +51,7 @@ jobs:
       - name: Fetch NHL reports and play-by-play; build all filters and league ranks
         env:
           NHL_TEAM_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
-        run: deno run --no-check --allow-net --allow-read --allow-write --allow-env=NHL_TEAM_STATS_OUTPUT_DIR action/action/scripts/publish_nhl_team_stats.ts
+        run: deno run --no-check --allow-net --allow-read --allow-write --allow-env=NHL_TEAM_STATS_OUTPUT_DIR,NHL_TEAM_STATS_SEASON action/action/scripts/publish_nhl_team_stats.ts
 
       - name: Publish the completed NHL game-detail JSON
         working-directory: data
