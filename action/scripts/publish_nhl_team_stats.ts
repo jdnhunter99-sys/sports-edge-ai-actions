@@ -1389,8 +1389,32 @@ async function fetchAggregateTeamStats(seasonId: number, teams: any[]) {
 async function fetchCurrentStandings() {
   const payload = await getJson(`${NHL_WEB_ROOT}/standings/now`);
   const standings = Array.isArray(payload?.standings) ? payload.standings : [];
-  if (standings.length < 30) throw new Error(`NHL standings returned ${standings.length} teams; expected at least 30.`);
+  if (standings.length !== 32) throw new Error(`NHL standings returned ${standings.length} teams; expected 32.`);
   return { standings, standingsDate: payload?.standingsDateTimeUtc || new Date().toISOString() };
+}
+
+function selectActiveTeams(allTeams: any[], standings: any[]) {
+  const unresolved: string[] = [];
+  const selected = standings.map((standing) => {
+    const abbr = normalizeAbbr(localized(standing?.teamAbbrev));
+    const currentName = localized(standing?.teamName);
+    const currentNameKey = normalizeTeamName(currentName);
+    const matches = allTeams.filter((team) =>
+      normalizeAbbr(team?.triCode) === abbr
+      && normalizeTeamName(team?.fullName || team?.name) === currentNameKey
+    );
+    if (!abbr || !currentNameKey || matches.length !== 1) {
+      unresolved.push(`${abbr || 'unknown'} (${currentName || 'unnamed'}; matches=${matches.length})`);
+      return null;
+    }
+    return matches[0];
+  }).filter(Boolean);
+  const uniqueIds = new Set(selected.map((team: any) => Number(team?.id)));
+  const uniqueAbbrs = new Set(selected.map((team: any) => normalizeAbbr(team?.triCode)));
+  if (selected.length !== 32 || uniqueIds.size !== 32 || uniqueAbbrs.size !== 32 || unresolved.length) {
+    throw new Error(`Could not resolve exactly 32 active NHL teams from current standings (${selected.length} resolved; ${unresolved.join(', ') || 'duplicate team IDs or abbreviations'}).`);
+  }
+  return selected.sort((a: any, b: any) => normalizeAbbr(a?.triCode).localeCompare(normalizeAbbr(b?.triCode)));
 }
 
 async function fetchHeadToHeadIndex(teams: any[], seasonStart: number) {
@@ -1456,17 +1480,19 @@ async function main() {
   const generatedAt = new Date().toISOString();
   console.log(`NHL game-detail publisher: season=${seasonId}, generated=${generatedAt}`);
 
-  const teamPayload = await getJson(`${NHL_STATS_ROOT}/team?limit=100`);
-  const teams = (Array.isArray(teamPayload?.data) ? teamPayload.data : [])
+  const [teamPayload, standingsResult] = await Promise.all([
+    getJson(`${NHL_STATS_ROOT}/team?limit=100`),
+    fetchCurrentStandings(),
+  ]);
+  const allTeams = (Array.isArray(teamPayload?.data) ? teamPayload.data : [])
     .filter((team: any) => normalizeAbbr(team?.triCode) && Number.isFinite(Number(team?.id)))
     .sort((a: any, b: any) => normalizeAbbr(a?.triCode).localeCompare(normalizeAbbr(b?.triCode)));
-  if (teams.length !== 32) throw new Error(`NHL team source returned ${teams.length} teams; expected 32.`);
+  const teams = selectActiveTeams(allTeams, standingsResult.standings);
   const abbreviations = teams.map((team: any) => normalizeAbbr(team?.triCode));
   console.log(`Loaded ${teams.length} NHL teams; fetching all reports, EDGE inputs, and play-by-play.`);
 
-  const [comparison, standingsResult, teamStatsByAbbr, headToHeadGames] = await Promise.all([
+  const [comparison, teamStatsByAbbr, headToHeadGames] = await Promise.all([
     fetchComparison(seasonId, abbreviations, abbreviations[0], abbreviations[1]),
-    fetchCurrentStandings(),
     fetchAggregateTeamStats(seasonId, teams),
     fetchHeadToHeadIndex(teams, seasonStart),
   ]);
