@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 52,
+  "listed_player_count": 53,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5385,
+      "complete_coverage_rate": 0.5283,
       "matched": 28,
-      "no_current_season_row": 24,
+      "no_current_season_row": 25,
       "partial": 0,
-      "player_count": 52,
+      "player_count": 53,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -684,6 +684,25 @@
     },
     {
       "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-10",
+      "game_time_et": "09:00",
+      "matchup": "LAC@PHX",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Mark Williams",
+      "reason": "Injury/Illness - Left Shoulder Surgery",
+      "team_abbreviation": "PHX",
+      "team_name": "Phoenix Suns",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
       "dbpm": 0.7,
       "dbpm_rank": 131,
       "game_date": "2026-11-10",
@@ -1028,8 +1047,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-10",
-    "report_time_et": "2026-11-10 02:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_02_45PM.pdf"
+    "report_time_et": "2026-11-10 03:15 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_03_15PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1380,15 +1399,15 @@
       "team_name": "Philadelphia 76ers"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 1,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-10",
           "game_time_et": "09:00",
           "matchup": "LAC@PHX",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 1,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "PHX",
