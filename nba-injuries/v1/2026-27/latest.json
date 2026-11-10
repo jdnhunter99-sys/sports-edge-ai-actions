@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 45,
+  "listed_player_count": 46,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5111,
-      "matched": 23,
+      "complete_coverage_rate": 0.5217,
+      "matched": 24,
       "no_current_season_row": 22,
       "partial": 0,
-      "player_count": 45,
+      "player_count": 46,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -244,6 +244,25 @@
       "team_name": "Miami Heat",
       "usg_pct": 33.6,
       "usg_pct_rank": 10
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -3.3,
+      "dbpm_rank": 429,
+      "game_date": "2026-11-10",
+      "game_time_et": "07:30",
+      "matchup": "MIL@NYK",
+      "metrics_status": "matched",
+      "minutes_per_game": 17.3,
+      "minutes_per_game_rank": 260,
+      "obpm": -4.0,
+      "obpm_rank": 354,
+      "player_name": "Kel'el Ware",
+      "reason": "Injury/Illness - Left Ankle Sprain",
+      "team_abbreviation": "MIL",
+      "team_name": "Milwaukee Bucks",
+      "usg_pct": 25.4,
+      "usg_pct_rank": 68
     },
     {
       "current_status": "Questionable",
@@ -895,8 +914,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-10",
-    "report_time_et": "2026-11-10 11:45 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_11_45AM.pdf"
+    "report_time_et": "2026-11-10 12:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_12_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1122,14 +1141,14 @@
       "team_name": "Miami Heat"
     },
     {
-      "player_count": 1,
+      "player_count": 2,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-10",
           "game_time_et": "07:30",
           "matchup": "MIL@NYK",
-          "player_count": 1,
+          "player_count": 2,
           "report_status": "submitted"
         },
         {
