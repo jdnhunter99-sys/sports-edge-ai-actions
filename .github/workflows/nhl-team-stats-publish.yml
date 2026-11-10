@@ -1,0 +1,75 @@
+name: NHL Game Detail Stats
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nhl-game-detail-stats-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the Actions repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+          path: action
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Prepare the NHL stats data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_REPOSITORY: ${{ github.repository }}
+          DATA_BRANCH: nhl-team-stats-data
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          git -C data init -b "$DATA_BRANCH"
+          git -C data config user.name 'github-actions[bot]'
+          git -C data config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C data remote add origin "https://github.com/${DATA_REPOSITORY}.git"
+          git -C data sparse-checkout init --cone
+          git -C data sparse-checkout set nhl-team-stats
+          token_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          if git -C data -c http.extraheader="AUTHORIZATION: basic ${token_auth}" ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git -C data -c http.extraheader="AUTHORIZATION: basic ${token_auth}" fetch --quiet --depth=1 --filter=blob:none origin "$DATA_BRANCH"
+            git -C data checkout -B "$DATA_BRANCH" FETCH_HEAD
+          fi
+
+      - name: Fetch NHL reports and play-by-play; build all filters and league ranks
+        env:
+          NHL_TEAM_STATS_OUTPUT_DIR: ${{ github.workspace }}/data
+        run: deno run --no-check --allow-net --allow-read --allow-write --allow-env=NHL_TEAM_STATS_OUTPUT_DIR action/action/scripts/publish_nhl_team_stats.ts
+
+      - name: Publish the completed NHL game-detail JSON
+        working-directory: data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git add -A -- nhl-team-stats
+          mapfile -t staged_paths < <(git diff --cached --name-only)
+          for path in "${staged_paths[@]}"; do
+            case "$path" in
+              nhl-team-stats/*) ;;
+              *) echo "Refusing to publish unexpected staged path: $path" >&2; exit 1 ;;
+            esac
+          done
+          if git diff --cached --quiet; then
+            echo 'NHL game-detail JSON is unchanged.'
+            exit 0
+          fi
+          git commit -qm 'Refresh NHL game-detail stats JSON'
+          bash ../action/scripts/push_data_branch.sh nhl-team-stats-data
