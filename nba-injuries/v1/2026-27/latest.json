@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 53,
+  "listed_player_count": 57,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.5283,
-      "matched": 28,
-      "no_current_season_row": 25,
+      "complete_coverage_rate": 0.5263,
+      "matched": 30,
+      "no_current_season_row": 27,
       "partial": 0,
-      "player_count": 53,
+      "player_count": 57,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -111,6 +111,82 @@
       "team_name": "Boston Celtics",
       "usg_pct": 0.0,
       "usg_pct_rank": 455
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.7,
+      "dbpm_rank": 34,
+      "game_date": "2026-11-11",
+      "game_time_et": "09:30",
+      "matchup": "GSW@HOU",
+      "metrics_status": "matched",
+      "minutes_per_game": 14.166666666666666,
+      "minutes_per_game_rank": 301,
+      "obpm": 0.4,
+      "obpm_rank": 154,
+      "player_name": "Clint Capela",
+      "reason": "Injury/Illness - Right Ankle Sprain",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": 10.0,
+      "usg_pct_rank": 431
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-11",
+      "game_time_et": "09:30",
+      "matchup": "GSW@HOU",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Julian Phillips",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-11",
+      "game_time_et": "09:30",
+      "matchup": "GSW@HOU",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Quadir Copeland",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 3.6,
+      "dbpm_rank": 13,
+      "game_date": "2026-11-11",
+      "game_time_et": "09:30",
+      "matchup": "GSW@HOU",
+      "metrics_status": "matched",
+      "minutes_per_game": 8.0,
+      "minutes_per_game_rank": 366,
+      "obpm": 0.4,
+      "obpm_rank": 154,
+      "player_name": "Steven Adams",
+      "reason": "Injury/Illness - Right Soleus Strain",
+      "team_abbreviation": "HOU",
+      "team_name": "Houston Rockets",
+      "usg_pct": 10.6,
+      "usg_pct_rank": 424
     },
     {
       "current_status": "Out",
@@ -816,7 +892,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 0.8,
       "dbpm_rank": 117,
       "game_date": "2026-11-10",
@@ -828,7 +904,7 @@
       "obpm": 2.5,
       "obpm_rank": 78,
       "player_name": "Domantas Sabonis",
-      "reason": "Injury/Illness - Left Knee Soreness Injury/Illness - Right Achilles Tendon",
+      "reason": "Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": 16.8,
@@ -854,7 +930,7 @@
       "usg_pct_rank": 397
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -1.1,
       "dbpm_rank": 310,
       "game_date": "2026-11-10",
@@ -866,7 +942,7 @@
       "obpm": -6.2,
       "obpm_rank": 401,
       "player_name": "Keegan Murray",
-      "reason": "Injury/Illness - Right Wrist Soreness",
+      "reason": null,
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": 17.2,
@@ -1047,8 +1123,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-10",
-    "report_time_et": "2026-11-10 03:15 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_03_15PM.pdf"
+    "report_time_et": "2026-11-10 04:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_04_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1184,15 +1260,15 @@
       "team_name": "Golden State Warriors"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": "09:30",
           "matchup": "GSW@HOU",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "HOU",
