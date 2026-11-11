@@ -593,9 +593,13 @@ def make_reasons(candidate):
     reasons = []
     zone = candidate.get('zone') or {}
     allowed_markets = [match for match in candidate.get('marketMatchups', []) if match.get('market', {}).get('key') not in {'blocks', 'steals'}]
-    weak_defenses = [match for match in allowed_markets if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 25]
-    for match in weak_defenses[:2]:
+    favorable = [match for match in allowed_markets if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 21]
+    for match in favorable[:2]:
         reasons.append({'label':f'Weak {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
+    if not favorable:
+        favorable = [match for match in allowed_markets if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 16]
+        for match in favorable[:1]:
+            reasons.append({'label':f'Favorable {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
     top_zone = zone.get('topZone') or {}
     if top_zone and number(zone.get('score')) is not None and zone['score'] >= 60:
         reasons.append({'label':f'{round(top_zone["share"])}% shots {top_zone["label"].lower()} · defense #{round(top_zone["rank"])}','tone':'green'})
