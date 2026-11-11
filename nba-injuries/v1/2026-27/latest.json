@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 108,
+  "listed_player_count": 114,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6759,
-      "matched": 73,
-      "no_current_season_row": 35,
+      "complete_coverage_rate": 0.6754,
+      "matched": 77,
+      "no_current_season_row": 37,
       "partial": 0,
-      "player_count": 108,
+      "player_count": 114,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -49,7 +49,7 @@
       "obpm": -4.4,
       "obpm_rank": 363,
       "player_name": "Ben Saraf",
-      "reason": "G League - On Assignment Injury/Illness - Right Calf Tightness /",
+      "reason": "G League - On Assignment",
       "team_abbreviation": "BKN",
       "team_name": "Brooklyn Nets",
       "usg_pct": 10.6,
@@ -246,6 +246,25 @@
       "usg_pct_rank": 51
     },
     {
+      "current_status": "Questionable",
+      "dbpm": -1.0,
+      "dbpm_rank": 306,
+      "game_date": "2026-11-11",
+      "game_time_et": null,
+      "matchup": "SAS@CHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 9.5,
+      "minutes_per_game_rank": 355,
+      "obpm": -7.0,
+      "obpm_rank": 415,
+      "player_name": "Dailyn Swain",
+      "reason": "Injury/Illness - Right Disc Irritation Injury/Illness - Right Hip Soreness /",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": 19.7,
+      "usg_pct_rank": 172
+    },
+    {
       "current_status": "Out",
       "dbpm": -2.2,
       "dbpm_rank": 386,
@@ -258,7 +277,7 @@
       "obpm": -0.3,
       "obpm_rank": 195,
       "player_name": "Jaylin Sellers",
-      "reason": "G League - On Assignment Injury/Illness - Right Hip Soreness /",
+      "reason": "G League - On Assignment",
       "team_abbreviation": "CHI",
       "team_name": "Chicago Bulls",
       "usg_pct": 23.1,
@@ -809,7 +828,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Julian Phillips",
-      "reason": "G League - Two-Way",
+      "reason": "G League - Two-Way Injury/Illness - Right Knee/ Injury",
       "team_abbreviation": "HOU",
       "team_name": "Houston Rockets",
       "usg_pct": null,
@@ -892,7 +911,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -0.7,
       "dbpm_rank": 275,
       "game_date": "2026-11-11",
@@ -1121,6 +1140,63 @@
     },
     {
       "current_status": "Out",
+      "dbpm": 2.1,
+      "dbpm_rank": 48,
+      "game_date": "2026-11-12",
+      "game_time_et": "08:00",
+      "matchup": "DAL@MIN",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.75,
+      "minutes_per_game_rank": 21,
+      "obpm": 5.5,
+      "obpm_rank": 29,
+      "player_name": "Anthony Edwards",
+      "reason": "Arthroscopy",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": 38.5,
+      "usg_pct_rank": 4
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-12",
+      "game_time_et": "08:00",
+      "matchup": "DAL@MIN",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Donte DiVincenzo",
+      "reason": "Repair / Surgery Injury/Illness - Right Knee",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Available",
+      "dbpm": 0.5,
+      "dbpm_rank": 156,
+      "game_date": "2026-11-12",
+      "game_time_et": "08:00",
+      "matchup": "DAL@MIN",
+      "metrics_status": "matched",
+      "minutes_per_game": 16.363636363636363,
+      "minutes_per_game_rank": 275,
+      "obpm": 0.7,
+      "obpm_rank": 140,
+      "player_name": "Joan Beringer",
+      "reason": "Injury/Illness - Face Mask Injury/Illness - Right Achilles Tendon",
+      "team_abbreviation": "MIN",
+      "team_name": "Minnesota Timberwolves",
+      "usg_pct": 13.0,
+      "usg_pct_rank": 374
+    },
+    {
+      "current_status": "Out",
       "dbpm": -3.7,
       "dbpm_rank": 440,
       "game_date": "2026-11-11",
@@ -1234,7 +1310,7 @@
       "usg_pct_rank": 381
     },
     {
-      "current_status": "Probable",
+      "current_status": "Available",
       "dbpm": 3.2,
       "dbpm_rank": 18,
       "game_date": "2026-11-11",
@@ -1253,7 +1329,7 @@
       "usg_pct_rank": 346
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 1.0,
       "dbpm_rank": 104,
       "game_date": "2026-11-11",
@@ -1474,7 +1550,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jonathan Isaac",
-      "reason": "Management Injury/Illness - Left Ankle Injury",
+      "reason": "Injury/Illness - Left Knee Injury",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1493,7 +1569,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Noah Penda",
-      "reason": "Hamstring",
+      "reason": "Hamstring Injury/Illness - Right Knee Contusion",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": null,
@@ -1531,7 +1607,7 @@
       "obpm": 1.4,
       "obpm_rank": 110,
       "player_name": "Tristan da Silva",
-      "reason": "Injury/Illness - Left Calf Strain Injury/Illness - Left Knee Injury",
+      "reason": "Injury/Illness - Left Calf Strain",
       "team_abbreviation": "ORL",
       "team_name": "Orlando Magic",
       "usg_pct": 19.8,
@@ -1804,7 +1880,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 0.1,
       "dbpm_rank": 193,
       "game_date": "2026-11-11",
@@ -1823,7 +1899,7 @@
       "usg_pct_rank": 181
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -1.0,
       "dbpm_rank": 306,
       "game_date": "2026-11-11",
@@ -1859,6 +1935,44 @@
       "team_name": "Toronto Raptors",
       "usg_pct": 35.5,
       "usg_pct_rank": 7
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-11",
+      "game_time_et": "07:00",
+      "matchup": "BOS@TOR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Kevin McCullar Jr.",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -3.6,
+      "dbpm_rank": 437,
+      "game_date": "2026-11-11",
+      "game_time_et": "07:00",
+      "matchup": "BOS@TOR",
+      "metrics_status": "matched",
+      "minutes_per_game": 1.0,
+      "minutes_per_game_rank": 458,
+      "obpm": -7.9,
+      "obpm_rank": 431,
+      "player_name": "Malachi Smith",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 0.0,
+      "usg_pct_rank": 455
     },
     {
       "current_status": "Out",
@@ -2092,8 +2206,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-11",
-    "report_time_et": "2026-11-11 05:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-11_05_00PM.pdf"
+    "report_time_et": "2026-11-11 06:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-11_06_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2156,14 +2270,14 @@
       "team_name": "Charlotte Hornets"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": null,
           "matchup": "SAS@CHI",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
@@ -2335,15 +2449,15 @@
       "team_name": "Milwaukee Bucks"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-12",
           "game_time_et": "08:00",
           "matchup": "DAL@MIN",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "MIN",
@@ -2477,14 +2591,14 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 6,
+      "player_count": 8,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": "07:00",
           "matchup": "BOS@TOR",
-          "player_count": 6,
+          "player_count": 8,
           "report_status": "submitted"
         },
         {
