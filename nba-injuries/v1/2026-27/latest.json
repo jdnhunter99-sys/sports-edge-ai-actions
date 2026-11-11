@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 60,
+  "listed_player_count": 66,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
       "complete_coverage_rate": 0.6667,
-      "matched": 40,
-      "no_current_season_row": 20,
+      "matched": 44,
+      "no_current_season_row": 22,
       "partial": 0,
-      "player_count": 60,
+      "player_count": 66,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -171,6 +171,82 @@
     },
     {
       "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-11",
+      "game_time_et": "07:00",
+      "matchup": "BOS@TOR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Amari Williams",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-11",
+      "game_time_et": "07:00",
+      "matchup": "BOS@TOR",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Devin Carter",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 1.4,
+      "dbpm_rank": 79,
+      "game_date": "2026-11-11",
+      "game_time_et": "07:00",
+      "matchup": "BOS@TOR",
+      "metrics_status": "matched",
+      "minutes_per_game": 30.1,
+      "minutes_per_game_rank": 82,
+      "obpm": 3.8,
+      "obpm_rank": 45,
+      "player_name": "Paul George",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "BOS",
+      "team_name": "Boston Celtics",
+      "usg_pct": 29.2,
+      "usg_pct_rank": 30
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": -2.4,
+      "dbpm_rank": 396,
+      "game_date": "2026-11-11",
+      "game_time_et": null,
+      "matchup": "SAS@CHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 32.44444444444444,
+      "minutes_per_game_rank": 51,
+      "obpm": -1.2,
+      "obpm_rank": 239,
+      "player_name": "Caleb Wilson",
+      "reason": "Tightness",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": 26.7,
+      "usg_pct_rank": 51
+    },
+    {
+      "current_status": "Out",
       "dbpm": -2.2,
       "dbpm_rank": 386,
       "game_date": "2026-11-11",
@@ -182,7 +258,7 @@
       "obpm": -0.3,
       "obpm_rank": 195,
       "player_name": "Jaylin Sellers",
-      "reason": "G League - On Assignment",
+      "reason": "G League - On Assignment Injury/Illness - Right Hip Soreness /",
       "team_abbreviation": "CHI",
       "team_name": "Chicago Bulls",
       "usg_pct": 23.1,
@@ -208,7 +284,7 @@
       "usg_pct_rank": 70
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -1.5,
       "dbpm_rank": 339,
       "game_date": "2026-11-11",
@@ -797,7 +873,7 @@
       "usg_pct_rank": 178
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Probable",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-11",
@@ -885,11 +961,49 @@
       "obpm": 8.7,
       "obpm_rank": 10,
       "player_name": "Yves Missi",
-      "reason": "Bone Bruise",
+      "reason": "Bone Bruise Injury/Illness - Bilateral Patellar",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": 12.7,
       "usg_pct_rank": 381
+    },
+    {
+      "current_status": "Probable",
+      "dbpm": 3.2,
+      "dbpm_rank": 18,
+      "game_date": "2026-11-11",
+      "game_time_et": null,
+      "matchup": "CLE@NYK",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.714285714285715,
+      "minutes_per_game_rank": 62,
+      "obpm": -2.8,
+      "obpm_rank": 317,
+      "player_name": "Josh Hart",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "NYK",
+      "team_name": "New York Knicks",
+      "usg_pct": 13.9,
+      "usg_pct_rank": 346
+    },
+    {
+      "current_status": "Questionable",
+      "dbpm": 1.0,
+      "dbpm_rank": 104,
+      "game_date": "2026-11-11",
+      "game_time_et": null,
+      "matchup": "CLE@NYK",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.1,
+      "minutes_per_game_rank": 67,
+      "obpm": 3.8,
+      "obpm_rank": 45,
+      "player_name": "Karl-Anthony Towns",
+      "reason": "Injury/Illness - Left Sore Calf",
+      "team_abbreviation": "NYK",
+      "team_name": "New York Knicks",
+      "usg_pct": 26.4,
+      "usg_pct_rank": 56
     },
     {
       "current_status": "Questionable",
@@ -904,7 +1018,7 @@
       "obpm": -0.1,
       "obpm_rank": 186,
       "player_name": "Devin Vassell",
-      "reason": "Injury/Illness - Left Adductor",
+      "reason": "Tightness",
       "team_abbreviation": "SAS",
       "team_name": "San Antonio Spurs",
       "usg_pct": 16.3,
@@ -942,7 +1056,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jayden Quaintance",
-      "reason": "Injury/Illness - Right Knee Surgery",
+      "reason": "Injury/Illness - Right Knee Surgery Injury/Illness - Left Adductor",
       "team_abbreviation": "SAS",
       "team_name": "San Antonio Spurs",
       "usg_pct": null,
@@ -1180,8 +1294,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-11",
-    "report_time_et": "2026-11-11 12:45 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-11_12_45PM.pdf"
+    "report_time_et": "2026-11-11 01:45 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-11_01_45PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1214,15 +1328,15 @@
       "team_name": "Brooklyn Nets"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 3,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": "07:00",
           "matchup": "BOS@TOR",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 3,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "BOS",
@@ -1244,14 +1358,14 @@
       "team_name": "Charlotte Hornets"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": null,
           "matchup": "SAS@CHI",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         }
       ],
@@ -1453,15 +1567,15 @@
       "team_name": "New Orleans Pelicans"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 2,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": null,
           "matchup": "CLE@NYK",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 2,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "NYK",
