@@ -304,6 +304,7 @@ def entry_player_id(player):
 def load_or_build_zones(season, now):
     folder = OUTPUT_ROOT / 'nba-matchups' / 'v1'
     path = folder / f'shot-zones-{season}.json'
+    stale_cache = None
     if path.exists():
         try:
             cached = json.loads(path.read_text())
@@ -311,9 +312,41 @@ def load_or_build_zones(season, now):
             if cached.get('season') == season and (now - generated).total_seconds() < 20 * 3600:
                 print(f'Reusing cached shot-zone analysis from {cached.get("generatedAt")}', flush=True)
                 return cached
+            stale_cache = cached
         except (OSError, ValueError, json.JSONDecodeError):
             pass
-    zones = build_shot_zone_analysis(season, now)
+
+    try:
+        zones = build_shot_zone_analysis(season, now)
+    except Exception as current_error:
+        print(f'WARN current-season shot-zone analysis unavailable for {season}: {current_error}', flush=True)
+        zones = None
+        previous_season = season - 1
+        previous_path = folder / f'shot-zones-{previous_season}.json'
+        try:
+            if previous_path.exists():
+                zones = json.loads(previous_path.read_text())
+                print(f'Using cached NBA shot-zone analysis from {previous_season} as a fallback.', flush=True)
+            else:
+                zones = build_shot_zone_analysis(previous_season, now)
+                print(f'Using NBA shot-zone analysis from {previous_season} as a fallback.', flush=True)
+        except Exception as previous_error:
+            print(f'WARN previous-season shot-zone fallback unavailable for {previous_season}: {previous_error}', flush=True)
+            zones = stale_cache
+
+        if zones:
+            source_season = int(zones.get('dataSeason') or zones.get('season') or previous_season)
+            zones = {**zones, 'season':season, 'dataSeason':source_season,
+                     'source':f"{zones.get('source') or 'SportsDataverse ESPN NBA shots'} (season {source_season} fallback)"}
+        else:
+            # Shot zones are one recommendation signal; an upstream release delay
+            # must not prevent publishing the slate and defense-vs-position analysis.
+            zones = {
+                'season':season, 'dataSeason':None,
+                'generatedAt':now.isoformat().replace('+00:00','Z'),
+                'source':'unavailable', 'gameCount':0, 'shotCount':0,
+                'rankTeamCount':0, 'players':{}, 'teamDefense':{},
+            }
     folder.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix('.tmp')
     tmp.write_text(json.dumps(zones, separators=(',',':')))
@@ -345,7 +378,9 @@ def build_shot_zone_analysis(season, now):
         raise RuntimeError(f'SportsDataverse schedule contained no regular-season games for {season}.')
 
     release = request_json(NBA_SHOTS_RELEASE, 'application/vnd.github+json')
-    assets = [asset for asset in release.get('assets', []) if re.match(rf'^shots_{season}\..*\.csv(?:\.gz)?$', str(asset.get('name') or ''), re.I)]
+    # SportsDataverse publishes the canonical file as shots_<season>.csv.
+    # The previous pattern required an extra extension segment and missed it.
+    assets = [asset for asset in release.get('assets', []) if re.match(rf'^shots_{season}\.csv(?:\.gz)?$', str(asset.get('name') or ''), re.I)]
     assets.sort(key=lambda item: str(item.get('name','')).lower().endswith('.csv.gz'), reverse=True)
     if not assets:
         raise RuntimeError(f'No NBA shot-chart CSV for season {season} was found in the SportsDataverse release.')
