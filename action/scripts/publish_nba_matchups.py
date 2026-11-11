@@ -44,8 +44,6 @@ MARKETS = [
     {'key':'points_assists','label':'Pts + Ast','short':'P+A','stat':'P+A/G','defenseKey':'positionPointsAssists','allowedLabel':'P+A','zoneWeight':0.2},
     {'key':'pra','label':'PRA','short':'PRA','stat':'PRA/G','defenseKey':'positionPRA','allowedLabel':'PRA','zoneWeight':0.2},
     {'key':'rebounds_assists','label':'Reb + Ast','short':'R+A','stat':'R+A/G','defenseKey':'positionReboundsAssists','allowedLabel':'R+A'},
-    {'key':'blocks','label':'Blocks','short':'BLK','stat':'BLK/G','defenseKey':'positionBlocks','allowedLabel':'blocks'},
-    {'key':'steals','label':'Steals','short':'STL','stat':'STL/G','defenseKey':'positionSteals','allowedLabel':'steals'},
 ]
 
 
