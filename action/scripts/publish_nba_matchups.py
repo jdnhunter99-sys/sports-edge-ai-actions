@@ -44,6 +44,8 @@ MARKETS = [
     {'key':'points_assists','label':'Pts + Ast','short':'P+A','stat':'P+A/G','defenseKey':'positionPointsAssists','allowedLabel':'P+A','zoneWeight':0.2},
     {'key':'pra','label':'PRA','short':'PRA','stat':'PRA/G','defenseKey':'positionPRA','allowedLabel':'PRA','zoneWeight':0.2},
     {'key':'rebounds_assists','label':'Reb + Ast','short':'R+A','stat':'R+A/G','defenseKey':'positionReboundsAssists','allowedLabel':'R+A'},
+    {'key':'blocks','label':'Blocks','short':'BLK','stat':'BLK/G','defenseKey':'positionBlocks','allowedLabel':'blocks'},
+    {'key':'steals','label':'Steals','short':'STL','stat':'STL/G','defenseKey':'positionSteals','allowedLabel':'steals'},
 ]
 
 
@@ -568,11 +570,12 @@ def zone_evidence(player_zone_profile, opponent_profile, market_key):
 def make_reasons(candidate):
     reasons = []
     zone = candidate.get('zone') or {}
-    favorable = [match for match in candidate.get('marketMatchups', []) if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 21]
+    allowed_markets = [match for match in candidate.get('marketMatchups', []) if match.get('market', {}).get('key') not in {'blocks', 'steals'}]
+    favorable = [match for match in allowed_markets if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 21]
     for match in favorable[:2]:
         reasons.append({'label':f'Weak {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
     if not favorable:
-        favorable = [match for match in candidate.get('marketMatchups', []) if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 16]
+        favorable = [match for match in allowed_markets if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 16]
         for match in favorable[:1]:
             reasons.append({'label':f'Favorable {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
     top_zone = zone.get('topZone') or {}
@@ -638,8 +641,9 @@ def build_recommendations(today, slate, player_rows, opponent_profiles, zone_dat
             seen.add(key)
             player = {key:value for key,value in row.items() if not key.startswith('_')}
             player.update({'Player':name,'name':name,'Team':team,'team':team,'Pos':position,'position':position,'playerId':listed.get('playerId') or row.get('playerId'),'espnPlayerId':row.get('espnPlayerId'),'headshot':row.get('headshot')})
-            best_opportunity = markets[0]
-            available_markets = [match for match in markets if match['available']]
+            ranked_markets = [match for match in markets if match['market']['key'] not in {'blocks', 'steals'}]
+            best_opportunity = ranked_markets[0] if ranked_markets else markets[0]
+            available_markets = [match for match in ranked_markets if match['available']]
             best = available_markets[0] if available_markets else best_opportunity
             # Zone evidence is independent of the prop markets that happen to
             # have odds today. This lets a strong restricted-area matchup show
@@ -650,12 +654,16 @@ def build_recommendations(today, slate, player_rows, opponent_profiles, zone_dat
                 'opponentTeam':game['home'] if side == 'away' else game['away'],
                 'playerTeam':game[side], 'profile':profile,'marketMatchups':markets,'bestMarket':best,'bestOpportunity':best_opportunity,
                 'defenseRank':best['defenseRank'],'defenseValue':best['defenseValue'],'defenseScore':best['defenseScore'],
-                'score':round(average([match['score'] for match in markets[:3]]) or 0),
+                'score':round(average([match['score'] for match in markets if match['market']['key'] not in {'blocks', 'steals'}][:3]) or (overall_zone or {}).get('score') or 0),
                 'marketAverage':best['playerAverage'],'minutes':row['MIN'],'gamesPlayed':row['G'],
                 'playerInjuryStatus':player_status if player_status in ('questionable','probable') else '',
                 'opponentUnavailableCount':opponent_out_count,'zone':overall_zone,
             }
             candidate['reasons'] = make_reasons(candidate)
+            # Blocks and steals can remain listed props, but cannot qualify a
+            # player by themselves as a matchup recommendation.
+            if not any(reason.get('tone') != 'amber' for reason in candidate['reasons']):
+                continue
             out.append(candidate)
     out.sort(key=lambda row:(-row['score'],-row['defenseRank'],-row['minutes']))
     return out[:10]
