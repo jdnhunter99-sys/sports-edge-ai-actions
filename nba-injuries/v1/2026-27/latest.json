@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 58,
+  "listed_player_count": 60,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6552,
-      "matched": 38,
+      "complete_coverage_rate": 0.6667,
+      "matched": 40,
       "no_current_season_row": 20,
       "partial": 0,
-      "player_count": 58,
+      "player_count": 60,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -111,6 +111,25 @@
       "team_name": "Brooklyn Nets",
       "usg_pct": 42.6,
       "usg_pct_rank": 1
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -3.0,
+      "dbpm_rank": 423,
+      "game_date": "2026-11-11",
+      "game_time_et": "08:00",
+      "matchup": "BKN@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 23.142857142857142,
+      "minutes_per_game_rank": 171,
+      "obpm": -2.5,
+      "obpm_rank": 305,
+      "player_name": "Mikel Brown Jr.",
+      "reason": "Injury/Illness - Illness",
+      "team_abbreviation": "BKN",
+      "team_name": "Brooklyn Nets",
+      "usg_pct": 28.1,
+      "usg_pct_rank": 40
     },
     {
       "current_status": "Questionable",
@@ -759,6 +778,25 @@
       "usg_pct_rank": 140
     },
     {
+      "current_status": "Out",
+      "dbpm": -3.7,
+      "dbpm_rank": 440,
+      "game_date": "2026-11-11",
+      "game_time_et": "08:00",
+      "matchup": "BKN@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 15.818181818181818,
+      "minutes_per_game_rank": 280,
+      "obpm": -3.7,
+      "obpm_rank": 349,
+      "player_name": "Bennedict Mathurin",
+      "reason": "Injury/Illness - Right Thumb Sprain Injury/Illness - Left Knee Contusion /",
+      "team_abbreviation": "NOP",
+      "team_name": "New Orleans Pelicans",
+      "usg_pct": 19.4,
+      "usg_pct_rank": 178
+    },
+    {
       "current_status": "Doubtful",
       "dbpm": null,
       "dbpm_rank": null,
@@ -790,7 +828,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Malik Dia",
-      "reason": "G League - Two-Way Injury/Illness - Left Knee Contusion /",
+      "reason": "G League - Two-Way",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": null,
@@ -816,7 +854,7 @@
       "usg_pct_rank": 319
     },
     {
-      "current_status": "Probable",
+      "current_status": "Doubtful",
       "dbpm": -2.0,
       "dbpm_rank": 369,
       "game_date": "2026-11-11",
@@ -847,7 +885,7 @@
       "obpm": 8.7,
       "obpm_rank": 10,
       "player_name": "Yves Missi",
-      "reason": "Bone Bruise Injury/Illness - Bilateral Patellar",
+      "reason": "Bone Bruise",
       "team_abbreviation": "NOP",
       "team_name": "New Orleans Pelicans",
       "usg_pct": 12.7,
@@ -866,7 +904,7 @@
       "obpm": -0.1,
       "obpm_rank": 186,
       "player_name": "Devin Vassell",
-      "reason": "Tightness",
+      "reason": "Injury/Illness - Left Adductor",
       "team_abbreviation": "SAS",
       "team_name": "San Antonio Spurs",
       "usg_pct": 16.3,
@@ -904,7 +942,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Jayden Quaintance",
-      "reason": "Injury/Illness - Right Knee Surgery Injury/Illness - Left Adductor",
+      "reason": "Injury/Illness - Right Knee Surgery",
       "team_abbreviation": "SAS",
       "team_name": "San Antonio Spurs",
       "usg_pct": null,
@@ -1142,8 +1180,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-11",
-    "report_time_et": "2026-11-11 10:45 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-11_10_45AM.pdf"
+    "report_time_et": "2026-11-11 11:45 AM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-11_11_45AM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1161,14 +1199,14 @@
       "team_name": "Atlanta Hawks"
     },
     {
-      "player_count": 6,
+      "player_count": 7,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": "08:00",
           "matchup": "BKN@NOP",
-          "player_count": 6,
+          "player_count": 7,
           "report_status": "submitted"
         }
       ],
@@ -1400,14 +1438,14 @@
       "team_name": "Minnesota Timberwolves"
     },
     {
-      "player_count": 5,
+      "player_count": 6,
       "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-11",
           "game_time_et": "08:00",
           "matchup": "BKN@NOP",
-          "player_count": 5,
+          "player_count": 6,
           "report_status": "submitted"
         }
       ],
