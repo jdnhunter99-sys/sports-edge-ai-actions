@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-11T19:31:33.941967Z",
-  "updated_at": "2026-11-11T19:31:18Z",
+  "generated_at": "2026-11-11T20:01:29.395360Z",
+  "updated_at": "2026-11-11T20:01:16Z",
   "source": "ESPN NFL Injuries",
   "source_url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries",
-  "source_timestamp": "2026-11-11T19:31:18Z",
+  "source_timestamp": "2026-11-11T20:01:16Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -49,7 +49,7 @@
     "rank_direction": "1 is highest team injury impact"
   },
   "team_count": 32,
-  "injury_count": 635,
+  "injury_count": 636,
   "teams": [
     {
       "team_id": "22",
@@ -58,7 +58,7 @@
       "injury_count": 22,
       "impact_count": 8,
       "impact_score": 15.51,
-      "impact_rank": 8,
+      "impact_rank": 9,
       "rank_population": 32,
       "injuries": [
         {
@@ -2713,9 +2713,9 @@
           "injury_location": "Groin",
           "injury_detail": "Surgery",
           "injury_side": "",
-          "comments": "Jackson underwent core-muscle surgery in September and has been on injured reserve to this point in the season. While he was expected to be evaluated after eight weeks, there haven't been any real updates regarding his return to the field. The 2019 No. 158 overall pick has appeared in 74 regular-season games during his career, accruing 262 total tackles (209 solo), one forced fumble, two fumble recoveries and one touchdown.",
-          "short_comment": "Head coach Dave Canales stated the team plans to take \"the next two days to discuss\" Jackson (groin), Mike Kaye of ESPN.com reports.",
-          "reported_at": "2026-11-09T23:11Z",
+          "comments": "Jackson was placed on injured reserve late in September after suffering a groin injury in Week 3 against Cleveland. The 29-year-old's potential return would greatly help a depleted Carolina secondary, which lost both Jackson and Jaycee Horn (quadriceps) early in the season. Jackson has five tackles (three solo) in his two full regular-season games.",
+          "short_comment": "The Panthers are designating Jackson (groin) to return from injured reserve Wednesday, opening his 21-day practice window, Alex Zietlow of The Charlotte Observer reports.",
+          "reported_at": "2026-11-11T19:54Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -2859,8 +2859,8 @@
             "snap_games_sampled": 2,
             "confidence": "high"
           },
-          "injury": "Abdomen",
-          "injury_location": "Torso",
+          "injury": "Groin",
+          "injury_location": "Groin",
           "injury_detail": "Surgery",
           "injury_side": "",
           "comments": "As a result of the transaction, Brooks will return to practice Wednesday, and the Panthers will have 21 days to evaluate him for a return to the 53-man roster. Unless he logs multiple full practices this week, Brooks could face an uphill battle to getting activated ahead of Sunday's game against the Saints, but he'll likely be back in action for Carolina before the end of November. Once he's reinstated, Brooks will likely handle a complementary role behind lead back Chuba Hubbard.",
@@ -3268,7 +3268,7 @@
       "injury_count": 19,
       "impact_count": 8,
       "impact_score": 15.17,
-      "impact_rank": 9,
+      "impact_rank": 10,
       "rank_population": 32,
       "injuries": [
         {
@@ -4432,7 +4432,7 @@
       "injury_count": 15,
       "impact_count": 4,
       "impact_score": 10.31,
-      "impact_rank": 20,
+      "impact_rank": 21,
       "rank_population": 32,
       "injuries": [
         {
@@ -5596,7 +5596,7 @@
       "injury_count": 19,
       "impact_count": 6,
       "impact_score": 16.73,
-      "impact_rank": 6,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -6178,7 +6178,7 @@
       "injury_count": 20,
       "impact_count": 8,
       "impact_score": 14.95,
-      "impact_rank": 10,
+      "impact_rank": 11,
       "rank_population": 32,
       "injuries": [
         {
@@ -7521,7 +7521,7 @@
       "abbreviation": "HOU",
       "injury_count": 21,
       "impact_count": 4,
-      "impact_score": 5.1,
+      "impact_score": 4.57,
       "impact_rank": 31,
       "rank_population": 32,
       "injuries": [
@@ -7586,36 +7586,6 @@
           "source": "basic/manual"
         },
         {
-          "player": "David Montgomery",
-          "player_id": null,
-          "position": "RB",
-          "status": "Out",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 1.06,
-          "base_role_usage_score": 1.06,
-          "role_score": 1.6,
-          "usage_score": 0.25,
-          "impact_inputs": {
-            "recent_snap_share": 0.14,
-            "season_snap_share": 0.468,
-            "usage_share": 0.05,
-            "usage_group": "backfield",
-            "depth_chart_rank": 2,
-            "snap_games_sampled": 1,
-            "confidence": "high"
-          },
-          "injury": "Groin",
-          "injury_location": "Groin",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "Coach DeMeco Ryans noted Monday that he was hopeful Montgomery could resume practicing this week or next. With a 'DNP' on Wednesday, the running back now has two more chances to make an on-field appearance prior to Sunday's game against the Browns. In the event that his absence continues, Woody Marks would continue to lead Houston's backfield, Emari Demercado and Dare Ogunbowale in reserve.",
-          "short_comment": "Montgomery (groin) remained sidelined at practice Wednesday, Aaron Wilson of KPRC 2 Houston reports.",
-          "reported_at": "2026-11-11T19:04Z",
-          "return_date": "2026-11-15",
-          "source": "basic/manual"
-        },
-        {
           "player": "Cade Stover",
           "player_id": null,
           "position": "TE",
@@ -7643,6 +7613,36 @@
           "short_comment": "Stover was a healthy inactive for Sunday's 44-22 win over the Chargers.",
           "reported_at": "2026-11-11T15:42Z",
           "return_date": null,
+          "source": "basic/manual"
+        },
+        {
+          "player": "David Montgomery",
+          "player_id": null,
+          "position": "RB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.53,
+          "base_role_usage_score": 1.06,
+          "role_score": 1.6,
+          "usage_score": 0.25,
+          "impact_inputs": {
+            "recent_snap_share": 0.14,
+            "season_snap_share": 0.468,
+            "usage_share": 0.05,
+            "usage_group": "backfield",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 1,
+            "confidence": "high"
+          },
+          "injury": "Groin",
+          "injury_location": "Groin",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "questionable",
+          "short_comment": "questionable",
+          "reported_at": "2026-11-11T19:30Z",
+          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -8162,9 +8162,9 @@
       "team": "Indianapolis Colts",
       "abbreviation": "IND",
       "injury_count": 21,
-      "impact_count": 8,
-      "impact_score": 14.38,
-      "impact_rank": 12,
+      "impact_count": 9,
+      "impact_score": 17.4,
+      "impact_rank": 5,
       "rank_population": 32,
       "injuries": [
         {
@@ -8195,6 +8195,36 @@
           "short_comment": "doubtful",
           "reported_at": "2026-11-10T19:02Z",
           "return_date": "2026-11-29",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Arden Key",
+          "player_id": null,
+          "position": "DE",
+          "status": "Injured Reserve",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 3.02,
+          "base_role_usage_score": 3.02,
+          "role_score": 2.94,
+          "usage_score": 3.15,
+          "impact_inputs": {
+            "recent_snap_share": 0.6294,
+            "season_snap_share": 0.6475,
+            "usage_share": 0.6294,
+            "usage_group": "defense",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "Hamstring",
+          "injury_location": "Leg",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "Key hasn't played since sustaining a hamstring injury in Week 4 against the Commanders. Now, after five weeks, the 30-year-old may begin practicing. He will likely need to string together multiple positive practices for a chance to play in Week 10.",
+          "short_comment": "The Colts are opening Key's (hamstring) 21-day practice window, Joel A. Erickson of The Indianapolis Star reports.",
+          "reported_at": "2026-11-11T19:36Z",
+          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -8468,36 +8498,6 @@
           "source": "basic/manual"
         },
         {
-          "player": "Bryce Boettcher",
-          "player_id": null,
-          "position": "LB",
-          "status": "Active",
-          "status_multiplier": 0.0,
-          "status_mapped": true,
-          "impact_score": 0.0,
-          "base_role_usage_score": 2.57,
-          "role_score": 2.73,
-          "usage_score": 2.33,
-          "impact_inputs": {
-            "recent_snap_share": 0.4657,
-            "season_snap_share": 0.3571,
-            "usage_share": 0.4657,
-            "usage_group": "defense",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "Boettcher appears to be on track to return to action Sunday versus the Cowboys after missing the team's last two contests with a groin issue. The 24-year-old will likely be back in his starting role at strongside linebacker against Dallas.",
-          "short_comment": "Boettcher (groin) was a full participant at the Colts' practice Wednesday.",
-          "reported_at": "2026-11-05T01:13Z",
-          "return_date": null,
-          "source": "basic/manual"
-        },
-        {
           "player": "Daniel Jones",
           "player_id": null,
           "position": "QB",
@@ -8641,7 +8641,7 @@
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
-          "comments": "In order to move Taylor, Indianapolis was reportedly seeking a blockbuster trade package on par with what Carolina received in exchange for Christian McCaffrey back in 2022, but Pelissero relays that inquiring teams offered no more than a second-round pick as the best asset in any trade pitch. As a result, Taylor -- who is under contract through 2028 -- will stick around in Indianapolis through the remainder of the campaign, though it's possible that the Colts entertain trade offers for the 27-year-old running back again during the offseason.",
+          "comments": "In order to move Taylor, Indianapolis was reportedly seeking a blockbuster trade package on par with what Carolina received in exchange for Christian McCaffrey back in 2022, but Pelissero relays that inquiring teams weren't willing to meet that price tag. As a result, Taylor -- who is under contract through 2028 -- will stick around in Indianapolis through the remainder of the campaign, though it's possible that the Colts entertain trade offers for the 27-year-old running back again during the offseason.",
           "short_comment": "The Colts informed Taylor that he won't be traded before Tuesday's deadline, Tom Pelissero of Netflix reports.",
           "reported_at": "2026-11-10T20:21Z",
           "return_date": null,
@@ -9418,7 +9418,7 @@
       "injury_count": 20,
       "impact_count": 7,
       "impact_score": 13.02,
-      "impact_rank": 17,
+      "impact_rank": 16,
       "rank_population": 32,
       "injuries": [
         {
@@ -9692,6 +9692,36 @@
           "source": "basic/manual"
         },
         {
+          "player": "Drue Tranquill",
+          "player_id": null,
+          "position": "LB",
+          "status": "Active",
+          "status_multiplier": 0.0,
+          "status_mapped": true,
+          "impact_score": 0.0,
+          "base_role_usage_score": 4.62,
+          "role_score": 4.64,
+          "usage_score": 4.59,
+          "impact_inputs": {
+            "recent_snap_share": 0.9185,
+            "season_snap_share": 0.8912,
+            "usage_share": 0.9185,
+            "usage_group": "defense",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "Tranquil led the Chiefs in combined tackles Sunday, and he was one of three Kansas City defenders to reach double-digit stops. He's logged at least seven tackles in each of the first six games of the regular season and is up to 48 tackles (22 solo), two pass defenses and one fumble recovery in 2026.",
+          "short_comment": "Tranquill finished Sunday's 20-3 loss to the Seahawks with 12 tackles (four solo).",
+          "reported_at": "2026-10-28T01:45Z",
+          "return_date": null,
+          "source": "basic/manual"
+        },
+        {
           "player": "Emmett Johnson",
           "player_id": null,
           "position": "RB",
@@ -9872,36 +9902,6 @@
           "source": "basic/manual"
         },
         {
-          "player": "Nikko Remigio",
-          "player_id": null,
-          "position": "WR",
-          "status": "Active",
-          "status_multiplier": 0.0,
-          "status_mapped": true,
-          "impact_score": 0.0,
-          "base_role_usage_score": 0.12,
-          "role_score": 0.2,
-          "usage_score": 0.0,
-          "impact_inputs": {
-            "recent_snap_share": 0.03,
-            "season_snap_share": 0.03,
-            "usage_share": 0.0,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 7,
-            "snap_games_sampled": 1,
-            "confidence": "high"
-          },
-          "injury": "",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "The 27-year-old was questionable due to a hip issue, but it's no surprise he's suiting up after putting in full practice sessions Thursday and Friday. Remigio has played just two offensive snaps this year but has operated as Kansas City's primary return man and should continue to do so Sunday.",
-          "short_comment": "Remigio is officially active for Sunday's game against the Jets.",
-          "reported_at": "2026-11-08T17:02Z",
-          "return_date": null,
-          "source": "basic/manual"
-        },
-        {
           "player": "Noah Gray",
           "player_id": null,
           "position": "TE",
@@ -10030,7 +10030,7 @@
       "injury_count": 24,
       "impact_count": 10,
       "impact_score": 13.09,
-      "impact_rank": 16,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -10761,8 +10761,8 @@
       "abbreviation": "LAR",
       "injury_count": 20,
       "impact_count": 7,
-      "impact_score": 14.66,
-      "impact_rank": 11,
+      "impact_score": 12.84,
+      "impact_rank": 17,
       "rank_population": 32,
       "injuries": [
         {
@@ -10793,36 +10793,6 @@
           "short_comment": "The Rams placed Watson (shoulder) on injured reserve Saturday.",
           "reported_at": "2026-11-07T20:38Z",
           "return_date": "2027-02-15",
-          "source": "basic/manual"
-        },
-        {
-          "player": "Puka Nacua",
-          "player_id": null,
-          "position": "WR",
-          "status": "Doubtful",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 3.63,
-          "base_role_usage_score": 3.63,
-          "role_score": 4.58,
-          "usage_score": 2.21,
-          "impact_inputs": {
-            "recent_snap_share": 0.9074,
-            "season_snap_share": 0.87,
-            "usage_share": 0.4417,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 5,
-            "confidence": "high"
-          },
-          "injury": "Knee - MCL",
-          "injury_location": "Leg",
-          "injury_detail": "Sprain",
-          "injury_side": "Right",
-          "comments": "doubtful",
-          "short_comment": "doubtful",
-          "reported_at": "2026-11-11T14:34Z",
-          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -10882,6 +10852,36 @@
           "comments": "McVay said part of the decision whether to place Avila on IR will be influenced by concerns that the team could use up all of its eight injured-reserve slots for players eligible to return later in the season. Either way, for as long as Avila remains sidelined, 2024 sixth rounder Beaux Limmer projects to fill in at left guard.",
           "short_comment": "Coach Sean McVay said Monday that the Rams haven't decided whether Avila will go to injured reserve with the hamstring injury he suffered during Sunday's game at Washington, Greg Beacham of the Associated Press reports.",
           "reported_at": "2026-11-10T02:19Z",
+          "return_date": "2026-11-15",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Puka Nacua",
+          "player_id": null,
+          "position": "WR",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.81,
+          "base_role_usage_score": 3.63,
+          "role_score": 4.58,
+          "usage_score": 2.21,
+          "impact_inputs": {
+            "recent_snap_share": 0.9074,
+            "season_snap_share": 0.87,
+            "usage_share": 0.4417,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 5,
+            "confidence": "high"
+          },
+          "injury": "Knee - MCL",
+          "injury_location": "Leg",
+          "injury_detail": "Sprain",
+          "injury_side": "Right",
+          "comments": "While the Rams have yet to officially rule Nacua out for their Week 10 game at Arizona, head coach Sean McVay acknowledged Monday that the wideout was likely to land on injured reserve. It's unclear if the Rams are still planning on deactivating Nacua, however; they placed fellow receiver Jordan Whittington (back) on IR on Tuesday, while Nacua remained a member of the 53-man roster. With a bye on tap Week 11, the Rams could be compelled to keep Nacua off IR if they believe he can play Week 14, which would mean that he misses three games rather than four required for an IR stint. Whatever the case, the Rams will have to get by a depleted pass-catching group in the short term, as Nacua, Whittington, Davante Adams (hamstring) and Terrance Ferguson (hamstring) are all sidelined with injuries.",
+          "short_comment": "The Rams are optimistic that Nacua (knee/toe) will be able to return to action Week 14 versus the 49ers or Week 15 versus the Cowboys, Dan Graziano of ESPN.com reports.",
+          "reported_at": "2026-11-11T14:11Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -11611,7 +11611,7 @@
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
-          "comments": "The No. 1 overall pick in the 2026 NFL Draft has opened his professional career on the bench, with his lone action to date coming during garbage time of a blowout loss to the Patriots in Week 5. However, with the 4-5 Raiders shipping out Cousins for a 2027 third-round pick, the 23-year-old Mendoza will now be thrust into his first extended NFL playing time and will face a pair of tough defenses off the bat, as he'll follow up the matchup against the Seahawks with a road game in Denver in Week 11. Mendoza had underwhelming numbers over his three preseason appearances (25-for-45 passing for 240 yards, one touchdown and two interceptions with four carries for 15 yards), but he's reportedly been \"tearing it up in practice\" during the regular season and has given the Raiders optimism that he's ready to lead the offense, per Matt Zenitz of CBSSports.com.",
+          "comments": "The No. 1 overall pick in the 2026 NFL Draft has opened his professional career on the bench, with his lone action to date coming during garbage time of a blowout loss to the Patriots in Week 5, when he completed six of eight pass attempts for 48 yards. However, with the 4-5 Raiders shipping out Cousins for a 2027 third-round pick, the 23-year-old Mendoza will now be thrust into his first extended NFL playing time and will face a pair of tough defenses off the bat, as he'll follow up the matchup against the Seahawks with a road game in Denver in Week 11. Mendoza had underwhelming numbers over his three preseason appearances, but he's reportedly been \"tearing it up in practice\" during the regular season and has given the Raiders optimism that he's ready to lead the offense, per Matt Zenitz of CBSSports.com.",
           "short_comment": "Mendoza will take over as the Raiders' new starting quarterback beginning with Sunday's game versus the Seahawks after Las Vegas traded Kirk Cousins to Minnesota on Tuesday, Adam Schefter of ESPN reports.",
           "reported_at": "2026-11-10T19:57Z",
           "return_date": null,
@@ -11866,7 +11866,7 @@
       "injury_count": 16,
       "impact_count": 4,
       "impact_score": 9.71,
-      "impact_rank": 21,
+      "impact_rank": 22,
       "rank_population": 32,
       "injuries": [
         {
@@ -12355,17 +12355,17 @@
       "team_id": "16",
       "team": "Minnesota Vikings",
       "abbreviation": "MIN",
-      "injury_count": 20,
-      "impact_count": 5,
-      "impact_score": 8.43,
-      "impact_rank": 22,
+      "injury_count": 21,
+      "impact_count": 7,
+      "impact_score": 12.13,
+      "impact_rank": 20,
       "rank_population": 32,
       "injuries": [
         {
           "player": "Kyler Murray",
           "player_id": null,
           "position": "QB",
-          "status": "Doubtful",
+          "status": "Out",
           "status_multiplier": 1.0,
           "status_mapped": true,
           "impact_score": 4.21,
@@ -12385,9 +12385,39 @@
           "injury_location": "Leg",
           "injury_detail": "Strain",
           "injury_side": "",
-          "comments": "doubtful",
-          "short_comment": "doubtful",
-          "reported_at": "2026-11-11T01:11Z",
+          "comments": "Murray -- who was previously sidelined for the Vikings' Week 2 win over the Bears while recovering from a concussion -- missed his second game of the season in Monday's 23-6 loss to the Bills on account of the hamstring injury. Carson Wentz drew the start in place of Murray, but both quarterbacks will move into reserve roles after the Vikings acquired Kirk Cousins from the Raiders on Tuesday in exchange for a 2027 third-round pick. Once healthy, Murray should settle in as the Vikings' No. 2 quarterback, but Wentz will likely serve as Cousins' top backup against Green Bay.",
+          "short_comment": "Murray is considered week-to-week due to a Grade 2 hamstring strain and isn't expected to be available for Sunday's game against the Packers, James Palmer of Bleacher Report reports.",
+          "reported_at": "2026-11-10T20:13Z",
+          "return_date": "2026-11-15",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Blake Cashman",
+          "player_id": null,
+          "position": "LB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 2.38,
+          "base_role_usage_score": 4.75,
+          "role_score": 4.77,
+          "usage_score": 4.7,
+          "impact_inputs": {
+            "recent_snap_share": 0.9408,
+            "season_snap_share": 0.9487,
+            "usage_share": 0.9408,
+            "usage_group": "defense",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "Concussion",
+          "injury_location": "Head",
+          "injury_detail": "Concussion",
+          "injury_side": "",
+          "comments": "questionable",
+          "short_comment": "questionable",
+          "reported_at": "2026-11-11T19:30Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -12449,6 +12479,36 @@
           "short_comment": "Jackson (quadriceps) is active for Monday's game against Buffalo, Craig Peters of the team's official site reports.",
           "reported_at": "2026-11-09T23:54Z",
           "return_date": null,
+          "source": "basic/manual"
+        },
+        {
+          "player": "Carson Wentz",
+          "player_id": null,
+          "position": "QB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.32,
+          "base_role_usage_score": 2.65,
+          "role_score": 3.79,
+          "usage_score": 0.93,
+          "impact_inputs": {
+            "recent_snap_share": 0.83,
+            "season_snap_share": 0.8867,
+            "usage_share": 0.1862,
+            "usage_group": "qb",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 1,
+            "confidence": "high"
+          },
+          "injury": "Ankle",
+          "injury_location": "Leg",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "questionable",
+          "short_comment": "questionable",
+          "reported_at": "2026-11-11T19:33Z",
+          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -12568,36 +12628,6 @@
           "comments": "Van Ginkel was limited in practice Wednesday and Thursday but was able to upgrade to full participation Saturday. He's thus clear to suit up on Monday Night Football against the Bills. That's a big deal for the Vikings in their quest to slow down Josh Allen, as Van Ginkel leads the team with 6.5 sacks through seven games.",
           "short_comment": "Van Ginkel (chest) doesn't have a designation for Monday's matchup against the Bills, Craig Peters of the Vikings' official site reports.",
           "reported_at": "2026-11-07T23:02Z",
-          "return_date": null,
-          "source": "basic/manual"
-        },
-        {
-          "player": "Carson Wentz",
-          "player_id": null,
-          "position": "QB",
-          "status": "Active",
-          "status_multiplier": 0.0,
-          "status_mapped": true,
-          "impact_score": 0.0,
-          "base_role_usage_score": 2.65,
-          "role_score": 3.79,
-          "usage_score": 0.93,
-          "impact_inputs": {
-            "recent_snap_share": 0.83,
-            "season_snap_share": 0.8867,
-            "usage_share": 0.1862,
-            "usage_group": "qb",
-            "depth_chart_rank": 3,
-            "snap_games_sampled": 1,
-            "confidence": "high"
-          },
-          "injury": "",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "Wentz had typically put together competent performances in his opportunities to lead head coach Kevin O'Connell's offense in the past, but Monday night was a clear exception. Wentz took only one sack, but he banged up his right hand on a first-half pass attempt, then had his foot stepped on by offensive lineman Joe Huber in the second half, the latter of which required a visit to the medical tent. Wentz also repeatedly failed to master what had been a vulnerable Bills pass defense, averaging a minuscule 3.2 yards per attempt. He tossed interceptions on back-to-back drives to open the second half as well, and although they only led to one field goal for Buffalo, they were indicative of the kind of night it was for the veteran signal-caller. Wentz ultimately was pulled for Max Brosmer for the Vikings' final drive, and if Murray can't suit up for a Week 10 road showdown with the Packers on Sunday, it remains to be seen if Wentz will get another crack at a starting assignment.",
-          "short_comment": "Wentz completed eight of 25 passes for 81 yards with no touchdowns and two interceptions and rushed once for no gain in the Vikings' 23-6 loss to the Bills on Monday night. He also lost a fumble.",
-          "reported_at": "2026-11-10T05:12Z",
           "return_date": null,
           "source": "basic/manual"
         },
@@ -12970,7 +13000,7 @@
       "injury_count": 20,
       "impact_count": 9,
       "impact_score": 16.04,
-      "impact_rank": 7,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -13149,7 +13179,7 @@
           "injury_side": "",
           "comments": "questionable",
           "short_comment": "questionable",
-          "reported_at": "2026-11-10T15:44Z",
+          "reported_at": "2026-11-11T19:43Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -13639,7 +13669,7 @@
           "injury_location": "Leg",
           "injury_detail": "Strain",
           "injury_side": "Left",
-          "comments": "Moore noted that the Saints are still in the process of  \"using the time allotted\" to let Etienne workout with the training staff before designating him for return from injured reserve and opening his 21-day practice window. Though the 27-year-old back hasn't played since the Saints' Week 3 loss to the Raiders, he's still just 34 yards behind quarterback Tyler Shough for the team lead in rushing yardage (162). Whether he's activated for Week 10 or at some point thereafter, Etienne's eventual return will provide a boost to a New Orleans running game that has struggled mightily through the midway point of the season.",
+          "comments": "Moore noted that the Saints are still in the process of  \"using the time allotted\" to let Etienne work out with the training staff before designating him for return from injured reserve and opening his 21-day practice window. Though the 27-year-old back hasn't played since the Saints' Week 3 loss to the Raiders, he's still just 34 yards behind quarterback Tyler Shough for the team lead in rushing yardage (162). Whether he's activated for Week 10 or at some point thereafter, Etienne's eventual return will provide a boost to a New Orleans running game that has struggled mightily through the midway point of the season.",
           "short_comment": "Head coach Kellen Moore said Monday that the Saints haven't yet determined whether Etienne (hamstring) will return from injured reserve ahead of Sunday's game against the Panthers, Luke Johnson of The New Orleans Times-Picayune reports. \"We'll see,\" Moore said. \"He's progressing well. We'll gather some more information and make a decision.\"",
           "reported_at": "2026-11-11T00:05Z",
           "return_date": "2026-11-15",
@@ -14656,7 +14686,7 @@
       "injury_count": 21,
       "impact_count": 7,
       "impact_score": 13.19,
-      "impact_rank": 15,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -17104,7 +17134,7 @@
       "injury_count": 19,
       "impact_count": 9,
       "impact_score": 13.96,
-      "impact_rank": 13,
+      "impact_rank": 12,
       "rank_population": 32,
       "injuries": [
         {
@@ -18298,7 +18328,7 @@
       "injury_count": 21,
       "impact_count": 9,
       "impact_score": 17.14,
-      "impact_rank": 5,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
         {
@@ -18940,7 +18970,7 @@
       "injury_count": 18,
       "impact_count": 7,
       "impact_score": 13.63,
-      "impact_rank": 14,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
@@ -19494,7 +19524,7 @@
       "injury_count": 22,
       "impact_count": 8,
       "impact_score": 15.51,
-      "impact_rank": 8,
+      "impact_rank": 9,
       "rank_population": 32,
       "injuries": [
         {
@@ -22149,9 +22179,9 @@
           "injury_location": "Groin",
           "injury_detail": "Surgery",
           "injury_side": "",
-          "comments": "Jackson underwent core-muscle surgery in September and has been on injured reserve to this point in the season. While he was expected to be evaluated after eight weeks, there haven't been any real updates regarding his return to the field. The 2019 No. 158 overall pick has appeared in 74 regular-season games during his career, accruing 262 total tackles (209 solo), one forced fumble, two fumble recoveries and one touchdown.",
-          "short_comment": "Head coach Dave Canales stated the team plans to take \"the next two days to discuss\" Jackson (groin), Mike Kaye of ESPN.com reports.",
-          "reported_at": "2026-11-09T23:11Z",
+          "comments": "Jackson was placed on injured reserve late in September after suffering a groin injury in Week 3 against Cleveland. The 29-year-old's potential return would greatly help a depleted Carolina secondary, which lost both Jackson and Jaycee Horn (quadriceps) early in the season. Jackson has five tackles (three solo) in his two full regular-season games.",
+          "short_comment": "The Panthers are designating Jackson (groin) to return from injured reserve Wednesday, opening his 21-day practice window, Alex Zietlow of The Charlotte Observer reports.",
+          "reported_at": "2026-11-11T19:54Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -22295,8 +22325,8 @@
             "snap_games_sampled": 2,
             "confidence": "high"
           },
-          "injury": "Abdomen",
-          "injury_location": "Torso",
+          "injury": "Groin",
+          "injury_location": "Groin",
           "injury_detail": "Surgery",
           "injury_side": "",
           "comments": "As a result of the transaction, Brooks will return to practice Wednesday, and the Panthers will have 21 days to evaluate him for a return to the 53-man roster. Unless he logs multiple full practices this week, Brooks could face an uphill battle to getting activated ahead of Sunday's game against the Saints, but he'll likely be back in action for Carolina before the end of November. Once he's reinstated, Brooks will likely handle a complementary role behind lead back Chuba Hubbard.",
@@ -22704,7 +22734,7 @@
       "injury_count": 19,
       "impact_count": 8,
       "impact_score": 15.17,
-      "impact_rank": 9,
+      "impact_rank": 10,
       "rank_population": 32,
       "injuries": [
         {
@@ -23868,7 +23898,7 @@
       "injury_count": 15,
       "impact_count": 4,
       "impact_score": 10.31,
-      "impact_rank": 20,
+      "impact_rank": 21,
       "rank_population": 32,
       "injuries": [
         {
@@ -25032,7 +25062,7 @@
       "injury_count": 19,
       "impact_count": 6,
       "impact_score": 16.73,
-      "impact_rank": 6,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -25614,7 +25644,7 @@
       "injury_count": 20,
       "impact_count": 8,
       "impact_score": 14.95,
-      "impact_rank": 10,
+      "impact_rank": 11,
       "rank_population": 32,
       "injuries": [
         {
@@ -26957,7 +26987,7 @@
       "abbreviation": "HOU",
       "injury_count": 21,
       "impact_count": 4,
-      "impact_score": 5.1,
+      "impact_score": 4.57,
       "impact_rank": 31,
       "rank_population": 32,
       "injuries": [
@@ -27022,36 +27052,6 @@
           "source": "basic/manual"
         },
         {
-          "player": "David Montgomery",
-          "player_id": null,
-          "position": "RB",
-          "status": "Out",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 1.06,
-          "base_role_usage_score": 1.06,
-          "role_score": 1.6,
-          "usage_score": 0.25,
-          "impact_inputs": {
-            "recent_snap_share": 0.14,
-            "season_snap_share": 0.468,
-            "usage_share": 0.05,
-            "usage_group": "backfield",
-            "depth_chart_rank": 2,
-            "snap_games_sampled": 1,
-            "confidence": "high"
-          },
-          "injury": "Groin",
-          "injury_location": "Groin",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "Coach DeMeco Ryans noted Monday that he was hopeful Montgomery could resume practicing this week or next. With a 'DNP' on Wednesday, the running back now has two more chances to make an on-field appearance prior to Sunday's game against the Browns. In the event that his absence continues, Woody Marks would continue to lead Houston's backfield, Emari Demercado and Dare Ogunbowale in reserve.",
-          "short_comment": "Montgomery (groin) remained sidelined at practice Wednesday, Aaron Wilson of KPRC 2 Houston reports.",
-          "reported_at": "2026-11-11T19:04Z",
-          "return_date": "2026-11-15",
-          "source": "basic/manual"
-        },
-        {
           "player": "Cade Stover",
           "player_id": null,
           "position": "TE",
@@ -27079,6 +27079,36 @@
           "short_comment": "Stover was a healthy inactive for Sunday's 44-22 win over the Chargers.",
           "reported_at": "2026-11-11T15:42Z",
           "return_date": null,
+          "source": "basic/manual"
+        },
+        {
+          "player": "David Montgomery",
+          "player_id": null,
+          "position": "RB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.53,
+          "base_role_usage_score": 1.06,
+          "role_score": 1.6,
+          "usage_score": 0.25,
+          "impact_inputs": {
+            "recent_snap_share": 0.14,
+            "season_snap_share": 0.468,
+            "usage_share": 0.05,
+            "usage_group": "backfield",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 1,
+            "confidence": "high"
+          },
+          "injury": "Groin",
+          "injury_location": "Groin",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "questionable",
+          "short_comment": "questionable",
+          "reported_at": "2026-11-11T19:30Z",
+          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -27598,9 +27628,9 @@
       "team": "Indianapolis Colts",
       "abbreviation": "IND",
       "injury_count": 21,
-      "impact_count": 8,
-      "impact_score": 14.38,
-      "impact_rank": 12,
+      "impact_count": 9,
+      "impact_score": 17.4,
+      "impact_rank": 5,
       "rank_population": 32,
       "injuries": [
         {
@@ -27631,6 +27661,36 @@
           "short_comment": "doubtful",
           "reported_at": "2026-11-10T19:02Z",
           "return_date": "2026-11-29",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Arden Key",
+          "player_id": null,
+          "position": "DE",
+          "status": "Injured Reserve",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 3.02,
+          "base_role_usage_score": 3.02,
+          "role_score": 2.94,
+          "usage_score": 3.15,
+          "impact_inputs": {
+            "recent_snap_share": 0.6294,
+            "season_snap_share": 0.6475,
+            "usage_share": 0.6294,
+            "usage_group": "defense",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "Hamstring",
+          "injury_location": "Leg",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "Key hasn't played since sustaining a hamstring injury in Week 4 against the Commanders. Now, after five weeks, the 30-year-old may begin practicing. He will likely need to string together multiple positive practices for a chance to play in Week 10.",
+          "short_comment": "The Colts are opening Key's (hamstring) 21-day practice window, Joel A. Erickson of The Indianapolis Star reports.",
+          "reported_at": "2026-11-11T19:36Z",
+          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -27904,36 +27964,6 @@
           "source": "basic/manual"
         },
         {
-          "player": "Bryce Boettcher",
-          "player_id": null,
-          "position": "LB",
-          "status": "Active",
-          "status_multiplier": 0.0,
-          "status_mapped": true,
-          "impact_score": 0.0,
-          "base_role_usage_score": 2.57,
-          "role_score": 2.73,
-          "usage_score": 2.33,
-          "impact_inputs": {
-            "recent_snap_share": 0.4657,
-            "season_snap_share": 0.3571,
-            "usage_share": 0.4657,
-            "usage_group": "defense",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "Boettcher appears to be on track to return to action Sunday versus the Cowboys after missing the team's last two contests with a groin issue. The 24-year-old will likely be back in his starting role at strongside linebacker against Dallas.",
-          "short_comment": "Boettcher (groin) was a full participant at the Colts' practice Wednesday.",
-          "reported_at": "2026-11-05T01:13Z",
-          "return_date": null,
-          "source": "basic/manual"
-        },
-        {
           "player": "Daniel Jones",
           "player_id": null,
           "position": "QB",
@@ -28077,7 +28107,7 @@
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
-          "comments": "In order to move Taylor, Indianapolis was reportedly seeking a blockbuster trade package on par with what Carolina received in exchange for Christian McCaffrey back in 2022, but Pelissero relays that inquiring teams offered no more than a second-round pick as the best asset in any trade pitch. As a result, Taylor -- who is under contract through 2028 -- will stick around in Indianapolis through the remainder of the campaign, though it's possible that the Colts entertain trade offers for the 27-year-old running back again during the offseason.",
+          "comments": "In order to move Taylor, Indianapolis was reportedly seeking a blockbuster trade package on par with what Carolina received in exchange for Christian McCaffrey back in 2022, but Pelissero relays that inquiring teams weren't willing to meet that price tag. As a result, Taylor -- who is under contract through 2028 -- will stick around in Indianapolis through the remainder of the campaign, though it's possible that the Colts entertain trade offers for the 27-year-old running back again during the offseason.",
           "short_comment": "The Colts informed Taylor that he won't be traded before Tuesday's deadline, Tom Pelissero of Netflix reports.",
           "reported_at": "2026-11-10T20:21Z",
           "return_date": null,
@@ -28854,7 +28884,7 @@
       "injury_count": 20,
       "impact_count": 7,
       "impact_score": 13.02,
-      "impact_rank": 17,
+      "impact_rank": 16,
       "rank_population": 32,
       "injuries": [
         {
@@ -29128,6 +29158,36 @@
           "source": "basic/manual"
         },
         {
+          "player": "Drue Tranquill",
+          "player_id": null,
+          "position": "LB",
+          "status": "Active",
+          "status_multiplier": 0.0,
+          "status_mapped": true,
+          "impact_score": 0.0,
+          "base_role_usage_score": 4.62,
+          "role_score": 4.64,
+          "usage_score": 4.59,
+          "impact_inputs": {
+            "recent_snap_share": 0.9185,
+            "season_snap_share": 0.8912,
+            "usage_share": 0.9185,
+            "usage_group": "defense",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "Tranquil led the Chiefs in combined tackles Sunday, and he was one of three Kansas City defenders to reach double-digit stops. He's logged at least seven tackles in each of the first six games of the regular season and is up to 48 tackles (22 solo), two pass defenses and one fumble recovery in 2026.",
+          "short_comment": "Tranquill finished Sunday's 20-3 loss to the Seahawks with 12 tackles (four solo).",
+          "reported_at": "2026-10-28T01:45Z",
+          "return_date": null,
+          "source": "basic/manual"
+        },
+        {
           "player": "Emmett Johnson",
           "player_id": null,
           "position": "RB",
@@ -29304,36 +29364,6 @@
           "comments": "Bolton played all but one of the Chiefs' 69 defensive snaps during Sunday's loss, and he finished second on the team in tackles behind Drue Tranquill (12). Bolton has recorded double-digit stops in four of six regular-season games and is up to 59 tackles (29 solo) and two pass defenses on the year.",
           "short_comment": "Bolton registered 11 tackles (six solo) during the Chiefs' 20-3 loss to the Seahawks on Sunday.",
           "reported_at": "2026-10-28T01:51Z",
-          "return_date": null,
-          "source": "basic/manual"
-        },
-        {
-          "player": "Nikko Remigio",
-          "player_id": null,
-          "position": "WR",
-          "status": "Active",
-          "status_multiplier": 0.0,
-          "status_mapped": true,
-          "impact_score": 0.0,
-          "base_role_usage_score": 0.12,
-          "role_score": 0.2,
-          "usage_score": 0.0,
-          "impact_inputs": {
-            "recent_snap_share": 0.03,
-            "season_snap_share": 0.03,
-            "usage_share": 0.0,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 7,
-            "snap_games_sampled": 1,
-            "confidence": "high"
-          },
-          "injury": "",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "The 27-year-old was questionable due to a hip issue, but it's no surprise he's suiting up after putting in full practice sessions Thursday and Friday. Remigio has played just two offensive snaps this year but has operated as Kansas City's primary return man and should continue to do so Sunday.",
-          "short_comment": "Remigio is officially active for Sunday's game against the Jets.",
-          "reported_at": "2026-11-08T17:02Z",
           "return_date": null,
           "source": "basic/manual"
         },
@@ -29703,7 +29733,7 @@
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
-          "comments": "The No. 1 overall pick in the 2026 NFL Draft has opened his professional career on the bench, with his lone action to date coming during garbage time of a blowout loss to the Patriots in Week 5. However, with the 4-5 Raiders shipping out Cousins for a 2027 third-round pick, the 23-year-old Mendoza will now be thrust into his first extended NFL playing time and will face a pair of tough defenses off the bat, as he'll follow up the matchup against the Seahawks with a road game in Denver in Week 11. Mendoza had underwhelming numbers over his three preseason appearances (25-for-45 passing for 240 yards, one touchdown and two interceptions with four carries for 15 yards), but he's reportedly been \"tearing it up in practice\" during the regular season and has given the Raiders optimism that he's ready to lead the offense, per Matt Zenitz of CBSSports.com.",
+          "comments": "The No. 1 overall pick in the 2026 NFL Draft has opened his professional career on the bench, with his lone action to date coming during garbage time of a blowout loss to the Patriots in Week 5, when he completed six of eight pass attempts for 48 yards. However, with the 4-5 Raiders shipping out Cousins for a 2027 third-round pick, the 23-year-old Mendoza will now be thrust into his first extended NFL playing time and will face a pair of tough defenses off the bat, as he'll follow up the matchup against the Seahawks with a road game in Denver in Week 11. Mendoza had underwhelming numbers over his three preseason appearances, but he's reportedly been \"tearing it up in practice\" during the regular season and has given the Raiders optimism that he's ready to lead the offense, per Matt Zenitz of CBSSports.com.",
           "short_comment": "Mendoza will take over as the Raiders' new starting quarterback beginning with Sunday's game versus the Seahawks after Las Vegas traded Kirk Cousins to Minnesota on Tuesday, Adam Schefter of ESPN reports.",
           "reported_at": "2026-11-10T19:57Z",
           "return_date": null,
@@ -29958,7 +29988,7 @@
       "injury_count": 24,
       "impact_count": 10,
       "impact_score": 13.09,
-      "impact_rank": 16,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -30689,8 +30719,8 @@
       "abbreviation": "LAR",
       "injury_count": 20,
       "impact_count": 7,
-      "impact_score": 14.66,
-      "impact_rank": 11,
+      "impact_score": 12.84,
+      "impact_rank": 17,
       "rank_population": 32,
       "injuries": [
         {
@@ -30721,36 +30751,6 @@
           "short_comment": "The Rams placed Watson (shoulder) on injured reserve Saturday.",
           "reported_at": "2026-11-07T20:38Z",
           "return_date": "2027-02-15",
-          "source": "basic/manual"
-        },
-        {
-          "player": "Puka Nacua",
-          "player_id": null,
-          "position": "WR",
-          "status": "Doubtful",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 3.63,
-          "base_role_usage_score": 3.63,
-          "role_score": 4.58,
-          "usage_score": 2.21,
-          "impact_inputs": {
-            "recent_snap_share": 0.9074,
-            "season_snap_share": 0.87,
-            "usage_share": 0.4417,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 5,
-            "confidence": "high"
-          },
-          "injury": "Knee - MCL",
-          "injury_location": "Leg",
-          "injury_detail": "Sprain",
-          "injury_side": "Right",
-          "comments": "doubtful",
-          "short_comment": "doubtful",
-          "reported_at": "2026-11-11T14:34Z",
-          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -30810,6 +30810,36 @@
           "comments": "McVay said part of the decision whether to place Avila on IR will be influenced by concerns that the team could use up all of its eight injured-reserve slots for players eligible to return later in the season. Either way, for as long as Avila remains sidelined, 2024 sixth rounder Beaux Limmer projects to fill in at left guard.",
           "short_comment": "Coach Sean McVay said Monday that the Rams haven't decided whether Avila will go to injured reserve with the hamstring injury he suffered during Sunday's game at Washington, Greg Beacham of the Associated Press reports.",
           "reported_at": "2026-11-10T02:19Z",
+          "return_date": "2026-11-15",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Puka Nacua",
+          "player_id": null,
+          "position": "WR",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.81,
+          "base_role_usage_score": 3.63,
+          "role_score": 4.58,
+          "usage_score": 2.21,
+          "impact_inputs": {
+            "recent_snap_share": 0.9074,
+            "season_snap_share": 0.87,
+            "usage_share": 0.4417,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 5,
+            "confidence": "high"
+          },
+          "injury": "Knee - MCL",
+          "injury_location": "Leg",
+          "injury_detail": "Sprain",
+          "injury_side": "Right",
+          "comments": "While the Rams have yet to officially rule Nacua out for their Week 10 game at Arizona, head coach Sean McVay acknowledged Monday that the wideout was likely to land on injured reserve. It's unclear if the Rams are still planning on deactivating Nacua, however; they placed fellow receiver Jordan Whittington (back) on IR on Tuesday, while Nacua remained a member of the 53-man roster. With a bye on tap Week 11, the Rams could be compelled to keep Nacua off IR if they believe he can play Week 14, which would mean that he misses three games rather than four required for an IR stint. Whatever the case, the Rams will have to get by a depleted pass-catching group in the short term, as Nacua, Whittington, Davante Adams (hamstring) and Terrance Ferguson (hamstring) are all sidelined with injuries.",
+          "short_comment": "The Rams are optimistic that Nacua (knee/toe) will be able to return to action Week 14 versus the 49ers or Week 15 versus the Cowboys, Dan Graziano of ESPN.com reports.",
+          "reported_at": "2026-11-11T14:11Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -31302,7 +31332,7 @@
       "injury_count": 16,
       "impact_count": 4,
       "impact_score": 9.71,
-      "impact_rank": 21,
+      "impact_rank": 22,
       "rank_population": 32,
       "injuries": [
         {
@@ -31791,17 +31821,17 @@
       "team_id": "16",
       "team": "Minnesota Vikings",
       "abbreviation": "MIN",
-      "injury_count": 20,
-      "impact_count": 5,
-      "impact_score": 8.43,
-      "impact_rank": 22,
+      "injury_count": 21,
+      "impact_count": 7,
+      "impact_score": 12.13,
+      "impact_rank": 20,
       "rank_population": 32,
       "injuries": [
         {
           "player": "Kyler Murray",
           "player_id": null,
           "position": "QB",
-          "status": "Doubtful",
+          "status": "Out",
           "status_multiplier": 1.0,
           "status_mapped": true,
           "impact_score": 4.21,
@@ -31821,9 +31851,39 @@
           "injury_location": "Leg",
           "injury_detail": "Strain",
           "injury_side": "",
-          "comments": "doubtful",
-          "short_comment": "doubtful",
-          "reported_at": "2026-11-11T01:11Z",
+          "comments": "Murray -- who was previously sidelined for the Vikings' Week 2 win over the Bears while recovering from a concussion -- missed his second game of the season in Monday's 23-6 loss to the Bills on account of the hamstring injury. Carson Wentz drew the start in place of Murray, but both quarterbacks will move into reserve roles after the Vikings acquired Kirk Cousins from the Raiders on Tuesday in exchange for a 2027 third-round pick. Once healthy, Murray should settle in as the Vikings' No. 2 quarterback, but Wentz will likely serve as Cousins' top backup against Green Bay.",
+          "short_comment": "Murray is considered week-to-week due to a Grade 2 hamstring strain and isn't expected to be available for Sunday's game against the Packers, James Palmer of Bleacher Report reports.",
+          "reported_at": "2026-11-10T20:13Z",
+          "return_date": "2026-11-15",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Blake Cashman",
+          "player_id": null,
+          "position": "LB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 2.38,
+          "base_role_usage_score": 4.75,
+          "role_score": 4.77,
+          "usage_score": 4.7,
+          "impact_inputs": {
+            "recent_snap_share": 0.9408,
+            "season_snap_share": 0.9487,
+            "usage_share": 0.9408,
+            "usage_group": "defense",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "Concussion",
+          "injury_location": "Head",
+          "injury_detail": "Concussion",
+          "injury_side": "",
+          "comments": "questionable",
+          "short_comment": "questionable",
+          "reported_at": "2026-11-11T19:30Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -31885,6 +31945,36 @@
           "short_comment": "Jackson (quadriceps) is active for Monday's game against Buffalo, Craig Peters of the team's official site reports.",
           "reported_at": "2026-11-09T23:54Z",
           "return_date": null,
+          "source": "basic/manual"
+        },
+        {
+          "player": "Carson Wentz",
+          "player_id": null,
+          "position": "QB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.32,
+          "base_role_usage_score": 2.65,
+          "role_score": 3.79,
+          "usage_score": 0.93,
+          "impact_inputs": {
+            "recent_snap_share": 0.83,
+            "season_snap_share": 0.8867,
+            "usage_share": 0.1862,
+            "usage_group": "qb",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 1,
+            "confidence": "high"
+          },
+          "injury": "Ankle",
+          "injury_location": "Leg",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "questionable",
+          "short_comment": "questionable",
+          "reported_at": "2026-11-11T19:33Z",
+          "return_date": "2026-11-15",
           "source": "basic/manual"
         },
         {
@@ -32004,36 +32094,6 @@
           "comments": "Van Ginkel was limited in practice Wednesday and Thursday but was able to upgrade to full participation Saturday. He's thus clear to suit up on Monday Night Football against the Bills. That's a big deal for the Vikings in their quest to slow down Josh Allen, as Van Ginkel leads the team with 6.5 sacks through seven games.",
           "short_comment": "Van Ginkel (chest) doesn't have a designation for Monday's matchup against the Bills, Craig Peters of the Vikings' official site reports.",
           "reported_at": "2026-11-07T23:02Z",
-          "return_date": null,
-          "source": "basic/manual"
-        },
-        {
-          "player": "Carson Wentz",
-          "player_id": null,
-          "position": "QB",
-          "status": "Active",
-          "status_multiplier": 0.0,
-          "status_mapped": true,
-          "impact_score": 0.0,
-          "base_role_usage_score": 2.65,
-          "role_score": 3.79,
-          "usage_score": 0.93,
-          "impact_inputs": {
-            "recent_snap_share": 0.83,
-            "season_snap_share": 0.8867,
-            "usage_share": 0.1862,
-            "usage_group": "qb",
-            "depth_chart_rank": 3,
-            "snap_games_sampled": 1,
-            "confidence": "high"
-          },
-          "injury": "",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "Wentz had typically put together competent performances in his opportunities to lead head coach Kevin O'Connell's offense in the past, but Monday night was a clear exception. Wentz took only one sack, but he banged up his right hand on a first-half pass attempt, then had his foot stepped on by offensive lineman Joe Huber in the second half, the latter of which required a visit to the medical tent. Wentz also repeatedly failed to master what had been a vulnerable Bills pass defense, averaging a minuscule 3.2 yards per attempt. He tossed interceptions on back-to-back drives to open the second half as well, and although they only led to one field goal for Buffalo, they were indicative of the kind of night it was for the veteran signal-caller. Wentz ultimately was pulled for Max Brosmer for the Vikings' final drive, and if Murray can't suit up for a Week 10 road showdown with the Packers on Sunday, it remains to be seen if Wentz will get another crack at a starting assignment.",
-          "short_comment": "Wentz completed eight of 25 passes for 81 yards with no touchdowns and two interceptions and rushed once for no gain in the Vikings' 23-6 loss to the Bills on Monday night. He also lost a fumble.",
-          "reported_at": "2026-11-10T05:12Z",
           "return_date": null,
           "source": "basic/manual"
         },
@@ -32406,7 +32466,7 @@
       "injury_count": 20,
       "impact_count": 9,
       "impact_score": 16.04,
-      "impact_rank": 7,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -32585,7 +32645,7 @@
           "injury_side": "",
           "comments": "questionable",
           "short_comment": "questionable",
-          "reported_at": "2026-11-10T15:44Z",
+          "reported_at": "2026-11-11T19:43Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -33075,7 +33135,7 @@
           "injury_location": "Leg",
           "injury_detail": "Strain",
           "injury_side": "Left",
-          "comments": "Moore noted that the Saints are still in the process of  \"using the time allotted\" to let Etienne workout with the training staff before designating him for return from injured reserve and opening his 21-day practice window. Though the 27-year-old back hasn't played since the Saints' Week 3 loss to the Raiders, he's still just 34 yards behind quarterback Tyler Shough for the team lead in rushing yardage (162). Whether he's activated for Week 10 or at some point thereafter, Etienne's eventual return will provide a boost to a New Orleans running game that has struggled mightily through the midway point of the season.",
+          "comments": "Moore noted that the Saints are still in the process of  \"using the time allotted\" to let Etienne work out with the training staff before designating him for return from injured reserve and opening his 21-day practice window. Though the 27-year-old back hasn't played since the Saints' Week 3 loss to the Raiders, he's still just 34 yards behind quarterback Tyler Shough for the team lead in rushing yardage (162). Whether he's activated for Week 10 or at some point thereafter, Etienne's eventual return will provide a boost to a New Orleans running game that has struggled mightily through the midway point of the season.",
           "short_comment": "Head coach Kellen Moore said Monday that the Saints haven't yet determined whether Etienne (hamstring) will return from injured reserve ahead of Sunday's game against the Panthers, Luke Johnson of The New Orleans Times-Picayune reports. \"We'll see,\" Moore said. \"He's progressing well. We'll gather some more information and make a decision.\"",
           "reported_at": "2026-11-11T00:05Z",
           "return_date": "2026-11-15",
@@ -34092,7 +34152,7 @@
       "injury_count": 21,
       "impact_count": 7,
       "impact_score": 13.19,
-      "impact_rank": 15,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -35928,7 +35988,7 @@
       "injury_count": 19,
       "impact_count": 9,
       "impact_score": 13.96,
-      "impact_rank": 13,
+      "impact_rank": 12,
       "rank_population": 32,
       "injuries": [
         {
@@ -37734,7 +37794,7 @@
       "injury_count": 21,
       "impact_count": 9,
       "impact_score": 17.14,
-      "impact_rank": 5,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
         {
@@ -38376,7 +38436,7 @@
       "injury_count": 18,
       "impact_count": 7,
       "impact_score": 13.63,
-      "impact_rank": 14,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
