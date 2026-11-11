@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "12",
+      "Col2": "11",
       "Col3": "# New:",
       "Col4": "1",
       "Col5": "Impact:",
-      "Col6": "15",
+      "Col6": "14",
       "Col7": "Impact Avg:",
-      "Col8": "1.2",
+      "Col8": "1.3",
       "Col9": "Impact Rank:",
-      "Col10": "65",
+      "Col10": "68",
       "Col11": ""
     },
     {
@@ -146,19 +146,6 @@
       "Col11": "0"
     },
     {
-      "Col1": "Tevita Pome'e",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "Q",
-      "Col5": "DT",
-      "Col6": "FALSE",
-      "Col7": "11.0",
-      "Col8": "1",
-      "Col9": "11/4/2026",
-      "Col10": "Official report 2026-11-04: questionable. Game 2026-11-07.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Isaiah Houi",
       "Col2": "",
       "Col3": "",
@@ -194,7 +181,7 @@
       "Col7": "13.7",
       "Col8": "4",
       "Col9": "11/5/2026",
-      "Col10": "Official report 2026-11-05: out. Game 2026-11-07.",
+      "Col10": "Official report 2026-11-05: out. Game 2026-11-07. Confirmed out for several weeks due to a recent injury.",
       "Col11": "0"
     },
     {
@@ -207,8 +194,21 @@
       "Col7": "16.1",
       "Col8": "2",
       "Col9": "11/10/2026",
-      "Col10": "Update 2026-11-10: His game availability is questionable. Injury details have not been disclosed.",
+      "Col10": "Update 2026-11-10: His game availability is questionable. Under evaluation following a hand injury sustained during the game.",
       "Col11": "39"
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,19 @@
       "Col11": ""
     },
     {
+      "Col1": "Tevita Pome'e",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DT",
+      "Col6": "",
+      "Col7": "11.0",
+      "Col8": "1",
+      "Col9": "11/11/2026",
+      "Col10": "Cleared from the injury/status report on 11/11/2026",
+      "Col11": ""
+    },
+    {
       "Col1": "Braden Atkinson",
       "Col2": "",
       "Col3": "",
@@ -1371,15 +1384,15 @@
     ],
     [
       "#:",
-      "12",
+      "11",
       "# New:",
       "1",
       "Impact:",
-      "15",
+      "14",
       "Impact Avg:",
-      "1.2",
+      "1.3",
       "Impact Rank:",
-      "65",
+      "68",
       ""
     ],
     [
@@ -1474,19 +1487,6 @@
       "0"
     ],
     [
-      "Tevita Pome'e",
-      "",
-      "",
-      "Q",
-      "DT",
-      "FALSE",
-      "11.0",
-      "1",
-      "11/4/2026",
-      "Official report 2026-11-04: questionable. Game 2026-11-07.",
-      "0"
-    ],
-    [
       "Isaiah Houi",
       "",
       "",
@@ -1522,7 +1522,7 @@
       "13.7",
       "4",
       "11/5/2026",
-      "Official report 2026-11-05: out. Game 2026-11-07.",
+      "Official report 2026-11-05: out. Game 2026-11-07. Confirmed out for several weeks due to a recent injury.",
       "0"
     ],
     [
@@ -1535,8 +1535,21 @@
       "16.1",
       "2",
       "11/10/2026",
-      "Update 2026-11-10: His game availability is questionable. Injury details have not been disclosed.",
+      "Update 2026-11-10: His game availability is questionable. Under evaluation following a hand injury sustained during the game.",
       "39"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2215,6 +2228,19 @@
       ""
     ],
     [
+      "Tevita Pome'e",
+      "",
+      "",
+      "Cleared",
+      "DT",
+      "",
+      "11.0",
+      "1",
+      "11/11/2026",
+      "Cleared from the injury/status report on 11/11/2026",
+      ""
+    ],
+    [
       "Braden Atkinson",
       "",
       "",
@@ -2670,6 +2696,6 @@
       ""
     ]
   ],
-  "count": 102,
-  "timestamp": "2026-11-11T11:09:46.657Z"
+  "count": 103,
+  "timestamp": "2026-11-11T12:07:53.436Z"
 }
