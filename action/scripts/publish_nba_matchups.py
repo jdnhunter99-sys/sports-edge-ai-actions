@@ -576,8 +576,9 @@ def make_reasons(candidate):
         reasons.append({'label':f'Favorable {market} defense vs {candidate["profile"]["positionLabel"]}','tone':'blue'})
     elif candidate['defenseRank'] <= 10:
         reasons.append({'label':f'Tough {market} defense vs {candidate["profile"]["positionLabel"]}','tone':'slate'})
-    if candidate.get('zone',{}).get('topZone') and candidate['zone']['score'] >= 60:
-        reasons.append({'label':f'{candidate["zone"]["topZone"]["label"]} edge','tone':'green'})
+    zone = candidate.get('zone') or {}
+    if zone.get('topZone') and number(zone.get('score')) is not None and zone['score'] >= 60:
+        reasons.append({'label':f'{zone["topZone"]["label"]} edge','tone':'green'})
     if candidate.get('opponentUnavailableCount',0) > 0:
         reasons.append({'label':f'{candidate["opponentUnavailableCount"]} opponent unavailable','tone':'amber'})
     if candidate.get('playerInjuryStatus') in ('questionable','probable'):
