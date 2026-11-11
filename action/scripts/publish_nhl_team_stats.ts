@@ -1186,20 +1186,23 @@ function buildGameEventSplits(payload: any, teamIdsByAbbr: Record<string, number
   return output;
 }
 
-async function fetchComparison(seasonId: number, abbreviations: string[], awayAbbr: string, homeAbbr: string) {
+async function fetchComparison(seasonId: number, activeTeams: any[], awayAbbr: string, homeAbbr: string) {
   const headToHeadPromise = fetchHeadToHeadGames(awayAbbr, homeAbbr, Math.floor(seasonId / 10000))
     .catch((error) => {
       console.warn('NHL head-to-head schedule history unavailable:', error);
       return [];
     });
-  const teamsPayload = await getJson(`${NHL_STATS_ROOT}/team?limit=100`);
-  const teams = Array.isArray(teamsPayload?.data) ? teamsPayload.data : [];
-  const teamIdsByAbbr: Record<string, number> = {};
+  // Use the standings-resolved active team records. The NHL team directory can
+  // contain multiple rows with the same triCode after a franchise rename (for
+  // example, Utah Hockey Club ID 59 and Utah Mammoth ID 68 both use UTA).
+  const abbreviations = activeTeams.map((team: any) => normalizeAbbr(team?.triCode));
+  const teamIdsByAbbr: Record<string, number> = Object.fromEntries(activeTeams.map((team: any) => [
+    normalizeAbbr(team?.triCode), Number(team?.id),
+  ]));
   for (const abbr of abbreviations) {
-    const match = teams.find((team: any) => normalizeAbbr(team?.triCode) === abbr);
-    const id = Number(match?.id);
-    if (!Number.isFinite(id)) throw new Error(`NHL team ID was not found for ${abbr}.`);
-    teamIdsByAbbr[abbr] = id;
+    if (!abbr || !Number.isFinite(teamIdsByAbbr[abbr])) {
+      throw new Error(`NHL active team ID was not resolved from standings for ${abbr || 'an unknown team'}.`);
+    }
   }
   const abbrById = new Map(Object.entries(teamIdsByAbbr).map(([abbr, id]) => [Number(id), abbr]));
   const ids = Object.values(teamIdsByAbbr);
@@ -1240,7 +1243,7 @@ async function fetchComparison(seasonId: number, abbreviations: string[], awayAb
   const eventSplitsByGameId: Record<string, any> = {};
   let leagueAdvanced: any = null;
   try {
-    leagueAdvanced = await buildLeagueAdvancedPbp(seasonId, teams);
+    leagueAdvanced = await buildLeagueAdvancedPbp(seasonId, activeTeams);
   } catch (error) {
     console.warn('NHL league-wide PBP shot-quality build unavailable; falling back to matchup PBP:', error);
   }
@@ -1499,7 +1502,7 @@ async function main() {
   console.log(`Loaded ${teams.length} NHL teams; fetching all reports, EDGE inputs, and play-by-play.`);
 
   const [comparison, teamStatsByAbbr, headToHeadGames] = await Promise.all([
-    fetchComparison(seasonId, abbreviations, abbreviations[0], abbreviations[1]),
+    fetchComparison(seasonId, teams, abbreviations[0], abbreviations[1]),
     fetchAggregateTeamStats(seasonId, teams),
     fetchHeadToHeadIndex(teams, seasonStart),
   ]);
