@@ -569,20 +569,19 @@ def zone_evidence(player_zone_profile, opponent_profile, market_key):
 
 def make_reasons(candidate):
     reasons = []
-    market = candidate['bestMarket']['market']['label']
-    if candidate['defenseRank'] >= 21:
-        reasons.append({'label':f'Weak {market} defense vs {candidate["profile"]["positionLabel"]}','tone':'blue'})
-    elif candidate['defenseRank'] >= 16:
-        reasons.append({'label':f'Favorable {market} defense vs {candidate["profile"]["positionLabel"]}','tone':'blue'})
-    elif candidate['defenseRank'] <= 10:
-        reasons.append({'label':f'Tough {market} defense vs {candidate["profile"]["positionLabel"]}','tone':'slate'})
     zone = candidate.get('zone') or {}
-    if zone.get('topZone') and number(zone.get('score')) is not None and zone['score'] >= 60:
-        reasons.append({'label':f'{zone["topZone"]["label"]} edge','tone':'green'})
+    favorable = [match for match in candidate.get('marketMatchups', []) if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 21]
+    for match in favorable[:2]:
+        reasons.append({'label':f'Weak {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
+    if not favorable:
+        favorable = [match for match in candidate.get('marketMatchups', []) if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 16]
+        for match in favorable[:1]:
+            reasons.append({'label':f'Favorable {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
+    top_zone = zone.get('topZone') or {}
+    if top_zone and number(zone.get('score')) is not None and zone['score'] >= 60:
+        reasons.append({'label':f'{round(top_zone["share"])}% shots {top_zone["label"].lower()} · defense #{round(top_zone["rank"])}','tone':'green'})
     if candidate.get('opponentUnavailableCount',0) > 0:
-        reasons.append({'label':f'{candidate["opponentUnavailableCount"]} opponent unavailable','tone':'amber'})
-    if candidate.get('playerInjuryStatus') in ('questionable','probable'):
-        reasons.append({'label':candidate['playerInjuryStatus'],'tone':'amber'})
+        reasons.append({'label':f'{candidate["opponentUnavailableCount"]} injured opponents','tone':'amber'})
     return reasons[:3]
 
 
@@ -614,8 +613,6 @@ def build_recommendations(today, slate, player_rows, opponent_profiles, zone_dat
             opponent_zone = team_defense.get(opponent)
             player_zone = zone_players.get(row.get('_zoneKey'))
             for market in MARKETS:
-                if market_set and market['key'] not in market_set:
-                    continue
                 player_average = number(row.get(market['stat']))
                 defense_rank = number((profile.get('ranks') or {}).get(market['defenseKey']))
                 defense_value = number((profile.get('values') or {}).get(market['defenseKey']))
@@ -624,7 +621,7 @@ def build_recommendations(today, slate, player_rows, opponent_profiles, zone_dat
                     continue
                 zone = zone_evidence(player_zone, opponent_zone, market['key']) if market.get('zoneWeight') else None
                 score = defense_score * (1 - market.get('zoneWeight',0)) + zone['score'] * market['zoneWeight'] if zone else defense_score
-                markets.append({'market':market,'playerAverage':player_average,'defenseRank':defense_rank,'defenseValue':defense_value,'defenseScore':defense_score,'score':round(score),'zone':zone})
+                markets.append({'market':market,'playerAverage':player_average,'defenseRank':defense_rank,'defenseValue':defense_value,'defenseScore':defense_score,'score':round(score),'zone':zone,'available':not market_set or market['key'] in market_set})
             markets.sort(key=lambda matchup:matchup['score'], reverse=True)
             if not markets:
                 continue
@@ -643,16 +640,22 @@ def build_recommendations(today, slate, player_rows, opponent_profiles, zone_dat
             seen.add(key)
             player = {key:value for key,value in row.items() if not key.startswith('_')}
             player.update({'Player':name,'name':name,'Team':team,'team':team,'Pos':position,'position':position,'playerId':listed.get('playerId') or row.get('playerId'),'espnPlayerId':row.get('espnPlayerId'),'headshot':row.get('headshot')})
-            best = markets[0]
+            best_opportunity = markets[0]
+            available_markets = [match for match in markets if match['available']]
+            best = available_markets[0] if available_markets else best_opportunity
+            # Zone evidence is independent of the prop markets that happen to
+            # have odds today. This lets a strong restricted-area matchup show
+            # even when rebounds is the only listed prop for the player.
+            overall_zone = zone_evidence(player_zone, opponent_zone, 'points')
             candidate = {
                 'key':key,'player':player,'game':game,'side':side,'opponent':opponent,
                 'opponentTeam':game['home'] if side == 'away' else game['away'],
-                'playerTeam':game[side], 'profile':profile,'marketMatchups':markets,'bestMarket':best,
+                'playerTeam':game[side], 'profile':profile,'marketMatchups':markets,'bestMarket':best,'bestOpportunity':best_opportunity,
                 'defenseRank':best['defenseRank'],'defenseValue':best['defenseValue'],'defenseScore':best['defenseScore'],
                 'score':round(average([match['score'] for match in markets[:3]]) or 0),
                 'marketAverage':best['playerAverage'],'minutes':row['MIN'],'gamesPlayed':row['G'],
                 'playerInjuryStatus':player_status if player_status in ('questionable','probable') else '',
-                'opponentUnavailableCount':opponent_out_count,'zone':best.get('zone'),
+                'opponentUnavailableCount':opponent_out_count,'zone':overall_zone,
             }
             candidate['reasons'] = make_reasons(candidate)
             out.append(candidate)
