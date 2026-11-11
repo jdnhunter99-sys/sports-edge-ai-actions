@@ -1307,7 +1307,10 @@ function normalizeTeamName(value: unknown): string {
 }
 
 async function fetchAggregateTeamStats(seasonId: number, teams: any[]) {
-  const idByAbbr = new Map(teams.map((team) => [normalizeAbbr(team?.triCode), Number(team?.id)]));
+  const abbrByTeamId = new Map(teams.map((team) => [Number(team?.id), normalizeAbbr(team?.triCode)]));
+  const abbrByFranchiseId = new Map(teams
+    .filter((team) => Number.isFinite(Number(team?.franchiseId)))
+    .map((team) => [Number(team?.franchiseId), normalizeAbbr(team?.triCode)]));
   const rowsByAbbr: Record<string, any> = Object.fromEntries(teams.map((team) => {
     const abbr = normalizeAbbr(team?.triCode);
     return [abbr, { teamAbbr: abbr, teamName: team?.fullName || team?.name || abbr, seasonId, rankByStat: {} }];
@@ -1329,7 +1332,11 @@ async function fetchAggregateTeamStats(seasonId: number, teams: any[]) {
       return;
     }
     for (const row of result.value.rows) {
-      const abbr = normalizeAbbr(teams.find((team) => Number(team?.id) === Number(row?.teamId))?.triCode);
+      const teamId = Number(row?.teamId);
+      const franchiseId = Number(row?.franchiseId);
+      const abbr = abbrByTeamId.get(teamId)
+        || abbrByFranchiseId.get(franchiseId)
+        || normalizeAbbr(row?.teamAbbrev || row?.teamAbbr || row?.triCode);
       if (!abbr || !rowsByAbbr[abbr]) continue;
       Object.assign(rowsByAbbr[abbr], row);
     }
