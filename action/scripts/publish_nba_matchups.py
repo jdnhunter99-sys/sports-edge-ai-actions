@@ -542,6 +542,11 @@ def rank_to_score(rank):
     return (rank - 1) / 29 * 100
 
 
+def zone_edge_score(rank):
+    score = rank_to_score(rank)
+    return abs(score - 50) * 2 if score is not None else 0
+
+
 def zone_evidence(player_zone_profile, opponent_profile, market_key):
     if market_key not in {'points','three_pointers_made','points_rebounds','points_assists','pra'} or not player_zone_profile:
         return None
@@ -552,11 +557,13 @@ def zone_evidence(player_zone_profile, opponent_profile, market_key):
     for key in keys:
         player_zone = (player_zone_profile.get('zones') or {}).get(key) or {}
         defense_zone = (((opponent_profile or {}).get('zones') or {}).get(key) or {})
+        rank = number(defense_zone.get('rank'))
         if number(defense_zone.get('rank_team_count')) != 30:
             continue
-        rank = number(defense_zone.get('rank'))
         score = rank_to_score(rank)
-        share = number(player_zone.get('attempt_share_pct') or player_zone.get('points_share_pct')) or 0
+        # Use field-goal attempt share consistently with the NBA Prop Center
+        # shooting-zone graphic.
+        share = number(player_zone.get('attempt_share_pct')) or 0
         if score is None or share <= 0:
             continue
         weighted.append({'key':key,'label':ZONE_NAMES[key],'rank':rank,'score':score,'share':share,'allowed':number(defense_zone.get('points_allowed_per_game'))})
@@ -564,25 +571,59 @@ def zone_evidence(player_zone_profile, opponent_profile, market_key):
         return None
     total_share = sum(zone['share'] for zone in weighted)
     top = max(weighted, key=lambda zone:zone['score']*zone['share'])
-    return {'score':sum(zone['score']*zone['share'] for zone in weighted)/total_share,'topZone':top,'coveredZones':len(weighted)}
+    favorable = [zone for zone in weighted if zone['rank'] >= 24 and zone['share'] >= 15]
+    unfavorable = [zone for zone in weighted if zone['rank'] <= 5 and zone['share'] >= 15]
+    favorable_zone = max(favorable, key=lambda zone:zone['share']*zone_edge_score(zone['rank'])) if favorable else None
+    unfavorable_zone = max(unfavorable, key=lambda zone:zone['share']*zone_edge_score(zone['rank'])) if unfavorable else None
+    return {
+        'score':sum(zone['score']*zone['share'] for zone in weighted)/total_share,
+        'topZone':top,
+        'favorableZone':favorable_zone,
+        'unfavorableZone':unfavorable_zone,
+        'coveredZones':len(weighted),
+    }
+
+
+def market_is_matchup_signal(match):
+    rank = number(match.get('defenseRank'))
+    return rank is not None and (rank >= 25 or rank <= 5)
 
 
 def make_reasons(candidate):
     reasons = []
     zone = candidate.get('zone') or {}
-    favorable = [match for match in candidate.get('marketMatchups', []) if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 21]
-    for match in favorable[:2]:
+    allowed_markets = [match for match in candidate.get('marketMatchups', []) if match.get('market', {}).get('key') not in {'blocks', 'steals'}]
+    weak_defenses = [match for match in allowed_markets if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 25]
+    for match in weak_defenses[:2]:
         reasons.append({'label':f'Weak {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
-    if not favorable:
-        favorable = [match for match in candidate.get('marketMatchups', []) if number(match.get('defenseRank')) is not None and match['defenseRank'] >= 16]
-        for match in favorable[:1]:
-            reasons.append({'label':f'Favorable {match["market"]["label"]} defense vs {candidate["profile"]["positionLabel"]} · #{round(match["defenseRank"])}','tone':'blue'})
     top_zone = zone.get('topZone') or {}
     if top_zone and number(zone.get('score')) is not None and zone['score'] >= 60:
         reasons.append({'label':f'{round(top_zone["share"])}% shots {top_zone["label"].lower()} · defense #{round(top_zone["rank"])}','tone':'green'})
     if candidate.get('opponentUnavailableCount',0) > 0:
-        reasons.append({'label':f'{candidate["opponentUnavailableCount"]} injured opponents','tone':'amber'})
+        reasons.append({'label':f'{candidate["opponentUnavailableCount"]} injured defenders','tone':'amber'})
     return reasons[:3]
+
+
+def has_unfavorable_signal(candidate):
+    market_matchups = [match for match in candidate.get('marketMatchups', []) if match.get('market', {}).get('key') not in {'blocks', 'steals'}]
+    if any(number(match.get('defenseRank')) is not None and number(match.get('defenseRank')) <= 5 for match in market_matchups):
+        return True
+    zone = candidate.get('zone') or {}
+    return any(
+        number(zone_row.get('rank')) is not None
+        and number(zone_row.get('rank')) <= 5
+        and number(zone_row.get('share')) is not None
+        and number(zone_row.get('share')) >= 15
+        for zone_row in [zone.get('unfavorableZone') or {}]
+    )
+
+
+def has_favorable_signal(candidate):
+    return any(reason.get('tone') != 'amber' for reason in candidate.get('reasons', []))
+
+
+def has_discovery_signal(candidate):
+    return has_favorable_signal(candidate) or has_unfavorable_signal(candidate)
 
 
 def build_recommendations(today, slate, player_rows, opponent_profiles, zone_data, injury_by_team):
@@ -640,27 +681,45 @@ def build_recommendations(today, slate, player_rows, opponent_profiles, zone_dat
             seen.add(key)
             player = {key:value for key,value in row.items() if not key.startswith('_')}
             player.update({'Player':name,'name':name,'Team':team,'team':team,'Pos':position,'position':position,'playerId':listed.get('playerId') or row.get('playerId'),'espnPlayerId':row.get('espnPlayerId'),'headshot':row.get('headshot')})
-            best_opportunity = markets[0]
-            available_markets = [match for match in markets if match['available']]
+            ranked_markets = [match for match in markets if match['market']['key'] not in {'blocks', 'steals'}]
+            best_opportunity = ranked_markets[0] if ranked_markets else markets[0]
+            available_markets = [match for match in ranked_markets if match['available']]
             best = available_markets[0] if available_markets else best_opportunity
             # Zone evidence is independent of the prop markets that happen to
             # have odds today. This lets a strong restricted-area matchup show
             # even when rebounds is the only listed prop for the player.
             overall_zone = zone_evidence(player_zone, opponent_zone, 'points')
+            matchup_scores = [abs(match['defenseScore'] - 50) * 2 for match in ranked_markets if market_is_matchup_signal(match)]
+            zone_scores = [
+                zone_edge_score(zone_row['rank']) * zone_row['share'] / 100
+                for zone_row in ((overall_zone or {}).get('favorableZone'), (overall_zone or {}).get('unfavorableZone'))
+                if zone_row
+            ]
             candidate = {
                 'key':key,'player':player,'game':game,'side':side,'opponent':opponent,
                 'opponentTeam':game['home'] if side == 'away' else game['away'],
                 'playerTeam':game[side], 'profile':profile,'marketMatchups':markets,'bestMarket':best,'bestOpportunity':best_opportunity,
                 'defenseRank':best['defenseRank'],'defenseValue':best['defenseValue'],'defenseScore':best['defenseScore'],
-                'score':round(average([match['score'] for match in markets[:3]]) or 0),
+                'score':round(average(sorted(matchup_scores + zone_scores, reverse=True)[:3]) or 0),
                 'marketAverage':best['playerAverage'],'minutes':row['MIN'],'gamesPlayed':row['G'],
                 'playerInjuryStatus':player_status if player_status in ('questionable','probable') else '',
                 'opponentUnavailableCount':opponent_out_count,'zone':overall_zone,
             }
             candidate['reasons'] = make_reasons(candidate)
+            candidate['hasFavorableSignal'] = has_favorable_signal(candidate)
+            candidate['hasUnfavorableSignal'] = has_unfavorable_signal(candidate)
+            # Blocks and steals can remain listed props, but cannot qualify a
+            # player by themselves as a matchup recommendation.
+            if not has_discovery_signal(candidate):
+                continue
             out.append(candidate)
-    out.sort(key=lambda row:(-row['score'],-row['defenseRank'],-row['minutes']))
-    return out[:10]
+    sort_key = lambda row:(-row['score'],-row['defenseRank'],-row['minutes'])
+    out.sort(key=sort_key)
+    # Publish enough rows for both directional filters, then merge/dedupe them
+    # so a matchup that has both kinds of signal appears in both UI lists.
+    selected = {row['key']:row for row in [row for row in out if row['hasFavorableSignal']][:10]}
+    selected.update({row['key']:row for row in [row for row in out if row['hasUnfavorableSignal']][:10]})
+    return sorted(selected.values(), key=sort_key)
 
 
 def publish():
