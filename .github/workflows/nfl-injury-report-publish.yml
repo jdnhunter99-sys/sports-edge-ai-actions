@@ -46,7 +46,7 @@ jobs:
             git -C data reset --hard FETCH_HEAD
           fi
 
-      - name: Fetch ESPN injuries and calculate player and team impact
+      - name: Fetch Yahoo injuries and calculate player and team impact
         env:
           NFL_INJURY_OUTPUT_DIR: ${{ github.workspace }}/data
         run: python action/action/scripts/publish_nfl_injury_report.py

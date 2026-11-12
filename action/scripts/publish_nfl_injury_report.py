@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Publish ESPN NFL injury reports enriched with role/usage impact scores."""
+"""Publish Yahoo NFL injury reports enriched with role/usage impact scores."""
 
 from __future__ import annotations
 
 import csv
 import datetime as dt
 import gzip
+from html.parser import HTMLParser
 import io
 import json
 import os
@@ -23,7 +24,7 @@ if not OUTPUT_VALUE:
     raise RuntimeError("NFL_INJURY_OUTPUT_DIR is required")
 OUTPUT_ROOT = Path(OUTPUT_VALUE).expanduser()
 
-ESPN_INJURIES_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries"
+YAHOO_INJURIES_URL = "https://sports.yahoo.com/nfl/injuries/"
 NFLVERSE_RELEASE_ROOT = "https://github.com/nflverse/nflverse-data/releases/download"
 USER_AGENT = "SportsEdgeAI-NFL-Injury-Publisher/1.0 (+https://github.com/jdnhunter99-sys/sports-edge-ai-actions)"
 ROLE_WEIGHT = 0.60
@@ -82,7 +83,7 @@ def request_bytes(url: str, *, attempts: int = 4, timeout: int = 60) -> bytes:
     last_error = None
     headers = {
         "User-Agent": USER_AGENT,
-        "Accept": "application/json,text/csv,application/octet-stream,*/*",
+        "Accept": "text/html,application/json,text/csv,application/octet-stream,*/*",
         "Accept-Language": "en-US,en;q=0.9",
     }
     for attempt in range(attempts):
@@ -100,12 +101,160 @@ def request_bytes(url: str, *, attempts: int = 4, timeout: int = 60) -> bytes:
     raise RuntimeError(f"GET failed for {url}: {last_error}")
 
 
-def load_espn_report() -> dict:
-    payload = json.loads(request_bytes(ESPN_INJURIES_URL).decode("utf-8-sig"))
-    teams = payload.get("injuries")
-    if payload.get("status") != "success" or not isinstance(teams, list) or len(teams) != 32:
-        raise RuntimeError(f"ESPN NFL injury feed returned incomplete league data ({len(teams) if isinstance(teams, list) else 0}/32 teams)")
-    return payload
+class YahooInjuryPageParser(HTMLParser):
+    """Extract the server-rendered team injury tables from Yahoo Sports."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.div_depth = 0
+        self.card_depth: int | None = None
+        self.card: dict | None = None
+        self.in_table = False
+        self.in_row = False
+        self.in_cell = False
+        self.cell_text: list[str] = []
+        self.row: list[str] = []
+        self.player_id = ""
+        self.team_cards: list[dict] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+        if tag == "div":
+            self.div_depth += 1
+            if attributes.get("id") == "injuries-table" and self.card_depth is None:
+                self.card_depth = self.div_depth
+                self.card = {"team": "", "rows": []}
+        if self.card is None:
+            return
+        if tag == "img" and not self.card["team"] and attributes.get("alt"):
+            self.card["team"] = str(attributes["alt"]).strip()
+        if tag == "table" and not self.in_table:
+            self.in_table = True
+        elif tag == "tr" and self.in_table:
+            self.in_row = True
+            self.row = []
+            self.player_id = ""
+        elif tag in ("td", "th") and self.in_row:
+            self.in_cell = True
+            self.cell_text = []
+        elif tag == "a" and self.in_cell:
+            href = str(attributes.get("href") or "")
+            match = re.search(r"/nfl/players/(\d+)/", href)
+            if match:
+                self.player_id = match.group(1)
+
+    def handle_data(self, data: str) -> None:
+        if self.in_cell:
+            self.cell_text.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.card is not None:
+            if tag in ("td", "th") and self.in_cell:
+                self.row.append(" ".join(" ".join(self.cell_text).split()))
+                self.in_cell = False
+            elif tag == "tr" and self.in_row:
+                if len(self.row) >= 4 and self.row[0].casefold() != "player":
+                    self.card["rows"].append({
+                        "player": self.row[0],
+                        "position": self.row[1],
+                        "status": self.row[2],
+                        "date": self.row[3],
+                        "player_id": self.player_id,
+                    })
+                self.in_row = False
+            elif tag == "table" and self.in_table:
+                self.in_table = False
+            elif tag == "div" and self.card_depth == self.div_depth:
+                self.team_cards.append(self.card)
+                self.card = None
+                self.card_depth = None
+        if tag == "div":
+            self.div_depth -= 1
+
+
+def parse_yahoo_status(raw_status: str) -> tuple[str, str, str]:
+    raw = re.sub(r"\s+", " ", str(raw_status or "")).strip()
+    base = raw.split("(", 1)[0].strip().rstrip(" -")
+    parenthetical = re.findall(r"\(([^()]*)\)", raw)
+    detail = ""
+    lowered = base.casefold()
+    if lowered.startswith("injured reserve"):
+        status = "Injured Reserve"
+        detail = base[len("Injured Reserve"):].strip(" -")
+    elif lowered.startswith("physically unable to perform"):
+        status = "Physically Unable to Perform"
+        detail = base[len("Physically Unable to perform"):].strip(" -")
+    elif lowered.startswith("non-football injury"):
+        status = "Non-Football Injury"
+        detail = base[len("Non-Football Injury"):].strip(" -")
+    elif lowered.startswith("reserve:"):
+        status = base
+    else:
+        status = base
+    injury = parenthetical[-1].strip() if parenthetical else ""
+    if len(parenthetical) > 1:
+        detail = " · ".join([detail, *parenthetical[:-1]]).strip(" ·")
+    return status, injury, detail
+
+
+def load_yahoo_report() -> dict:
+    page = request_bytes(YAHOO_INJURIES_URL).decode("utf-8-sig", errors="replace")
+    parser = YahooInjuryPageParser()
+    parser.feed(page)
+    by_team: dict[str, dict] = {}
+    unmapped_teams = []
+    for card in parser.team_cards:
+        team_name = str(card.get("team") or "").strip()
+        abbreviation = normalize_team(team_name)
+        if not abbreviation:
+            unmapped_teams.append(team_name or "<unnamed team>")
+            continue
+        if abbreviation in by_team:
+            raise RuntimeError(f"Yahoo NFL injury page contains duplicate team table: {team_name}")
+        injuries = []
+        for row in card.get("rows") or []:
+            player_name = str(row.get("player") or "").strip()
+            raw_status = str(row.get("status") or "").strip()
+            if not player_name or not raw_status:
+                continue
+            status, injury, detail = parse_yahoo_status(raw_status)
+            injuries.append({
+                "athlete": {
+                    "displayName": player_name,
+                    # Yahoo player IDs are not ESPN IDs, so intentionally omit
+                    # them here; usage matching below is keyed by team/name.
+                    "id": None,
+                    "position": {"abbreviation": str(row.get("position") or "").strip()},
+                },
+                "status": status,
+                "details": {"type": injury, "location": "", "detail": detail, "returnDate": ""},
+                "longComment": "",
+                "shortComment": "",
+                "date": str(row.get("date") or "").strip(),
+                "source": {"description": "Yahoo Sports"},
+            })
+        by_team[abbreviation] = {
+            "displayName": team_name,
+            "id": "",
+            "injuries": injuries,
+        }
+
+    if unmapped_teams:
+        raise RuntimeError("Yahoo returned unmapped NFL teams: " + ", ".join(unmapped_teams))
+    if len(by_team) != 32 or set(by_team) != set(TEAM_NAMES):
+        missing = sorted(set(TEAM_NAMES) - set(by_team))
+        extra = sorted(set(by_team) - set(TEAM_NAMES))
+        raise RuntimeError(f"Yahoo NFL injury page returned incomplete league data ({len(by_team)}/32 teams; missing={missing}; extra={extra})")
+
+    scraped_at = now_iso()
+    season = dt.datetime.now(dt.timezone.utc).year
+    if dt.datetime.now(dt.timezone.utc).month < 8:
+        season -= 1
+    return {
+        "injuries": list(by_team.values()),
+        "timestamp": scraped_at,
+        "season": {"year": season, "name": "Regular Season"},
+    }
 
 
 def fetch_csv_release(release: str, filename: str) -> list[dict[str, str]]:
@@ -375,7 +524,7 @@ def clean_text(value: object) -> str:
     return "" if text.casefold() in {"not specified", "none", "n/a", "na", "null"} else text
 
 
-def build_report(espn: dict, data_season: int, metrics: dict) -> dict:
+def build_report(source_report: dict, data_season: int, metrics: dict) -> dict:
     team_records = []
     unmapped_teams = []
     metrics_by_espn_id = {
@@ -383,14 +532,14 @@ def build_report(espn: dict, data_season: int, metrics: dict) -> dict:
         for (team_abbr, _), player_metrics in metrics.items()
         if player_metrics.get("espn_id")
     }
-    for espn_team in espn.get("injuries", []):
-        abbr = team_abbreviation(espn_team)
-        name = str(espn_team.get("displayName") or "").strip()
+    for source_team in source_report.get("injuries", []):
+        abbr = team_abbreviation(source_team)
+        name = str(source_team.get("displayName") or "").strip()
         if not abbr:
             unmapped_teams.append(name)
             continue
         injuries = []
-        for entry in espn_team.get("injuries", []):
+        for entry in source_team.get("injuries", []):
             athlete = entry.get("athlete") if isinstance(entry.get("athlete"), dict) else {}
             details = entry.get("details") if isinstance(entry.get("details"), dict) else {}
             player_name = str(athlete.get("displayName") or athlete.get("fullName") or "").strip()
@@ -446,7 +595,7 @@ def build_report(espn: dict, data_season: int, metrics: dict) -> dict:
         injuries.sort(key=lambda item: (-float(item.get("impact_score") or 0), item.get("player", "").casefold()))
         impact_total = round(sum(float(item.get("impact_score") or 0) for item in injuries), 2)
         team_records.append({
-            "team_id": str(espn_team.get("id") or ""),
+            "team_id": str(source_team.get("id") or ""),
             "team": name or TEAM_NAMES.get(abbr, abbr),
             "abbreviation": abbr,
             "injury_count": len(injuries),
@@ -458,7 +607,7 @@ def build_report(espn: dict, data_season: int, metrics: dict) -> dict:
         })
 
     if unmapped_teams:
-        raise RuntimeError("ESPN returned unmapped NFL teams: " + ", ".join(unmapped_teams))
+        raise RuntimeError("Yahoo returned unmapped NFL teams: " + ", ".join(unmapped_teams))
     if len(team_records) != 32 or {team["abbreviation"] for team in team_records} != set(TEAM_NAMES):
         raise RuntimeError(f"Refusing to publish incomplete NFL injury coverage ({len(team_records)}/32 teams)")
 
@@ -472,17 +621,17 @@ def build_report(espn: dict, data_season: int, metrics: dict) -> dict:
         team["impact_rank"] = rank
 
     generated_at = now_iso()
-    source_timestamp = espn.get("timestamp")
+    source_timestamp = source_report.get("timestamp")
     return {
         "sport": "nfl",
         "schema_version": 1,
         "generated_at": generated_at,
         "updated_at": source_timestamp or generated_at,
-        "source": "ESPN NFL Injuries",
-        "source_url": ESPN_INJURIES_URL,
+        "source": "Yahoo Sports NFL Injuries",
+        "source_url": YAHOO_INJURIES_URL,
         "source_timestamp": source_timestamp,
-        "season": (espn.get("season") or {}).get("year"),
-        "season_type": (espn.get("season") or {}).get("name"),
+        "season": (source_report.get("season") or {}).get("year"),
+        "season_type": (source_report.get("season") or {}).get("name"),
         "metrics_season": data_season,
         "status_multipliers": STATUS_MULTIPLIERS,
         "score_method": {
@@ -511,13 +660,13 @@ def write_json(path: Path, value: dict) -> None:
 
 
 def main() -> None:
-    espn = load_espn_report()
-    season = int((espn.get("season") or {}).get("year") or dt.datetime.now().year)
-    print(f"NFL injury publisher: ESPN season={season}, source timestamp={espn.get('timestamp')}", flush=True)
+    source_report = load_yahoo_report()
+    season = int((source_report.get("season") or {}).get("year") or dt.datetime.now().year)
+    print(f"NFL injury publisher: Yahoo season={season}, fetched={source_report.get('timestamp')}", flush=True)
     data_season, snap_rows, stat_rows, depth_rows = load_nflverse_metrics(season)
     print(f"Loaded role/usage data for season {data_season}: snap_rows={len(snap_rows)}, player_stat_rows={len(stat_rows)}, depth_chart_rows={len(depth_rows)}", flush=True)
     metrics = prepare_player_metrics(snap_rows, stat_rows, depth_rows)
-    report = build_report(espn, data_season, metrics)
+    report = build_report(source_report, data_season, metrics)
     output_path = OUTPUT_ROOT / "nfl-injuries" / "latest.json"
     write_json(output_path, report)
     matched = sum(1 for team in report["teams"] for injury in team["injuries"] if injury["impact_inputs"]["confidence"] != "unmatched")

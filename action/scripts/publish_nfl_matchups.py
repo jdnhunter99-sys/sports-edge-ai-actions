@@ -448,7 +448,10 @@ def build_recommendations(slate, player_rows, defense_ranks, injury_rows, season
                 continue
             player_injury = injuries.get(key) or {}
             player_status = status_key(player_injury.get('status'))
-            if player_status in ('out','doubtful','active'):
+            # Active is a healthy/available status, not a reason to exclude a
+            # player from matchup discovery. Only unavailable players should
+            # be omitted here.
+            if player_status in ('out','doubtful'):
                 continue
             listed_markets = set(str(value).strip().lower() for value in listed.get('markets') or [])
             matches = []

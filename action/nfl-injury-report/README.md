@@ -1,6 +1,6 @@
 # NFL injury report publisher
 
-The publisher reads ESPN's league-wide NFL injury feed and enriches each listed injury with current role and usage data from nflverse. It publishes one `nfl-injuries/latest.json` snapshot containing all 32 teams.
+The publisher reads Yahoo Sports' league-wide NFL injury page and enriches each listed injury with current role and usage data from nflverse. It publishes one `nfl-injuries/latest.json` snapshot containing all 32 teams.
 
 ## Player impact score
 
@@ -27,6 +27,6 @@ No replacement-player adjustment is applied. The team impact score is the sum of
 
 ## Sources
 
-- ESPN injury statuses, comments, and injury details: `https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries`
+- Yahoo Sports injury statuses and player listings: `https://sports.yahoo.com/nfl/injuries/`
 - nflverse snap counts, weekly player statistics, and depth charts: `https://github.com/nflverse/nflverse-data/releases`
 
