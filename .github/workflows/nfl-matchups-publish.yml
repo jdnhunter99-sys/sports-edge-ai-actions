@@ -48,7 +48,7 @@ jobs:
             git -C data checkout -B "$DATA_BRANCH" FETCH_HEAD
           fi
 
-      - name: Build today’s NFL matchup recommendations
+      - name: Build this week’s NFL matchup recommendations
         env:
           NFL_MATCHUPS_OUTPUT_DIR: ${{ github.workspace }}/data
           NFL_MATCHUPS_REPOSITORY: ${{ github.repository }}

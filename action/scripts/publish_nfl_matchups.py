@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish daily NFL matchup recommendations from PropLine and nflverse data."""
+"""Publish weekly NFL matchup recommendations from PropLine and nflverse data."""
 import csv
 import datetime as dt
 import io
@@ -134,12 +134,29 @@ def team_from_espn(raw):
     }
 
 
-def fetch_today_games(today):
-    query = urllib.parse.urlencode({'dates':today.strftime('%Y%m%d'),'limit':'100','region':'us','lang':'en'})
-    payload = request_json(f'{NFL_SCOREBOARD}?{query}')
+def scoreboard_date(day, season):
+    query = urllib.parse.urlencode({
+        'dates':day.strftime('%Y%m%d'),'year':str(season),'seasontype':'2',
+        'limit':'100','region':'us','lang':'en',
+    })
+    return request_json(f'{NFL_SCOREBOARD}?{query}')
+
+
+def event_is_unavailable(event):
+    competition = (event.get('competitions') or [{}])[0]
+    status = competition.get('status') or event.get('status') or {}
+    state = str((status.get('type') or {}).get('state') or '').lower()
+    description = (status.get('type') or {}).get('shortDetail') or (status.get('type') or {}).get('detail') or ''
+    description = str(description).lower()
+    return state == 'post' or 'final' in description or any(term in description for term in ('postpon', 'cancel'))
+
+
+def parse_week_games(payload, today, week_number):
     output = []
     for event in payload.get('events') or []:
         competition = (event.get('competitions') or [{}])[0]
+        if event_is_unavailable(event):
+            continue
         competitors = competition.get('competitors') or []
         away_raw = next((item for item in competitors if item.get('homeAway') == 'away'), {})
         home_raw = next((item for item in competitors if item.get('homeAway') == 'home'), {})
@@ -149,17 +166,51 @@ def fetch_today_games(today):
         status = competition.get('status') or event.get('status') or {}
         state = str((status.get('type') or {}).get('state') or '').lower()
         description = (status.get('type') or {}).get('shortDetail') or (status.get('type') or {}).get('detail') or ''
-        if state == 'post' or 'final' in str(description).lower() or any(term in str(description).lower() for term in ('postpon', 'cancel')):
-            continue
+        game_date = event.get('date') or competition.get('date')
+        local_game_date = central_date_from_iso(game_date) or today
         output.append({
-            'id':str(event.get('id') or competition.get('id') or ''), 'date':event.get('date') or competition.get('date'),
-            'scheduleDate':today.isoformat(), 'gameDate':event.get('date') or competition.get('date'),
+            'id':str(event.get('id') or competition.get('id') or ''), 'date':game_date,
+            'scheduleDate':local_game_date.isoformat(), 'gameDate':game_date,
+            'week':int((event.get('week') or {}).get('number') or week_number),
             'venue':(competition.get('venue') or {}).get('fullName') or '',
             'city':((competition.get('venue') or {}).get('address') or {}).get('city') or '',
             'status':{'state':state or 'pre','description':description or 'Upcoming','completed':False},
             'away':away,'home':home,
         })
     return output
+
+
+def fetch_upcoming_week(today):
+    season = today.year if today.month >= 8 else today.year - 1
+    week_number = None
+    # ESPN omits its week metadata on dates without games. Walk ahead until we
+    # find the next unplayed regular-season event, then request that full week.
+    for offset in range(15):
+        day = today + dt.timedelta(days=offset)
+        payload = scoreboard_date(day, season)
+        for event in payload.get('events') or []:
+            if event_is_unavailable(event):
+                continue
+            raw_week = (event.get('week') or {}).get('number') or (payload.get('week') or {}).get('number')
+            try:
+                week_number = int(raw_week)
+            except (TypeError, ValueError):
+                week_number = None
+            if week_number:
+                break
+        if week_number:
+            break
+
+    if not week_number:
+        return None, []
+
+    query = urllib.parse.urlencode({
+        'week':str(week_number),'year':str(season),'seasontype':'2',
+        'limit':'100','region':'us','lang':'en',
+    })
+    payload = request_json(f'{NFL_SCOREBOARD}?{query}')
+    games = parse_week_games(payload, today, week_number)
+    return week_number, games
 
 
 def load_propline_player_list():
@@ -173,16 +224,17 @@ def game_pair(game):
     return normalize_team(game.get('awayTeam') or game.get('away') or game.get('awayTeamAbbr')), normalize_team(game.get('homeTeam') or game.get('home') or game.get('homeTeamAbbr'))
 
 
-def get_today_prop_games(payload, today, games):
+def get_week_prop_games(payload, games):
     game_by_pair = {(game['away']['abbr'], game['home']['abbr']):game for game in games}
     output = []
     for item in payload.get('games') or []:
-        commence = central_date_from_iso(item.get('commenceTime'))
-        if commence and commence != today:
-            continue
         away, home = game_pair(item)
         game = game_by_pair.get((away, home))
         if not game:
+            continue
+        commence = central_date_from_iso(item.get('commenceTime'))
+        scheduled = central_date_from_iso(game.get('gameDate'))
+        if commence and scheduled and commence != scheduled:
             continue
         players, seen = [], set()
         for raw in item.get('players') or []:
@@ -440,8 +492,14 @@ def build_recommendations(slate, player_rows, defense_ranks, injury_rows, season
                 'season':season,
             })
     output.sort(key=lambda row:(-row['score'],-row['gamesPlayed'],row['player'].get('Player') or ''))
-    selected = {row['key']:row for row in [item for item in output if item['hasFavorableSignal']][:10]}
-    selected.update({row['key']:row for row in [item for item in output if item['hasUnfavorableSignal']][:10]})
+    selected = {}
+    # Keep the weekly discovery balanced by position. A global top-ten cutoff
+    # could hide a qualifying tight end simply because QB/RB/WR ranks score higher.
+    for flag in ('hasFavorableSignal','hasUnfavorableSignal'):
+        for position in POSITIONS:
+            position_rows = [row for row in output if row['profile']['position'] == position and row[flag]]
+            for row in position_rows[:10]:
+                selected[row['key']] = row
     return sorted(selected.values(), key=lambda row:(-row['score'],-row['gamesPlayed'],row['player'].get('Player') or ''))
 
 
@@ -449,10 +507,10 @@ def publish():
     today = central_today()
     season = today.year if today.month >= 8 else today.year - 1
     now = dt.datetime.now(dt.timezone.utc)
-    scoreboard = fetch_today_games(today)
+    week_number, scoreboard = fetch_upcoming_week(today)
     prop_payload = load_propline_player_list()
-    slate = get_today_prop_games(prop_payload, today, scoreboard)
-    print(f'NFL Matchups: {today.isoformat()} scoreboard games={len(scoreboard)}, PropLine-matched games={len(slate)}', flush=True)
+    slate = get_week_prop_games(prop_payload, scoreboard)
+    print(f'NFL Matchups: {today.isoformat()} week={week_number or "unavailable"} scoreboard games={len(scoreboard)}, PropLine-matched games={len(slate)}', flush=True)
     rows = fetch_player_stats(season)
     print(f'Loaded {len(rows)} nflverse regular-season player-week rows for {season}.', flush=True)
     defense_ranks = build_defense_profiles(rows)
@@ -476,7 +534,8 @@ def publish():
     payload = {
         'success':True,'schemaVersion':1,'sport':'nfl','date':today.isoformat(),
         'generatedAt':now.isoformat().replace('+00:00','Z'),'currentSeason':season,
-        'source':{'slate':'ESPN scoreboard','playerLists':'PropLine published NFL player lists','playerStats':'nflverse stats_player_week','opponentDefense':'nflverse player-week stats grouped by opponent and position','injuries':'NFL injury report publisher'},
+        'week':week_number,'weekLabel':f'Week {week_number}' if week_number else None,
+        'source':{'slate':'ESPN upcoming NFL week scoreboard','playerLists':'PropLine published NFL player lists','playerStats':'nflverse stats_player_week','opponentDefense':'nflverse player-week stats grouped by opponent and position','injuries':'NFL injury report publisher'},
         'propLineUpdatedAt':prop_payload.get('updated_at'),'injuryReportTimestamp':injury_timestamp,
         'games':games,'gameCount':len(games),'playerRows':player_rows,'playerCount':len(player_rows),
         'recommendations':recommendations,'recommendationCount':len(recommendations),
