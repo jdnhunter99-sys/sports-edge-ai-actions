@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-12T21:31:38.543014Z",
-  "updated_at": "2026-11-12T21:31:31.788215Z",
+  "generated_at": "2026-11-12T22:03:27.627710Z",
+  "updated_at": "2026-11-12T22:03:22.384995Z",
   "source": "Yahoo Sports NFL Injuries",
   "source_url": "https://sports.yahoo.com/nfl/injuries/",
-  "source_timestamp": "2026-11-12T21:31:31.788215Z",
+  "source_timestamp": "2026-11-12T22:03:22.384995Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -49,7 +49,7 @@
     "rank_direction": "1 is highest team injury impact"
   },
   "team_count": 32,
-  "injury_count": 498,
+  "injury_count": 501,
   "teams": [
     {
       "team_id": "",
@@ -1252,7 +1252,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 28.45,
-      "impact_rank": 16,
+      "impact_rank": 17,
       "rank_population": 32,
       "injuries": [
         {
@@ -1711,9 +1711,9 @@
       "team_id": "",
       "team": "Buffalo Bills",
       "abbreviation": "BUF",
-      "injury_count": 11,
-      "impact_count": 11,
-      "impact_score": 18.82,
+      "injury_count": 12,
+      "impact_count": 12,
+      "impact_score": 18.99,
       "impact_rank": 27,
       "rank_population": 32,
       "injuries": [
@@ -1743,7 +1743,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1773,7 +1773,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1803,7 +1803,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1833,7 +1833,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1863,7 +1863,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1953,7 +1953,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1983,7 +1983,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -2043,7 +2043,37 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Sam Franklin Jr.",
+          "player_id": null,
+          "position": "DB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.17,
+          "base_role_usage_score": 0.33,
+          "role_score": 0.48,
+          "usage_score": 0.1,
+          "impact_inputs": {
+            "recent_snap_share": 0.02,
+            "season_snap_share": 0.02,
+            "usage_share": 0.02,
+            "usage_group": "other",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 1,
+            "confidence": "low"
+          },
+          "injury": "Shoulder",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         }
@@ -2056,7 +2086,7 @@
       "injury_count": 13,
       "impact_count": 13,
       "impact_score": 27.96,
-      "impact_rank": 17,
+      "impact_rank": 18,
       "rank_population": 32,
       "injuries": [
         {
@@ -2458,7 +2488,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 27.0,
-      "impact_rank": 18,
+      "impact_rank": 19,
       "rank_population": 32,
       "injuries": [
         {
@@ -2917,9 +2947,9 @@
       "team_id": "",
       "team": "Cincinnati Bengals",
       "abbreviation": "CIN",
-      "injury_count": 11,
-      "impact_count": 11,
-      "impact_score": 18.08,
+      "injury_count": 10,
+      "impact_count": 10,
+      "impact_score": 15.6,
       "impact_rank": 28,
       "rank_population": 32,
       "injuries": [
@@ -2954,36 +2984,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "Dylan Fairchild",
-          "player_id": null,
-          "position": "G",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.48,
-          "base_role_usage_score": 4.97,
-          "role_score": 4.98,
-          "usage_score": 4.97,
-          "impact_inputs": {
-            "recent_snap_share": 0.9935,
-            "season_snap_share": 0.9975,
-            "usage_share": 0.9935,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 4,
-            "confidence": "low"
-          },
-          "injury": "Pectoral",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "DJ Turner II",
           "player_id": null,
           "position": "CB",
@@ -3009,7 +3009,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -3099,7 +3099,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -3153,7 +3153,7 @@
             "snap_games_sampled": 0,
             "confidence": "low"
           },
-          "injury": "Undisclosed",
+          "injury": "Knee",
           "injury_location": "",
           "injury_detail": "Designated for Return",
           "injury_side": "",
@@ -3262,7 +3262,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 34.4,
-      "impact_rank": 6,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -4306,7 +4306,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.06,
-      "impact_rank": 8,
+      "impact_rank": 9,
       "rank_population": 32,
       "injuries": [
         {
@@ -4765,12 +4765,42 @@
       "team_id": "",
       "team": "Detroit Lions",
       "abbreviation": "DET",
-      "injury_count": 18,
-      "impact_count": 18,
-      "impact_score": 32.87,
-      "impact_rank": 9,
+      "injury_count": 17,
+      "impact_count": 17,
+      "impact_score": 34.94,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
+        {
+          "player": "D.J. Reed",
+          "player_id": null,
+          "position": "CB",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 4.53,
+          "base_role_usage_score": 4.53,
+          "role_score": 4.61,
+          "usage_score": 4.42,
+          "impact_inputs": {
+            "recent_snap_share": 0.8849,
+            "season_snap_share": 0.94,
+            "usage_share": 0.8849,
+            "usage_group": "defense",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 3,
+            "confidence": "low"
+          },
+          "injury": "Hip",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
         {
           "player": "Jack Campbell",
           "player_id": null,
@@ -4822,6 +4852,36 @@
             "confidence": "low"
           },
           "injury": "Foot",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Cade Mays",
+          "player_id": null,
+          "position": "C",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 3.38,
+          "base_role_usage_score": 3.38,
+          "role_score": 3.54,
+          "usage_score": 3.14,
+          "impact_inputs": {
+            "recent_snap_share": 0.627,
+            "season_snap_share": 0.655,
+            "usage_share": 0.627,
+            "usage_group": "offense_line",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 2,
+            "confidence": "low"
+          },
+          "injury": "Ankle",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -4892,36 +4952,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "D.J. Reed",
-          "player_id": null,
-          "position": "CB",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.27,
-          "base_role_usage_score": 4.53,
-          "role_score": 4.61,
-          "usage_score": 4.42,
-          "impact_inputs": {
-            "recent_snap_share": 0.8849,
-            "season_snap_share": 0.94,
-            "usage_share": 0.8849,
-            "usage_group": "defense",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Hip",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "Kerby Joseph",
           "player_id": null,
           "position": "S",
@@ -4947,37 +4977,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Brian Branch",
-          "player_id": null,
-          "position": "DB",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 1.88,
-          "base_role_usage_score": 3.75,
-          "role_score": 3.85,
-          "usage_score": 3.6,
-          "impact_inputs": {
-            "recent_snap_share": 0.7194,
-            "season_snap_share": 0.7,
-            "usage_share": 0.7194,
-            "usage_group": "defense",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Hip",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -5007,37 +5007,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Cade Mays",
-          "player_id": null,
-          "position": "C",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 1.69,
-          "base_role_usage_score": 3.38,
-          "role_score": 3.54,
-          "usage_score": 3.14,
-          "impact_inputs": {
-            "recent_snap_share": 0.627,
-            "season_snap_share": 0.655,
-            "usage_share": 0.627,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 2,
-            "confidence": "low"
-          },
-          "injury": "Ankle",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -5127,7 +5097,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -5247,7 +5217,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7305,7 +7275,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7335,7 +7305,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7359,7 +7329,7 @@
             "snap_games_sampled": 0,
             "confidence": "low"
           },
-          "injury": "Elbow",
+          "injury": "Forearm",
           "injury_location": "",
           "injury_detail": "Designated for Return",
           "injury_side": "",
@@ -7545,7 +7515,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7575,7 +7545,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7665,7 +7635,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7695,7 +7665,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7755,7 +7725,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7785,7 +7755,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         }
@@ -7795,9 +7765,9 @@
       "team_id": "",
       "team": "Kansas City Chiefs",
       "abbreviation": "KC",
-      "injury_count": 11,
-      "impact_count": 11,
-      "impact_score": 14.85,
+      "injury_count": 12,
+      "impact_count": 12,
+      "impact_score": 15.07,
       "impact_rank": 29,
       "rank_population": 32,
       "injuries": [
@@ -7917,7 +7887,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7947,7 +7917,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -8007,7 +7977,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -8122,6 +8092,36 @@
             "confidence": "low"
           },
           "injury": "Undisclosed",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Jaydn Ott",
+          "player_id": null,
+          "position": "RB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.22,
+          "base_role_usage_score": 0.44,
+          "role_score": 0.64,
+          "usage_score": 0.13,
+          "impact_inputs": {
+            "recent_snap_share": 0.06,
+            "season_snap_share": 0.06,
+            "usage_share": 0.0263,
+            "usage_group": "backfield",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 1,
+            "confidence": "high"
+          },
+          "injury": "Hamstring",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -9553,9 +9553,9 @@
       "team_id": "",
       "team": "Miami Dolphins",
       "abbreviation": "MIA",
-      "injury_count": 13,
-      "impact_count": 13,
-      "impact_score": 25.01,
+      "injury_count": 14,
+      "impact_count": 14,
+      "impact_score": 25.19,
       "impact_rank": 20,
       "rank_population": 32,
       "injuries": [
@@ -9645,7 +9645,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -9705,7 +9705,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -9825,7 +9825,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -9855,7 +9855,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -9915,7 +9915,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -9945,7 +9945,37 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Jared Wayne",
+          "player_id": null,
+          "position": "WR",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.18,
+          "base_role_usage_score": 0.36,
+          "role_score": 0.6,
+          "usage_score": 0.0,
+          "impact_inputs": {
+            "recent_snap_share": 0.1284,
+            "season_snap_share": 0.13,
+            "usage_share": 0.0,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 6,
+            "snap_games_sampled": 2,
+            "confidence": "high"
+          },
+          "injury": "Quad",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         }
@@ -10419,7 +10449,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10449,7 +10479,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10539,7 +10569,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10569,7 +10599,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10659,7 +10689,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10689,7 +10719,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10719,7 +10749,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10749,7 +10779,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10779,7 +10809,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10929,7 +10959,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10959,7 +10989,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -10989,7 +11019,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11049,7 +11079,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11079,7 +11109,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11119,10 +11149,10 @@
       "team_id": "",
       "team": "New Orleans Saints",
       "abbreviation": "NO",
-      "injury_count": 14,
-      "impact_count": 14,
-      "impact_score": 26.03,
-      "impact_rank": 19,
+      "injury_count": 16,
+      "impact_count": 16,
+      "impact_score": 29.6,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -11151,7 +11181,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11211,7 +11241,37 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Taliese Fuaga",
+          "player_id": null,
+          "position": "T",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 2.5,
+          "base_role_usage_score": 5.0,
+          "role_score": 5.0,
+          "usage_score": 5.0,
+          "impact_inputs": {
+            "recent_snap_share": 1.0,
+            "season_snap_share": 1.0,
+            "usage_share": 1.0,
+            "usage_group": "offense_line",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11241,7 +11301,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11361,7 +11421,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11391,7 +11451,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11413,6 +11473,36 @@
             "usage_group": "other",
             "depth_chart_rank": 4,
             "snap_games_sampled": 0,
+            "confidence": "low"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Quincy Riley",
+          "player_id": null,
+          "position": "CB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.07,
+          "base_role_usage_score": 2.14,
+          "role_score": 2.42,
+          "usage_score": 1.71,
+          "impact_inputs": {
+            "recent_snap_share": 0.3429,
+            "season_snap_share": 0.6775,
+            "usage_share": 0.3429,
+            "usage_group": "defense",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 4,
             "confidence": "low"
           },
           "injury": "Knee",
@@ -11451,7 +11541,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11511,7 +11601,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -11956,7 +12046,7 @@
       "injury_count": 18,
       "impact_count": 18,
       "impact_score": 29.37,
-      "impact_rank": 15,
+      "impact_rank": 16,
       "rank_population": 32,
       "injuries": [
         {
@@ -12015,7 +12105,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -12045,7 +12135,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -12195,7 +12285,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -12225,7 +12315,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -12255,7 +12345,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -12285,7 +12375,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -12405,7 +12495,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -13089,7 +13179,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -13132,7 +13222,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 33.21,
-      "impact_rank": 7,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -14667,7 +14757,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -14697,7 +14787,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -14727,7 +14817,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -14817,7 +14907,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -14877,7 +14967,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -14967,7 +15057,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -16578,7 +16668,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 28.45,
-      "impact_rank": 16,
+      "impact_rank": 17,
       "rank_population": 32,
       "injuries": [
         {
@@ -17037,9 +17127,9 @@
       "team_id": "",
       "team": "Buffalo Bills",
       "abbreviation": "BUF",
-      "injury_count": 11,
-      "impact_count": 11,
-      "impact_score": 18.82,
+      "injury_count": 12,
+      "impact_count": 12,
+      "impact_score": 18.99,
       "impact_rank": 27,
       "rank_population": 32,
       "injuries": [
@@ -17069,7 +17159,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17099,7 +17189,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17129,7 +17219,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17159,7 +17249,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17189,7 +17279,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17279,7 +17369,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17309,7 +17399,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -17369,7 +17459,37 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Sam Franklin Jr.",
+          "player_id": null,
+          "position": "DB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.17,
+          "base_role_usage_score": 0.33,
+          "role_score": 0.48,
+          "usage_score": 0.1,
+          "impact_inputs": {
+            "recent_snap_share": 0.02,
+            "season_snap_share": 0.02,
+            "usage_share": 0.02,
+            "usage_group": "other",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 1,
+            "confidence": "low"
+          },
+          "injury": "Shoulder",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         }
@@ -17382,7 +17502,7 @@
       "injury_count": 13,
       "impact_count": 13,
       "impact_score": 27.96,
-      "impact_rank": 17,
+      "impact_rank": 18,
       "rank_population": 32,
       "injuries": [
         {
@@ -17784,7 +17904,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 27.0,
-      "impact_rank": 18,
+      "impact_rank": 19,
       "rank_population": 32,
       "injuries": [
         {
@@ -18243,9 +18363,9 @@
       "team_id": "",
       "team": "Cincinnati Bengals",
       "abbreviation": "CIN",
-      "injury_count": 11,
-      "impact_count": 11,
-      "impact_score": 18.08,
+      "injury_count": 10,
+      "impact_count": 10,
+      "impact_score": 15.6,
       "impact_rank": 28,
       "rank_population": 32,
       "injuries": [
@@ -18280,36 +18400,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "Dylan Fairchild",
-          "player_id": null,
-          "position": "G",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.48,
-          "base_role_usage_score": 4.97,
-          "role_score": 4.98,
-          "usage_score": 4.97,
-          "impact_inputs": {
-            "recent_snap_share": 0.9935,
-            "season_snap_share": 0.9975,
-            "usage_share": 0.9935,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 4,
-            "confidence": "low"
-          },
-          "injury": "Pectoral",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "DJ Turner II",
           "player_id": null,
           "position": "CB",
@@ -18335,7 +18425,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -18425,7 +18515,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -18479,7 +18569,7 @@
             "snap_games_sampled": 0,
             "confidence": "low"
           },
-          "injury": "Undisclosed",
+          "injury": "Knee",
           "injury_location": "",
           "injury_detail": "Designated for Return",
           "injury_side": "",
@@ -18588,7 +18678,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 34.4,
-      "impact_rank": 6,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -19632,7 +19722,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.06,
-      "impact_rank": 8,
+      "impact_rank": 9,
       "rank_population": 32,
       "injuries": [
         {
@@ -20091,12 +20181,42 @@
       "team_id": "",
       "team": "Detroit Lions",
       "abbreviation": "DET",
-      "injury_count": 18,
-      "impact_count": 18,
-      "impact_score": 32.87,
-      "impact_rank": 9,
+      "injury_count": 17,
+      "impact_count": 17,
+      "impact_score": 34.94,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
+        {
+          "player": "D.J. Reed",
+          "player_id": null,
+          "position": "CB",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 4.53,
+          "base_role_usage_score": 4.53,
+          "role_score": 4.61,
+          "usage_score": 4.42,
+          "impact_inputs": {
+            "recent_snap_share": 0.8849,
+            "season_snap_share": 0.94,
+            "usage_share": 0.8849,
+            "usage_group": "defense",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 3,
+            "confidence": "low"
+          },
+          "injury": "Hip",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
         {
           "player": "Jack Campbell",
           "player_id": null,
@@ -20148,6 +20268,36 @@
             "confidence": "low"
           },
           "injury": "Foot",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Cade Mays",
+          "player_id": null,
+          "position": "C",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 3.38,
+          "base_role_usage_score": 3.38,
+          "role_score": 3.54,
+          "usage_score": 3.14,
+          "impact_inputs": {
+            "recent_snap_share": 0.627,
+            "season_snap_share": 0.655,
+            "usage_share": 0.627,
+            "usage_group": "offense_line",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 2,
+            "confidence": "low"
+          },
+          "injury": "Ankle",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -20218,36 +20368,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "D.J. Reed",
-          "player_id": null,
-          "position": "CB",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.27,
-          "base_role_usage_score": 4.53,
-          "role_score": 4.61,
-          "usage_score": 4.42,
-          "impact_inputs": {
-            "recent_snap_share": 0.8849,
-            "season_snap_share": 0.94,
-            "usage_share": 0.8849,
-            "usage_group": "defense",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Hip",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "Kerby Joseph",
           "player_id": null,
           "position": "S",
@@ -20273,37 +20393,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Brian Branch",
-          "player_id": null,
-          "position": "DB",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 1.88,
-          "base_role_usage_score": 3.75,
-          "role_score": 3.85,
-          "usage_score": 3.6,
-          "impact_inputs": {
-            "recent_snap_share": 0.7194,
-            "season_snap_share": 0.7,
-            "usage_share": 0.7194,
-            "usage_group": "defense",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Hip",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -20333,37 +20423,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Cade Mays",
-          "player_id": null,
-          "position": "C",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 1.69,
-          "base_role_usage_score": 3.38,
-          "role_score": 3.54,
-          "usage_score": 3.14,
-          "impact_inputs": {
-            "recent_snap_share": 0.627,
-            "season_snap_share": 0.655,
-            "usage_share": 0.627,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 2,
-            "confidence": "low"
-          },
-          "injury": "Ankle",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -20453,7 +20513,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -20573,7 +20633,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -22631,7 +22691,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -22661,7 +22721,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -22685,7 +22745,7 @@
             "snap_games_sampled": 0,
             "confidence": "low"
           },
-          "injury": "Elbow",
+          "injury": "Forearm",
           "injury_location": "",
           "injury_detail": "Designated for Return",
           "injury_side": "",
@@ -22871,7 +22931,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -22901,7 +22961,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -22991,7 +23051,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -23021,7 +23081,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -23081,7 +23141,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -23111,7 +23171,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         }
@@ -23121,9 +23181,9 @@
       "team_id": "",
       "team": "Kansas City Chiefs",
       "abbreviation": "KC",
-      "injury_count": 11,
-      "impact_count": 11,
-      "impact_score": 14.85,
+      "injury_count": 12,
+      "impact_count": 12,
+      "impact_score": 15.07,
       "impact_rank": 29,
       "rank_population": 32,
       "injuries": [
@@ -23243,7 +23303,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -23273,7 +23333,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -23333,7 +23393,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -23448,6 +23508,36 @@
             "confidence": "low"
           },
           "injury": "Undisclosed",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Jaydn Ott",
+          "player_id": null,
+          "position": "RB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.22,
+          "base_role_usage_score": 0.44,
+          "role_score": 0.64,
+          "usage_score": 0.13,
+          "impact_inputs": {
+            "recent_snap_share": 0.06,
+            "season_snap_share": 0.06,
+            "usage_share": 0.0263,
+            "usage_group": "backfield",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 1,
+            "confidence": "high"
+          },
+          "injury": "Hamstring",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -24879,9 +24969,9 @@
       "team_id": "",
       "team": "Miami Dolphins",
       "abbreviation": "MIA",
-      "injury_count": 13,
-      "impact_count": 13,
-      "impact_score": 25.01,
+      "injury_count": 14,
+      "impact_count": 14,
+      "impact_score": 25.19,
       "impact_rank": 20,
       "rank_population": 32,
       "injuries": [
@@ -24971,7 +25061,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25031,7 +25121,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25151,7 +25241,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25181,7 +25271,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25241,7 +25331,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25271,7 +25361,37 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Jared Wayne",
+          "player_id": null,
+          "position": "WR",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.18,
+          "base_role_usage_score": 0.36,
+          "role_score": 0.6,
+          "usage_score": 0.0,
+          "impact_inputs": {
+            "recent_snap_share": 0.1284,
+            "season_snap_share": 0.13,
+            "usage_share": 0.0,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 6,
+            "snap_games_sampled": 2,
+            "confidence": "high"
+          },
+          "injury": "Quad",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         }
@@ -25745,7 +25865,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25775,7 +25895,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25865,7 +25985,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25895,7 +26015,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -25985,7 +26105,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26015,7 +26135,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26045,7 +26165,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26075,7 +26195,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26105,7 +26225,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26255,7 +26375,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26285,7 +26405,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26315,7 +26435,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26375,7 +26495,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26405,7 +26525,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26445,10 +26565,10 @@
       "team_id": "",
       "team": "New Orleans Saints",
       "abbreviation": "NO",
-      "injury_count": 14,
-      "impact_count": 14,
-      "impact_score": 26.03,
-      "impact_rank": 19,
+      "injury_count": 16,
+      "impact_count": 16,
+      "impact_score": 29.6,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -26477,7 +26597,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26537,7 +26657,37 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Taliese Fuaga",
+          "player_id": null,
+          "position": "T",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 2.5,
+          "base_role_usage_score": 5.0,
+          "role_score": 5.0,
+          "usage_score": 5.0,
+          "impact_inputs": {
+            "recent_snap_share": 1.0,
+            "season_snap_share": 1.0,
+            "usage_share": 1.0,
+            "usage_group": "offense_line",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 4,
+            "confidence": "low"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26567,7 +26717,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26687,7 +26837,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26717,7 +26867,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26739,6 +26889,36 @@
             "usage_group": "other",
             "depth_chart_rank": 4,
             "snap_games_sampled": 0,
+            "confidence": "low"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Quincy Riley",
+          "player_id": null,
+          "position": "CB",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.07,
+          "base_role_usage_score": 2.14,
+          "role_score": 2.42,
+          "usage_score": 1.71,
+          "impact_inputs": {
+            "recent_snap_share": 0.3429,
+            "season_snap_share": 0.6775,
+            "usage_share": 0.3429,
+            "usage_group": "defense",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 4,
             "confidence": "low"
           },
           "injury": "Knee",
@@ -26777,7 +26957,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -26837,7 +27017,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27282,7 +27462,7 @@
       "injury_count": 18,
       "impact_count": 18,
       "impact_score": 29.37,
-      "impact_rank": 15,
+      "impact_rank": 16,
       "rank_population": 32,
       "injuries": [
         {
@@ -27341,7 +27521,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27371,7 +27551,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27521,7 +27701,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27551,7 +27731,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27581,7 +27761,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27611,7 +27791,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -27731,7 +27911,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -28415,7 +28595,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -29160,7 +29340,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 33.21,
-      "impact_rank": 7,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -29993,7 +30173,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -30023,7 +30203,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -30053,7 +30233,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -30143,7 +30323,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -30203,7 +30383,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -30293,7 +30473,7 @@
           "injury_side": "",
           "comments": "",
           "short_comment": "",
-          "reported_at": "11/11",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
