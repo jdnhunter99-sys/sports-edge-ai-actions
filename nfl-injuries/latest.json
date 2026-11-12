@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-12T13:31:41.509929Z",
-  "updated_at": "2026-11-12T13:31:34Z",
+  "generated_at": "2026-11-12T14:03:24.703793Z",
+  "updated_at": "2026-11-12T14:03:14Z",
   "source": "ESPN NFL Injuries",
   "source_url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries",
-  "source_timestamp": "2026-11-12T13:31:34Z",
+  "source_timestamp": "2026-11-12T14:03:14Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -3358,7 +3358,7 @@
       "injury_count": 21,
       "impact_count": 8,
       "impact_score": 15.17,
-      "impact_rank": 17,
+      "impact_rank": 18,
       "rank_population": 32,
       "injuries": [
         {
@@ -7852,7 +7852,7 @@
       "injury_count": 22,
       "impact_count": 12,
       "impact_score": 14.83,
-      "impact_rank": 18,
+      "impact_rank": 19,
       "rank_population": 32,
       "injuries": [
         {
@@ -9838,7 +9838,7 @@
       "injury_count": 20,
       "impact_count": 7,
       "impact_score": 15.41,
-      "impact_rank": 16,
+      "impact_rank": 17,
       "rank_population": 32,
       "injuries": [
         {
@@ -11299,8 +11299,8 @@
           "injury_location": "Leg",
           "injury_detail": "Surgery",
           "injury_side": "Left",
-          "comments": "In that scenario, Adams could back back in action as soon as Week 12, following the Rams' bye week. Meawhile, Puka Nacua (knee/toe) is destined to miss multiple weeks, which, for the time being leaves Konata Mumpfield, Tutu Atwell, CJ Danielsand Xavier Smith as the healthy WRs on the team's active roster.",
-          "short_comment": "Coach Sean McVay noted of Adams (hamstring) on Wednesday that he thinks a return to action by the wideout on Nov. 25 against the Packers \"is a realistic timeline for us,\" Greg Beacham of the Associated Press reports.",
+          "comments": "In that scenario, Adams could back in action as soon as Week 13 following the Rams' bye week. Meanwhile, Puka Nacua (knee/toe) is destined to miss multiple weeks, which, for the time being leaves Konata Mumpfield, Tutu Atwell, CJ Danielsand Xavier Smith as the healthy WRs on the team's active roster.",
+          "short_comment": "Head coach Sean McVay said Wednesday that Adams (hamstring) returning after the Nov. 25 against the Packers \"is a realistic timeline for us,\" Greg Beacham of the Associated Press reports.",
           "reported_at": "2026-11-11T21:05Z",
           "return_date": "2026-11-25",
           "source": "basic/manual"
@@ -12987,8 +12987,8 @@
       "abbreviation": "MIN",
       "injury_count": 22,
       "impact_count": 10,
-      "impact_score": 14.75,
-      "impact_rank": 19,
+      "impact_score": 15.67,
+      "impact_rank": 16,
       "rank_population": 32,
       "injuries": [
         {
@@ -13048,6 +13048,36 @@
           "comments": "Minnesota's every-down inside linebacker was injured in last Monday night's loss to the Bills and will need to clear the protocol to play in Sunday's game against the Packers on a short week. Ivan Pace would likely be next in line for heavy snaps at linebacker if Cashman can't play.",
           "short_comment": "Vikings coach Kevin O'Connell said Wednesday that Cashman is in concussion protocol, Kevin Seifert of ESPN.com reports.",
           "reported_at": "2026-11-11T22:27Z",
+          "return_date": "2026-11-15",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Jauan Jennings",
+          "player_id": null,
+          "position": "WR",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 1.84,
+          "base_role_usage_score": 1.84,
+          "role_score": 2.86,
+          "usage_score": 0.3,
+          "impact_inputs": {
+            "recent_snap_share": 0.5918,
+            "season_snap_share": 0.6717,
+            "usage_share": 0.06,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 3,
+            "confidence": "high"
+          },
+          "injury": "Calf",
+          "injury_location": "Leg",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "The veteran wideout missed last Monday night's loss to the Bills, allowing Myles Price to step in as the No. 3 receiver. Price caught just one of four targets for six yards, and Jennings has just six receptions for 54 yards across six games this year.",
+          "short_comment": "Jennings (calf) was estimated as DNP on Wednesday's practice report.",
+          "reported_at": "2026-11-11T22:08Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -13198,36 +13228,6 @@
           "comments": "questionable",
           "short_comment": "questionable",
           "reported_at": "2026-11-11T23:03Z",
-          "return_date": "2026-11-15",
-          "source": "basic/manual"
-        },
-        {
-          "player": "Jauan Jennings",
-          "player_id": null,
-          "position": "WR",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 0.92,
-          "base_role_usage_score": 1.84,
-          "role_score": 2.86,
-          "usage_score": 0.3,
-          "impact_inputs": {
-            "recent_snap_share": 0.5918,
-            "season_snap_share": 0.6717,
-            "usage_share": 0.06,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 3,
-            "snap_games_sampled": 3,
-            "confidence": "high"
-          },
-          "injury": "Calf",
-          "injury_location": "Leg",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "questionable",
-          "short_comment": "questionable",
-          "reported_at": "2026-11-11T22:32Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -23904,7 +23904,7 @@
       "injury_count": 21,
       "impact_count": 8,
       "impact_score": 15.17,
-      "impact_rank": 17,
+      "impact_rank": 18,
       "rank_population": 32,
       "injuries": [
         {
@@ -28398,7 +28398,7 @@
       "injury_count": 22,
       "impact_count": 12,
       "impact_score": 14.83,
-      "impact_rank": 18,
+      "impact_rank": 19,
       "rank_population": 32,
       "injuries": [
         {
@@ -30384,7 +30384,7 @@
       "injury_count": 20,
       "impact_count": 7,
       "impact_score": 15.41,
-      "impact_rank": 16,
+      "impact_rank": 17,
       "rank_population": 32,
       "injuries": [
         {
@@ -32427,8 +32427,8 @@
           "injury_location": "Leg",
           "injury_detail": "Surgery",
           "injury_side": "Left",
-          "comments": "In that scenario, Adams could back back in action as soon as Week 12, following the Rams' bye week. Meawhile, Puka Nacua (knee/toe) is destined to miss multiple weeks, which, for the time being leaves Konata Mumpfield, Tutu Atwell, CJ Danielsand Xavier Smith as the healthy WRs on the team's active roster.",
-          "short_comment": "Coach Sean McVay noted of Adams (hamstring) on Wednesday that he thinks a return to action by the wideout on Nov. 25 against the Packers \"is a realistic timeline for us,\" Greg Beacham of the Associated Press reports.",
+          "comments": "In that scenario, Adams could back in action as soon as Week 13 following the Rams' bye week. Meanwhile, Puka Nacua (knee/toe) is destined to miss multiple weeks, which, for the time being leaves Konata Mumpfield, Tutu Atwell, CJ Danielsand Xavier Smith as the healthy WRs on the team's active roster.",
+          "short_comment": "Head coach Sean McVay said Wednesday that Adams (hamstring) returning after the Nov. 25 against the Packers \"is a realistic timeline for us,\" Greg Beacham of the Associated Press reports.",
           "reported_at": "2026-11-11T21:05Z",
           "return_date": "2026-11-25",
           "source": "basic/manual"
@@ -33533,8 +33533,8 @@
       "abbreviation": "MIN",
       "injury_count": 22,
       "impact_count": 10,
-      "impact_score": 14.75,
-      "impact_rank": 19,
+      "impact_score": 15.67,
+      "impact_rank": 16,
       "rank_population": 32,
       "injuries": [
         {
@@ -33594,6 +33594,36 @@
           "comments": "Minnesota's every-down inside linebacker was injured in last Monday night's loss to the Bills and will need to clear the protocol to play in Sunday's game against the Packers on a short week. Ivan Pace would likely be next in line for heavy snaps at linebacker if Cashman can't play.",
           "short_comment": "Vikings coach Kevin O'Connell said Wednesday that Cashman is in concussion protocol, Kevin Seifert of ESPN.com reports.",
           "reported_at": "2026-11-11T22:27Z",
+          "return_date": "2026-11-15",
+          "source": "basic/manual"
+        },
+        {
+          "player": "Jauan Jennings",
+          "player_id": null,
+          "position": "WR",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 1.84,
+          "base_role_usage_score": 1.84,
+          "role_score": 2.86,
+          "usage_score": 0.3,
+          "impact_inputs": {
+            "recent_snap_share": 0.5918,
+            "season_snap_share": 0.6717,
+            "usage_share": 0.06,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 3,
+            "snap_games_sampled": 3,
+            "confidence": "high"
+          },
+          "injury": "Calf",
+          "injury_location": "Leg",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "The veteran wideout missed last Monday night's loss to the Bills, allowing Myles Price to step in as the No. 3 receiver. Price caught just one of four targets for six yards, and Jennings has just six receptions for 54 yards across six games this year.",
+          "short_comment": "Jennings (calf) was estimated as DNP on Wednesday's practice report.",
+          "reported_at": "2026-11-11T22:08Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
@@ -33744,36 +33774,6 @@
           "comments": "questionable",
           "short_comment": "questionable",
           "reported_at": "2026-11-11T23:03Z",
-          "return_date": "2026-11-15",
-          "source": "basic/manual"
-        },
-        {
-          "player": "Jauan Jennings",
-          "player_id": null,
-          "position": "WR",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 0.92,
-          "base_role_usage_score": 1.84,
-          "role_score": 2.86,
-          "usage_score": 0.3,
-          "impact_inputs": {
-            "recent_snap_share": 0.5918,
-            "season_snap_share": 0.6717,
-            "usage_share": 0.06,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 3,
-            "snap_games_sampled": 3,
-            "confidence": "high"
-          },
-          "injury": "Calf",
-          "injury_location": "Leg",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "questionable",
-          "short_comment": "questionable",
-          "reported_at": "2026-11-11T22:32Z",
           "return_date": "2026-11-15",
           "source": "basic/manual"
         },
