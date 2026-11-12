@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 29,
+  "listed_player_count": 34,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6552,
-      "matched": 19,
-      "no_current_season_row": 10,
+      "complete_coverage_rate": 0.6471,
+      "matched": 22,
+      "no_current_season_row": 12,
       "partial": 0,
-      "player_count": 29,
+      "player_count": 34,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -322,7 +322,7 @@
       "usg_pct_rank": 13
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -3.2,
       "dbpm_rank": 437,
       "game_date": "2026-11-12",
@@ -341,7 +341,7 @@
       "usg_pct_rank": 457
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 2.0,
       "dbpm_rank": 47,
       "game_date": "2026-11-12",
@@ -486,7 +486,7 @@
       "obpm": -8.2,
       "obpm_rank": 438,
       "player_name": "Adem Bona",
-      "reason": "Injury/Illness - Cervical Spine Sprain Injury/Illness - Right Foot Plantar",
+      "reason": "Injury/Illness - Cervical Spine Sprain",
       "team_abbreviation": "PHI",
       "team_name": "Philadelphia 76ers",
       "usg_pct": 10.7,
@@ -543,14 +543,14 @@
       "obpm": -2.5,
       "obpm_rank": 307,
       "player_name": "Joel Embiid",
-      "reason": "Fascia Injury Management Injury/Illness - Right Achilles Tendon",
+      "reason": "Injury/Illness - Right Foot Plantar",
       "team_abbreviation": "PHI",
       "team_name": "Philadelphia 76ers",
       "usg_pct": 27.9,
       "usg_pct_rank": 45
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": 1.8,
       "dbpm_rank": 59,
       "game_date": "2026-11-12",
@@ -586,13 +586,108 @@
       "team_name": "Phoenix Suns",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 2.8,
+      "dbpm_rank": 27,
+      "game_date": "2026-11-12",
+      "game_time_et": null,
+      "matchup": "TOR@PHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 26.0,
+      "minutes_per_game_rank": 131,
+      "obpm": -1.7,
+      "obpm_rank": 266,
+      "player_name": "Kawhi Leonard",
+      "reason": "Management",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 35.8,
+      "usg_pct_rank": 8
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-12",
+      "game_time_et": null,
+      "matchup": "TOR@PHI",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Kevin McCullar Jr.",
+      "reason": "G League - Two-Way Injury/Illness - Low Back Stress",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-12",
+      "game_time_et": null,
+      "matchup": "TOR@PHI",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Nate Bittle",
+      "reason": "Fracture",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.1,
+      "dbpm_rank": 189,
+      "game_date": "2026-11-12",
+      "game_time_et": null,
+      "matchup": "TOR@PHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 33.25,
+      "minutes_per_game_rank": 31,
+      "obpm": 0.8,
+      "obpm_rank": 138,
+      "player_name": "Scottie Barnes",
+      "reason": "Injury/Illness - Left Groin Strain Injury/Illness - Right Foot Avulsion",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 32.4,
+      "usg_pct_rank": 14
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 3.5,
+      "dbpm_rank": 15,
+      "game_date": "2026-11-12",
+      "game_time_et": null,
+      "matchup": "TOR@PHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 7.444444444444445,
+      "minutes_per_game_rank": 381,
+      "obpm": 3.3,
+      "obpm_rank": 58,
+      "player_name": "Trayce Jackson-Davis",
+      "reason": "Injury/Illness - Illness Injury/Illness - Left Knee Injury",
+      "team_abbreviation": "TOR",
+      "team_name": "Toronto Raptors",
+      "usg_pct": 12.9,
+      "usg_pct_rank": 380
     }
   ],
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-12",
-    "report_time_et": "2026-11-12 12:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_12_00PM.pdf"
+    "report_time_et": "2026-11-12 01:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_01_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -976,15 +1071,15 @@
       "team_name": "San Antonio Spurs"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 5,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-12",
           "game_time_et": null,
           "matchup": "TOR@PHI",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 5,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "TOR",
