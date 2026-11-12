@@ -1,3 +1,4 @@
+import { pairMissingMovementOdds } from '../../base44/shared/pairedMarketOdds.ts';
 // NFL ScoresAndOdds line-movement parser for the standalone publisher.
 // Uses native fetch + targeted HTML parsing; no Base44 cache dependency.
 
@@ -266,6 +267,7 @@ function parseNFLLineMovementDetail(html, gameId, request = {}) {
   }
 
   rows = cleanParsedMovementRows(rows);
+  rows = pairMissingMovementOdds(html, rows, gameId);
 
   if (!rows.length) return null;
 
@@ -290,7 +292,9 @@ function parseNFLLineMovementDetail(html, gameId, request = {}) {
       away: row.awaySpread,
       home: row.homeSpread,
       awaySpreadOdds: row.awaySpreadOdds,
+      awaySpreadOddsEstimated: row.awaySpreadOddsEstimated ?? false,
       homeSpreadOdds: row.homeSpreadOdds,
+      homeSpreadOddsEstimated: row.homeSpreadOddsEstimated ?? false,
     }));
 
   const total = rows
@@ -301,7 +305,9 @@ function parseNFLLineMovementDetail(html, gameId, request = {}) {
       total: row.total,
       line: row.total,
       overOdds: row.overOdds,
+      overOddsEstimated: row.overOddsEstimated ?? false,
       underOdds: row.underOdds,
+      underOddsEstimated: row.underOddsEstimated ?? false,
       awayTotalOdds: row.overOdds,
       homeTotalOdds: row.underOdds,
     }));

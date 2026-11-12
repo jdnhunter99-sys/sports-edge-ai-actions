@@ -1,3 +1,4 @@
+import { pairMissingMovementOdds } from '../../base44/shared/pairedMarketOdds.ts';
 import { mapWithConcurrency, fetchWithTimeout } from '../../base44/shared/upstream.ts';
 
 // ScoresAndOdds per-game detail pages: bounded fan-out (see shared/upstream.ts).
@@ -231,6 +232,7 @@ function parseMLBLineMovementDetail(html, gameId, gameDate) {
   }
 
   rows = cleanParsedMovementRows(rows);
+  rows = pairMissingMovementOdds(html, rows, gameId);
 
   if (!rows.length) return null;
 
@@ -255,7 +257,9 @@ function parseMLBLineMovementDetail(html, gameId, gameDate) {
       away: row.awaySpread,
       home: row.homeSpread,
       awaySpreadOdds: row.awaySpreadOdds,
+      awaySpreadOddsEstimated: row.awaySpreadOddsEstimated ?? false,
       homeSpreadOdds: row.homeSpreadOdds,
+      homeSpreadOddsEstimated: row.homeSpreadOddsEstimated ?? false,
     }));
 
   const totalMovement = rows
@@ -266,7 +270,9 @@ function parseMLBLineMovementDetail(html, gameId, gameDate) {
       total: row.total,
       line: row.total,
       overOdds: row.overOdds,
+      overOddsEstimated: row.overOddsEstimated ?? false,
       underOdds: row.underOdds,
+      underOddsEstimated: row.underOddsEstimated ?? false,
       awayTotalOdds: row.overOdds,
       homeTotalOdds: row.underOdds,
     }));

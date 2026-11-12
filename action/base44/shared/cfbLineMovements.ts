@@ -1,6 +1,7 @@
 // Shared ScoresAndOdds NCAAF line-movement parser used by both the standalone
 // fetchCFBLineMovements function and the scheduled SportOddsBundle cache.
 import { normalizeCFBSchool } from './cfbTeamIdentity.ts';
+import { pairMissingMovementOdds } from './pairedMarketOdds.ts';
 import { canonicalCfbTeam } from './cfbOddsTeams.ts';
 
 const RESPONSE_CACHE = new Map();
@@ -306,16 +307,19 @@ function parseLineMovementDetail(html: string, gameId: string, request: any) {
     awayTeam: htmlTeams.awayTeam || request.boardAwayTeam || null,
     homeTeam: htmlTeams.homeTeam || request.boardHomeTeam || null,
   };
+  const awayAbbr = canonicalCfbTeam(teams.awayTeam)?.abbr || normalizeCFBSchool(teams.awayTeam || '');
+  const homeAbbr = canonicalCfbTeam(teams.homeTeam)?.abbr || normalizeCFBSchool(teams.homeTeam || '');
 
-  let rows = parseTableRows(movementHtml);
-  if (!rows.length) rows = parseFlattenedText(text);
+  let rows = parseTableRows(movementHtml, { awayAbbr, homeAbbr });
+  if (!rows.length) rows = parseFlattenedText(text, { awayAbbr, homeAbbr });
   rows = cleanMovementRows(rows);
+  rows = pairMissingMovementOdds(html, rows, gameId);
 
   if (!rows.length) return null;
 
   const moneyline = rows.filter((r) => r.awayML != null || r.homeML != null).map((r) => ({ time: r.time, label: formatLabel(r.time), awayML: r.awayML, homeML: r.homeML, away: r.awayML, home: r.homeML }));
-  const spread = rows.filter((r) => r.awaySpread != null || r.homeSpread != null).map((r) => ({ time: r.time, label: formatLabel(r.time), awaySpread: r.awaySpread, homeSpread: r.homeSpread, away: r.awaySpread, home: r.homeSpread, awaySpreadOdds: r.awaySpreadOdds, homeSpreadOdds: r.homeSpreadOdds }));
-  const total = rows.filter((r) => r.total != null).map((r) => ({ time: r.time, label: formatLabel(r.time), total: r.total, line: r.total, overOdds: r.overOdds, underOdds: r.underOdds, awayTotalOdds: r.overOdds, homeTotalOdds: r.underOdds }));
+  const spread = rows.filter((r) => r.awaySpread != null || r.homeSpread != null).map((r) => ({ time: r.time, label: formatLabel(r.time), awaySpread: r.awaySpread, homeSpread: r.homeSpread, away: r.awaySpread, home: r.homeSpread, awaySpreadOdds: r.awaySpreadOdds, homeSpreadOdds: r.homeSpreadOdds, awaySpreadOddsEstimated: r.awaySpreadOddsEstimated ?? false, homeSpreadOddsEstimated: r.homeSpreadOddsEstimated ?? false }));
+  const total = rows.filter((r) => r.total != null).map((r) => ({ time: r.time, label: formatLabel(r.time), total: r.total, line: r.total, overOdds: r.overOdds, underOdds: r.underOdds, awayTotalOdds: r.overOdds, homeTotalOdds: r.underOdds, overOddsEstimated: r.overOddsEstimated ?? false, underOddsEstimated: r.underOddsEstimated ?? false }));
 
   const opening = rows[0];
   const current = rows[rows.length - 1];
@@ -341,7 +345,7 @@ function parseLineMovementDetail(html: string, gameId: string, request: any) {
   };
 }
 
-function parseTableRows(html: string) {
+function parseTableRows(html: string, teams: { awayAbbr: string; homeAbbr: string }) {
   const out: any[] = [];
   const rowPattern = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
   let rowMatch;
@@ -353,7 +357,7 @@ function parseTableRows(html: string) {
     const rowText = squashWhitespace(cells.join(' | '));
     const mlMatches = [...rowHtml.matchAll(/<span[^>]*class=["'][^"']*data-moneyline[^"']*["'][^>]*>\s*([+-]?\d+|even)\s*<\/span>/gi)];
     if (mlMatches.length < 2) continue;
-    const spreadInfo = parseSpreadFromText(rowText);
+    const spreadInfo = parseSpreadFromText(rowText, teams);
     const totalInfo = parseTotalFromText(rowText);
     const awayML = parseMoneylineValue(mlMatches[mlMatches.length - 2]?.[1]);
     const homeML = parseMoneylineValue(mlMatches[mlMatches.length - 1]?.[1]);
@@ -363,7 +367,7 @@ function parseTableRows(html: string) {
   return out;
 }
 
-function parseFlattenedText(text: string) {
+function parseFlattenedText(text: string, teams: { awayAbbr: string; homeAbbr: string }) {
   const out: any[] = [];
   const headerMatch = /Time\s+Spread\s+Total\s+\S+\s+ML\s+\S+\s+ML/i.exec(text);
   if (!headerMatch) return out;
@@ -377,7 +381,7 @@ function parseFlattenedText(text: string) {
     const end = starts[i + 1]?.index ?? Math.min(section.length, start.index + 200);
     const chunk = squashWhitespace(section.slice(start.index, end));
     const withoutTime = squashWhitespace(chunk.replace(start.value, ''));
-    const spreadInfo = parseSpreadFromText(withoutTime);
+    const spreadInfo = parseSpreadFromText(withoutTime, teams);
     const totalInfo = parseTotalFromText(withoutTime);
     const mlMatches = [...withoutTime.matchAll(/(?:^|\s)([+-]\d{2,4}|even)(?=\s|$)/gi)].map((x) => x[1]);
     const lastTwo = mlMatches.slice(-2);
@@ -389,16 +393,29 @@ function parseFlattenedText(text: string) {
   return out;
 }
 
-function parseSpreadFromText(text: string) {
+function parseSpreadFromText(text: string, teams: { awayAbbr?: string; homeAbbr?: string } = {}) {
   const result = { awaySpread: null, homeSpread: null, awaySpreadOdds: null, homeSpreadOdds: null };
   const match = /\b([+-]?\d+(?:\.5)?|PK)\s+([+-]\d{2,4})\b/i.exec(text);
   if (!match) return result;
   const line = parseLineNumber(match[1]);
   const odds = parseMoneylineValue(match[2]);
   if (line == null) return result;
-  result.homeSpread = line;
-  result.awaySpread = -line;
-  result.homeSpreadOdds = odds;
+
+  // The historical row names the side whose spread price is being recorded.
+  // Use that team label when available so the price is assigned to the right
+  // away/home side before pairing the missing counterpart.
+  const beforeLine = String(text).slice(0, match.index);
+  const spreadCell = beforeLine.split('|').pop()?.trim() || '';
+  const namedTeam = canonicalCfbTeam(spreadCell)?.abbr || normalizeCFBSchool(spreadCell);
+  if (namedTeam && namedTeam === teams.awayAbbr) {
+    result.awaySpread = line;
+    result.homeSpread = -line;
+    result.awaySpreadOdds = odds;
+  } else {
+    result.homeSpread = line;
+    result.awaySpread = -line;
+    result.homeSpreadOdds = odds;
+  }
   return result;
 }
 
@@ -466,7 +483,18 @@ function cleanMovementRows(rows: any[]) {
   const cleaned: any[] = [];
   for (const row of sorted) {
     const prev = cleaned[cleaned.length - 1];
-    if (prev && prev.awayML === row.awayML && prev.homeML === row.homeML && prev.awaySpread === row.awaySpread && prev.total === row.total) continue;
+    if (
+      prev &&
+      prev.awayML === row.awayML &&
+      prev.homeML === row.homeML &&
+      prev.awaySpread === row.awaySpread &&
+      prev.homeSpread === row.homeSpread &&
+      prev.awaySpreadOdds === row.awaySpreadOdds &&
+      prev.homeSpreadOdds === row.homeSpreadOdds &&
+      prev.total === row.total &&
+      prev.overOdds === row.overOdds &&
+      prev.underOdds === row.underOdds
+    ) continue;
     cleaned.push(row);
   }
   return cleaned;

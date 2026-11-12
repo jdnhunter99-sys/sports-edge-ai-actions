@@ -288,7 +288,7 @@ def load_injuries():
 
 def status_key(value):
     status = str(value or '').strip().lower()
-    if 'out' in status or 'injured reserve' in status or 'reserve/injured' in status or 'physically unable' in status or status == 'pup': return 'out'
+    if 'out' in status or 'injured reserve' in status or 'reserve/injured' in status or 'physically unable' in status or 'non-football injury' in status or 'reserve: exemption' in status or status == 'pup': return 'out'
     if 'doubt' in status: return 'doubtful'
     if 'question' in status: return 'questionable'
     if 'prob' in status: return 'probable'

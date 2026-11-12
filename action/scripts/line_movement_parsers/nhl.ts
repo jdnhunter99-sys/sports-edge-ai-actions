@@ -1,3 +1,4 @@
+import { pairMissingMovementOdds } from '../../base44/shared/pairedMarketOdds.ts';
 // base44/functions/fetchNHLLineMovements/entry.ts
 // NHL ScoresAndOdds line movement function.
 // Built to mirror the working NFL line movement parser, adjusted for /nhl.
@@ -211,6 +212,7 @@ function parseNHLLineMovementDetail(html, gameId, gameDate, requestedTeams = {})
   }
 
   rows = cleanParsedMovementRows(rows);
+  rows = pairMissingMovementOdds(html, rows, gameId);
   if (!rows.length) return null;
 
   const moneylineMovement = rows
@@ -234,7 +236,9 @@ function parseNHLLineMovementDetail(html, gameId, gameDate, requestedTeams = {})
       away: row.awaySpread,
       home: row.homeSpread,
       awaySpreadOdds: row.awaySpreadOdds,
+      awaySpreadOddsEstimated: row.awaySpreadOddsEstimated ?? false,
       homeSpreadOdds: row.homeSpreadOdds,
+      homeSpreadOddsEstimated: row.homeSpreadOddsEstimated ?? false,
     }));
 
   const totalMovement = rows
@@ -245,7 +249,9 @@ function parseNHLLineMovementDetail(html, gameId, gameDate, requestedTeams = {})
       total: row.total,
       line: row.total,
       overOdds: row.overOdds,
+      overOddsEstimated: row.overOddsEstimated ?? false,
       underOdds: row.underOdds,
+      underOddsEstimated: row.underOddsEstimated ?? false,
       awayTotalOdds: row.overOdds,
       homeTotalOdds: row.underOdds,
     }));
