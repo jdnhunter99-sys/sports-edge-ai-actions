@@ -1,14 +1,24 @@
 {
-  "fetched_at": "2026-11-12T22:05:11.958671+00:00",
+  "fetched_at": "2026-11-12T23:03:40.714098+00:00",
   "complete": true,
   "registry_team_count": 138,
   "requested_teams": 138,
-  "successful_teams": 137,
-  "refreshed_teams": 137,
-  "stale_teams": 1,
+  "successful_teams": 135,
+  "refreshed_teams": 135,
+  "stale_teams": 3,
   "errors": [
     {
-      "team_slug": "louisville",
+      "team_slug": "mississippi-state",
+      "error": "Invalid API response",
+      "using_last_known_data": true
+    },
+    {
+      "team_slug": "rice",
+      "error": "Invalid API response",
+      "using_last_known_data": true
+    },
+    {
+      "team_slug": "wmu",
       "error": "Invalid API response",
       "using_last_known_data": true
     }
@@ -694,8 +704,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:17.533Z",
-      "fetched_at": "2026-11-12T22:04:17.610395+00:00",
+      "source_timestamp": "2026-11-12T23:02:48.786Z",
+      "fetched_at": "2026-11-12T23:02:48.847885+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1i306mpNEcSrKCBn39bs9LdJaFdVsB9l8z2KMLKJxltc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/air-force/injury-status"
     },
@@ -2519,8 +2529,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:37.349Z",
-      "fetched_at": "2026-11-12T22:04:38.110278+00:00",
+      "source_timestamp": "2026-11-12T23:03:11.950Z",
+      "fetched_at": "2026-11-12T23:03:12.937390+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1C68UkzlObBXUhsK7Pt1zf5kqb7Vy_G7rrrD-2y3wswo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/akron/injury-status"
     },
@@ -3207,8 +3217,8 @@
         }
       ],
       "warnings": [],
-      "source_timestamp": "2026-11-12T22:02:50.009Z",
-      "fetched_at": "2026-11-12T22:02:50.848335+00:00",
+      "source_timestamp": "2026-11-12T23:01:14.278Z",
+      "fetched_at": "2026-11-12T23:01:14.387846+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/12jj5lTJkL19Sw-2R-Pf6eC7hVqZsRZOcwE74oDVXX9U/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/alabama/injury-status"
     },
@@ -4222,8 +4232,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:55.454Z",
-      "fetched_at": "2026-11-12T22:04:56.531203+00:00",
+      "source_timestamp": "2026-11-12T23:03:25.621Z",
+      "fetched_at": "2026-11-12T23:03:26.902417+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1lbYIwc-dHyUmVsE6KPTrKwFbY6toL4d4t6xm_8cV57k/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/app-state/injury-status"
     },
@@ -5867,8 +5877,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:24.993Z",
-      "fetched_at": "2026-11-12T22:03:26.052881+00:00",
+      "source_timestamp": "2026-11-12T23:01:50.728Z",
+      "fetched_at": "2026-11-12T23:01:51.915476+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1UOIm15-S7j-2V-hX1kPNgVIdryp8AJ32EfdTAmgWdxo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/arizona/injury-status"
     },
@@ -7092,8 +7102,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:25.237Z",
-      "fetched_at": "2026-11-12T22:03:27.106056+00:00",
+      "source_timestamp": "2026-11-12T23:01:52.924Z",
+      "fetched_at": "2026-11-12T23:01:54.017931+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1GoSx5mY4lZpwcw3auswzwPk8JF9A3_RscCzGZV98ies/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/arizona-state/injury-status"
     },
@@ -7567,8 +7577,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:54.258Z",
-      "fetched_at": "2026-11-12T22:04:55.133878+00:00",
+      "source_timestamp": "2026-11-12T23:03:25.555Z",
+      "fetched_at": "2026-11-12T23:03:26.688098+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1nsLgfhMslZsiSzwZcvEVz06nmwL7in0aWHjSwKHzwxg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ark-state/injury-status"
     },
@@ -8672,8 +8682,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:50.734Z",
-      "fetched_at": "2026-11-12T22:02:51.816094+00:00",
+      "source_timestamp": "2026-11-12T23:01:13.464Z",
+      "fetched_at": "2026-11-12T23:01:14.761138+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/165PAmaTAWvJvJi7HMQnZpJK7rm9clb1zDlabLBtBR8A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/arkansas/injury-status"
     },
@@ -10017,8 +10027,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:05.046Z",
-      "fetched_at": "2026-11-12T22:04:06.176240+00:00",
+      "source_timestamp": "2026-11-12T23:02:33.666Z",
+      "fetched_at": "2026-11-12T23:02:34.503678+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1BW-hlcHIwqc8ePeTU_66j8MhJ_fluW8VHDoIpAaIBnA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/army/injury-status"
     },
@@ -10852,8 +10862,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:52.370Z",
-      "fetched_at": "2026-11-12T22:02:53.407464+00:00",
+      "source_timestamp": "2026-11-12T23:01:15.787Z",
+      "fetched_at": "2026-11-12T23:01:17.269585+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1OHB8Oki3HsSJniqcRD4_SBk_YpBN6SIvvrW_iLguu7Q/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/auburn/injury-status"
     },
@@ -12347,8 +12357,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:39.682Z",
-      "fetched_at": "2026-11-12T22:04:40.820864+00:00",
+      "source_timestamp": "2026-11-12T23:03:12.797Z",
+      "fetched_at": "2026-11-12T23:03:13.932726+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1rYfrb9tbQtwKSETlfjHp-EMcXfSNMhRuuVmUzwuTSco/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ball-state/injury-status"
     },
@@ -13002,8 +13012,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:27.040Z",
-      "fetched_at": "2026-11-12T22:03:28.388078+00:00",
+      "source_timestamp": "2026-11-12T23:01:53.607Z",
+      "fetched_at": "2026-11-12T23:01:54.533341+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vcUrkCZohNjhV0dRTEd1GTu-d4Ufea44mdVZ0ClxIfY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/baylor/injury-status"
     },
@@ -14407,8 +14417,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:43.031Z",
-      "fetched_at": "2026-11-12T22:03:43.780646+00:00",
+      "source_timestamp": "2026-11-12T23:02:09.060Z",
+      "fetched_at": "2026-11-12T23:02:09.786275+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Q_xPvCj3xfa3e6bpQmz6LM61-5Db0DYpDDRYmFxhFDA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/bc/injury-status"
     },
@@ -15542,8 +15552,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:40.667Z",
-      "fetched_at": "2026-11-12T22:04:41.652990+00:00",
+      "source_timestamp": "2026-11-12T23:03:14.073Z",
+      "fetched_at": "2026-11-12T23:03:15.124632+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1qK4M7ywH4qDvUSpz5aUuhbavOLEGj3I4juQj7UUsC40/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/bgsu/injury-status"
     },
@@ -16317,8 +16327,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:57.146Z",
-      "fetched_at": "2026-11-12T22:03:55.771265+00:00",
+      "source_timestamp": "2026-11-12T23:02:23.160Z",
+      "fetched_at": "2026-11-12T23:02:24.110126+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/12z1DWRqwb8ra8uDnihNby-qvE3XIJh3cFXmhCVncBPM/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/boise/injury-status"
     },
@@ -17962,8 +17972,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:41.647Z",
-      "fetched_at": "2026-11-12T22:04:42.515045+00:00",
+      "source_timestamp": "2026-11-12T23:03:15.374Z",
+      "fetched_at": "2026-11-12T23:03:16.500348+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1D5uQYHG-agpPULqxe83vMcIN6kX-mibSaa9BpwYNhwI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/buffalo/injury-status"
     },
@@ -19277,8 +19287,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:28.166Z",
-      "fetched_at": "2026-11-12T22:03:29.038588+00:00",
+      "source_timestamp": "2026-11-12T23:01:54.984Z",
+      "fetched_at": "2026-11-12T23:01:55.788251+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1y1ppN-mbXD4KMcTAMERYE63lVc1kjDotyveNmVx9xP8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/byu/injury-status"
     },
@@ -20742,8 +20752,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:43.842Z",
-      "fetched_at": "2026-11-12T22:03:43.926444+00:00",
+      "source_timestamp": "2026-11-12T23:02:10.044Z",
+      "fetched_at": "2026-11-12T23:02:10.997830+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1gE6YHMiqzfL9EyauiWp9KRZ6X94_9feQUnNR0VvT05k/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/cal/injury-status"
     },
@@ -21427,8 +21437,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:06.642Z",
-      "fetched_at": "2026-11-12T22:04:07.548686+00:00",
+      "source_timestamp": "2026-11-12T23:02:33.984Z",
+      "fetched_at": "2026-11-12T23:02:34.890976+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/19u1TFI18Z7YoJmeZEL3JU3VriCPhQeqXm9IRrCIGnfk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/charlotte/injury-status"
     },
@@ -22442,8 +22452,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:29.502Z",
-      "fetched_at": "2026-11-12T22:03:30.909690+00:00",
+      "source_timestamp": "2026-11-12T23:01:56.363Z",
+      "fetched_at": "2026-11-12T23:01:57.527538+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1z_6SWvl03Nh4paRN5KynL8lX8uUZG03INHv98B0bdzs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/cincinnati/injury-status"
     },
@@ -22470,7 +22480,7 @@
           "impact": 0,
           "update_date": "2026-09-16",
           "update_date_raw": "9/16/2026",
-          "notes": "Had surgery on his lower leg that will keep him off the field the entire 2026 season.",
+          "notes": "The senior walk-on is recovering from surgery after a shin injury cost him all of 2025. Dabo Swinney put him in the long-term category in August, and he is not expected to play in 2026.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22487,7 +22497,7 @@
             "Col7": "5.1",
             "Col8": "0",
             "Col9": "9/16/2026",
-            "Col10": "Had surgery on his lower leg that will keep him off the field the entire 2026 season.",
+            "Col10": "The senior walk-on is recovering from surgery after a shin injury cost him all of 2025. Dabo Swinney put him in the long-term category in August, and he is not expected to play in 2026.",
             "Col11": "0"
           }
         },
@@ -22500,7 +22510,7 @@
           "impact": 0,
           "update_date": "2026-09-20",
           "update_date_raw": "9/20/2026",
-          "notes": "Torn meniscus in workouts plus a lingering high school injury, \"he's going to be out for a significant amount of time anyway,\" expected to miss the entire 2026 season.",
+          "notes": "The true freshman tore his meniscus in summer workouts and is also being treated for a lingering high school injury. The meniscus has been repaired, but Dabo Swinney does not expect him to play in 2026.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22517,7 +22527,7 @@
             "Col7": "10.8",
             "Col8": "0",
             "Col9": "9/20/2026",
-            "Col10": "Torn meniscus in workouts plus a lingering high school injury, \"he's going to be out for a significant amount of time anyway,\" expected to miss the entire 2026 season.",
+            "Col10": "The true freshman tore his meniscus in summer workouts and is also being treated for a lingering high school injury. The meniscus has been repaired, but Dabo Swinney does not expect him to play in 2026.",
             "Col11": "0"
           }
         },
@@ -22530,7 +22540,7 @@
           "impact": 0,
           "update_date": "2026-09-11",
           "update_date_raw": "9/11/2026",
-          "notes": "Anderson will miss the 2026 season after tearing his ACL during fall camp.",
+          "notes": "Tore his ACL in practice on Aug. 14, and Dabo Swinney confirmed a clean tear after the next day's scrimmage. The freshman safety had been in line for a significant role and will miss the season after surgery.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22547,7 +22557,7 @@
             "Col7": "12.6",
             "Col8": "0",
             "Col9": "9/11/2026",
-            "Col10": "Anderson will miss the 2026 season after tearing his ACL during fall camp.",
+            "Col10": "Tore his ACL in practice on Aug. 14, and Dabo Swinney confirmed a clean tear after the next day's scrimmage. The freshman safety had been in line for a significant role and will miss the season after surgery.",
             "Col11": "0"
           }
         },
@@ -22560,7 +22570,7 @@
           "impact": 2,
           "update_date": "2026-09-27",
           "update_date_raw": "9/27/2026",
-          "notes": "Swinney on Sunday: \"He'll be out for the year. Similar surgery to what Markus Strong had to have.\"",
+          "notes": "Injured his lower left leg while blocking on a kickoff return in the first quarter of the 24-10 win at Cal on Sept. 25 and left on a cart in an air cast. Dabo Swinney ruled him out for the year two days later and said the surgery is similar to the one Markus Strong needed.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22577,7 +22587,7 @@
             "Col7": "10.8",
             "Col8": "2",
             "Col9": "9/27/2026",
-            "Col10": "Swinney on Sunday: \"He'll be out for the year. Similar surgery to what Markus Strong had to have.\"",
+            "Col10": "Injured his lower left leg while blocking on a kickoff return in the first quarter of the 24-10 win at Cal on Sept. 25 and left on a cart in an air cast. Dabo Swinney ruled him out for the year two days later and said the surgery is similar to the one Markus Strong needed.",
             "Col11": "0"
           }
         },
@@ -22590,7 +22600,7 @@
           "impact": 2,
           "update_date": "2026-09-08",
           "update_date_raw": "9/8/2026",
-          "notes": "Out for the season after suffering a lower-leg injury against LSU.",
+          "notes": "Suffered a lower-leg injury that required surgery in the Sept. 5 opener at LSU and has not played since. Dabo Swinney first said he was probably done for the year but said on Nov. 3 that he hopes to have him back for South Carolina on Nov. 28.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22607,7 +22617,7 @@
             "Col7": "12.2",
             "Col8": "2",
             "Col9": "9/8/2026",
-            "Col10": "Out for the season after suffering a lower-leg injury against LSU.",
+            "Col10": "Suffered a lower-leg injury that required surgery in the Sept. 5 opener at LSU and has not played since. Dabo Swinney first said he was probably done for the year but said on Nov. 3 that he hopes to have him back for South Carolina on Nov. 28.",
             "Col11": "0"
           }
         },
@@ -22620,7 +22630,7 @@
           "impact": 2,
           "update_date": "2026-10-07",
           "update_date_raw": "10/7/2026",
-          "notes": "A meniscus injury will end his 2026 season following week five.",
+          "notes": "Aggravated a knee injury in the Oct. 3 loss to Miami, and a follow-up MRI showed damage that requires surgery. The Week 1 starter at nickel faces a three-to-four-month recovery and is out for the season.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22637,7 +22647,37 @@
             "Col7": "11.8",
             "Col8": "2",
             "Col9": "10/7/2026",
-            "Col10": "A meniscus injury will end his 2026 season following week five.",
+            "Col10": "Aggravated a knee injury in the Oct. 3 loss to Miami, and a follow-up MRI showed damage that requires surgery. The Week 1 starter at nickel faces a three-to-four-month recovery and is out for the season.",
+            "Col11": "0"
+          }
+        },
+        {
+          "player": "Braden Wilmes",
+          "status": "OFS",
+          "position": "OL",
+          "is_new": false,
+          "rating": 10,
+          "impact": 0,
+          "update_date": "2026-11-04",
+          "update_date_raw": "11/4/2026",
+          "notes": "Tore his ACL in practice on Nov. 4 and is out for the season. Dabo Swinney called the loss of his freshman backup tackle a big one for the line's depth.",
+          "lw_raw": "0",
+          "injury_type": "",
+          "confirmed": null,
+          "return_timeframe": "",
+          "original_injury_date": null,
+          "projected_return": null,
+          "raw_columns": {
+            "Col1": "Braden Wilmes",
+            "Col2": "",
+            "Col3": "",
+            "Col4": "OFS",
+            "Col5": "OL",
+            "Col6": "FALSE",
+            "Col7": "10.0",
+            "Col8": "0",
+            "Col9": "11/4/2026",
+            "Col10": "Tore his ACL in practice on Nov. 4 and is out for the season. Dabo Swinney called the loss of his freshman backup tackle a big one for the line's depth.",
             "Col11": "0"
           }
         },
@@ -22650,7 +22690,7 @@
           "impact": 0,
           "update_date": "2026-10-01",
           "update_date_raw": "10/1/2026",
-          "notes": "Undisclosed injury; DNP Week 5 vs. Miami.",
+          "notes": "Has been listed as out with an undisclosed injury since at least the Oct. 3 Miami game. The freshman cornerback remains out for the Nov. 14 game against Georgia Tech with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22667,7 +22707,7 @@
             "Col7": "10.0",
             "Col8": "0",
             "Col9": "10/1/2026",
-            "Col10": "Undisclosed injury; DNP Week 5 vs. Miami.",
+            "Col10": "Has been listed as out with an undisclosed injury since at least the Oct. 3 Miami game. The freshman cornerback remains out for the Nov. 14 game against Georgia Tech with no timetable given.",
             "Col11": "0"
           }
         },
@@ -22680,7 +22720,7 @@
           "impact": 1,
           "update_date": "2026-10-01",
           "update_date_raw": "10/1/2026",
-          "notes": "Said to be 'away from the team' as he deals with a personal matter. No timetable for his return. DNP Week 5 vs. Miami.",
+          "notes": "Practiced on the first day of fall camp, then stepped away from the team to handle a personal matter with the program's support. Dabo Swinney said on Nov. 4 that the fifth-year receiver is doing fine and remains on the team but is not with the program right now.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22697,7 +22737,7 @@
             "Col7": "11.3",
             "Col8": "1",
             "Col9": "10/1/2026",
-            "Col10": "Said to be 'away from the team' as he deals with a personal matter. No timetable for his return. DNP Week 5 vs. Miami.",
+            "Col10": "Practiced on the first day of fall camp, then stepped away from the team to handle a personal matter with the program's support. Dabo Swinney said on Nov. 4 that the fifth-year receiver is doing fine and remains on the team but is not with the program right now.",
             "Col11": "0"
           }
         },
@@ -22710,7 +22750,7 @@
           "impact": 0,
           "update_date": "2026-10-01",
           "update_date_raw": "10/1/2026",
-          "notes": "Undisclosed injury; DNP Week 5 vs. Miami.",
+          "notes": "Has been listed as out with an undisclosed injury since at least the Oct. 3 Miami game. The offensive lineman remains out for the Nov. 14 game against Georgia Tech with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22727,7 +22767,7 @@
             "Col7": "10.8",
             "Col8": "0",
             "Col9": "10/1/2026",
-            "Col10": "Undisclosed injury; DNP Week 5 vs. Miami.",
+            "Col10": "Has been listed as out with an undisclosed injury since at least the Oct. 3 Miami game. The offensive lineman remains out for the Nov. 14 game against Georgia Tech with no timetable given.",
             "Col11": "0"
           }
         },
@@ -22740,7 +22780,7 @@
           "impact": 2,
           "update_date": "2026-10-21",
           "update_date_raw": "10/21/2026",
-          "notes": "Official report 2026-10-21: out. Game 2026-10-24. Previous context: DNP Week 5 vs. Miami.",
+          "notes": "Played against LSU and Georgia Southern before pain returned around the rod in his leg from a previous injury. Dabo Swinney said on Oct. 29 that he will take a medical hardship and needs another surgery, which ends his season.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22757,7 +22797,7 @@
             "Col7": "9.5",
             "Col8": "2",
             "Col9": "10/21/2026",
-            "Col10": "Official report 2026-10-21: out. Game 2026-10-24. Previous context: DNP Week 5 vs. Miami.",
+            "Col10": "Played against LSU and Georgia Southern before pain returned around the rod in his leg from a previous injury. Dabo Swinney said on Oct. 29 that he will take a medical hardship and needs another surgery, which ends his season.",
             "Col11": "0"
           }
         },
@@ -22770,7 +22810,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14. Previous context: Official report 2026-11-06: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-30: out. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-21: out. Game 2026-10-24.",
+          "notes": "Suffered a concussion that cost him the Virginia Tech and Florida State games, then had a setback in practice and missed the Nov. 7 trip to Syracuse. The freshman receiver is probable to return on Nov. 14 against Georgia Tech.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22787,7 +22827,7 @@
             "Col7": "11.3",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14. Previous context: Official report 2026-11-06: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-30: out. Game 2026-10-31. Previous context: Official report 2026-10-28: questionable. Game 2026-10-31. Previous context: Official report 2026-10-21: out. Game 2026-10-24.",
+            "Col10": "Suffered a concussion that cost him the Virginia Tech and Florida State games, then had a setback in practice and missed the Nov. 7 trip to Syracuse. The freshman receiver is probable to return on Nov. 14 against Georgia Tech.",
             "Col11": "0"
           }
         },
@@ -22800,7 +22840,7 @@
           "impact": 1,
           "update_date": "2026-11-10",
           "update_date_raw": "11/10/2026",
-          "notes": "Update 2026-11-10: Reported injury: ankle injury. His game availability is questionable. He is dealing with an ankle injury. Previous context: Official report 2026-11-06: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07.",
+          "notes": "Rolled his ankle catching a pass in practice on Nov. 3 and missed the 18-13 win at Syracuse, though the injury does not require surgery. Dabo Swinney called him day-to-day, and he is questionable for the Nov. 14 game against Georgia Tech.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22817,7 +22857,7 @@
             "Col7": "12.3",
             "Col8": "1",
             "Col9": "11/10/2026",
-            "Col10": "Update 2026-11-10: Reported injury: ankle injury. His game availability is questionable. He is dealing with an ankle injury. Previous context: Official report 2026-11-06: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07.",
+            "Col10": "Rolled his ankle catching a pass in practice on Nov. 3 and missed the 18-13 win at Syracuse, though the injury does not require surgery. Dabo Swinney called him day-to-day, and he is questionable for the Nov. 14 game against Georgia Tech.",
             "Col11": "0"
           }
         },
@@ -22830,7 +22870,7 @@
           "impact": 1,
           "update_date": "2026-11-10",
           "update_date_raw": "11/10/2026",
-          "notes": "Update 2026-11-10: Reported injury: ankle injury. His game availability is questionable. He is dealing with an ankle injury. Previous context: Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "Suffered a low-grade ankle sprain in the Oct. 31 win at Florida State and sat out the trip to Syracuse a week later. The team's leading rusher is day-to-day and questionable for the Nov. 14 game against Georgia Tech, with Jarvis Green set to start if he cannot go.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22847,7 +22887,7 @@
             "Col7": "13.5",
             "Col8": "1",
             "Col9": "11/10/2026",
-            "Col10": "Update 2026-11-10: Reported injury: ankle injury. His game availability is questionable. He is dealing with an ankle injury. Previous context: Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "Suffered a low-grade ankle sprain in the Oct. 31 win at Florida State and sat out the trip to Syracuse a week later. The team's leading rusher is day-to-day and questionable for the Nov. 14 game against Georgia Tech, with Jarvis Green set to start if he cannot go.",
             "Col11": "0"
           }
         },
@@ -22860,7 +22900,7 @@
           "impact": 3,
           "update_date": "2026-11-04",
           "update_date_raw": "11/4/2026",
-          "notes": "Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "Took a hit to the head in the Oct. 31 win at Florida State, left on a cart and was taken to a hospital. The starting left guard remains in concussion protocol and is out for a second straight game on Nov. 14 against Georgia Tech, with Gavin Blanchard starting in his place.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22877,7 +22917,7 @@
             "Col7": "11.4",
             "Col8": "3",
             "Col9": "11/4/2026",
-            "Col10": "Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "Took a hit to the head in the Oct. 31 win at Florida State, left on a cart and was taken to a hospital. The starting left guard remains in concussion protocol and is out for a second straight game on Nov. 14 against Georgia Tech, with Gavin Blanchard starting in his place.",
             "Col11": "0"
           }
         },
@@ -22890,7 +22930,7 @@
           "impact": 4,
           "update_date": "2026-11-04",
           "update_date_raw": "11/4/2026",
-          "notes": "Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "Injured his ankle in the second half of the Oct. 31 win at Florida State and had a tightrope procedure. The starting center is out for the Nov. 14 game against Georgia Tech, and Dabo Swinney said he could be ready for Duke but is targeting South Carolina on Nov. 28 at the latest.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -22907,37 +22947,7 @@
             "Col7": "13.1",
             "Col8": "4",
             "Col9": "11/4/2026",
-            "Col10": "Official report 2026-11-04: out. Game 2026-11-07.",
-            "Col11": "0"
-          }
-        },
-        {
-          "player": "Braden Wilmes",
-          "status": "O",
-          "position": "OL",
-          "is_new": false,
-          "rating": 10,
-          "impact": 0,
-          "update_date": "2026-11-04",
-          "update_date_raw": "11/4/2026",
-          "notes": "Official report 2026-11-04: out. Game 2026-11-07.",
-          "lw_raw": "0",
-          "injury_type": "",
-          "confirmed": null,
-          "return_timeframe": "",
-          "original_injury_date": null,
-          "projected_return": null,
-          "raw_columns": {
-            "Col1": "Braden Wilmes",
-            "Col2": "",
-            "Col3": "",
-            "Col4": "O",
-            "Col5": "OL",
-            "Col6": "FALSE",
-            "Col7": "10.0",
-            "Col8": "0",
-            "Col9": "11/4/2026",
-            "Col10": "Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "Injured his ankle in the second half of the Oct. 31 win at Florida State and had a tightrope procedure. The starting center is out for the Nov. 14 game against Georgia Tech, and Dabo Swinney said he could be ready for Duke but is targeting South Carolina on Nov. 28 at the latest.",
             "Col11": "0"
           }
         },
@@ -22950,7 +22960,7 @@
           "impact": 5,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: out. Game 2026-11-14.",
+          "notes": "Went down with an ankle injury midway through the second quarter of the 18-13 win at Syracuse on Nov. 7 and did not return. Dabo Swinney said he is probably out for the season with a chance to return for the postseason, and Branden Strozier takes over at nickel.",
           "lw_raw": "21",
           "injury_type": "",
           "confirmed": null,
@@ -22967,7 +22977,7 @@
             "Col7": "13.1",
             "Col8": "5",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: out. Game 2026-11-14.",
+            "Col10": "Went down with an ankle injury midway through the second quarter of the 18-13 win at Syracuse on Nov. 7 and did not return. Dabo Swinney said he is probably out for the season with a chance to return for the postseason, and Branden Strozier takes over at nickel.",
             "Col11": "21"
           }
         }
@@ -23607,8 +23617,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:44.573Z",
-      "fetched_at": "2026-11-12T22:03:45.524113+00:00",
+      "source_timestamp": "2026-11-12T23:02:05.567Z",
+      "fetched_at": "2026-11-12T23:02:09.956063+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1i_dmZWXcwYXGSSjXNXeEyV1lacf_ZX1DhkG9vzPPk3o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/clemson/injury-status"
     },
@@ -25162,8 +25172,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:42.895Z",
-      "fetched_at": "2026-11-12T22:04:43.833350+00:00",
+      "source_timestamp": "2026-11-12T23:03:17.130Z",
+      "fetched_at": "2026-11-12T23:03:18.114135+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1YldFNM2MUpHCyaCr5ODBl2dk_OyjuIqruUCzUDvIkXA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/cmu/injury-status"
     },
@@ -26147,8 +26157,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:56.540Z",
-      "fetched_at": "2026-11-12T22:04:57.595739+00:00",
+      "source_timestamp": "2026-11-12T23:03:27.908Z",
+      "fetched_at": "2026-11-12T23:03:29.235631+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/132AtH8UOj7ujfIUg3OjgcXoxMJXiueD_waxsHQGhelU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/coastal/injury-status"
     },
@@ -28242,8 +28252,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:30.025Z",
-      "fetched_at": "2026-11-12T22:03:31.777081+00:00",
+      "source_timestamp": "2026-11-12T23:01:56.769Z",
+      "fetched_at": "2026-11-12T23:01:56.855126+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1OqIkzlyKEXi-rO6Gc2dfIsCJj0ljiFLwb-VnL0J8jFE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/colorado/injury-status"
     },
@@ -30247,8 +30257,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:56.792Z",
-      "fetched_at": "2026-11-12T22:03:56.882320+00:00",
+      "source_timestamp": "2026-11-12T23:02:25.041Z",
+      "fetched_at": "2026-11-12T23:02:25.165278+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1bwU26Tcf6R4_z2u8fO95GJHFprMSZwZ2PuRJHTLWqO8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/colorado-state/injury-status"
     },
@@ -30482,8 +30492,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:26.059Z",
-      "fetched_at": "2026-11-12T22:04:27.147699+00:00",
+      "source_timestamp": "2026-11-12T23:03:01.097Z",
+      "fetched_at": "2026-11-12T23:03:02.175571+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1SYmj6S6IrDfj6iuCLD1gB2NcSKPtpC7t4J6jaKUF7Fg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/delaware/injury-status"
     },
@@ -31797,8 +31807,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:44.993Z",
-      "fetched_at": "2026-11-12T22:03:45.869355+00:00",
+      "source_timestamp": "2026-11-12T23:02:10.973Z",
+      "fetched_at": "2026-11-12T23:02:11.859103+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1rJFQB3T_3ZMO7-BhOeh52cqBN5Gk8HNJlROD4Yck1HQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/duke/injury-status"
     },
@@ -32812,8 +32822,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:07.679Z",
-      "fetched_at": "2026-11-12T22:04:07.755886+00:00",
+      "source_timestamp": "2026-11-12T23:02:35.716Z",
+      "fetched_at": "2026-11-12T23:02:37.292837+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1I2wpbHTd0_zsjDo8NAfyjseqRfS0nALoqaWpE-xK8IU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ecu/injury-status"
     },
@@ -35717,8 +35727,8 @@
       "warnings": [
         "Source reports 22 injuries; found 21 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:43.953Z",
-      "fetched_at": "2026-11-12T22:04:45.077026+00:00",
+      "source_timestamp": "2026-11-12T23:03:06.400Z",
+      "fetched_at": "2026-11-12T23:03:16.829702+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1l8zCg4Ynqx-05ycDRe8Q0ph_T0Pl-hlc__6JRDtoEJ4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/emu/injury-status"
     },
@@ -36612,8 +36622,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:57.646Z",
-      "fetched_at": "2026-11-12T22:04:07.776013+00:00",
+      "source_timestamp": "2026-11-12T23:02:35.809Z",
+      "fetched_at": "2026-11-12T23:02:37.031253+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vyYKKdiyPloSkERbPS0EBZUl9WcjTCM-dCa6rGabnkQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fau/injury-status"
     },
@@ -37357,8 +37367,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:28.037Z",
-      "fetched_at": "2026-11-12T22:04:29.168545+00:00",
+      "source_timestamp": "2026-11-12T23:03:02.115Z",
+      "fetched_at": "2026-11-12T23:03:02.173395+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1CC6pGdupSwtWnzxZXkelJBphadLbxdLDvis3l01zKMw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fiu/injury-status"
     },
@@ -38492,8 +38502,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:53.046Z",
-      "fetched_at": "2026-11-12T22:02:55.229288+00:00",
+      "source_timestamp": "2026-11-12T23:01:16.538Z",
+      "fetched_at": "2026-11-12T23:01:17.631074+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1FHy7x3Xha03HNJdEf8hWvDDKehmz0bRIxFvJjs9PJQI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/florida/injury-status"
     },
@@ -39357,8 +39367,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:57.990Z",
-      "fetched_at": "2026-11-12T22:03:58.848578+00:00",
+      "source_timestamp": "2026-11-12T23:02:25.129Z",
+      "fetched_at": "2026-11-12T23:02:26.017998+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1oWESEDf-Oa8Ix9rr7D9IQymExppwL5PPWkXla2mae5A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fresno/injury-status"
     },
@@ -39369,43 +39379,13 @@
       "conference": "Atlantic Coast Conference (ACC)",
       "logo_url": "https://a.espncdn.com/i/teamlogos/ncaa/500/52.png",
       "summary": {
-        "reported_count": 21,
+        "reported_count": 20,
         "new_count": 6,
-        "impact": 40,
+        "impact": 39,
         "impact_average": 1.9,
         "impact_rank": 2
       },
       "active": [
-        {
-          "player": "Cam Brooks",
-          "status": "OFS",
-          "position": "DL",
-          "is_new": false,
-          "rating": 11,
-          "impact": 2,
-          "update_date": "2026-06-09",
-          "update_date_raw": "6/9/2026",
-          "notes": "Torn Achilles before spring camp; staff hopes for a late-2026 return but is unlikely to see the field.",
-          "lw_raw": "6",
-          "injury_type": "",
-          "confirmed": null,
-          "return_timeframe": "",
-          "original_injury_date": null,
-          "projected_return": null,
-          "raw_columns": {
-            "Col1": "Cam Brooks",
-            "Col2": "",
-            "Col3": "",
-            "Col4": "OFS",
-            "Col5": "DL",
-            "Col6": "FALSE",
-            "Col7": "11.0",
-            "Col8": "2",
-            "Col9": "6/9/2026",
-            "Col10": "Torn Achilles before spring camp; staff hopes for a late-2026 return but is unlikely to see the field.",
-            "Col11": "6"
-          }
-        },
         {
           "player": "Ethan Pritchard",
           "status": "OFS",
@@ -39415,7 +39395,7 @@
           "impact": 0,
           "update_date": "2026-08-01",
           "update_date_raw": "8/1/2026",
-          "notes": "Sustained a gunshot wound to the head in the off-season and is still working back to full strength.",
+          "notes": "Survived a gunshot wound to the head on Aug. 31, 2025, and is not expected to play in 2026. He is walking and training again, led the team onto the field for the Aug. 29 opener and aims to return to football within a year.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39432,7 +39412,7 @@
             "Col7": "10.2",
             "Col8": "0",
             "Col9": "8/1/2026",
-            "Col10": "Sustained a gunshot wound to the head in the off-season and is still working back to full strength.",
+            "Col10": "Survived a gunshot wound to the head on Aug. 31, 2025, and is not expected to play in 2026. He is walking and training again, led the team onto the field for the Aug. 29 opener and aims to return to football within a year.",
             "Col11": "0"
           }
         },
@@ -39445,7 +39425,7 @@
           "impact": 0,
           "update_date": "2026-06-09",
           "update_date_raw": "6/9/2026",
-          "notes": "Announced out for the full 2026 season in early March.",
+          "notes": "The true freshman was ruled out for all of 2026 in early March with an undisclosed injury that also cost him spring practice. He can redshirt and keep his freshman eligibility for 2027.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39462,7 +39442,7 @@
             "Col7": "11.3",
             "Col8": "0",
             "Col9": "6/9/2026",
-            "Col10": "Announced out for the full 2026 season in early March.",
+            "Col10": "The true freshman was ruled out for all of 2026 in early March with an undisclosed injury that also cost him spring practice. He can redshirt and keep his freshman eligibility for 2027.",
             "Col11": "0"
           }
         },
@@ -39475,7 +39455,7 @@
           "impact": 0,
           "update_date": "2026-08-29",
           "update_date_raw": "8/29/2026",
-          "notes": "Out for the season due to a torn ACL suffered in August camp.",
+          "notes": "Tore his ACL in fall camp on Aug. 11, and Mike Norvell confirmed the next day that the injury ends his season. The cornerback transfer (Notre Dame) was expected to add depth to a thin secondary.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39492,7 +39472,7 @@
             "Col7": "10.5",
             "Col8": "0",
             "Col9": "8/29/2026",
-            "Col10": "Out for the season due to a torn ACL suffered in August camp.",
+            "Col10": "Tore his ACL in fall camp on Aug. 11, and Mike Norvell confirmed the next day that the injury ends his season. The cornerback transfer (Notre Dame) was expected to add depth to a thin secondary.",
             "Col11": "0"
           }
         },
@@ -39505,7 +39485,7 @@
           "impact": 2,
           "update_date": "2026-09-20",
           "update_date_raw": "9/20/2026",
-          "notes": "Announced as out for the season.",
+          "notes": "The true freshman had a procedure on the same left knee in which he tore an ACL before his senior year of high school, and Mike Norvell ruled him out for the season in mid-September. He played six special teams snaps against SMU before the setback.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39522,7 +39502,7 @@
             "Col7": "12.9",
             "Col8": "2",
             "Col9": "9/20/2026",
-            "Col10": "Announced as out for the season.",
+            "Col10": "The true freshman had a procedure on the same left knee in which he tore an ACL before his senior year of high school, and Mike Norvell ruled him out for the season in mid-September. He played six special teams snaps against SMU before the setback.",
             "Col11": "0"
           }
         },
@@ -39535,7 +39515,7 @@
           "impact": 0,
           "update_date": "2026-09-15",
           "update_date_raw": "9/15/2026",
-          "notes": "Will miss the remainder of the 2026 season.",
+          "notes": "Went down after eight special teams snaps in the Sept. 7 loss to SMU, and Mike Norvell ruled the true freshman out for the rest of 2026 the following week. The injury has not been disclosed.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39552,7 +39532,7 @@
             "Col7": "9.5",
             "Col8": "0",
             "Col9": "9/15/2026",
-            "Col10": "Will miss the remainder of the 2026 season.",
+            "Col10": "Went down after eight special teams snaps in the Sept. 7 loss to SMU, and Mike Norvell ruled the true freshman out for the rest of 2026 the following week. The injury has not been disclosed.",
             "Col11": "0"
           }
         },
@@ -39565,7 +39545,7 @@
           "impact": 4,
           "update_date": "2026-11-04",
           "update_date_raw": "11/4/2026",
-          "notes": "Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "Tore his ACL in the Oct. 31 loss to Clemson and will miss the rest of the season, per ESPN's Pete Thamel. He was the team's leading receiver with four touchdown catches at the time.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39582,7 +39562,7 @@
             "Col7": "14.5",
             "Col8": "4",
             "Col9": "11/4/2026",
-            "Col10": "Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "Tore his ACL in the Oct. 31 loss to Clemson and will miss the rest of the season, per ESPN's Pete Thamel. He was the team's leading receiver with four touchdown catches at the time.",
             "Col11": "0"
           }
         },
@@ -39595,7 +39575,7 @@
           "impact": 3,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "Hurt vs. Alabama. He faces a multi-week absence. DNP Week 6 vs. Louisville.",
+          "notes": "Left the Sept. 19 loss at Alabama on crutches with a lower-body injury after a 65-yard catch-and-run and has not played since. The staff hoped for a late-season return, but he is out again for the Nov. 13 game at Pitt with no announced timetable.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39612,7 +39592,7 @@
             "Col7": "13.6",
             "Col8": "3",
             "Col9": "10/13/2026",
-            "Col10": "Hurt vs. Alabama. He faces a multi-week absence. DNP Week 6 vs. Louisville.",
+            "Col10": "Left the Sept. 19 loss at Alabama on crutches with a lower-body injury after a 65-yard catch-and-run and has not played since. The staff hoped for a late-season return, but he is out again for the Nov. 13 game at Pitt with no announced timetable.",
             "Col11": "0"
           }
         },
@@ -39625,7 +39605,7 @@
           "impact": 4,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: out. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13. Previous context: DNP Week 6 vs. Louisville.",
+          "notes": "Out for the Nov. 13 game at Pitt after a midweek downgrade from questionable, extending an absence that dates to at least early October. The injury is undisclosed, and the cornerback has spent most of the season on the availability report.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39642,7 +39622,7 @@
             "Col7": "11.9",
             "Col8": "4",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: out. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13. Previous context: DNP Week 6 vs. Louisville.",
+            "Col10": "Out for the Nov. 13 game at Pitt after a midweek downgrade from questionable, extending an absence that dates to at least early October. The injury is undisclosed, and the cornerback has spent most of the season on the availability report.",
             "Col11": "0"
           }
         },
@@ -39655,7 +39635,7 @@
           "impact": 0,
           "update_date": "2026-11-10",
           "update_date_raw": "11/10/2026",
-          "notes": "Official report 2026-11-10: probable. Game 2026-11-13. Previous context: DNP Week 6 vs. Louisville.",
+          "notes": "Has not played since the Aug. 29 opener against New Mexico State because of an undisclosed injury that Mike Norvell said would cost him an extended stretch. He is probable for the Nov. 13 game at Pitt, which would be his first action in more than two months.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39672,7 +39652,7 @@
             "Col7": "13.1",
             "Col8": "0",
             "Col9": "11/10/2026",
-            "Col10": "Official report 2026-11-10: probable. Game 2026-11-13. Previous context: DNP Week 6 vs. Louisville.",
+            "Col10": "Has not played since the Aug. 29 opener against New Mexico State because of an undisclosed injury that Mike Norvell said would cost him an extended stretch. He is probable for the Nov. 13 game at Pitt, which would be his first action in more than two months.",
             "Col11": "0"
           }
         },
@@ -39685,7 +39665,7 @@
           "impact": 2,
           "update_date": "2026-10-15",
           "update_date_raw": "10/15/2026",
-          "notes": "Official report 2026-10-15: out. Previous context: Official report 2026-10-14: questionable. Previous context: DNP Week 6 vs. Louisville.",
+          "notes": "The freshman linebacker has been out with an undisclosed injury since a late downgrade ahead of the Oct. 3 Virginia game. He remains out for the Nov. 13 game at Pitt with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39702,7 +39682,7 @@
             "Col7": "10.9",
             "Col8": "2",
             "Col9": "10/15/2026",
-            "Col10": "Official report 2026-10-15: out. Previous context: Official report 2026-10-14: questionable. Previous context: DNP Week 6 vs. Louisville.",
+            "Col10": "The freshman linebacker has been out with an undisclosed injury since a late downgrade ahead of the Oct. 3 Virginia game. He remains out for the Nov. 13 game at Pitt with no timetable given.",
             "Col11": "0"
           }
         },
@@ -39715,7 +39695,7 @@
           "impact": 4,
           "update_date": "2026-10-18",
           "update_date_raw": "10/18/2026",
-          "notes": "Update 2026-10-18: He is currently designated out. He is dealing with an ankle injury. Previous context: Injured in game vs. Miami. Carted off with what appeaed to be a sever lower leg injury.",
+          "notes": "Injured his left ankle late in the first half of the 43-35 double-overtime loss at Miami on Oct. 17 and left on a cart with the leg in an air cast. He had surgery in Miami and will miss the rest of the season, though the school expects a full recovery.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39732,7 +39712,7 @@
             "Col7": "16.0",
             "Col8": "4",
             "Col9": "10/18/2026",
-            "Col10": "Update 2026-10-18: He is currently designated out. He is dealing with an ankle injury. Previous context: Injured in game vs. Miami. Carted off with what appeaed to be a sever lower leg injury.",
+            "Col10": "Injured his left ankle late in the first half of the 43-35 double-overtime loss at Miami on Oct. 17 and left on a cart with the leg in an air cast. He had surgery in Miami and will miss the rest of the season, though the school expects a full recovery.",
             "Col11": "0"
           }
         },
@@ -39745,7 +39725,7 @@
           "impact": 3,
           "update_date": "2026-10-28",
           "update_date_raw": "10/28/2026",
-          "notes": "Official report 2026-10-28: out. Game 2026-10-31.",
+          "notes": "Left the Oct. 17 loss at Miami after 14 snaps with an undisclosed injury and has not played since. The starting cornerback will miss a third straight game on Nov. 13 at Pitt, with Charles Lester III filling in.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39762,7 +39742,7 @@
             "Col7": "12.1",
             "Col8": "3",
             "Col9": "10/28/2026",
-            "Col10": "Official report 2026-10-28: out. Game 2026-10-31.",
+            "Col10": "Left the Oct. 17 loss at Miami after 14 snaps with an undisclosed injury and has not played since. The starting cornerback will miss a third straight game on Nov. 13 at Pitt, with Charles Lester III filling in.",
             "Col11": "0"
           }
         },
@@ -39775,7 +39755,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13. Previous context: Official report 2026-11-05: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-31: out. Game 2026-10-31. Previous context: Official report 2026-10-30: questionable. Game 2026-10-31.",
+          "notes": "The kickoff specialist landed on the report with an undisclosed injury the day before the Oct. 31 Clemson game and missed both that game and the trip to Boston College. He is probable to return on Nov. 13 at Pitt.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39792,7 +39772,7 @@
             "Col7": "7.0",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13. Previous context: Official report 2026-11-05: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-31: out. Game 2026-10-31. Previous context: Official report 2026-10-30: questionable. Game 2026-10-31.",
+            "Col10": "The kickoff specialist landed on the report with an undisclosed injury the day before the Oct. 31 Clemson game and missed both that game and the trip to Boston College. He is probable to return on Nov. 13 at Pitt.",
             "Col11": "0"
           }
         },
@@ -39805,7 +39785,7 @@
           "impact": 5,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: out. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13. Previous context: Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "Hurt in the Oct. 31 loss to Clemson and sat out the win at Boston College. Interim coach Rick Stockstill said he is getting closer, but he was downgraded from questionable to out for the Nov. 13 game at Pitt.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39822,7 +39802,7 @@
             "Col7": "13.7",
             "Col8": "5",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: out. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13. Previous context: Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "Hurt in the Oct. 31 loss to Clemson and sat out the win at Boston College. Interim coach Rick Stockstill said he is getting closer, but he was downgraded from questionable to out for the Nov. 13 game at Pitt.",
             "Col11": "0"
           }
         },
@@ -39835,7 +39815,7 @@
           "impact": 3,
           "update_date": "2026-11-04",
           "update_date_raw": "11/4/2026",
-          "notes": "Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "Started against Clemson on Oct. 31 but missed the win at Boston College with an undisclosed injury. Interim coach Rick Stockstill said he is getting closer, though he is out again for the Nov. 13 game at Pitt.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -39852,7 +39832,7 @@
             "Col7": "11.6",
             "Col8": "3",
             "Col9": "11/4/2026",
-            "Col10": "Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "Started against Clemson on Oct. 31 but missed the win at Boston College with an undisclosed injury. Interim coach Rick Stockstill said he is getting closer, though he is out again for the Nov. 13 game at Pitt.",
             "Col11": "0"
           }
         },
@@ -39865,7 +39845,7 @@
           "impact": 5,
           "update_date": "2026-11-10",
           "update_date_raw": "11/10/2026",
-          "notes": "Official report 2026-11-10: out. Game 2026-11-13.",
+          "notes": "The running back left the Oct. 31 Clemson game with an undisclosed injury and played limited snaps at Boston College a week later. He is out for the Nov. 13 game at Pitt, leaving true freshman Amari Thomas as the lead back.",
           "lw_raw": "12",
           "injury_type": "",
           "confirmed": null,
@@ -39882,7 +39862,7 @@
             "Col7": "14.8",
             "Col8": "5",
             "Col9": "11/10/2026",
-            "Col10": "Official report 2026-11-10: out. Game 2026-11-13.",
+            "Col10": "The running back left the Oct. 31 Clemson game with an undisclosed injury and played limited snaps at Boston College a week later. He is out for the Nov. 13 game at Pitt, leaving true freshman Amari Thomas as the lead back.",
             "Col11": "12"
           }
         },
@@ -39895,7 +39875,7 @@
           "impact": 0,
           "update_date": "2026-11-10",
           "update_date_raw": "11/10/2026",
-          "notes": "Official report 2026-11-10: probable. Game 2026-11-13.",
+          "notes": "The senior safety has battled an undisclosed injury on and off since missing the Sept. 7 SMU game, and he sat out the Oct. 31 loss to Clemson. He is probable for the Nov. 13 game at Pitt.",
           "lw_raw": "6",
           "injury_type": "",
           "confirmed": null,
@@ -39912,7 +39892,7 @@
             "Col7": "11.6",
             "Col8": "0",
             "Col9": "11/10/2026",
-            "Col10": "Official report 2026-11-10: probable. Game 2026-11-13.",
+            "Col10": "The senior safety has battled an undisclosed injury on and off since missing the Sept. 7 SMU game, and he sat out the Oct. 31 loss to Clemson. He is probable for the Nov. 13 game at Pitt.",
             "Col11": "6"
           }
         },
@@ -39925,7 +39905,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13.",
+          "notes": "Has moved on and off the availability report since getting hurt in the Sept. 7 loss to SMU. The senior linebacker was upgraded from questionable to probable for the Nov. 13 game at Pitt.",
           "lw_raw": "14",
           "injury_type": "",
           "confirmed": null,
@@ -39942,7 +39922,7 @@
             "Col7": "12.7",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13.",
+            "Col10": "Has moved on and off the availability report since getting hurt in the Sept. 7 loss to SMU. The senior linebacker was upgraded from questionable to probable for the Nov. 13 game at Pitt.",
             "Col11": "14"
           }
         },
@@ -39955,7 +39935,7 @@
           "impact": 5,
           "update_date": "2026-11-10",
           "update_date_raw": "11/10/2026",
-          "notes": "Official report 2026-11-10: out. Game 2026-11-13.",
+          "notes": "The starting center was carted off with his right leg in an air cast late in the first half of the 31-24 win at Boston College on Nov. 7. He is out for the Nov. 13 game at Pitt with no timetable announced, and sophomore Chavez Thompson is set to start in his place.",
           "lw_raw": "24",
           "injury_type": "",
           "confirmed": null,
@@ -39972,12 +39952,42 @@
             "Col7": "12.9",
             "Col8": "5",
             "Col9": "11/10/2026",
-            "Col10": "Official report 2026-11-10: out. Game 2026-11-13.",
+            "Col10": "The starting center was carted off with his right leg in an air cast late in the first half of the 31-24 win at Boston College on Nov. 7. He is out for the Nov. 13 game at Pitt with no timetable announced, and sophomore Chavez Thompson is set to start in his place.",
             "Col11": "24"
           }
         }
       ],
       "cleared_history": [
+        {
+          "player": "Cam Brooks",
+          "status": "Cleared",
+          "position": "DL",
+          "is_new": null,
+          "rating": 11,
+          "impact": 2,
+          "update_date": "2026-11-12",
+          "update_date_raw": "11/12/2026",
+          "notes": "Cleared from the injury/status report on 11/12/2026",
+          "lw_raw": "",
+          "injury_type": "",
+          "confirmed": null,
+          "return_timeframe": "",
+          "original_injury_date": null,
+          "projected_return": null,
+          "raw_columns": {
+            "Col1": "Cam Brooks",
+            "Col2": "",
+            "Col3": "",
+            "Col4": "Cleared",
+            "Col5": "DL",
+            "Col6": "",
+            "Col7": "11.0",
+            "Col8": "2",
+            "Col9": "11/12/2026",
+            "Col10": "Cleared from the injury/status report on 11/12/2026",
+            "Col11": ""
+          }
+        },
         {
           "player": "K.J. Kirkland",
           "status": "Cleared",
@@ -41390,10 +41400,10 @@
         }
       ],
       "warnings": [
-        "Source reports 21 injuries; found 20 named active rows"
+        "Source reports 20 injuries; found 19 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:46.696Z",
-      "fetched_at": "2026-11-12T22:03:47.564927+00:00",
+      "source_timestamp": "2026-11-12T23:00:56.648Z",
+      "fetched_at": "2026-11-12T23:02:11.179098+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/179PlAJfrD19KFRIzqlUWgu5b3iEmkxEWLGUAMPlXCjA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/fsu/injury-status"
     },
@@ -42377,8 +42387,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:58.073Z",
-      "fetched_at": "2026-11-12T22:04:59.446123+00:00",
+      "source_timestamp": "2026-11-12T23:03:31.147Z",
+      "fetched_at": "2026-11-12T23:03:32.161424+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1aeYnT2-TaFhPZqK4Xtlylc_WZXLWv9ajne6A-7V6nBo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ga-southern/injury-status"
     },
@@ -43062,8 +43072,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:59.108Z",
-      "fetched_at": "2026-11-12T22:05:00.294033+00:00",
+      "source_timestamp": "2026-11-12T23:03:30.325Z",
+      "fetched_at": "2026-11-12T23:03:31.846087+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1A_DXwkDtxB-Q_Xbgvg4t8yM0TdqG67d00NbRY01hpaI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ga-state/injury-status"
     },
@@ -44797,8 +44807,8 @@
       "warnings": [
         "Source reports 23 injuries; found 22 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:47.489Z",
-      "fetched_at": "2026-11-12T22:03:47.584129+00:00",
+      "source_timestamp": "2026-11-12T23:02:12.700Z",
+      "fetched_at": "2026-11-12T23:02:13.775742+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1fWggkNcsOftR-dlahKrviZUSFzzamgKB4LIblzvxC40/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/georgia-tech/injury-status"
     },
@@ -45602,8 +45612,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:18.301Z",
-      "fetched_at": "2026-11-12T22:04:19.155278+00:00",
+      "source_timestamp": "2026-11-12T23:02:50.107Z",
+      "fetched_at": "2026-11-12T23:02:50.952870+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1dz4rif6-GsPcbhHQEeRHTzi4V3rI_yZAq5rjjawrlvI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/hawaii/injury-status"
     },
@@ -47067,8 +47077,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:31.932Z",
-      "fetched_at": "2026-11-12T22:03:32.015283+00:00",
+      "source_timestamp": "2026-11-12T23:01:58.347Z",
+      "fetched_at": "2026-11-12T23:01:59.684700+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1VXzXdWcA9CBbJ28w06GF-RvPS1ZyumTH6W1W3_OF1S0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/houston/injury-status"
     },
@@ -48907,8 +48917,8 @@
       "warnings": [
         "Source reports 24 injuries; found 23 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:05.526Z",
-      "fetched_at": "2026-11-12T22:03:06.458314+00:00",
+      "source_timestamp": "2026-11-12T23:01:29.861Z",
+      "fetched_at": "2026-11-12T23:01:29.975963+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1w0OF6cu1LjpyhLGSX63FVJQiwZ2RZCDgTlNmxyTLPo8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/illinois/injury-status"
     },
@@ -49742,8 +49752,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:07.842Z",
-      "fetched_at": "2026-11-12T22:03:07.921030+00:00",
+      "source_timestamp": "2026-11-12T23:01:30.904Z",
+      "fetched_at": "2026-11-12T23:01:32.117678+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1lyp3JrYJs-aN8pVHDRqgffPp3p6GGeODUU4s_8zSwyI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/indiana/injury-status"
     },
@@ -50967,8 +50977,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:07.528Z",
-      "fetched_at": "2026-11-12T22:03:08.321376+00:00",
+      "source_timestamp": "2026-11-12T23:01:31.190Z",
+      "fetched_at": "2026-11-12T23:01:32.125807+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vuTHs9As9H0b34eRlzqSLtzpgjWASSEF7s_Goo9EKZY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/iowa/injury-status"
     },
@@ -52522,8 +52532,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:32.823Z",
-      "fetched_at": "2026-11-12T22:03:33.766339+00:00",
+      "source_timestamp": "2026-11-12T23:01:58.805Z",
+      "fetched_at": "2026-11-12T23:01:59.662804+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ydLpO0FFNhdwUrYrqriF1GzouzyaelWHIo9iDCkUngE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/iowa-state/injury-status"
     },
@@ -53507,8 +53517,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:27.960Z",
-      "fetched_at": "2026-11-12T22:04:28.724036+00:00",
+      "source_timestamp": "2026-11-12T23:03:03.095Z",
+      "fetched_at": "2026-11-12T23:03:03.849274+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1n6Rq1lU031e48FQPY5IARIT8m2u6dSiFH1R42wnzx54/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/jax-state/injury-status"
     },
@@ -54222,8 +54232,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:00.777Z",
-      "fetched_at": "2026-11-12T22:05:01.907704+00:00",
+      "source_timestamp": "2026-11-12T23:03:33.435Z",
+      "fetched_at": "2026-11-12T23:03:34.644233+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15yc_YZkqi5cEmrAWTnKxuqOi3RUBepNdO86CJi05JcA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/jmu/injury-status"
     },
@@ -55207,8 +55217,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:34.656Z",
-      "fetched_at": "2026-11-12T22:03:35.873028+00:00",
+      "source_timestamp": "2026-11-12T23:02:00.484Z",
+      "fetched_at": "2026-11-12T23:02:01.336761+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1hyzsWT_hWQPwZs_1h1LKTvpjy8SuOX04RERz6bube6Q/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/k-state/injury-status"
     },
@@ -56792,8 +56802,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:33.455Z",
-      "fetched_at": "2026-11-12T22:03:34.520989+00:00",
+      "source_timestamp": "2026-11-12T23:02:01.764Z",
+      "fetched_at": "2026-11-12T23:02:03.263219+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1_te3ng972ZNJ8EDcsXGKqiLDr671nZBz3qi30KgCIG4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kansas/injury-status"
     },
@@ -57297,8 +57307,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:29.801Z",
-      "fetched_at": "2026-11-12T22:04:30.707860+00:00",
+      "source_timestamp": "2026-11-12T23:03:03.344Z",
+      "fetched_at": "2026-11-12T23:03:04.402735+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1HdAxNPBTKRi-Ma0dnu7own_kEY4H-vj8H7QHS3p9b9k/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kennesaw-state/injury-status"
     },
@@ -58492,8 +58502,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:45.206Z",
-      "fetched_at": "2026-11-12T22:04:46.598245+00:00",
+      "source_timestamp": "2026-11-12T23:03:17.797Z",
+      "fetched_at": "2026-11-12T23:03:18.640409+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15SxcAumJ5YG5cJnFx2sGQAycJ2kQnWFfilnAYyFz-Hc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kent-state/injury-status"
     },
@@ -60017,8 +60027,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:55.983Z",
-      "fetched_at": "2026-11-12T22:02:56.610359+00:00",
+      "source_timestamp": "2026-11-12T23:01:18.910Z",
+      "fetched_at": "2026-11-12T23:01:19.970298+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1DnKZ2qQhVg3yLlLCB-ciymJePhVenVq3ZBCFxJ1h7Zg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/kentucky/injury-status"
     },
@@ -60672,8 +60682,8 @@
       "warnings": [
         "Source reports 6 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:03.517Z",
-      "fetched_at": "2026-11-12T22:05:04.687013+00:00",
+      "source_timestamp": "2026-11-12T23:03:34.106Z",
+      "fetched_at": "2026-11-12T23:03:35.100429+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1kzKM_Ki-7DPfi5CB6nRi-QuLxLvF-j7enA_Dm8jTwsw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/la-tech/injury-status"
     },
@@ -61387,8 +61397,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:30.385Z",
-      "fetched_at": "2026-11-12T22:04:31.084214+00:00",
+      "source_timestamp": "2026-11-12T23:03:05.155Z",
+      "fetched_at": "2026-11-12T23:03:06.139979+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/179RJ0bqoHQNTmvk-Aa63FuQHuAwzIkn60CYr4JMsRaE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/liberty/injury-status"
     },
@@ -61462,7 +61472,7 @@
             "Col7": "11.1",
             "Col8": "2",
             "Col9": "10/1/2026",
-            "Col10": "Undisclosed injury; listed as OFS on their first Sun Belt injury report of the season.",
+            "Col10": " Undisclosed injury; listed as OFS on their first Sun Belt injury report of the season.",
             "Col11": "0"
           }
         },
@@ -61492,7 +61502,7 @@
             "Col7": "5.3",
             "Col8": "0",
             "Col9": "10/1/2026",
-            "Col10": "Undisclosed injury; listed as OFS on their first Sun Belt injury report of the season.",
+            "Col10": " Undisclosed injury; listed as OFS on their first Sun Belt injury report of the season.",
             "Col11": "0"
           }
         },
@@ -61522,7 +61532,7 @@
             "Col7": "5.3",
             "Col8": "1",
             "Col9": "10/1/2026",
-            "Col10": "Undisclosed injury; listed as OFS on their first Sun Belt injury report of the season.",
+            "Col10": " Undisclosed injury; listed as OFS on their first Sun Belt injury report of the season.",
             "Col11": "0"
           }
         },
@@ -62492,8 +62502,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:01.707Z",
-      "fetched_at": "2026-11-12T22:05:02.648123+00:00",
+      "source_timestamp": "2026-11-12T23:00:49.043Z",
+      "fetched_at": "2026-11-12T23:03:32.461117+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/178-uIFrYU1HLO550b1EppLsk6kvbhMb6OeVcbXwXYL8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/louisiana/injury-status"
     },
@@ -62520,7 +62530,7 @@
           "impact": 0,
           "update_date": "2026-06-09",
           "update_date_raw": "6/9/2026",
-          "notes": "Likely to miss the entire 2026 season after a lower-body injury sustained in spring camp.",
+          "notes": "Suffered a lower-body injury in the spring shortly after withdrawing from the transfer portal, and the program has treated it as a long-term issue. He is likely to miss the entire 2026 season after posting 109 receiving yards in 2025.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62537,7 +62547,7 @@
             "Col7": "9.5",
             "Col8": "0",
             "Col9": "6/9/2026",
-            "Col10": "Likely to miss the entire 2026 season after a lower-body injury sustained in spring camp.",
+            "Col10": "Suffered a lower-body injury in the spring shortly after withdrawing from the transfer portal, and the program has treated it as a long-term issue. He is likely to miss the entire 2026 season after posting 109 receiving yards in 2025.",
             "Col11": "0"
           }
         },
@@ -62550,7 +62560,7 @@
           "impact": 2,
           "update_date": "2026-10-01",
           "update_date_raw": "10/1/2026",
-          "notes": "Downgraded to out on the ACC injury report ahead of Week 4 vs. Wake Forest. Then, it was announced that he will miss the rest of the 2026 season.",
+          "notes": "Started the first three games before the program announced ahead of the Sept. 26 Wake Forest game that a knee injury would end his season. The fifth-year defender led the team with three interceptions in 2025.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62567,7 +62577,7 @@
             "Col7": "14.4",
             "Col8": "2",
             "Col9": "10/1/2026",
-            "Col10": "Downgraded to out on the ACC injury report ahead of Week 4 vs. Wake Forest. Then, it was announced that he will miss the rest of the 2026 season.",
+            "Col10": "Started the first three games before the program announced ahead of the Sept. 26 Wake Forest game that a knee injury would end his season. The fifth-year defender led the team with three interceptions in 2025.",
             "Col11": "0"
           }
         },
@@ -62580,7 +62590,7 @@
           "impact": 0,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "Undisclosed injury; DNP Week 6 vs. FSU.",
+          "notes": "The punter has been listed as out with an undisclosed injury on every availability report since at least the Sept. 19 SMU game. He remains out for the Nov. 14 game at North Carolina with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62597,7 +62607,7 @@
             "Col7": "7.0",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "The punter has been listed as out with an undisclosed injury on every availability report since at least the Sept. 19 SMU game. He remains out for the Nov. 14 game at North Carolina with no timetable given.",
             "Col11": "0"
           }
         },
@@ -62610,7 +62620,7 @@
           "impact": 0,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "Undisclosed injury; DNP Week 6 vs. FSU.",
+          "notes": "Has been listed as out with an undisclosed injury on every availability report since at least the Sept. 19 SMU game. The tackle remains out for the Nov. 14 game at North Carolina with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62627,7 +62637,7 @@
             "Col7": "9.4",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Has been listed as out with an undisclosed injury on every availability report since at least the Sept. 19 SMU game. The tackle remains out for the Nov. 14 game at North Carolina with no timetable given.",
             "Col11": "0"
           }
         },
@@ -62640,7 +62650,7 @@
           "impact": 0,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "Undisclosed injury; DNP Week 6 vs. FSU.",
+          "notes": "Has been listed as out with an undisclosed injury every week since the Oct. 3 trip to NC State. The tight end remains out for the Nov. 14 game at North Carolina with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62657,7 +62667,7 @@
             "Col7": "3.0",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Has been listed as out with an undisclosed injury every week since the Oct. 3 trip to NC State. The tight end remains out for the Nov. 14 game at North Carolina with no timetable given.",
             "Col11": "0"
           }
         },
@@ -62670,7 +62680,7 @@
           "impact": 1,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "Undisclosed injury; DNP Week 6 vs. FSU.",
+          "notes": "Has been listed as out with an undisclosed injury on every availability report since at least the Sept. 19 SMU game. The defensive lineman remains out for the Nov. 14 game at North Carolina with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62687,7 +62697,7 @@
             "Col7": "9.6",
             "Col8": "1",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury; DNP Week 6 vs. FSU. ",
+            "Col10": "Has been listed as out with an undisclosed injury on every availability report since at least the Sept. 19 SMU game. The defensive lineman remains out for the Nov. 14 game at North Carolina with no timetable given.",
             "Col11": "0"
           }
         },
@@ -62700,7 +62710,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14. Previous context: Official report 2026-10-15: out. Previous context: Official report 2026-10-14: questionable.",
+          "notes": "Landed on the report with an undisclosed injury before the Oct. 17 Syracuse game and was also ruled out against Stanford on Oct. 31. He is probable for the Nov. 14 game at North Carolina.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62717,7 +62727,7 @@
             "Col7": "7.2",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14. Previous context: Official report 2026-10-15: out. Previous context: Official report 2026-10-14: questionable.",
+            "Col10": "Landed on the report with an undisclosed injury before the Oct. 17 Syracuse game and was also ruled out against Stanford on Oct. 31. He is probable for the Nov. 14 game at North Carolina.",
             "Col11": "0"
           }
         },
@@ -62730,7 +62740,7 @@
           "impact": 4,
           "update_date": "2026-10-29",
           "update_date_raw": "10/29/2026",
-          "notes": "Official report 2026-10-29: out. Game 2026-10-31. Previous context: Official report 2026-10-28: doubtful. Game 2026-10-31. Previous context: Official report 2026-10-14: out.",
+          "notes": "The tackle missed the first two games, debuted against SMU on Sept. 19 and has been in and out of the lineup since with an undisclosed injury. He has been out since the Oct. 17 Syracuse game and stays out for the Nov. 14 game at North Carolina with no timetable.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62747,7 +62757,7 @@
             "Col7": "11.7",
             "Col8": "4",
             "Col9": "10/29/2026",
-            "Col10": "Official report 2026-10-29: out. Game 2026-10-31. Previous context: Official report 2026-10-28: doubtful. Game 2026-10-31. Previous context: Official report 2026-10-14: out.",
+            "Col10": "The tackle missed the first two games, debuted against SMU on Sept. 19 and has been in and out of the lineup since with an undisclosed injury. He has been out since the Oct. 17 Syracuse game and stays out for the Nov. 14 game at North Carolina with no timetable.",
             "Col11": "0"
           }
         },
@@ -62760,7 +62770,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14. Previous context: Official report 2026-11-06: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-28: out. Game 2026-10-31.",
+          "notes": "The receiver  hurt his knee in the 34-26 win at Syracuse on Oct. 17, played through it, then missed the Stanford and Georgia Tech games after Jeff Brohm said he would be out an extended period. He is probable to return on Nov. 14 at North Carolina, well ahead of that outlook.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62777,7 +62787,7 @@
             "Col7": "14.3",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14. Previous context: Official report 2026-11-06: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Official report 2026-10-28: out. Game 2026-10-31.",
+            "Col10": "The receiver  hurt his knee in the 34-26 win at Syracuse on Oct. 17, played through it, then missed the Stanford and Georgia Tech games after Jeff Brohm said he would be out an extended period. He is probable to return on Nov. 14 at North Carolina, well ahead of that outlook.",
             "Col11": "0"
           }
         },
@@ -62790,7 +62800,7 @@
           "impact": 0,
           "update_date": "2026-11-04",
           "update_date_raw": "11/4/2026",
-          "notes": "Official report 2026-11-04: out. Game 2026-11-07.",
+          "notes": "The freshman receiver was listed as out for the SMU and Wake Forest games in September, came off the report in October and returned to it ahead of Georgia Tech. He is out again for the Nov. 14 game at North Carolina with an undisclosed injury.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62807,7 +62817,7 @@
             "Col7": "10.2",
             "Col8": "0",
             "Col9": "11/4/2026",
-            "Col10": "Official report 2026-11-04: out. Game 2026-11-07.",
+            "Col10": "The freshman receiver was listed as out for the SMU and Wake Forest games in September, came off the report in October and returned to it ahead of Georgia Tech. He is out again for the Nov. 14 game at North Carolina with an undisclosed injury.",
             "Col11": "0"
           }
         },
@@ -62820,7 +62830,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "Went from probable to a game-time decision before the Nov. 7 game at Georgia Tech with an undisclosed injury, then played a reduced role in the 44-17 win. He is probable for the Nov. 14 game at North Carolina and has not missed a game this season.",
           "lw_raw": "7",
           "injury_type": "",
           "confirmed": null,
@@ -62837,7 +62847,7 @@
             "Col7": "15.9",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "Went from probable to a game-time decision before the Nov. 7 game at Georgia Tech with an undisclosed injury, then played a reduced role in the 44-17 win. He is probable for the Nov. 14 game at North Carolina and has not missed a game this season.",
             "Col11": "7"
           }
         },
@@ -62850,7 +62860,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "New to the availability report this week with an undisclosed injury. The defensive lineman is probable for the Nov. 14 game at North Carolina.",
           "lw_raw": "29",
           "injury_type": "",
           "confirmed": null,
@@ -62867,7 +62877,7 @@
             "Col7": "11.5",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "New to the availability report this week with an undisclosed injury. The defensive lineman is probable for the Nov. 14 game at North Carolina.",
             "Col11": "29"
           }
         },
@@ -62880,7 +62890,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "New to the availability report this week with an undisclosed injury. The linebacker is probable for the Nov. 14 game at North Carolina.",
           "lw_raw": "55",
           "injury_type": "",
           "confirmed": null,
@@ -62897,7 +62907,7 @@
             "Col7": "14.5",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "New to the availability report this week with an undisclosed injury. The linebacker is probable for the Nov. 14 game at North Carolina.",
             "Col11": "55"
           }
         },
@@ -62910,7 +62920,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "Was listed as questionable with an undisclosed injury ahead of the Nov. 7 game at Georgia Tech. The defensive back is probable for the Nov. 14 game at North Carolina.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62927,7 +62937,7 @@
             "Col7": "10.6",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "Was listed as questionable with an undisclosed injury ahead of the Nov. 7 game at Georgia Tech. The defensive back is probable for the Nov. 14 game at North Carolina.",
             "Col11": "0"
           }
         },
@@ -62940,7 +62950,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "Has moved on and off the availability report all season, including the week of the Villanova game and after getting banged up against Florida State on Oct. 9. The lineman is probable for the Nov. 14 game at North Carolina.",
           "lw_raw": "63",
           "injury_type": "",
           "confirmed": null,
@@ -62957,7 +62967,7 @@
             "Col7": "11.4",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "Has moved on and off the availability report all season, including the week of the Villanova game and after getting banged up against Florida State on Oct. 9. The lineman is probable for the Nov. 14 game at North Carolina.",
             "Col11": "63"
           }
         },
@@ -62970,7 +62980,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+          "notes": "New to the availability report this week with an undisclosed injury. The offensive lineman is questionable for the Nov. 14 game at North Carolina.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -62987,7 +62997,7 @@
             "Col7": "8.7",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+            "Col10": "New to the availability report this week with an undisclosed injury. The offensive lineman is questionable for the Nov. 14 game at North Carolina.",
             "Col11": "0"
           }
         }
@@ -64887,12 +64897,10 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T21:07:29.397Z",
-      "fetched_at": "2026-11-12T21:07:30.292960+00:00",
+      "source_timestamp": "2026-11-12T23:02:13.001Z",
+      "fetched_at": "2026-11-12T23:02:14.129938+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15BjOKxFbNcTeSmQX9tFLKjw74HvYbvgKTkugeduk6Gg/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/louisville/injury-status",
-      "data_stale": true,
-      "last_fetch_error": "Invalid API response"
+      "page_url": "https://cfbdepth.com/louisville/injury-status"
     },
     {
       "team_slug": "lsu",
@@ -66234,8 +66242,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:57.118Z",
-      "fetched_at": "2026-11-12T22:02:58.384740+00:00",
+      "source_timestamp": "2026-11-12T23:01:20.041Z",
+      "fetched_at": "2026-11-12T23:01:21.036660+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/124ypb1P6x2JU1EciUbwkK1L78QCtp6JbbuyqWudfeJQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/lsu/injury-status"
     },
@@ -66919,8 +66927,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:03.992Z",
-      "fetched_at": "2026-11-12T22:05:04.059544+00:00",
+      "source_timestamp": "2026-11-12T23:03:36.026Z",
+      "fetched_at": "2026-11-12T23:03:36.084299+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1MqzQbHDyvwJtTyeSdJXN37M16MlbBm0Lxtg9j4hbUgU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/marshall/injury-status"
     },
@@ -68594,8 +68602,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:09.054Z",
-      "fetched_at": "2026-11-12T22:03:10.136156+00:00",
+      "source_timestamp": "2026-11-12T23:01:33.159Z",
+      "fetched_at": "2026-11-12T23:01:33.997691+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ckR-zmoR6psioof3SaxXG-mhCCUMsY3_i-nETe_9NIE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/maryland/injury-status"
     },
@@ -69009,8 +69017,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:08.866Z",
-      "fetched_at": "2026-11-12T22:04:09.839518+00:00",
+      "source_timestamp": "2026-11-12T23:01:06.695Z",
+      "fetched_at": "2026-11-12T23:02:37.194872+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1jRP6Itf7MziG_iTMVJuOtYA1x9Zeews2UoySF1cmhTU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/memphis/injury-status"
     },
@@ -69037,7 +69045,7 @@
           "impact": 2,
           "update_date": "2026-09-22",
           "update_date_raw": "9/22/2026",
-          "notes": "Suffered an upper-body injury in the week three game against Wake and will miss the remainder of the season.",
+          "notes": "Suffered an upper-body injury in the 33-20 win at Wake Forest on Sept. 18, a game he finished after scoring the first touchdown. Mario Cristobal ruled him out for the season three days later, ending his year at seven catches for 107 yards and two scores.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69054,7 +69062,7 @@
             "Col7": "13.4",
             "Col8": "2",
             "Col9": "9/22/2026",
-            "Col10": "Suffered an upper-body injury in the week three game against Wake and will miss the remainder of the season.",
+            "Col10": "Suffered an upper-body injury in the 33-20 win at Wake Forest on Sept. 18, a game he finished after scoring the first touchdown. Mario Cristobal ruled him out for the season three days later, ending his year at seven catches for 107 yards and two scores.",
             "Col11": "0"
           }
         },
@@ -69067,7 +69075,7 @@
           "impact": 2,
           "update_date": "2026-09-22",
           "update_date_raw": "9/22/2026",
-          "notes": "Head coach Mario Cristobal says Brown is out for the rest of the season after an injury sustained in week three against Wake Forest.",
+          "notes": "Injured his right knee at the end of a 32-yard run in the second quarter of the Sept. 18 win at Wake Forest and left on a cart. Mario Cristobal ruled him out for the season three days later.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69084,7 +69092,7 @@
             "Col7": "15.3",
             "Col8": "2",
             "Col9": "9/22/2026",
-            "Col10": "Head coach Mario Cristobal says Brown is out for the rest of the season after an injury sustained in week three against Wake Forest.",
+            "Col10": "Injured his right knee at the end of a 32-yard run in the second quarter of the Sept. 18 win at Wake Forest and left on a cart. Mario Cristobal ruled him out for the season three days later.",
             "Col11": "0"
           }
         },
@@ -69097,7 +69105,7 @@
           "impact": 0,
           "update_date": "2026-08-04",
           "update_date_raw": "8/4/2026",
-          "notes": "Announced out for the season upon arrival for summer camp. No details on the exact injury, but just that he would not play in 2026.",
+          "notes": "Mario Cristobal announced at the start of fall camp that the sophomore tight end would miss the entire 2026 season with an undisclosed injury. He had been a candidate for the No. 2 job behind Elija Lofton.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69114,7 +69122,7 @@
             "Col7": "12.4",
             "Col8": "0",
             "Col9": "8/4/2026",
-            "Col10": "Announced out for the season upon arrival for summer camp. No details on the exact injury, but just that he would not play in 2026.",
+            "Col10": "Mario Cristobal announced at the start of fall camp that the sophomore tight end would miss the entire 2026 season with an undisclosed injury. He had been a candidate for the No. 2 job behind Elija Lofton.",
             "Col11": "0"
           }
         },
@@ -69127,7 +69135,7 @@
           "impact": 0,
           "update_date": "2026-10-05",
           "update_date_raw": "10/5/2026",
-          "notes": "He suffered an injury, and we expect him back late in the season. Believed to be a lower-body injury. DNP Week 5 vs. Clemson.",
+          "notes": "Has not played this season after suffering an undisclosed injury before the opener. Mario Cristobal said in September that he expects the sophomore cornerback back in the latter part of the season, and he remains out for the Nov. 14 game against Duke.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69144,7 +69152,7 @@
             "Col7": "10.8",
             "Col8": "0",
             "Col9": "10/5/2026",
-            "Col10": "He suffered an injury, and we expect him back late in the season. Believed to be a lower-body injury. DNP Week 5 vs. Clemson.",
+            "Col10": "Has not played this season after suffering an undisclosed injury before the opener. Mario Cristobal said in September that he expects the sophomore cornerback back in the latter part of the season, and he remains out for the Nov. 14 game against Duke.",
             "Col11": "0"
           }
         },
@@ -69157,7 +69165,7 @@
           "impact": 2,
           "update_date": "2026-10-05",
           "update_date_raw": "10/5/2026",
-          "notes": "Exited the Stanford game in the first drive with an apparent left shoulder injury. DNP Week 5 vs. Clemson.",
+          "notes": "Injured his left shoulder making an open-field tackle on the second play of the 45-6 opening win at Stanford and has not played since. Mario Cristobal said he is progressing well but is still looking at a return late in the season or in the postseason, and he is out for the Nov. 14 game against Duke.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69174,7 +69182,7 @@
             "Col7": "13.4",
             "Col8": "2",
             "Col9": "10/5/2026",
-            "Col10": "Exited the Stanford game in the first drive with an apparent left shoulder injury. DNP Week 5 vs. Clemson.",
+            "Col10": "Injured his left shoulder making an open-field tackle on the second play of the 45-6 opening win at Stanford and has not played since. Mario Cristobal said he is progressing well but is still looking at a return late in the season or in the postseason, and he is out for the Nov. 14 game against Duke.",
             "Col11": "0"
           }
         },
@@ -69187,7 +69195,7 @@
           "impact": 2,
           "update_date": "2026-10-07",
           "update_date_raw": "10/7/2026",
-          "notes": "Injured left leg in Week 5 game vs. Clemson. Did not return. Turns out he'll need surgery and will miss a good chunk of the season. Not expected to end it.",
+          "notes": "Injured his left knee in the second quarter of the 41-13 win over Clemson on Oct. 3 and had surgery days later. Mario Cristobal said the right guard has a chance to return for the regular-season finale against Boston College on Nov. 28 or in the postseason.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69204,7 +69212,7 @@
             "Col7": "13.0",
             "Col8": "2",
             "Col9": "10/7/2026",
-            "Col10": "Injured left leg in Week 5 game vs. Clemson. Did not return. Turns out he'll need surgery and will miss a good chunk of the season. Not expected to end it.",
+            "Col10": "Injured his left knee in the second quarter of the 41-13 win over Clemson on Oct. 3 and had surgery days later. Mario Cristobal said the right guard has a chance to return for the regular-season finale against Boston College on Nov. 28 or in the postseason.",
             "Col11": "0"
           }
         },
@@ -69217,7 +69225,7 @@
           "impact": 5,
           "update_date": "2026-11-04",
           "update_date_raw": "11/4/2026",
-          "notes": "Suffered an ankle injury in practice on Wednesday, expected to have surgery and will be out an extended period. Not believed to be season ending",
+          "notes": "Suffered a high ankle sprain in practice on Nov. 4, had TightRope surgery the next morning and missed the 31-24 loss at Notre Dame. Mario Cristobal said he is on schedule in rehab and could return as soon as four to four and a half weeks after the procedure, which points to the ACC Championship Game on Dec. 5 at the earliest.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -69234,7 +69242,7 @@
             "Col7": "17.8",
             "Col8": "5",
             "Col9": "11/4/2026",
-            "Col10": "Suffered an ankle injury in practice on Wednesday, expected to have surgery and will be out an extended period. Not believed to be season ending",
+            "Col10": "Suffered a high ankle sprain in practice on Nov. 4, had TightRope surgery the next morning and missed the 31-24 loss at Notre Dame. Mario Cristobal said he is on schedule in rehab and could return as soon as four to four and a half weeks after the procedure, which points to the ACC Championship Game on Dec. 5 at the earliest.",
             "Col11": "0"
           }
         }
@@ -69634,8 +69642,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:48.622Z",
-      "fetched_at": "2026-11-12T22:03:49.419407+00:00",
+      "source_timestamp": "2026-11-12T23:02:14.738Z",
+      "fetched_at": "2026-11-12T23:02:15.530956+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/174iAR9wmYDU4DoigI38at254Vw-WTf0ARvQ11JjLwYE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/miami-fl/injury-status"
     },
@@ -70859,8 +70867,8 @@
       "warnings": [
         "Source reports 19 injuries; found 18 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:47.886Z",
-      "fetched_at": "2026-11-12T22:04:48.842001+00:00",
+      "source_timestamp": "2026-11-12T23:03:20.261Z",
+      "fetched_at": "2026-11-12T23:03:20.989115+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1SRlzpJbmwpOBN8xFrZ7nBxWbrrp7umLar1GKvqQ3d-4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/miami-oh/injury-status"
     },
@@ -72744,8 +72752,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:09.466Z",
-      "fetched_at": "2026-11-12T22:03:10.738675+00:00",
+      "source_timestamp": "2026-11-12T23:01:33.045Z",
+      "fetched_at": "2026-11-12T23:01:34.265265+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1XjHH2MDBU76TpDUMQByXToWetVbjls7o72IjCzdM42o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/michigan/injury-status"
     },
@@ -73999,8 +74007,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:11.240Z",
-      "fetched_at": "2026-11-12T22:03:12.303378+00:00",
+      "source_timestamp": "2026-11-12T23:01:35.723Z",
+      "fetched_at": "2026-11-12T23:01:36.821307+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15G1Jy8xIeFbNYviMeVqz_nv-EFc7YP3rK6aIg405_ew/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/michigan-state/injury-status"
     },
@@ -75194,8 +75202,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:11.654Z",
-      "fetched_at": "2026-11-12T22:03:12.415915+00:00",
+      "source_timestamp": "2026-11-12T23:01:35.191Z",
+      "fetched_at": "2026-11-12T23:01:36.335187+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Cg2VxJGHKK8H6PLLHNK0wxAn9GfbICSKYSK_17bCXHs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/minnesota/injury-status"
     },
@@ -76002,7 +76010,9 @@
       "source_timestamp": "2026-11-12T22:02:57.537Z",
       "fetched_at": "2026-11-12T22:02:58.477538+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1vMQX5fM6ZlUmcvUL4kgd2HDQVjXNmaDRaU5RHknGgwE/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/mississippi-state/injury-status"
+      "page_url": "https://cfbdepth.com/mississippi-state/injury-status",
+      "data_stale": true,
+      "last_fetch_error": "Invalid API response"
     },
     {
       "team_slug": "missouri",
@@ -77374,8 +77384,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:59.392Z",
-      "fetched_at": "2026-11-12T22:03:00.244502+00:00",
+      "source_timestamp": "2026-11-12T23:01:22.093Z",
+      "fetched_at": "2026-11-12T23:01:22.200137+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1E1Fmq0YDkSDlWhGbzbE68Q5Ce28H3MB5w-sOAqrO4Kk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/missouri/injury-status"
     },
@@ -78209,8 +78219,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:32.743Z",
-      "fetched_at": "2026-11-12T22:04:33.740826+00:00",
+      "source_timestamp": "2026-11-12T23:03:08.078Z",
+      "fetched_at": "2026-11-12T23:03:09.462608+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1IxDuXwzfaVEr7dgsnSxbm3hnU1TMC8v0LM_FpyFicww/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/mo-state/injury-status"
     },
@@ -78594,8 +78604,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:32.275Z",
-      "fetched_at": "2026-11-12T22:04:33.152000+00:00",
+      "source_timestamp": "2026-11-12T23:03:05.833Z",
+      "fetched_at": "2026-11-12T23:03:05.915942+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1HQ-jGhEtQybpbCkLMNQp2Tb4tJJL907r6onO6ssyePI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/mtsu/injury-status"
     },
@@ -79309,8 +79319,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:08.518Z",
-      "fetched_at": "2026-11-12T22:04:09.258074+00:00",
+      "source_timestamp": "2026-11-12T23:02:38.041Z",
+      "fetched_at": "2026-11-12T23:02:39.113670+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1FktQWAgehwgeK2mHsH6zTeAXs9zA4y8kf-mY5Gtyjhk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/navy/injury-status"
     },
@@ -79337,7 +79347,7 @@
           "impact": 0,
           "update_date": "2026-08-05",
           "update_date_raw": "8/5/2026",
-          "notes": "Suspended for the entire 2026 season due to an positive test for performance-enhancing substances.",
+          "notes": "Suspended for the entire 2026 season after a positive test for a performance-enhancing substance, a ruling reported in March. The receiver cannot play until 2027.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79354,7 +79364,7 @@
             "Col7": "13.1",
             "Col8": "0",
             "Col9": "8/5/2026",
-            "Col10": "Suspended for the entire 2026 season due to an positive test for performance-enhancing substances.",
+            "Col10": "Suspended for the entire 2026 season after a positive test for a performance-enhancing substance, a ruling reported in March. The receiver cannot play until 2027.",
             "Col11": "0"
           }
         },
@@ -79367,7 +79377,7 @@
           "impact": 2,
           "update_date": "2026-09-07",
           "update_date_raw": "9/7/2026",
-          "notes": "Out for the season due to a bicep injury.",
+          "notes": "Tore his bicep in the Aug. 29 opener at Virginia, and Dave Doeren ruled the team captain out for the season on Sept. 7. Doeren put the recovery at four to six months.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79384,7 +79394,7 @@
             "Col7": "12.3",
             "Col8": "2",
             "Col9": "9/7/2026",
-            "Col10": "Out for the season due to a bicep injury.",
+            "Col10": "Tore his bicep in the Aug. 29 opener at Virginia, and Dave Doeren ruled the team captain out for the season on Sept. 7. Doeren put the recovery at four to six months.",
             "Col11": "0"
           }
         },
@@ -79397,7 +79407,7 @@
           "impact": 2,
           "update_date": "2026-10-08",
           "update_date_raw": "10/8/2026",
-          "notes": "Confirmed as out for the season on 10/8.",
+          "notes": "Left the Sept. 11 Richmond game with an undisclosed injury and never returned to the lineup. Dave Doeren ruled the starting center out for the season on Oct. 8 after rehab failed and said he needs a repair procedure.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79414,7 +79424,7 @@
             "Col7": "13.5",
             "Col8": "2",
             "Col9": "10/8/2026",
-            "Col10": "Confirmed as out for the season on 10/8.",
+            "Col10": "Left the Sept. 11 Richmond game with an undisclosed injury and never returned to the lineup. Dave Doeren ruled the starting center out for the season on Oct. 8 after rehab failed and said he needs a repair procedure.",
             "Col11": "0"
           }
         },
@@ -79427,7 +79437,7 @@
           "impact": 2,
           "update_date": "2026-10-18",
           "update_date_raw": "10/18/2026",
-          "notes": "Update 2026-10-18: His absence extends through the rest of the season. Previous context: HC Dave Doeren says he's getting closer but not there yet. DNP Week 6 vs. Wake Forest.",
+          "notes": "Has not played since September with an undisclosed injury that Dave Doeren first described as day-to-day. He was reported out for the rest of the season on Oct. 19 after two catches for 25 yards.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79444,7 +79454,7 @@
             "Col7": "10.4",
             "Col8": "2",
             "Col9": "10/18/2026",
-            "Col10": "Update 2026-10-18: His absence extends through the rest of the season. Previous context: HC Dave Doeren says he's getting closer but not there yet. DNP Week 6 vs. Wake Forest.",
+            "Col10": "Has not played since September with an undisclosed injury that Dave Doeren first described as day-to-day. He was reported out for the rest of the season on Oct. 19 after two catches for 25 yards.",
             "Col11": "0"
           }
         },
@@ -79457,7 +79467,7 @@
           "impact": 3,
           "update_date": "2026-11-05",
           "update_date_raw": "11/5/2026",
-          "notes": "Official report 2026-11-05: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Injured in Week 5 vs. Louisville. DNP Week 6 vs. Wake Forest.",
+          "notes": "Was helped off with an upper-body injury in the 31-28 win over Louisville on Oct. 3 and has missed four straight games. The starting strong safety is out again for the Nov. 14 game against Syracuse, with King Mack starting in his place.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79474,7 +79484,7 @@
             "Col7": "11.1",
             "Col8": "3",
             "Col9": "11/5/2026",
-            "Col10": "Official report 2026-11-05: out. Game 2026-11-07. Previous context: Official report 2026-11-04: questionable. Game 2026-11-07. Previous context: Injured in Week 5 vs. Louisville. DNP Week 6 vs. Wake Forest.",
+            "Col10": "Was helped off with an upper-body injury in the 31-28 win over Louisville on Oct. 3 and has missed four straight games. The starting strong safety is out again for the Nov. 14 game against Syracuse, with King Mack starting in his place.",
             "Col11": "0"
           }
         },
@@ -79487,7 +79497,7 @@
           "impact": 0,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "Undisclosed injury;  DNP Week 6 vs. Wake Forest.",
+          "notes": "Has been listed as out with an undisclosed injury on every availability report since at least the Oct. 10 Wake Forest game. The nickel remains out for the Nov. 14 game against Syracuse with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79504,7 +79514,7 @@
             "Col7": "10.5",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "Undisclosed injury;  DNP Week 6 vs. Wake Forest.",
+            "Col10": "Has been listed as out with an undisclosed injury on every availability report since at least the Oct. 10 Wake Forest game. The nickel remains out for the Nov. 14 game against Syracuse with no timetable given.",
             "Col11": "0"
           }
         },
@@ -79517,7 +79527,7 @@
           "impact": 2,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "DNP Week 6 vs. Wake Forest.",
+          "notes": "Left the Oct. 3 win over Louisville with a lower-body injury after 67 snaps and has not played since. The starting guard has since been reported as lost for the season and is out for the Nov. 14 game against Syracuse.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79534,7 +79544,7 @@
             "Col7": "12.3",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. Wake Forest.",
+            "Col10": "Left the Oct. 3 win over Louisville with a lower-body injury after 67 snaps and has not played since. The starting guard has since been reported as lost for the season and is out for the Nov. 14 game against Syracuse.",
             "Col11": "0"
           }
         },
@@ -79547,7 +79557,7 @@
           "impact": 0,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "DNP Week 6 vs. Wake Forest.",
+          "notes": "Has been listed as out with an undisclosed injury on every availability report since at least the Oct. 10 Wake Forest game. The tight end remains out for the Nov. 14 game against Syracuse with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79564,7 +79574,7 @@
             "Col7": "6.9",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. Wake Forest.",
+            "Col10": "Has been listed as out with an undisclosed injury on every availability report since at least the Oct. 10 Wake Forest game. The tight end remains out for the Nov. 14 game against Syracuse with no timetable given.",
             "Col11": "0"
           }
         },
@@ -79577,7 +79587,7 @@
           "impact": 0,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "DNP Week 6 vs. Wake Forest.",
+          "notes": "Has been listed as out with an undisclosed injury on every availability report since at least the Oct. 10 Wake Forest game. The kicker remains out for the Nov. 14 game against Syracuse with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79594,7 +79604,7 @@
             "Col7": "11.4",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. Wake Forest.",
+            "Col10": "Has been listed as out with an undisclosed injury on every availability report since at least the Oct. 10 Wake Forest game. The kicker remains out for the Nov. 14 game against Syracuse with no timetable given.",
             "Col11": "0"
           }
         },
@@ -79607,7 +79617,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-10-28: out. Game 2026-10-31.",
+          "notes": "The backup center missed the Oct. 31 California game and the Nov. 7 Duke game with an undisclosed injury. He is questionable to return on Nov. 14 against Syracuse.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79624,7 +79634,7 @@
             "Col7": "11.4",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-10-28: out. Game 2026-10-31.",
+            "Col10": "The backup center missed the Oct. 31 California game and the Nov. 7 Duke game with an undisclosed injury. He is questionable to return on Nov. 14 against Syracuse.",
             "Col11": "0"
           }
         },
@@ -79637,7 +79647,7 @@
           "impact": 5,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: out. Game 2026-11-14. Previous context: Official report 2026-11-07: game time decision. Game 2026-11-07. Previous context: Official report 2026-11-04: probable. Game 2026-11-07.",
+          "notes": "The short-yardage quarterback slid from probable to a game-time decision before the Nov. 7 Duke game, warmed up and did not play. He is out with an undisclosed injury for the Nov. 14 game against Syracuse, his second straight absence.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79654,7 +79664,7 @@
             "Col7": "12.6",
             "Col8": "5",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: out. Game 2026-11-14. Previous context: Official report 2026-11-07: game time decision. Game 2026-11-07. Previous context: Official report 2026-11-04: probable. Game 2026-11-07.",
+            "Col10": "The short-yardage quarterback slid from probable to a game-time decision before the Nov. 7 Duke game, warmed up and did not play. He is out with an undisclosed injury for the Nov. 14 game against Syracuse, his second straight absence.",
             "Col11": "0"
           }
         },
@@ -79667,7 +79677,7 @@
           "impact": 5,
           "update_date": "2026-11-07",
           "update_date_raw": "11/7/2026",
-          "notes": "Injured vs. Duke in a helmet-to-helmet collision in Week 10. Did not return.",
+          "notes": "Collided helmet-to-helmet with teammate Ronnie Royal III in the third quarter of the 41-3 loss to Duke on Nov. 7 and lay on the field for about six minutes before walking off with help. No diagnosis has been announced, the team expects him to miss some time and he is out for the Nov. 14 game against Syracuse.",
           "lw_raw": "43",
           "injury_type": "",
           "confirmed": null,
@@ -79684,7 +79694,7 @@
             "Col7": "13.8",
             "Col8": "5",
             "Col9": "11/7/2026",
-            "Col10": "Injured vs. Duke in a helmet-to-helmet collision in Week 10. Did not return.",
+            "Col10": "Collided helmet-to-helmet with teammate Ronnie Royal III in the third quarter of the 41-3 loss to Duke on Nov. 7 and lay on the field for about six minutes before walking off with help. No diagnosis has been announced, the team expects him to miss some time and he is out for the Nov. 14 game against Syracuse.",
             "Col11": "43"
           }
         },
@@ -79697,7 +79707,7 @@
           "impact": 4,
           "update_date": "2026-11-07",
           "update_date_raw": "11/7/2026",
-          "notes": "Injured vs. Duke in a helmet-to-helmet collision in Week 10. Did not return.",
+          "notes": "Collided helmet-to-helmet with teammate Popo Aguirre in the third quarter of the 41-3 loss to Duke on Nov. 7 and was helped to the locker room after about six minutes on the field. No diagnosis has been announced, the team expects him to miss some time and he is out for the Nov. 14 game against Syracuse.",
           "lw_raw": "43",
           "injury_type": "",
           "confirmed": null,
@@ -79714,7 +79724,7 @@
             "Col7": "12.4",
             "Col8": "4",
             "Col9": "11/7/2026",
-            "Col10": "Injured vs. Duke in a helmet-to-helmet collision in Week 10. Did not return.",
+            "Col10": "Collided helmet-to-helmet with teammate Popo Aguirre in the third quarter of the 41-3 loss to Duke on Nov. 7 and was helped to the locker room after about six minutes on the field. No diagnosis has been announced, the team expects him to miss some time and he is out for the Nov. 14 game against Syracuse.",
             "Col11": "43"
           }
         },
@@ -79727,7 +79737,7 @@
           "impact": 2,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+          "notes": "Was listed as probable early in Duke week and cleared before that game, then landed back on the report this week with an undisclosed injury. He is questionable for the Nov. 14 game against Syracuse.",
           "lw_raw": "44",
           "injury_type": "",
           "confirmed": null,
@@ -79744,7 +79754,7 @@
             "Col7": "13.3",
             "Col8": "2",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+            "Col10": "Was listed as probable early in Duke week and cleared before that game, then landed back on the report this week with an undisclosed injury. He is questionable for the Nov. 14 game against Syracuse.",
             "Col11": "44"
           }
         },
@@ -79757,7 +79767,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+          "notes": "Got banged up in the Nov. 7 loss to Duke and was removed from this week's depth chart, with Tyran Warren taking his spot. Interim coach Todd Goebbel said he is fighting to get back, and he is questionable for the Nov. 14 game against Syracuse.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -79774,7 +79784,7 @@
             "Col7": "10.1",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+            "Col10": "Got banged up in the Nov. 7 loss to Duke and was removed from this week's depth chart, with Tyran Warren taking his spot. Interim coach Todd Goebbel said he is fighting to get back, and he is questionable for the Nov. 14 game against Syracuse.",
             "Col11": "0"
           }
         },
@@ -79787,7 +79797,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "New to the availability report this week with an undisclosed injury. The backup cornerback is probable for the Nov. 14 game against Syracuse.",
           "lw_raw": "12",
           "injury_type": "",
           "confirmed": null,
@@ -79804,7 +79814,7 @@
             "Col7": "12.6",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "New to the availability report this week with an undisclosed injury. The backup cornerback is probable for the Nov. 14 game against Syracuse.",
             "Col11": "12"
           }
         },
@@ -79817,7 +79827,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "New to the availability report this week with an undisclosed injury. The backup tight end is probable for the Nov. 14 game against Syracuse.",
           "lw_raw": "32",
           "injury_type": "",
           "confirmed": null,
@@ -79834,7 +79844,7 @@
             "Col7": "10.4",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "New to the availability report this week with an undisclosed injury. The backup tight end is probable for the Nov. 14 game against Syracuse.",
             "Col11": "32"
           }
         },
@@ -79847,7 +79857,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "Hobbled off against California on Oct. 31, played through a game-time decision against Duke and briefly left that game before returning. The starting center is probable for the Nov. 14 game against Syracuse.",
           "lw_raw": "37",
           "injury_type": "",
           "confirmed": null,
@@ -79864,7 +79874,7 @@
             "Col7": "13.5",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "Hobbled off against California on Oct. 31, played through a game-time decision against Duke and briefly left that game before returning. The starting center is probable for the Nov. 14 game against Syracuse.",
             "Col11": "37"
           }
         },
@@ -79877,7 +79887,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+          "notes": "Started at right tackle in the Nov. 7 loss to Duke and landed on the report this week with an undisclosed injury. He is questionable for the Nov. 14 game against Syracuse.",
           "lw_raw": "39",
           "injury_type": "",
           "confirmed": null,
@@ -79894,7 +79904,7 @@
             "Col7": "11.9",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14.",
+            "Col10": "Started at right tackle in the Nov. 7 loss to Duke and landed on the report this week with an undisclosed injury. He is questionable for the Nov. 14 game against Syracuse.",
             "Col11": "39"
           }
         },
@@ -79907,7 +79917,7 @@
           "impact": 4,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: out. Game 2026-11-14.",
+          "notes": "Left the Nov. 7 loss to Duke in the third quarter with a lower-body injury. The tight end is out for the Nov. 14 game against Syracuse.",
           "lw_raw": "26",
           "injury_type": "",
           "confirmed": null,
@@ -79924,7 +79934,7 @@
             "Col7": "11.0",
             "Col8": "4",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: out. Game 2026-11-14.",
+            "Col10": "Left the Nov. 7 loss to Duke in the third quarter with a lower-body injury. The tight end is out for the Nov. 14 game against Syracuse.",
             "Col11": "26"
           }
         },
@@ -79937,7 +79947,7 @@
           "impact": 0,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: probable. Game 2026-11-14.",
+          "notes": "New to the availability report this week with an undisclosed injury. The kicker is probable for the Nov. 14 game against Syracuse.",
           "lw_raw": "4",
           "injury_type": "",
           "confirmed": null,
@@ -79954,7 +79964,7 @@
             "Col7": "14.6",
             "Col8": "0",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
+            "Col10": "New to the availability report this week with an undisclosed injury. The kicker is probable for the Nov. 14 game against Syracuse.",
             "Col11": "4"
           }
         }
@@ -80774,8 +80784,8 @@
       "warnings": [
         "Source reports 22 injuries; found 21 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:50.457Z",
-      "fetched_at": "2026-11-12T22:03:51.332168+00:00",
+      "source_timestamp": "2026-11-12T23:02:16.436Z",
+      "fetched_at": "2026-11-12T23:02:17.307541+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1YMoHWWBnsFim8jHNp4hjUIut9H6uEm5hcfRnRfOlZto/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nc-state/injury-status"
     },
@@ -81759,8 +81769,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:57.396Z",
-      "fetched_at": "2026-11-12T22:04:19.391128+00:00",
+      "source_timestamp": "2026-11-12T23:02:53.093Z",
+      "fetched_at": "2026-11-12T23:02:54.414124+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/11ljTl7K5sVzfVsesa0fV-ywdiOoeJIGl9PujzfwTPQQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ndsu/injury-status"
     },
@@ -82804,8 +82814,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:13.543Z",
-      "fetched_at": "2026-11-12T22:03:14.858159+00:00",
+      "source_timestamp": "2026-11-12T23:01:38.135Z",
+      "fetched_at": "2026-11-12T23:01:39.249272+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1MiulSJGedr-mZ33CsE5fjQu72BHfDSPYqjRaEweuqf4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nebraska/injury-status"
     },
@@ -83309,8 +83319,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:18.652Z",
-      "fetched_at": "2026-11-12T22:04:18.719618+00:00",
+      "source_timestamp": "2026-11-12T23:02:51.003Z",
+      "fetched_at": "2026-11-12T23:02:51.847053+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1x_9D-ikg9vVuzZlYdKqavKgYBVvNvNaK4dsEqyFcduI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nevada/injury-status"
     },
@@ -84534,8 +84544,8 @@
       "warnings": [
         "Source reports 20 injuries; found 19 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:20.510Z",
-      "fetched_at": "2026-11-12T22:04:20.592419+00:00",
+      "source_timestamp": "2026-11-12T23:02:54.896Z",
+      "fetched_at": "2026-11-12T23:02:54.972940+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1QPI0MMfWohPVlAlR13279agP74bYSsGdDCCFaQOPTyg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/niu/injury-status"
     },
@@ -85069,8 +85079,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:34.957Z",
-      "fetched_at": "2026-11-12T22:04:35.977685+00:00",
+      "source_timestamp": "2026-11-12T23:03:07.281Z",
+      "fetched_at": "2026-11-12T23:03:08.344762+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1E4xetDQ2IJABso955YPPsOdic7hNiSPHstzsYwCx2m4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/nm-state/injury-status"
     },
@@ -86144,8 +86154,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:13.677Z",
-      "fetched_at": "2026-11-12T22:03:14.679544+00:00",
+      "source_timestamp": "2026-11-12T23:01:38.426Z",
+      "fetched_at": "2026-11-12T23:01:40.081600+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1xUEOMZvVZqc6HMnxPMRyzwCJ7pL9kC2mzWSfSlJ7WzE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/northwestern/injury-status"
     },
@@ -87069,8 +87079,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:03.165Z",
-      "fetched_at": "2026-11-12T22:04:04.090960+00:00",
+      "source_timestamp": "2026-11-12T23:02:31.660Z",
+      "fetched_at": "2026-11-12T23:02:32.505303+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1_-_-1KkF5-GJBlFVTXufc8TeTADWK7fiiqXGjiAIFas/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/notre-dame/injury-status"
     },
@@ -87204,7 +87214,7 @@
             "Col7": "11.3",
             "Col8": "1",
             "Col9": "11/7/2026",
-            "Col10": "Left injured on the final play of the first quarter vs. Coastal Carolina and did not return.",
+            "Col10": "Left injured on the final play of the first quarter vs. Coastal Carolina and did not return. ",
             "Col11": "3"
           }
         }
@@ -88204,8 +88214,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:05.267Z",
-      "fetched_at": "2026-11-12T22:05:06.171705+00:00",
+      "source_timestamp": "2026-11-12T23:03:35.985Z",
+      "fetched_at": "2026-11-12T23:03:36.815715+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1jw3awi-pDe3iLK4897F4cxjKpWDfwqniDzvJ_I3lyRo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/odu/injury-status"
     },
@@ -89039,8 +89049,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:49.708Z",
-      "fetched_at": "2026-11-12T22:04:50.877640+00:00",
+      "source_timestamp": "2026-11-12T23:03:21.671Z",
+      "fetched_at": "2026-11-12T23:03:22.837770+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1q7g_0w2b_iQGkYVUW2jTZnKF7kOsjCXkoybMcuyHq6o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ohio/injury-status"
     },
@@ -89814,8 +89824,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:36.321Z",
-      "fetched_at": "2026-11-12T22:03:37.599659+00:00",
+      "source_timestamp": "2026-11-12T23:02:02.520Z",
+      "fetched_at": "2026-11-12T23:02:03.595656+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15QNRp0ux06PYSgG5oAJyq-UexYEllPyXEHcnIAAA8AY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ok-state/injury-status"
     },
@@ -91219,8 +91229,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:59.422Z",
-      "fetched_at": "2026-11-12T22:02:59.511091+00:00",
+      "source_timestamp": "2026-11-12T23:01:21.733Z",
+      "fetched_at": "2026-11-12T23:01:22.516443+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/19njnAWtOHnr0_8ohW0ON27M7TaFaCFSyIfEWPm4w8XY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/oklahoma/injury-status"
     },
@@ -93134,8 +93144,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:00.502Z",
-      "fetched_at": "2026-11-12T22:03:01.371589+00:00",
+      "source_timestamp": "2026-11-12T23:01:23.652Z",
+      "fetched_at": "2026-11-12T23:01:24.676129+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/19mnQGlBjcV3YnlSyoRpHqYiWYqjv_An6mQiTmq1kbpw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/olemiss/injury-status"
     },
@@ -94209,8 +94219,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:15.949Z",
-      "fetched_at": "2026-11-12T22:03:16.663677+00:00",
+      "source_timestamp": "2026-11-12T23:01:41.393Z",
+      "fetched_at": "2026-11-12T23:01:42.791694+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1YW_KH6WVHzNwAn-_iAxtkQK-mTTxiGNqLmbl0i45FtE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/oregon/injury-status"
     },
@@ -95584,8 +95594,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:58.023Z",
-      "fetched_at": "2026-11-12T22:03:58.832350+00:00",
+      "source_timestamp": "2026-11-12T23:00:33.682Z",
+      "fetched_at": "2026-11-12T23:02:25.474413+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1wSlQoMgRHugwTi3xcmP-iSpx5Jc_NR6ywEu4bt3W2sk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/oregon-state/injury-status"
     },
@@ -97139,8 +97149,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:15.969Z",
-      "fetched_at": "2026-11-12T22:03:17.280702+00:00",
+      "source_timestamp": "2026-11-12T23:01:40.732Z",
+      "fetched_at": "2026-11-12T23:01:42.108493+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ECt0uX1hUeERomKviNv0KpVV4P3_Nn0v4UzWlG0lfAM/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/osu/injury-status"
     },
@@ -99114,8 +99124,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:17.666Z",
-      "fetched_at": "2026-11-12T22:03:18.580300+00:00",
+      "source_timestamp": "2026-11-12T23:01:43.156Z",
+      "fetched_at": "2026-11-12T23:01:44.082410+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1CZ6wtO9GYb68AiH536sFfBMUQmklE8hGV1oQ61pojvU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/penn-state/injury-status"
     },
@@ -99189,7 +99199,7 @@
             "Col7": "13.4",
             "Col8": "2",
             "Col9": "10/2/2026",
-            "Col10": "Injured in-game week five; Confirmed to be out for the seaon with an ACL tear.",
+            "Col10": "Injured in-game week five; Confirmed to be out for the seaon with an ACL tear. ",
             "Col11": "0"
           }
         },
@@ -99219,7 +99229,7 @@
             "Col7": "9.3",
             "Col8": "1",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -99249,7 +99259,7 @@
             "Col7": "9.8",
             "Col8": "1",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -99279,7 +99289,7 @@
             "Col7": "11.8",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -99309,7 +99319,7 @@
             "Col7": "9.4",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -99339,7 +99349,7 @@
             "Col7": "10.1",
             "Col8": "0",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. UNC.",
+            "Col10": " DNP Week 6 vs. UNC.",
             "Col11": "0"
           }
         },
@@ -100249,8 +100259,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:50.895Z",
-      "fetched_at": "2026-11-12T22:03:52.338687+00:00",
+      "source_timestamp": "2026-11-12T23:00:50.859Z",
+      "fetched_at": "2026-11-12T23:02:16.451324+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1zlCisLkB_nKvDkYhJnOraW3mJ9rBz_WMhqmB0WOlo_A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/pitt/injury-status"
     },
@@ -100784,8 +100794,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:18.304Z",
-      "fetched_at": "2026-11-12T22:03:20.378477+00:00",
+      "source_timestamp": "2026-11-12T23:01:43.902Z",
+      "fetched_at": "2026-11-12T23:01:43.989630+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1K7iqbjZIQ3cNW_633xSW-dbCzkbmrkgHzs-g7k5WQR4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/purdue/injury-status"
     },
@@ -101622,7 +101632,9 @@
       "source_timestamp": "2026-11-12T22:04:11.002Z",
       "fetched_at": "2026-11-12T22:04:12.529427+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ks9A9ldisBPnuV8o6O1iwVZG83EpotxcKzvfZcUQck0/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/rice/injury-status"
+      "page_url": "https://cfbdepth.com/rice/injury-status",
+      "data_stale": true,
+      "last_fetch_error": "Invalid API response"
     },
     {
       "team_slug": "rutgers",
@@ -103204,8 +103216,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:19.847Z",
-      "fetched_at": "2026-11-12T22:03:20.856798+00:00",
+      "source_timestamp": "2026-11-12T23:01:45.670Z",
+      "fetched_at": "2026-11-12T23:01:46.788263+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/11vIZjiY9SWGoe3B-U5rYDKokJ5Ka-7jQ4SUJ6H3Gpaw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/rutgers/injury-status"
     },
@@ -105389,8 +105401,8 @@
       "warnings": [
         "Source reports 27 injuries; found 26 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:49.806Z",
-      "fetched_at": "2026-11-12T22:04:50.431861+00:00",
+      "source_timestamp": "2026-11-12T23:03:21.822Z",
+      "fetched_at": "2026-11-12T23:03:23.070563+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/15_EfkCXjXMKwRUagm4AMzf54nfKpoJSBydLNmFzK-88/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sac-state/injury-status"
     },
@@ -106134,8 +106146,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:35.062Z",
-      "fetched_at": "2026-11-12T22:04:35.945675+00:00",
+      "source_timestamp": "2026-11-12T23:03:09.542Z",
+      "fetched_at": "2026-11-12T23:03:10.524890+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1hcZjhnB9oBwgrX3Zgm576itC7zXL0Zfx6r99u6QUIu0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sam-houston/injury-status"
     },
@@ -109399,8 +109411,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:59.788Z",
-      "fetched_at": "2026-11-12T22:03:59.888104+00:00",
+      "source_timestamp": "2026-11-12T23:02:26.601Z",
+      "fetched_at": "2026-11-12T23:02:26.696561+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1fBGuaJDwBMMhEuZjeIbSgDV9rmQCg1ErcK9JRgwaMPo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sdsu/injury-status"
     },
@@ -110114,8 +110126,8 @@
       "warnings": [
         "Source reports 5 injuries; found 4 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:23.232Z",
-      "fetched_at": "2026-11-12T22:04:24.094491+00:00",
+      "source_timestamp": "2026-11-12T23:02:55.834Z",
+      "fetched_at": "2026-11-12T23:02:56.895123+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1VBr3Cvtc2kKdsNiJPHEioRTyW6-LuLy-zpDjDNDHYFg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/sjsu/injury-status"
     },
@@ -111189,8 +111201,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:52.242Z",
-      "fetched_at": "2026-11-12T22:03:52.317428+00:00",
+      "source_timestamp": "2026-11-12T23:02:17.429Z",
+      "fetched_at": "2026-11-12T23:02:18.427749+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/18m_ayZeFBtdG8zI5SvAG0MOxlmqrsGYEwu-PHtN5NEc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/smu/injury-status"
     },
@@ -112414,8 +112426,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:01.209Z",
-      "fetched_at": "2026-11-12T22:03:02.456326+00:00",
+      "source_timestamp": "2026-11-12T23:01:23.575Z",
+      "fetched_at": "2026-11-12T23:01:24.546312+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1NgyW7DC6fFPiHjTUfEdxTA22AYZNlR6q_MPgJsuXCpo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/south-carolina/injury-status"
     },
@@ -113039,8 +113051,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:10.938Z",
-      "fetched_at": "2026-11-12T22:05:11.956967+00:00",
+      "source_timestamp": "2026-11-12T23:03:38.340Z",
+      "fetched_at": "2026-11-12T23:03:39.360484+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ErChNPMcKTfc2woi8eJbFIgMeamsRaUnYGjBx-53OD4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/southern-miss/injury-status"
     },
@@ -114744,8 +114756,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:53.243Z",
-      "fetched_at": "2026-11-12T22:03:53.333997+00:00",
+      "source_timestamp": "2026-11-12T23:02:18.315Z",
+      "fetched_at": "2026-11-12T23:02:18.393078+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1uqb1mEt5hcyoWoljf153zqooDCYkvkafgy9Hw0uE1js/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/stanford/injury-status"
     },
@@ -116509,8 +116521,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:45.903Z",
-      "fetched_at": "2026-11-12T22:03:52.575134+00:00",
+      "source_timestamp": "2026-11-12T23:02:19.704Z",
+      "fetched_at": "2026-11-12T23:02:20.781367+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1a-mILH5Gx0zsC-63bfFxJZeLpyBQ9m_kLn0UARFYUDI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/syracuse/injury-status"
     },
@@ -117944,8 +117956,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:36.943Z",
-      "fetched_at": "2026-11-12T22:03:37.918658+00:00",
+      "source_timestamp": "2026-11-12T23:02:04.445Z",
+      "fetched_at": "2026-11-12T23:02:05.573391+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1raeHY553LAXA2fFwUk7E0SOvwhgNqVpNM4_fvL45GeY/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tcu/injury-status"
     },
@@ -119169,8 +119181,8 @@
       "warnings": [
         "Source reports 19 injuries; found 18 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:13.522Z",
-      "fetched_at": "2026-11-12T22:04:14.366690+00:00",
+      "source_timestamp": "2026-11-12T23:02:41.430Z",
+      "fetched_at": "2026-11-12T23:02:42.083388+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1TPynIkX-Eiu1-uQBorftiVEjRlD_4iGnOCbBicOK6Oo/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/temple/injury-status"
     },
@@ -119944,8 +119956,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:02.558Z",
-      "fetched_at": "2026-11-12T22:03:03.246528+00:00",
+      "source_timestamp": "2026-11-12T23:01:25.325Z",
+      "fetched_at": "2026-11-12T23:01:26.242831+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1VWMQkmNhuo3ZnRicTSZCj5BA5rAof9_FquKvxi53ZjA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tennessee/injury-status"
     },
@@ -120989,8 +121001,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:03.574Z",
-      "fetched_at": "2026-11-12T22:03:04.550256+00:00",
+      "source_timestamp": "2026-11-12T23:01:25.928Z",
+      "fetched_at": "2026-11-12T23:01:27.491859+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1migINlNe_fMS2nIMHIthX5nefB9ztbuhDpnEHFFib98/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/texas/injury-status"
     },
@@ -121884,8 +121896,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:04.165Z",
-      "fetched_at": "2026-11-12T22:03:04.243682+00:00",
+      "source_timestamp": "2026-11-12T23:01:27.304Z",
+      "fetched_at": "2026-11-12T23:01:28.541584+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1f0NcS3t38sRk532daXU9mjVZDiCe9kuImlhQvie9DWE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/texas-am/injury-status"
     },
@@ -123859,8 +123871,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:38.801Z",
-      "fetched_at": "2026-11-12T22:03:40.035433+00:00",
+      "source_timestamp": "2026-11-12T23:02:04.726Z",
+      "fetched_at": "2026-11-12T23:02:05.671991+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1MphM8oi0uHgo-KDy8lSWxAOvpUJhoiNJbvDG6B5OV_c/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/texas-tech/injury-status"
     },
@@ -124874,8 +124886,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:51.816Z",
-      "fetched_at": "2026-11-12T22:04:52.798451+00:00",
+      "source_timestamp": "2026-11-12T23:03:23.803Z",
+      "fetched_at": "2026-11-12T23:03:24.601373+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Pi1iZsfEsL-wZR28UJ0g7g-Y8s5emjAZ7hijmOchL4A/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/toledo/injury-status"
     },
@@ -125439,8 +125451,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:11.688Z",
-      "fetched_at": "2026-11-12T22:05:11.760038+00:00",
+      "source_timestamp": "2026-11-12T23:03:39.750Z",
+      "fetched_at": "2026-11-12T23:03:40.712374+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1eEvmaPcmdS5d72cOy-2bgAeoE9_IolqvUwJvWgp_ty0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/troy/injury-status"
     },
@@ -126454,8 +126466,8 @@
       "warnings": [
         "Source reports 16 injuries; found 15 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:10.497Z",
-      "fetched_at": "2026-11-12T22:04:13.861583+00:00",
+      "source_timestamp": "2026-11-12T23:02:43.747Z",
+      "fetched_at": "2026-11-12T23:02:44.947910+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1P6aT6zd_Z9wdiGQhdeadjIBPU97byLhDTZaUqimhKBw/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tulane/injury-status"
     },
@@ -126989,8 +127001,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:14.821Z",
-      "fetched_at": "2026-11-12T22:04:14.888214+00:00",
+      "source_timestamp": "2026-11-12T23:02:46.106Z",
+      "fetched_at": "2026-11-12T23:02:46.865821+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1TK9p3QiJvPxDwuWVJr2GQKkU-C3jMnUYW78Dib8AVgc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tulsa/injury-status"
     },
@@ -128484,8 +128496,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:59.661Z",
-      "fetched_at": "2026-11-12T22:04:00.405602+00:00",
+      "source_timestamp": "2026-11-12T23:02:27.249Z",
+      "fetched_at": "2026-11-12T23:02:28.562043+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1noA6BhJgzSNNz7odUMwx1w-m9PfL7tHNKzKVEhFwbSE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/tx-state/injury-status"
     },
@@ -129049,8 +129061,8 @@
       "warnings": [
         "Source reports 7 injuries; found 6 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:15.325Z",
-      "fetched_at": "2026-11-12T22:04:16.268093+00:00",
+      "source_timestamp": "2026-11-12T23:02:46.745Z",
+      "fetched_at": "2026-11-12T23:02:47.832498+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ffW0nUJ-9SWvecjFFr5trhBB6mH9uZA4JGPajVOl1vE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uab/injury-status"
     },
@@ -131054,8 +131066,8 @@
       "warnings": [
         "Source reports 18 injuries; found 17 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:39.312Z",
-      "fetched_at": "2026-11-12T22:03:40.504517+00:00",
+      "source_timestamp": "2026-11-12T23:02:07.170Z",
+      "fetched_at": "2026-11-12T23:02:08.132538+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/17f13idbBkoHKWZ6NPr5ROSI6SUCN4I9-OfbNRpqNOC8/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ucf/injury-status"
     },
@@ -132159,8 +132171,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:21.668Z",
-      "fetched_at": "2026-11-12T22:03:22.939536+00:00",
+      "source_timestamp": "2026-11-12T23:01:45.503Z",
+      "fetched_at": "2026-11-12T23:01:46.881720+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1GkkgkuNfIMJPVEXKGbEh3Gb3wx_3Ow0Vs0apIaHqAQU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ucla/injury-status"
     },
@@ -132334,8 +132346,8 @@
       "warnings": [
         "Source reports 3 injuries; found 2 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:03.576Z",
-      "fetched_at": "2026-11-12T22:04:05.705303+00:00",
+      "source_timestamp": "2026-11-12T23:02:30.924Z",
+      "fetched_at": "2026-11-12T23:02:32.719878+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1EFeavmsiwzk41PxdqBD2SeF5bkqaiHIOtE3ydThPsWQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uconn/injury-status"
     },
@@ -133109,8 +133121,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:02:54.589Z",
-      "fetched_at": "2026-11-12T22:02:55.965688+00:00",
+      "source_timestamp": "2026-11-12T23:01:18.452Z",
+      "fetched_at": "2026-11-12T23:01:18.544717+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1X2Cjoe2VsjxpMyDnFzdfCP-MyJcfN5QE9RyXL4KDjl0/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uga/injury-status"
     },
@@ -134214,8 +134226,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:00.240Z",
-      "fetched_at": "2026-11-12T22:05:02.963188+00:00",
+      "source_timestamp": "2026-11-12T23:00:55.981Z",
+      "fetched_at": "2026-11-12T23:03:34.808933+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1fpZ79YI_ckV2qoql9pxdI_QYvOG7Np1D7O1gCo87L5I/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/ulm/injury-status"
     },
@@ -135049,8 +135061,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:46.705Z",
-      "fetched_at": "2026-11-12T22:04:47.963301+00:00",
+      "source_timestamp": "2026-11-12T23:03:19.308Z",
+      "fetched_at": "2026-11-12T23:03:20.475633+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1qE-Bteh9UNJdRb1tVIIFVGN-GfOxRJsVWZ9TZS78xhE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/umass/injury-status"
     },
@@ -136544,8 +136556,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:49.044Z",
-      "fetched_at": "2026-11-12T22:03:49.823214+00:00",
+      "source_timestamp": "2026-11-12T23:02:15.158Z",
+      "fetched_at": "2026-11-12T23:02:16.141860+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1Z7-TOYOO7dCnn-vH3Krh7u876hk8NpOwhuqyXFqum88/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unc/injury-status"
     },
@@ -138189,8 +138201,8 @@
       "warnings": [
         "Source reports 11 injuries; found 10 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:21.670Z",
-      "fetched_at": "2026-11-12T22:04:22.485995+00:00",
+      "source_timestamp": "2026-11-12T23:02:55.885Z",
+      "fetched_at": "2026-11-12T23:02:56.829030+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/113wa62njoSaa_k7q-sNRmWvFpspCML9YFJTyNSuOUjs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unlv/injury-status"
     },
@@ -139384,8 +139396,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:19.761Z",
-      "fetched_at": "2026-11-12T22:04:20.626956+00:00",
+      "source_timestamp": "2026-11-12T23:02:52.570Z",
+      "fetched_at": "2026-11-12T23:02:53.618908+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1QzDXAckmRZB0RbnJqrVlxe7IJNMsS0d_CaTMpqdbI54/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unm/injury-status"
     },
@@ -140189,8 +140201,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:10.531Z",
-      "fetched_at": "2026-11-12T22:04:11.502660+00:00",
+      "source_timestamp": "2026-11-12T23:02:38.722Z",
+      "fetched_at": "2026-11-12T23:02:39.960458+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1BVWDZBmtdtoQJ7pdTQHi3K4ZQWxLu8hFOZ4paBbR6oc/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/unt/injury-status"
     },
@@ -141594,8 +141606,8 @@
       "warnings": [
         "Source reports 17 injuries; found 16 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:05:08.826Z",
-      "fetched_at": "2026-11-12T22:05:09.932137+00:00",
+      "source_timestamp": "2026-11-12T23:03:37.069Z",
+      "fetched_at": "2026-11-12T23:03:38.478698+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1NfqFK3lyOfgVibiJW6pUaEWenV9pupRxdNi811oInpA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/usa/injury-status"
     },
@@ -143239,8 +143251,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:22.136Z",
-      "fetched_at": "2026-11-12T22:03:22.222543+00:00",
+      "source_timestamp": "2026-11-12T23:01:48.160Z",
+      "fetched_at": "2026-11-12T23:01:49.317009+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1qo1GghbgxTF4NgwbL8tVQtaR1-ykxPO8ZgJcde88Brk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/usc/injury-status"
     },
@@ -144254,8 +144266,8 @@
       "warnings": [
         "Source reports 12 injuries; found 11 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:12.653Z",
-      "fetched_at": "2026-11-12T22:04:13.632215+00:00",
+      "source_timestamp": "2026-11-12T23:00:22.945Z",
+      "fetched_at": "2026-11-12T23:02:40.276806+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1or7tk_iin2UAv6EkSybVpTE-5p7Vih1QrodyEo8WwxU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/usf/injury-status"
     },
@@ -145057,8 +145069,8 @@
         }
       ],
       "warnings": [],
-      "source_timestamp": "2026-11-12T22:03:41.228Z",
-      "fetched_at": "2026-11-12T22:03:42.284095+00:00",
+      "source_timestamp": "2026-11-12T23:02:07.009Z",
+      "fetched_at": "2026-11-12T23:02:08.220271+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1lnYXi5ZPN3BELuM1e_tV8dlalyOPvqZmK3LEyUCuzSQ/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utah/injury-status"
     },
@@ -146402,8 +146414,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:00.947Z",
-      "fetched_at": "2026-11-12T22:04:02.009534+00:00",
+      "source_timestamp": "2026-11-12T23:02:27.769Z",
+      "fetched_at": "2026-11-12T23:02:29.213539+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1bVABRemPc5x0-Gf-VpuyQNmu_jUebWiD7S6WkxF2KB4/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utah-state/injury-status"
     },
@@ -147447,8 +147459,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:24.129Z",
-      "fetched_at": "2026-11-12T22:04:25.139171+00:00",
+      "source_timestamp": "2026-11-12T23:02:58.180Z",
+      "fetched_at": "2026-11-12T23:02:59.915764+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1NRuiKNoq_IIfppAFmMWXYpzve-nzTWpKMAxXWpbrf9o/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utep/injury-status"
     },
@@ -147952,8 +147964,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:16.099Z",
-      "fetched_at": "2026-11-12T22:04:17.098697+00:00",
+      "source_timestamp": "2026-11-12T23:02:48.063Z",
+      "fetched_at": "2026-11-12T23:02:49.329695+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1XlPoyHbTk3iv-aX02KbOGwRu30O6TfFZ1ubmUsz0KWk/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/utsa/injury-status"
     },
@@ -149717,8 +149729,8 @@
       "warnings": [
         "Source reports 15 injuries; found 14 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:53.576Z",
-      "fetched_at": "2026-11-12T22:03:54.546009+00:00",
+      "source_timestamp": "2026-11-12T23:02:19.845Z",
+      "fetched_at": "2026-11-12T23:02:22.030174+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ln-SgjNQQmnU_4-fGVljy_44Y69b1SFFMR19otxNc3I/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/uva/injury-status"
     },
@@ -150702,8 +150714,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:05.507Z",
-      "fetched_at": "2026-11-12T22:03:06.674651+00:00",
+      "source_timestamp": "2026-11-12T23:01:28.649Z",
+      "fetched_at": "2026-11-12T23:01:29.849420+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1p1EEZZhr-uzhMWUSRLl0_407IiYGjXJsVG5r241FCnU/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/vanderbilt/injury-status"
     },
@@ -150730,7 +150742,7 @@
           "impact": 2,
           "update_date": "2026-10-13",
           "update_date_raw": "10/13/2026",
-          "notes": "DNP Week 6 vs. Cal.",
+          "notes": "Left the Oct. 2 loss to Pitt with a lower-body injury, and James Franklin said the next week that the team captain would miss multiple weeks. He has not played since and is out again for the Nov. 14 game against Stanford.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150747,7 +150759,7 @@
             "Col7": "12.0",
             "Col8": "2",
             "Col9": "10/13/2026",
-            "Col10": "DNP Week 6 vs. Cal.",
+            "Col10": "Left the Oct. 2 loss to Pitt with a lower-body injury, and James Franklin said the next week that the team captain would miss multiple weeks. He has not played since and is out again for the Nov. 14 game against Stanford.",
             "Col11": "0"
           }
         },
@@ -150760,7 +150772,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Injured vs. Maryland. DNP Week 6 vs. Cal.",
+          "notes": "The starting left tackle went down in the first half of the 35-26 win at Maryland on Sept. 19 and has not played since. He practiced fully on Nov. 11 for the first time since the injury, and James Franklin called him about a week ahead of schedule and a likely game-time decision for the Nov. 14 game against Stanford.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150777,7 +150789,7 @@
             "Col7": "11.5",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Injured vs. Maryland. DNP Week 6 vs. Cal.",
+            "Col10": "The starting left tackle went down in the first half of the 35-26 win at Maryland on Sept. 19 and has not played since. He practiced fully on Nov. 11 for the first time since the injury, and James Franklin called him about a week ahead of schedule and a likely game-time decision for the Nov. 14 game against Stanford.",
             "Col11": "0"
           }
         },
@@ -150790,7 +150802,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06. Previous context: Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable. Previous context: DNP Week 6 vs. Cal.",
+          "notes": "Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150807,7 +150819,7 @@
             "Col7": "10.8",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06. Previous context: Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable. Previous context: DNP Week 6 vs. Cal.",
+            "Col10": "Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
             "Col11": "0"
           }
         },
@@ -150820,7 +150832,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06. Previous context: Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-15: questionable.",
+          "notes": "Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150837,7 +150849,7 @@
             "Col7": "8.9",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06. Previous context: Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-15: questionable.",
+            "Col10": "Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
             "Col11": "0"
           }
         },
@@ -150850,7 +150862,7 @@
           "impact": 2,
           "update_date": "2026-10-23",
           "update_date_raw": "10/23/2026",
-          "notes": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable. Previous context: DNP Week 6 vs. Cal.",
+          "notes": "First appeared on the availability report the week of the Oct. 2 Pitt game with an undisclosed injury and has been ruled out of the last three games. The offensive lineman is out again for the Nov. 14 game against Stanford with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150867,7 +150879,7 @@
             "Col7": "10.1",
             "Col8": "2",
             "Col9": "10/23/2026",
-            "Col10": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: doubtful. Previous context: Official report 2026-10-14: questionable. Previous context: DNP Week 6 vs. Cal.",
+            "Col10": "First appeared on the availability report the week of the Oct. 2 Pitt game with an undisclosed injury and has been ruled out of the last three games. The offensive lineman is out again for the Nov. 14 game against Stanford with no timetable given.",
             "Col11": "0"
           }
         },
@@ -150880,7 +150892,7 @@
           "impact": 0,
           "update_date": "2026-10-23",
           "update_date_raw": "10/23/2026",
-          "notes": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: questionable.",
+          "notes": "Has been ruled out with an undisclosed injury for each of the last three games, starting with Georgia Tech on Oct. 17. The offensive lineman is out again for the Nov. 14 game against Stanford with no timetable given.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150897,7 +150909,7 @@
             "Col7": "9.2",
             "Col8": "0",
             "Col9": "10/23/2026",
-            "Col10": "Official report 2026-10-23: out. Game 2026-10-24. Previous context: Official report 2026-10-21: questionable. Game 2026-10-24. Previous context: Official report 2026-10-17: out. Game 2026-10-17. Previous context: Official report 2026-10-16: questionable.",
+            "Col10": "Has been ruled out with an undisclosed injury for each of the last three games, starting with Georgia Tech on Oct. 17. The offensive lineman is out again for the Nov. 14 game against Stanford with no timetable given.",
             "Col11": "0"
           }
         },
@@ -150910,7 +150922,7 @@
           "impact": 1,
           "update_date": "2026-11-11",
           "update_date_raw": "11/11/2026",
-          "notes": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06.",
+          "notes": "Got hurt in the 20-16 win at Clemson on Oct. 24 and sat out the Nov. 6 loss at SMU after a midweek downgrade. The defensive lineman is questionable for the Nov. 14 game against Stanford.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150927,7 +150939,7 @@
             "Col7": "13.4",
             "Col8": "1",
             "Col9": "11/11/2026",
-            "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14. Previous context: Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06.",
+            "Col10": "Got hurt in the 20-16 win at Clemson on Oct. 24 and sat out the Nov. 6 loss at SMU after a midweek downgrade. The defensive lineman is questionable for the Nov. 14 game against Stanford.",
             "Col11": "0"
           }
         },
@@ -150940,7 +150952,7 @@
           "impact": 3,
           "update_date": "2026-11-05",
           "update_date_raw": "11/5/2026",
-          "notes": "Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06.",
+          "notes": "Was downgraded from questionable to out with an undisclosed injury before the Nov. 6 loss at SMU. The offensive lineman is out again for the Nov. 14 game against Stanford.",
           "lw_raw": "0",
           "injury_type": "",
           "confirmed": null,
@@ -150957,7 +150969,7 @@
             "Col7": "11.0",
             "Col8": "3",
             "Col9": "11/5/2026",
-            "Col10": "Official report 2026-11-05: out. Game 2026-11-06. Previous context: Official report 2026-11-03: questionable. Game 2026-11-06.",
+            "Col10": "Was downgraded from questionable to out with an undisclosed injury before the Nov. 6 loss at SMU. The offensive lineman is out again for the Nov. 14 game against Stanford.",
             "Col11": "0"
           }
         }
@@ -151747,8 +151759,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:54.562Z",
-      "fetched_at": "2026-11-12T22:03:55.543332+00:00",
+      "source_timestamp": "2026-11-12T23:02:21.833Z",
+      "fetched_at": "2026-11-12T23:02:21.908925+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/16JTJ88BDwF9180tYg9Yawn0qEEcisDqKUYsFiiT_gvA/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/virginia-tech/injury-status"
     },
@@ -152432,8 +152444,8 @@
       "warnings": [
         "Source reports 8 injuries; found 7 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:55.740Z",
-      "fetched_at": "2026-11-12T22:03:56.976970+00:00",
+      "source_timestamp": "2026-11-12T23:02:23.036Z",
+      "fetched_at": "2026-11-12T23:02:24.022710+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1oNdOe7Y6h5dC2lujWw7750LgNPJrk1h3i5IHAFmfUFg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wake/injury-status"
     },
@@ -153537,8 +153549,8 @@
       "warnings": [
         "Source reports 4 injuries; found 3 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:01.325Z",
-      "fetched_at": "2026-11-12T22:04:02.180081+00:00",
+      "source_timestamp": "2026-11-12T23:02:29.435Z",
+      "fetched_at": "2026-11-12T23:02:30.525876+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1ODvyCZjYE2eVpgKQS48WJyJkjvRBLGNYr1rqDjZq38E/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wash-state/injury-status"
     },
@@ -155242,8 +155254,8 @@
       "warnings": [
         "Source reports 14 injuries; found 13 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:23.121Z",
-      "fetched_at": "2026-11-12T22:03:24.031649+00:00",
+      "source_timestamp": "2026-11-12T23:01:47.909Z",
+      "fetched_at": "2026-11-12T23:01:48.815958+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1C6qdAK1dGsrtoT3R_SUht8e5F4lJodsTmBQAMYY23jI/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/washington/injury-status"
     },
@@ -156677,8 +156689,8 @@
       "warnings": [
         "Source reports 9 injuries; found 8 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:41.444Z",
-      "fetched_at": "2026-11-12T22:03:42.748577+00:00",
+      "source_timestamp": "2026-11-12T23:02:09.090Z",
+      "fetched_at": "2026-11-12T23:02:09.169292+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1iPDiE2tNtGAeg7OJfkyzidOZPZW8QbsnqbkrkVad2sg/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/west-virginia/injury-status"
     },
@@ -158052,8 +158064,8 @@
       "warnings": [
         "Source reports 10 injuries; found 9 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:03:24.233Z",
-      "fetched_at": "2026-11-12T22:03:24.318277+00:00",
+      "source_timestamp": "2026-11-12T23:01:50.053Z",
+      "fetched_at": "2026-11-12T23:01:51.073248+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1bTMS7SPxjqWxR8FC4rFieJ6BkJaO4aQcBossvcTnB2Q/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wisconsin/injury-status"
     },
@@ -158557,8 +158569,8 @@
       "warnings": [
         "Source reports 6 injuries; found 5 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:37.525Z",
-      "fetched_at": "2026-11-12T22:04:39.299540+00:00",
+      "source_timestamp": "2026-11-12T23:03:10.582Z",
+      "fetched_at": "2026-11-12T23:03:11.527001+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1C1W8v2aXVwHR9WE2GH5VdezhknzfW2XBRx4BTvFceUE/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wku/injury-status"
     },
@@ -159395,7 +159407,9 @@
       "source_timestamp": "2026-11-12T22:04:51.970Z",
       "fetched_at": "2026-11-12T22:04:53.020008+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1yz9_G0kOyQbcQyK6HvrYimOBAPyGAcThfLt5hLLfVwc/data?gid=1011984599",
-      "page_url": "https://cfbdepth.com/wmu/injury-status"
+      "page_url": "https://cfbdepth.com/wmu/injury-status",
+      "data_stale": true,
+      "last_fetch_error": "Invalid API response"
     },
     {
       "team_slug": "wyoming",
@@ -160317,8 +160331,8 @@
       "warnings": [
         "Source reports 13 injuries; found 12 named active rows"
       ],
-      "source_timestamp": "2026-11-12T22:04:25.576Z",
-      "fetched_at": "2026-11-12T22:04:26.892853+00:00",
+      "source_timestamp": "2026-11-12T23:02:58.612Z",
+      "fetched_at": "2026-11-12T23:03:00.121845+00:00",
       "source_url": "https://cfbdepth.com/team-pages/api/sheets/1FjJXFFVb1ocvzLZ1hXS4whMr2s3WN85l_evpYS35fHs/data?gid=1011984599",
       "page_url": "https://cfbdepth.com/wyoming/injury-status"
     }
