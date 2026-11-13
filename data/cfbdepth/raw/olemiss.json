@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,13 +43,13 @@
     },
     {
       "Col1": "#:",
-      "Col2": "19",
+      "Col2": "17",
       "Col3": "# New:",
-      "Col4": "10",
+      "Col4": "8",
       "Col5": "Impact:",
       "Col6": "28",
       "Col7": "Impact Avg:",
-      "Col8": "1.5",
+      "Col8": "1.6",
       "Col9": "Impact Rank:",
       "Col10": "11",
       "Col11": ""
@@ -185,19 +185,6 @@
       "Col11": "13"
     },
     {
-      "Col1": "Deuce Alexander",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "P",
-      "Col5": "WR",
-      "Col6": "TRUE",
-      "Col7": "13.9",
-      "Col8": "0",
-      "Col9": "11/11/2026",
-      "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
-      "Col11": "31"
-    },
-    {
       "Col1": "Kam Franklin",
       "Col2": "",
       "Col3": "",
@@ -209,19 +196,6 @@
       "Col9": "11/11/2026",
       "Col10": "Official report 2026-11-11: questionable. Game 2026-11-14.",
       "Col11": "31"
-    },
-    {
-      "Col1": "Trinidad Chambliss",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "P",
-      "Col5": "QB",
-      "Col6": "TRUE",
-      "Col7": "16.4",
-      "Col8": "0",
-      "Col9": "11/11/2026",
-      "Col10": "Official report 2026-11-11: probable. Game 2026-11-14.",
-      "Col11": "41"
     },
     {
       "Col1": "Sharif Denson",
@@ -276,6 +250,19 @@
       "Col11": "0"
     },
     {
+      "Col1": "Makhi Frazier",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Q",
+      "Col5": "RB",
+      "Col6": "TRUE",
+      "Col7": "13.8",
+      "Col8": "2",
+      "Col9": "11/12/2026",
+      "Col10": "Official report 2026-11-12: questionable. Game 2026-11-14.",
+      "Col11": "4"
+    },
+    {
       "Col1": "Will Echoles",
       "Col2": "",
       "Col3": "",
@@ -289,17 +276,30 @@
       "Col11": "44"
     },
     {
-      "Col1": "Makhi Frazier",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
-      "Col5": "RB",
-      "Col6": "TRUE",
-      "Col7": "13.8",
-      "Col8": "2",
-      "Col9": "11/12/2026",
-      "Col10": "Official report 2026-11-12: questionable. Game 2026-11-14.",
-      "Col11": "4"
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -884,6 +884,32 @@
       "Col8": "Impact",
       "Col9": "Update Date",
       "Col10": "Update Notes",
+      "Col11": ""
+    },
+    {
+      "Col1": "Deuce Alexander",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "WR",
+      "Col6": "",
+      "Col7": "13.9",
+      "Col8": "0",
+      "Col9": "11/13/2026",
+      "Col10": "Cleared from the injury/status report on 11/13/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Trinidad Chambliss",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "QB",
+      "Col6": "",
+      "Col7": "16.4",
+      "Col8": "0",
+      "Col9": "11/13/2026",
+      "Col10": "Cleared from the injury/status report on 11/13/2026",
       "Col11": ""
     },
     {
@@ -1514,13 +1540,13 @@
     ],
     [
       "#:",
-      "19",
+      "17",
       "# New:",
-      "10",
+      "8",
       "Impact:",
       "28",
       "Impact Avg:",
-      "1.5",
+      "1.6",
       "Impact Rank:",
       "11",
       ""
@@ -1656,19 +1682,6 @@
       "13"
     ],
     [
-      "Deuce Alexander",
-      "",
-      "",
-      "P",
-      "WR",
-      "TRUE",
-      "13.9",
-      "0",
-      "11/11/2026",
-      "Official report 2026-11-11: probable. Game 2026-11-14.",
-      "31"
-    ],
-    [
       "Kam Franklin",
       "",
       "",
@@ -1680,19 +1693,6 @@
       "11/11/2026",
       "Official report 2026-11-11: questionable. Game 2026-11-14.",
       "31"
-    ],
-    [
-      "Trinidad Chambliss",
-      "",
-      "",
-      "P",
-      "QB",
-      "TRUE",
-      "16.4",
-      "0",
-      "11/11/2026",
-      "Official report 2026-11-11: probable. Game 2026-11-14.",
-      "41"
     ],
     [
       "Sharif Denson",
@@ -1747,6 +1747,19 @@
       "0"
     ],
     [
+      "Makhi Frazier",
+      "",
+      "",
+      "Q",
+      "RB",
+      "TRUE",
+      "13.8",
+      "2",
+      "11/12/2026",
+      "Official report 2026-11-12: questionable. Game 2026-11-14.",
+      "4"
+    ],
+    [
       "Will Echoles",
       "",
       "",
@@ -1760,17 +1773,30 @@
       "44"
     ],
     [
-      "Makhi Frazier",
       "",
       "",
-      "Q",
-      "RB",
-      "TRUE",
-      "13.8",
-      "2",
-      "11/12/2026",
-      "Official report 2026-11-12: questionable. Game 2026-11-14.",
-      "4"
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -2355,6 +2381,32 @@
       "Impact",
       "Update Date",
       "Update Notes",
+      ""
+    ],
+    [
+      "Deuce Alexander",
+      "",
+      "",
+      "Cleared",
+      "WR",
+      "",
+      "13.9",
+      "0",
+      "11/13/2026",
+      "Cleared from the injury/status report on 11/13/2026",
+      ""
+    ],
+    [
+      "Trinidad Chambliss",
+      "",
+      "",
+      "Cleared",
+      "QB",
+      "",
+      "16.4",
+      "0",
+      "11/13/2026",
+      "Cleared from the injury/status report on 11/13/2026",
       ""
     ],
     [
@@ -2956,6 +3008,6 @@
       ""
     ]
   ],
-  "count": 113,
-  "timestamp": "2026-11-13T17:03:37.762Z"
+  "count": 115,
+  "timestamp": "2026-11-13T20:04:23.363Z"
 }
