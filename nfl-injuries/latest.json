@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-13T16:30:24.148789Z",
-  "updated_at": "2026-11-13T16:30:19.334847Z",
+  "generated_at": "2026-11-13T17:01:04.687545Z",
+  "updated_at": "2026-11-13T17:00:58.512184Z",
   "source": "Yahoo Sports NFL Injuries",
   "source_url": "https://sports.yahoo.com/nfl/injuries/",
-  "source_timestamp": "2026-11-13T16:30:19.334847Z",
+  "source_timestamp": "2026-11-13T17:00:58.512184Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -3784,7 +3784,7 @@
       "injury_count": 18,
       "impact_count": 18,
       "impact_score": 31.43,
-      "impact_rank": 13,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -12436,7 +12436,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 30.79,
-      "impact_rank": 14,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -15057,8 +15057,8 @@
       "abbreviation": "TEN",
       "injury_count": 15,
       "impact_count": 15,
-      "impact_score": 30.77,
-      "impact_rank": 15,
+      "impact_score": 32.23,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
@@ -15148,6 +15148,36 @@
           "comments": "",
           "short_comment": "",
           "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Carnell Tate",
+          "player_id": null,
+          "position": "WR",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 2.92,
+          "base_role_usage_score": 2.92,
+          "role_score": 4.28,
+          "usage_score": 0.86,
+          "impact_inputs": {
+            "recent_snap_share": 0.8211,
+            "season_snap_share": 0.82,
+            "usage_share": 0.1728,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 2,
+            "confidence": "high"
+          },
+          "injury": "Shoulder",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -15352,36 +15382,6 @@
             "confidence": "low"
           },
           "injury": "Concussion",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/12",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Carnell Tate",
-          "player_id": null,
-          "position": "WR",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 1.46,
-          "base_role_usage_score": 2.92,
-          "role_score": 4.28,
-          "usage_score": 0.86,
-          "impact_inputs": {
-            "recent_snap_share": 0.8211,
-            "season_snap_share": 0.82,
-            "usage_share": 0.1728,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 2,
-            "confidence": "high"
-          },
-          "injury": "Shoulder",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -19740,7 +19740,7 @@
       "injury_count": 18,
       "impact_count": 18,
       "impact_score": 31.43,
-      "impact_rank": 13,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -28392,7 +28392,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 30.79,
-      "impact_rank": 14,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -31013,8 +31013,8 @@
       "abbreviation": "TEN",
       "injury_count": 15,
       "impact_count": 15,
-      "impact_score": 30.77,
-      "impact_rank": 15,
+      "impact_score": 32.23,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
@@ -31104,6 +31104,36 @@
           "comments": "",
           "short_comment": "",
           "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Carnell Tate",
+          "player_id": null,
+          "position": "WR",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 2.92,
+          "base_role_usage_score": 2.92,
+          "role_score": 4.28,
+          "usage_score": 0.86,
+          "impact_inputs": {
+            "recent_snap_share": 0.8211,
+            "season_snap_share": 0.82,
+            "usage_share": 0.1728,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 2,
+            "confidence": "high"
+          },
+          "injury": "Shoulder",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -31308,36 +31338,6 @@
             "confidence": "low"
           },
           "injury": "Concussion",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/12",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Carnell Tate",
-          "player_id": null,
-          "position": "WR",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 1.46,
-          "base_role_usage_score": 2.92,
-          "role_score": 4.28,
-          "usage_score": 0.86,
-          "impact_inputs": {
-            "recent_snap_share": 0.8211,
-            "season_snap_share": 0.82,
-            "usage_share": 0.1728,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 2,
-            "confidence": "high"
-          },
-          "injury": "Shoulder",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
