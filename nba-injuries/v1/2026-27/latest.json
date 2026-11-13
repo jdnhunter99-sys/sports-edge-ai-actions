@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 89,
+  "listed_player_count": 91,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6067,
-      "matched": 54,
+      "complete_coverage_rate": 0.6154,
+      "matched": 56,
       "no_current_season_row": 35,
       "partial": 0,
-      "player_count": 89,
+      "player_count": 91,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -225,6 +225,25 @@
       "team_name": "Chicago Bulls",
       "usg_pct": 20.0,
       "usg_pct_rank": 164
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -1.6,
+      "dbpm_rank": 352,
+      "game_date": "2026-11-13",
+      "game_time_et": "08:00",
+      "matchup": "ATL@CHI",
+      "metrics_status": "matched",
+      "minutes_per_game": 8.0,
+      "minutes_per_game_rank": 371,
+      "obpm": 3.0,
+      "obpm_rank": 65,
+      "player_name": "Jaylin Sellers",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "CHI",
+      "team_name": "Chicago Bulls",
+      "usg_pct": 23.3,
+      "usg_pct_rank": 101
     },
     {
       "current_status": "Questionable",
@@ -949,7 +968,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Questionable",
       "dbpm": -3.9,
       "dbpm_rank": 448,
       "game_date": "2026-11-13",
@@ -968,7 +987,7 @@
       "usg_pct_rank": 180
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": 1.5,
       "dbpm_rank": 74,
       "game_date": "2026-11-13",
@@ -987,7 +1006,26 @@
       "usg_pct_rank": 318
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Doubtful",
+      "dbpm": -1.2,
+      "dbpm_rank": 324,
+      "game_date": "2026-11-13",
+      "game_time_et": null,
+      "matchup": "MEM@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 31.333333333333332,
+      "minutes_per_game_rank": 65,
+      "obpm": -1.1,
+      "obpm_rank": 232,
+      "player_name": "Dejounte Murray",
+      "reason": "Injury/Illness - Left Ankle Sprain",
+      "team_abbreviation": "NOP",
+      "team_name": "New Orleans Pelicans",
+      "usg_pct": 20.2,
+      "usg_pct_rank": 162
+    },
+    {
+      "current_status": "Available",
       "dbpm": -19.4,
       "dbpm_rank": 464,
       "game_date": "2026-11-13",
@@ -1006,7 +1044,7 @@
       "usg_pct_rank": 3
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": null,
       "dbpm_rank": null,
       "game_date": "2026-11-13",
@@ -1044,7 +1082,7 @@
       "usg_pct_rank": 323
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": -2.2,
       "dbpm_rank": 392,
       "game_date": "2026-11-13",
@@ -1063,7 +1101,7 @@
       "usg_pct_rank": 203
     },
     {
-      "current_status": "Doubtful",
+      "current_status": "Out",
       "dbpm": 2.5,
       "dbpm_rank": 38,
       "game_date": "2026-11-13",
@@ -1731,8 +1769,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-13",
-    "report_time_et": "2026-11-13 11:45 AM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-13_11_45AM.pdf"
+    "report_time_et": "2026-11-13 01:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-13_01_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -1787,14 +1825,14 @@
       "team_name": "Charlotte Hornets"
     },
     {
-      "player_count": 4,
+      "player_count": 5,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-13",
           "game_time_et": "08:00",
           "matchup": "ATL@CHI",
-          "player_count": 4,
+          "player_count": 5,
           "report_status": "submitted"
         },
         {
@@ -2009,14 +2047,14 @@
       "team_name": "Minnesota Timberwolves"
     },
     {
-      "player_count": 7,
+      "player_count": 8,
       "report_status": "mixed",
       "reports": [
         {
           "game_date": "2026-11-13",
           "game_time_et": null,
           "matchup": "MEM@NOP",
-          "player_count": 7,
+          "player_count": 8,
           "report_status": "submitted"
         },
         {
