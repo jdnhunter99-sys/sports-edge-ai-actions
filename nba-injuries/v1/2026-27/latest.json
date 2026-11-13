@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 126,
+  "listed_player_count": 130,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6111,
-      "matched": 77,
-      "no_current_season_row": 49,
+      "complete_coverage_rate": 0.6154,
+      "matched": 80,
+      "no_current_season_row": 50,
       "partial": 0,
-      "player_count": 126,
+      "player_count": 130,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -1938,6 +1938,82 @@
     },
     {
       "current_status": "Out",
+      "dbpm": 0.6,
+      "dbpm_rank": 151,
+      "game_date": "2026-11-13",
+      "game_time_et": "10:00",
+      "matchup": "POR@SAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 13.333333333333334,
+      "minutes_per_game_rank": 311,
+      "obpm": -1.5,
+      "obpm_rank": 254,
+      "player_name": "Chris Youngblood",
+      "reason": "Injury/Illness - Right Bone Bruise",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 19.0,
+      "usg_pct_rank": 196
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 0.7,
+      "dbpm_rank": 138,
+      "game_date": "2026-11-13",
+      "game_time_et": "10:00",
+      "matchup": "POR@SAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 25.75,
+      "minutes_per_game_rank": 137,
+      "obpm": 3.7,
+      "obpm_rank": 51,
+      "player_name": "Ja Morant",
+      "reason": "Injury/Illness - Left Hamstring Strain Injury/Illness - Right Meniscus",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 22.5,
+      "usg_pct_rank": 114
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-13",
+      "game_time_et": "10:00",
+      "matchup": "POR@SAC",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Shaedon Sharpe",
+      "reason": "Surgery",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 1.7,
+      "dbpm_rank": 62,
+      "game_date": "2026-11-13",
+      "game_time_et": "10:00",
+      "matchup": "POR@SAC",
+      "metrics_status": "matched",
+      "minutes_per_game": 10.285714285714286,
+      "minutes_per_game_rank": 350,
+      "obpm": -5.1,
+      "obpm_rank": 389,
+      "player_name": "Vit Krejci",
+      "reason": "Injury/Illness - Left Ankle Fracture",
+      "team_abbreviation": "POR",
+      "team_name": "Portland Trail Blazers",
+      "usg_pct": 14.3,
+      "usg_pct_rank": 335
+    },
+    {
+      "current_status": "Out",
       "dbpm": -3.5,
       "dbpm_rank": 443,
       "game_date": "2026-11-13",
@@ -2006,7 +2082,7 @@
       "obpm": null,
       "obpm_rank": null,
       "player_name": "Maxime Raynaud",
-      "reason": "Subluxation",
+      "reason": "Subluxation Injury/Illness - Right Achilles Tendon",
       "team_abbreviation": "SAC",
       "team_name": "Sacramento Kings",
       "usg_pct": null,
@@ -2434,8 +2510,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-12",
-    "report_time_et": "2026-11-12 08:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_08_00PM.pdf"
+    "report_time_et": "2026-11-12 09:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_09_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2758,15 +2834,15 @@
       "team_name": "Phoenix Suns"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-13",
           "game_time_et": "10:00",
           "matchup": "POR@SAC",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "POR",
