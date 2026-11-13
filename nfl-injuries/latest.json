@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-13T03:01:51.008407Z",
-  "updated_at": "2026-11-13T03:01:45.640773Z",
+  "generated_at": "2026-11-13T03:31:03.415027Z",
+  "updated_at": "2026-11-13T03:30:56.191987Z",
   "source": "Yahoo Sports NFL Injuries",
   "source_url": "https://sports.yahoo.com/nfl/injuries/",
-  "source_timestamp": "2026-11-13T03:01:45.640773Z",
+  "source_timestamp": "2026-11-13T03:30:56.191987Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -49,7 +49,7 @@
     "rank_direction": "1 is highest team injury impact"
   },
   "team_count": 32,
-  "injury_count": 518,
+  "injury_count": 519,
   "teams": [
     {
       "team_id": "",
@@ -10108,7 +10108,7 @@
       "injury_count": 14,
       "impact_count": 14,
       "impact_score": 23.58,
-      "impact_rank": 21,
+      "impact_rank": 22,
       "rank_population": 32,
       "injuries": [
         {
@@ -11761,10 +11761,10 @@
       "team_id": "",
       "team": "New York Giants",
       "abbreviation": "NYG",
-      "injury_count": 19,
-      "impact_count": 13,
-      "impact_score": 22.11,
-      "impact_rank": 23,
+      "injury_count": 20,
+      "impact_count": 14,
+      "impact_score": 23.77,
+      "impact_rank": 21,
       "rank_population": 32,
       "injuries": [
         {
@@ -11968,6 +11968,36 @@
             "confidence": "high"
           },
           "injury": "Knee - Meniscus",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Jason Pinnock",
+          "player_id": null,
+          "position": "S",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.66,
+          "base_role_usage_score": 3.32,
+          "role_score": 3.28,
+          "usage_score": 3.39,
+          "impact_inputs": {
+            "recent_snap_share": 0.6773,
+            "season_snap_share": 0.614,
+            "usage_share": 0.6773,
+            "usage_group": "other",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 3,
+            "confidence": "low"
+          },
+          "injury": "Back",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -15460,7 +15490,7 @@
       "injury_count": 17,
       "impact_count": 13,
       "impact_score": 22.99,
-      "impact_rank": 22,
+      "impact_rank": 23,
       "rank_population": 32,
       "injuries": [
         {
@@ -26034,7 +26064,7 @@
       "injury_count": 14,
       "impact_count": 14,
       "impact_score": 23.58,
-      "impact_rank": 21,
+      "impact_rank": 22,
       "rank_population": 32,
       "injuries": [
         {
@@ -27687,10 +27717,10 @@
       "team_id": "",
       "team": "New York Giants",
       "abbreviation": "NYG",
-      "injury_count": 19,
-      "impact_count": 13,
-      "impact_score": 22.11,
-      "impact_rank": 23,
+      "injury_count": 20,
+      "impact_count": 14,
+      "impact_score": 23.77,
+      "impact_rank": 21,
       "rank_population": 32,
       "injuries": [
         {
@@ -27894,6 +27924,36 @@
             "confidence": "high"
           },
           "injury": "Knee - Meniscus",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/12",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Jason Pinnock",
+          "player_id": null,
+          "position": "S",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 1.66,
+          "base_role_usage_score": 3.32,
+          "role_score": 3.28,
+          "usage_score": 3.39,
+          "impact_inputs": {
+            "recent_snap_share": 0.6773,
+            "season_snap_share": 0.614,
+            "usage_share": 0.6773,
+            "usage_group": "other",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 3,
+            "confidence": "low"
+          },
+          "injury": "Back",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -31386,7 +31446,7 @@
       "injury_count": 17,
       "impact_count": 13,
       "impact_score": 22.99,
-      "impact_rank": 22,
+      "impact_rank": 23,
       "rank_population": 32,
       "injuries": [
         {
