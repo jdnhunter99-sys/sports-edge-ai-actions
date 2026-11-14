@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-14T18:30:48.669422Z",
-  "updated_at": "2026-11-14T18:30:41.557654Z",
+  "generated_at": "2026-11-14T19:01:56.050451Z",
+  "updated_at": "2026-11-14T19:01:51.312538Z",
   "source": "Yahoo Sports NFL Injuries",
   "source_url": "https://sports.yahoo.com/nfl/injuries/",
-  "source_timestamp": "2026-11-14T18:30:41.557654Z",
+  "source_timestamp": "2026-11-14T19:01:51.312538Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -1161,10 +1161,40 @@
       "abbreviation": "BAL",
       "injury_count": 13,
       "impact_count": 13,
-      "impact_score": 23.41,
-      "impact_rank": 23,
+      "impact_score": 25.61,
+      "impact_rank": 20,
       "rank_population": 32,
       "injuries": [
+        {
+          "player": "Jaylinn Hawkins",
+          "player_id": null,
+          "position": "S",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 4.39,
+          "base_role_usage_score": 4.39,
+          "role_score": 4.41,
+          "usage_score": 4.35,
+          "impact_inputs": {
+            "recent_snap_share": 0.87,
+            "season_snap_share": 0.8133,
+            "usage_share": 0.87,
+            "usage_group": "other",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 1,
+            "confidence": "low"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
         {
           "player": "Jovaughn Gwyn",
           "player_id": null,
@@ -1282,36 +1312,6 @@
           "comments": "",
           "short_comment": "",
           "reported_at": "11/14",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Jaylinn Hawkins",
-          "player_id": null,
-          "position": "S",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.19,
-          "base_role_usage_score": 4.39,
-          "role_score": 4.41,
-          "usage_score": 4.35,
-          "impact_inputs": {
-            "recent_snap_share": 0.87,
-            "season_snap_share": 0.8133,
-            "usage_share": 0.87,
-            "usage_group": "other",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 1,
-            "confidence": "low"
-          },
-          "injury": "Knee",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -1815,8 +1815,8 @@
       "abbreviation": "CAR",
       "injury_count": 15,
       "impact_count": 15,
-      "impact_score": 33.59,
-      "impact_rank": 10,
+      "impact_score": 32.88,
+      "impact_rank": 12,
       "rank_population": 32,
       "injuries": [
         {
@@ -2060,36 +2060,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "Xavier Legette",
-          "player_id": null,
-          "position": "WR",
-          "status": "Injured Reserve",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 1.42,
-          "base_role_usage_score": 1.42,
-          "role_score": 2.21,
-          "usage_score": 0.25,
-          "impact_inputs": {
-            "recent_snap_share": 0.5138,
-            "season_snap_share": 0.515,
-            "usage_share": 0.0492,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 5,
-            "snap_games_sampled": 2,
-            "confidence": "high"
-          },
-          "injury": "Knee",
-          "injury_location": "",
-          "injury_detail": "Designated for Return",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "Jaelan Phillips",
           "player_id": null,
           "position": "OLB",
@@ -2202,6 +2172,36 @@
           "injury": "Groin",
           "injury_location": "",
           "injury_detail": "Designated for Return",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Xavier Legette",
+          "player_id": null,
+          "position": "WR",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.71,
+          "base_role_usage_score": 1.42,
+          "role_score": 2.21,
+          "usage_score": 0.25,
+          "impact_inputs": {
+            "recent_snap_share": 0.5138,
+            "season_snap_share": 0.515,
+            "usage_share": 0.0492,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 5,
+            "snap_games_sampled": 2,
+            "confidence": "high"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
           "injury_side": "",
           "comments": "",
           "short_comment": "",
@@ -3303,8 +3303,8 @@
       "abbreviation": "DAL",
       "injury_count": 17,
       "impact_count": 17,
-      "impact_score": 34.66,
-      "impact_rank": 6,
+      "impact_score": 33.78,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -3578,36 +3578,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "Jonathan Bullard",
-          "player_id": null,
-          "position": "DT",
-          "status": "Injured Reserve",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 1.77,
-          "base_role_usage_score": 1.77,
-          "role_score": 1.91,
-          "usage_score": 1.57,
-          "impact_inputs": {
-            "recent_snap_share": 0.3131,
-            "season_snap_share": 0.3167,
-            "usage_share": 0.3131,
-            "usage_group": "defense",
-            "depth_chart_rank": 2,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Calf",
-          "injury_location": "",
-          "injury_detail": "Designated for Return",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "Jake Ferguson",
           "player_id": null,
           "position": "TE",
@@ -3671,7 +3641,7 @@
           "player": "Tyler Goodson",
           "player_id": null,
           "position": "RB",
-          "status": "Out",
+          "status": "Injured Reserve",
           "status_multiplier": 1.0,
           "status_mapped": true,
           "impact_score": 1.45,
@@ -3758,6 +3728,36 @@
           "source": "Yahoo Sports"
         },
         {
+          "player": "Jonathan Bullard",
+          "player_id": null,
+          "position": "DT",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.89,
+          "base_role_usage_score": 1.77,
+          "role_score": 1.91,
+          "usage_score": 1.57,
+          "impact_inputs": {
+            "recent_snap_share": 0.3131,
+            "season_snap_share": 0.3167,
+            "usage_share": 0.3131,
+            "usage_group": "defense",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 3,
+            "confidence": "low"
+          },
+          "injury": "Calf",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
           "player": "Jonathan Mingo",
           "player_id": null,
           "position": "WR",
@@ -3826,7 +3826,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.2,
-      "impact_rank": 11,
+      "impact_rank": 10,
       "rank_population": 32,
       "injuries": [
         {
@@ -4288,7 +4288,7 @@
       "injury_count": 16,
       "impact_count": 16,
       "impact_score": 33.04,
-      "impact_rank": 12,
+      "impact_rank": 11,
       "rank_population": 32,
       "injuries": [
         {
@@ -6184,7 +6184,7 @@
       "injury_count": 13,
       "impact_count": 13,
       "impact_score": 24.0,
-      "impact_rank": 20,
+      "impact_rank": 21,
       "rank_population": 32,
       "injuries": [
         {
@@ -7018,7 +7018,7 @@
       "injury_count": 14,
       "impact_count": 14,
       "impact_score": 23.97,
-      "impact_rank": 21,
+      "impact_rank": 22,
       "rank_population": 32,
       "injuries": [
         {
@@ -8032,7 +8032,7 @@
       "injury_count": 19,
       "impact_count": 19,
       "impact_score": 34.33,
-      "impact_rank": 7,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
         {
@@ -10714,7 +10714,7 @@
       "injury_count": 20,
       "impact_count": 14,
       "impact_score": 23.44,
-      "impact_rank": 22,
+      "impact_rank": 23,
       "rank_population": 32,
       "injuries": [
         {
@@ -11326,7 +11326,7 @@
       "injury_count": 20,
       "impact_count": 20,
       "impact_score": 34.26,
-      "impact_rank": 8,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -15827,10 +15827,40 @@
       "abbreviation": "BAL",
       "injury_count": 13,
       "impact_count": 13,
-      "impact_score": 23.41,
-      "impact_rank": 23,
+      "impact_score": 25.61,
+      "impact_rank": 20,
       "rank_population": 32,
       "injuries": [
+        {
+          "player": "Jaylinn Hawkins",
+          "player_id": null,
+          "position": "S",
+          "status": "Out",
+          "status_multiplier": 1.0,
+          "status_mapped": true,
+          "impact_score": 4.39,
+          "base_role_usage_score": 4.39,
+          "role_score": 4.41,
+          "usage_score": 4.35,
+          "impact_inputs": {
+            "recent_snap_share": 0.87,
+            "season_snap_share": 0.8133,
+            "usage_share": 0.87,
+            "usage_group": "other",
+            "depth_chart_rank": 1,
+            "snap_games_sampled": 1,
+            "confidence": "low"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
         {
           "player": "Jovaughn Gwyn",
           "player_id": null,
@@ -15948,36 +15978,6 @@
           "comments": "",
           "short_comment": "",
           "reported_at": "11/14",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Jaylinn Hawkins",
-          "player_id": null,
-          "position": "S",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.19,
-          "base_role_usage_score": 4.39,
-          "role_score": 4.41,
-          "usage_score": 4.35,
-          "impact_inputs": {
-            "recent_snap_share": 0.87,
-            "season_snap_share": 0.8133,
-            "usage_share": 0.87,
-            "usage_group": "other",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 1,
-            "confidence": "low"
-          },
-          "injury": "Knee",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -16481,8 +16481,8 @@
       "abbreviation": "CAR",
       "injury_count": 15,
       "impact_count": 15,
-      "impact_score": 33.59,
-      "impact_rank": 10,
+      "impact_score": 32.88,
+      "impact_rank": 12,
       "rank_population": 32,
       "injuries": [
         {
@@ -16726,36 +16726,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "Xavier Legette",
-          "player_id": null,
-          "position": "WR",
-          "status": "Injured Reserve",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 1.42,
-          "base_role_usage_score": 1.42,
-          "role_score": 2.21,
-          "usage_score": 0.25,
-          "impact_inputs": {
-            "recent_snap_share": 0.5138,
-            "season_snap_share": 0.515,
-            "usage_share": 0.0492,
-            "usage_group": "pass_catcher",
-            "depth_chart_rank": 5,
-            "snap_games_sampled": 2,
-            "confidence": "high"
-          },
-          "injury": "Knee",
-          "injury_location": "",
-          "injury_detail": "Designated for Return",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "Jaelan Phillips",
           "player_id": null,
           "position": "OLB",
@@ -16868,6 +16838,36 @@
           "injury": "Groin",
           "injury_location": "",
           "injury_detail": "Designated for Return",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
+          "player": "Xavier Legette",
+          "player_id": null,
+          "position": "WR",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.71,
+          "base_role_usage_score": 1.42,
+          "role_score": 2.21,
+          "usage_score": 0.25,
+          "impact_inputs": {
+            "recent_snap_share": 0.5138,
+            "season_snap_share": 0.515,
+            "usage_share": 0.0492,
+            "usage_group": "pass_catcher",
+            "depth_chart_rank": 5,
+            "snap_games_sampled": 2,
+            "confidence": "high"
+          },
+          "injury": "Knee",
+          "injury_location": "",
+          "injury_detail": "",
           "injury_side": "",
           "comments": "",
           "short_comment": "",
@@ -17969,8 +17969,8 @@
       "abbreviation": "DAL",
       "injury_count": 17,
       "impact_count": 17,
-      "impact_score": 34.66,
-      "impact_rank": 6,
+      "impact_score": 33.78,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -18244,36 +18244,6 @@
           "source": "Yahoo Sports"
         },
         {
-          "player": "Jonathan Bullard",
-          "player_id": null,
-          "position": "DT",
-          "status": "Injured Reserve",
-          "status_multiplier": 1.0,
-          "status_mapped": true,
-          "impact_score": 1.77,
-          "base_role_usage_score": 1.77,
-          "role_score": 1.91,
-          "usage_score": 1.57,
-          "impact_inputs": {
-            "recent_snap_share": 0.3131,
-            "season_snap_share": 0.3167,
-            "usage_share": 0.3131,
-            "usage_group": "defense",
-            "depth_chart_rank": 2,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Calf",
-          "injury_location": "",
-          "injury_detail": "Designated for Return",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
           "player": "Jake Ferguson",
           "player_id": null,
           "position": "TE",
@@ -18337,7 +18307,7 @@
           "player": "Tyler Goodson",
           "player_id": null,
           "position": "RB",
-          "status": "Out",
+          "status": "Injured Reserve",
           "status_multiplier": 1.0,
           "status_mapped": true,
           "impact_score": 1.45,
@@ -18424,6 +18394,36 @@
           "source": "Yahoo Sports"
         },
         {
+          "player": "Jonathan Bullard",
+          "player_id": null,
+          "position": "DT",
+          "status": "Questionable",
+          "status_multiplier": 0.5,
+          "status_mapped": true,
+          "impact_score": 0.89,
+          "base_role_usage_score": 1.77,
+          "role_score": 1.91,
+          "usage_score": 1.57,
+          "impact_inputs": {
+            "recent_snap_share": 0.3131,
+            "season_snap_share": 0.3167,
+            "usage_share": 0.3131,
+            "usage_group": "defense",
+            "depth_chart_rank": 2,
+            "snap_games_sampled": 3,
+            "confidence": "low"
+          },
+          "injury": "Calf",
+          "injury_location": "",
+          "injury_detail": "",
+          "injury_side": "",
+          "comments": "",
+          "short_comment": "",
+          "reported_at": "11/13",
+          "return_date": "",
+          "source": "Yahoo Sports"
+        },
+        {
           "player": "Jonathan Mingo",
           "player_id": null,
           "position": "WR",
@@ -18492,7 +18492,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.2,
-      "impact_rank": 11,
+      "impact_rank": 10,
       "rank_population": 32,
       "injuries": [
         {
@@ -18954,7 +18954,7 @@
       "injury_count": 16,
       "impact_count": 16,
       "impact_score": 33.04,
-      "impact_rank": 12,
+      "impact_rank": 11,
       "rank_population": 32,
       "injuries": [
         {
@@ -20850,7 +20850,7 @@
       "injury_count": 13,
       "impact_count": 13,
       "impact_score": 24.0,
-      "impact_rank": 20,
+      "impact_rank": 21,
       "rank_population": 32,
       "injuries": [
         {
@@ -21684,7 +21684,7 @@
       "injury_count": 14,
       "impact_count": 14,
       "impact_score": 23.97,
-      "impact_rank": 21,
+      "impact_rank": 22,
       "rank_population": 32,
       "injuries": [
         {
@@ -22698,7 +22698,7 @@
       "injury_count": 19,
       "impact_count": 19,
       "impact_score": 34.33,
-      "impact_rank": 7,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
         {
@@ -25380,7 +25380,7 @@
       "injury_count": 20,
       "impact_count": 14,
       "impact_score": 23.44,
-      "impact_rank": 22,
+      "impact_rank": 23,
       "rank_population": 32,
       "injuries": [
         {
@@ -25992,7 +25992,7 @@
       "injury_count": 20,
       "impact_count": 20,
       "impact_score": 34.26,
-      "impact_rank": 8,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
