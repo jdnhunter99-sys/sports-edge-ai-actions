@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-14T19:01:56.050451Z",
-  "updated_at": "2026-11-14T19:01:51.312538Z",
+  "generated_at": "2026-11-14T19:31:32.156409Z",
+  "updated_at": "2026-11-14T19:31:26.076597Z",
   "source": "Yahoo Sports NFL Injuries",
   "source_url": "https://sports.yahoo.com/nfl/injuries/",
-  "source_timestamp": "2026-11-14T19:01:51.312538Z",
+  "source_timestamp": "2026-11-14T19:31:26.076597Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -49,7 +49,7 @@
     "rank_direction": "1 is highest team injury impact"
   },
   "team_count": 32,
-  "injury_count": 476,
+  "injury_count": 475,
   "teams": [
     {
       "team_id": "",
@@ -6583,10 +6583,10 @@
       "team_id": "",
       "team": "Jacksonville Jaguars",
       "abbreviation": "JAX",
-      "injury_count": 14,
-      "impact_count": 13,
-      "impact_score": 32.83,
-      "impact_rank": 13,
+      "injury_count": 13,
+      "impact_count": 12,
+      "impact_score": 30.46,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -6676,36 +6676,6 @@
           "comments": "",
           "short_comment": "",
           "reported_at": "11/14",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Robert Hainsey",
-          "player_id": null,
-          "position": "OL",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.37,
-          "base_role_usage_score": 4.73,
-          "role_score": 4.77,
-          "usage_score": 4.68,
-          "impact_inputs": {
-            "recent_snap_share": 0.9367,
-            "season_snap_share": 0.955,
-            "usage_share": 0.9367,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Concussion",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -7450,7 +7420,7 @@
       "injury_count": 19,
       "impact_count": 19,
       "impact_score": 30.94,
-      "impact_rank": 15,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -9208,7 +9178,7 @@
       "injury_count": 14,
       "impact_count": 14,
       "impact_score": 32.3,
-      "impact_rank": 14,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
@@ -21249,10 +21219,10 @@
       "team_id": "",
       "team": "Jacksonville Jaguars",
       "abbreviation": "JAX",
-      "injury_count": 14,
-      "impact_count": 13,
-      "impact_score": 32.83,
-      "impact_rank": 13,
+      "injury_count": 13,
+      "impact_count": 12,
+      "impact_score": 30.46,
+      "impact_rank": 15,
       "rank_population": 32,
       "injuries": [
         {
@@ -21342,36 +21312,6 @@
           "comments": "",
           "short_comment": "",
           "reported_at": "11/14",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Robert Hainsey",
-          "player_id": null,
-          "position": "OL",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.37,
-          "base_role_usage_score": 4.73,
-          "role_score": 4.77,
-          "usage_score": 4.68,
-          "impact_inputs": {
-            "recent_snap_share": 0.9367,
-            "season_snap_share": 0.955,
-            "usage_share": 0.9367,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Concussion",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
           "return_date": "",
           "source": "Yahoo Sports"
         },
@@ -22116,7 +22056,7 @@
       "injury_count": 19,
       "impact_count": 19,
       "impact_score": 30.94,
-      "impact_rank": 15,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -23874,7 +23814,7 @@
       "injury_count": 14,
       "impact_count": 14,
       "impact_score": 32.3,
-      "impact_rank": 14,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
