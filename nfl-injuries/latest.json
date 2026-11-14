@@ -1,11 +1,11 @@
 {
   "sport": "nfl",
   "schema_version": 1,
-  "generated_at": "2026-11-13T23:31:16.264133Z",
-  "updated_at": "2026-11-13T23:31:10.350539Z",
+  "generated_at": "2026-11-14T00:02:18.094084Z",
+  "updated_at": "2026-11-14T00:02:11.353408Z",
   "source": "Yahoo Sports NFL Injuries",
   "source_url": "https://sports.yahoo.com/nfl/injuries/",
-  "source_timestamp": "2026-11-13T23:31:10.350539Z",
+  "source_timestamp": "2026-11-14T00:02:11.353408Z",
   "season": 2026,
   "season_type": "Regular Season",
   "metrics_season": 2026,
@@ -49,7 +49,7 @@
     "rank_direction": "1 is highest team injury impact"
   },
   "team_count": 32,
-  "injury_count": 478,
+  "injury_count": 476,
   "teams": [
     {
       "team_id": "",
@@ -1816,7 +1816,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.59,
-      "impact_rank": 11,
+      "impact_rank": 10,
       "rank_population": 32,
       "injuries": [
         {
@@ -3304,7 +3304,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 34.66,
-      "impact_rank": 7,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
         {
@@ -3826,7 +3826,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.2,
-      "impact_rank": 12,
+      "impact_rank": 11,
       "rank_population": 32,
       "injuries": [
         {
@@ -4288,7 +4288,7 @@
       "injury_count": 16,
       "impact_count": 16,
       "impact_score": 33.04,
-      "impact_rank": 13,
+      "impact_rank": 12,
       "rank_population": 32,
       "injuries": [
         {
@@ -6583,10 +6583,10 @@
       "team_id": "",
       "team": "Jacksonville Jaguars",
       "abbreviation": "JAX",
-      "injury_count": 16,
-      "impact_count": 15,
-      "impact_score": 35.56,
-      "impact_rank": 6,
+      "injury_count": 14,
+      "impact_count": 13,
+      "impact_score": 32.83,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -6700,36 +6700,6 @@
             "confidence": "low"
           },
           "injury": "Concussion",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Ezra Cleveland",
-          "player_id": null,
-          "position": "OL",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.06,
-          "base_role_usage_score": 4.13,
-          "role_score": 4.27,
-          "usage_score": 3.92,
-          "impact_inputs": {
-            "recent_snap_share": 0.7833,
-            "season_snap_share": 0.8938,
-            "usage_share": 0.7833,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Knee",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -7002,36 +6972,6 @@
           "injury": "Upper Body",
           "injury_location": "",
           "injury_detail": "Designated for Return",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Branson Combs",
-          "player_id": null,
-          "position": "LB",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 0.67,
-          "base_role_usage_score": 1.33,
-          "role_score": 1.5,
-          "usage_score": 1.06,
-          "impact_inputs": {
-            "recent_snap_share": 0.2129,
-            "season_snap_share": 0.2129,
-            "usage_share": 0.2129,
-            "usage_group": "defense",
-            "depth_chart_rank": 2,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Shoulder",
-          "injury_location": "",
-          "injury_detail": "",
           "injury_side": "",
           "comments": "",
           "short_comment": "",
@@ -7510,7 +7450,7 @@
       "injury_count": 20,
       "impact_count": 20,
       "impact_score": 32.92,
-      "impact_rank": 14,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
@@ -8122,7 +8062,7 @@
       "injury_count": 19,
       "impact_count": 19,
       "impact_score": 34.38,
-      "impact_rank": 8,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -9730,7 +9670,7 @@
       "injury_count": 22,
       "impact_count": 21,
       "impact_score": 33.77,
-      "impact_rank": 10,
+      "impact_rank": 9,
       "rank_population": 32,
       "injuries": [
         {
@@ -11416,7 +11356,7 @@
       "injury_count": 20,
       "impact_count": 20,
       "impact_score": 34.26,
-      "impact_rank": 9,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
@@ -16542,7 +16482,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.59,
-      "impact_rank": 11,
+      "impact_rank": 10,
       "rank_population": 32,
       "injuries": [
         {
@@ -18030,7 +17970,7 @@
       "injury_count": 17,
       "impact_count": 17,
       "impact_score": 34.66,
-      "impact_rank": 7,
+      "impact_rank": 6,
       "rank_population": 32,
       "injuries": [
         {
@@ -18552,7 +18492,7 @@
       "injury_count": 15,
       "impact_count": 15,
       "impact_score": 33.2,
-      "impact_rank": 12,
+      "impact_rank": 11,
       "rank_population": 32,
       "injuries": [
         {
@@ -19014,7 +18954,7 @@
       "injury_count": 16,
       "impact_count": 16,
       "impact_score": 33.04,
-      "impact_rank": 13,
+      "impact_rank": 12,
       "rank_population": 32,
       "injuries": [
         {
@@ -21309,10 +21249,10 @@
       "team_id": "",
       "team": "Jacksonville Jaguars",
       "abbreviation": "JAX",
-      "injury_count": 16,
-      "impact_count": 15,
-      "impact_score": 35.56,
-      "impact_rank": 6,
+      "injury_count": 14,
+      "impact_count": 13,
+      "impact_score": 32.83,
+      "impact_rank": 14,
       "rank_population": 32,
       "injuries": [
         {
@@ -21426,36 +21366,6 @@
             "confidence": "low"
           },
           "injury": "Concussion",
-          "injury_location": "",
-          "injury_detail": "",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Ezra Cleveland",
-          "player_id": null,
-          "position": "OL",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 2.06,
-          "base_role_usage_score": 4.13,
-          "role_score": 4.27,
-          "usage_score": 3.92,
-          "impact_inputs": {
-            "recent_snap_share": 0.7833,
-            "season_snap_share": 0.8938,
-            "usage_share": 0.7833,
-            "usage_group": "offense_line",
-            "depth_chart_rank": 1,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Knee",
           "injury_location": "",
           "injury_detail": "",
           "injury_side": "",
@@ -21728,36 +21638,6 @@
           "injury": "Upper Body",
           "injury_location": "",
           "injury_detail": "Designated for Return",
-          "injury_side": "",
-          "comments": "",
-          "short_comment": "",
-          "reported_at": "11/13",
-          "return_date": "",
-          "source": "Yahoo Sports"
-        },
-        {
-          "player": "Branson Combs",
-          "player_id": null,
-          "position": "LB",
-          "status": "Questionable",
-          "status_multiplier": 0.5,
-          "status_mapped": true,
-          "impact_score": 0.67,
-          "base_role_usage_score": 1.33,
-          "role_score": 1.5,
-          "usage_score": 1.06,
-          "impact_inputs": {
-            "recent_snap_share": 0.2129,
-            "season_snap_share": 0.2129,
-            "usage_share": 0.2129,
-            "usage_group": "defense",
-            "depth_chart_rank": 2,
-            "snap_games_sampled": 3,
-            "confidence": "low"
-          },
-          "injury": "Shoulder",
-          "injury_location": "",
-          "injury_detail": "",
           "injury_side": "",
           "comments": "",
           "short_comment": "",
@@ -22236,7 +22116,7 @@
       "injury_count": 20,
       "impact_count": 20,
       "impact_score": 32.92,
-      "impact_rank": 14,
+      "impact_rank": 13,
       "rank_population": 32,
       "injuries": [
         {
@@ -22848,7 +22728,7 @@
       "injury_count": 19,
       "impact_count": 19,
       "impact_score": 34.38,
-      "impact_rank": 8,
+      "impact_rank": 7,
       "rank_population": 32,
       "injuries": [
         {
@@ -24456,7 +24336,7 @@
       "injury_count": 22,
       "impact_count": 21,
       "impact_score": 33.77,
-      "impact_rank": 10,
+      "impact_rank": 9,
       "rank_population": 32,
       "injuries": [
         {
@@ -26142,7 +26022,7 @@
       "injury_count": 20,
       "impact_count": 20,
       "impact_score": 34.26,
-      "impact_rank": 9,
+      "impact_rank": 8,
       "rank_population": 32,
       "injuries": [
         {
