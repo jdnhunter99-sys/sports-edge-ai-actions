@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "Status Update",
+  "sheetTitle": "",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "9",
+      "Col2": "10",
       "Col3": "# New:",
-      "Col4": "1",
+      "Col4": "3",
       "Col5": "Impact:",
-      "Col6": "12",
+      "Col6": "19",
       "Col7": "Impact Avg:",
-      "Col8": "1.3",
+      "Col8": "1.9",
       "Col9": "Impact Rank:",
-      "Col10": "94",
+      "Col10": "47",
       "Col11": ""
     },
     {
@@ -84,26 +84,26 @@
       "Col1": "Justin Terry",
       "Col2": "",
       "Col3": "",
-      "Col4": "P",
+      "Col4": "GTD",
       "Col5": "OL",
       "Col6": "FALSE",
       "Col7": "11.5",
       "Col8": "0",
-      "Col9": "11/12/2026",
-      "Col10": "Official report 2026-11-12: probable. Game 2026-11-14. Previous context: The starting left tackle went down in the first half of the 35-26 win at Maryland on Sept. 19 and has not played since. He practiced fully on Nov. 11 for the first time since the injury, and James Franklin called him about a week ahead of schedule and a likely game-time decision for the Nov. 14 game against Stanford.",
+      "Col9": "11/14/2026",
+      "Col10": "Official report 2026-11-14: game time decision. Game 2026-11-14. Previous context: Official report 2026-11-12: probable. Game 2026-11-14. Previous context: The starting left tackle went down in the first half of the 35-26 win at Maryland on Sept. 19 and has not played since. He practiced fully on Nov. 11 for the first time since the injury, and James Franklin called him about a week ahead of schedule and a likely game-time decision for the Nov. 14 game against Stanford.",
       "Col11": "0"
     },
     {
       "Col1": "Luke Stuewe",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
+      "Col4": "O",
       "Col5": "WR",
-      "Col6": "FALSE",
+      "Col6": "TRUE",
       "Col7": "8.9",
-      "Col8": "1",
-      "Col9": "11/11/2026",
-      "Col10": "Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
+      "Col8": "3",
+      "Col9": "11/14/2026",
+      "Col10": "Official report 2026-11-14: out. Game 2026-11-14. Previous context: Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
       "Col11": "0"
     },
     {
@@ -136,13 +136,13 @@
       "Col1": "Randy Adirika",
       "Col2": "",
       "Col3": "",
-      "Col4": "Q",
+      "Col4": "GTD",
       "Col5": "DL",
       "Col6": "FALSE",
       "Col7": "13.4",
-      "Col8": "1",
-      "Col9": "11/11/2026",
-      "Col10": "Got hurt in the 20-16 win at Clemson on Oct. 24 and sat out the Nov. 6 loss at SMU after a midweek downgrade. The defensive lineman is questionable for the Nov. 14 game against Stanford.",
+      "Col8": "0",
+      "Col9": "11/14/2026",
+      "Col10": "Official report 2026-11-14: game time decision. Game 2026-11-14. Previous context: Got hurt in the 20-16 win at Clemson on Oct. 24 and sat out the Nov. 6 loss at SMU after a midweek downgrade. The defensive lineman is questionable for the Nov. 14 game against Stanford.",
       "Col11": "0"
     },
     {
@@ -162,27 +162,27 @@
       "Col1": "Joshua Clarke",
       "Col2": "",
       "Col3": "",
-      "Col4": "D",
+      "Col4": "O",
       "Col5": "CB",
       "Col6": "TRUE",
       "Col7": "13.7",
-      "Col8": "3",
-      "Col9": "11/13/2026",
-      "Col10": "Official report 2026-11-13: doubtful. Game 2026-11-14. Previous context: Official report 2026-11-12: questionable. Game 2026-11-14.",
+      "Col8": "5",
+      "Col9": "11/14/2026",
+      "Col10": "Official report 2026-11-14: out. Game 2026-11-14. Previous context: Official report 2026-11-13: doubtful. Game 2026-11-14. Previous context: Official report 2026-11-12: questionable. Game 2026-11-14.",
       "Col11": "41"
     },
     {
-      "Col1": "",
+      "Col1": "Takye Heath",
       "Col2": "",
       "Col3": "",
-      "Col4": "",
-      "Col5": "",
-      "Col6": "",
-      "Col7": "",
-      "Col8": "0",
-      "Col9": "",
-      "Col10": "",
-      "Col11": ""
+      "Col4": "O",
+      "Col5": "WR",
+      "Col6": "TRUE",
+      "Col7": "11.4",
+      "Col8": "4",
+      "Col9": "11/14/2026",
+      "Col10": "Official report 2026-11-14: out. Game 2026-11-14.",
+      "Col11": "0"
     },
     {
       "Col1": "",
@@ -1255,23 +1255,41 @@
     [
       "",
       "#630031",
-      "Virginia Tech"
+      "Virginia Tech",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET"
+      "INJURY / STATUS UPDATE SHEET",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "#:",
-      "9",
+      "10",
       "# New:",
-      "1",
+      "3",
       "Impact:",
-      "12",
+      "19",
       "Impact Avg:",
-      "1.3",
+      "1.9",
       "Impact Rank:",
-      "94"
+      "47",
+      ""
     ],
     [
       "Player Name",
@@ -1303,26 +1321,26 @@
       "Justin Terry",
       "",
       "",
-      "P",
+      "GTD",
       "OL",
       "FALSE",
       "11.5",
       "0",
-      "11/12/2026",
-      "Official report 2026-11-12: probable. Game 2026-11-14. Previous context: The starting left tackle went down in the first half of the 35-26 win at Maryland on Sept. 19 and has not played since. He practiced fully on Nov. 11 for the first time since the injury, and James Franklin called him about a week ahead of schedule and a likely game-time decision for the Nov. 14 game against Stanford.",
+      "11/14/2026",
+      "Official report 2026-11-14: game time decision. Game 2026-11-14. Previous context: Official report 2026-11-12: probable. Game 2026-11-14. Previous context: The starting left tackle went down in the first half of the 35-26 win at Maryland on Sept. 19 and has not played since. He practiced fully on Nov. 11 for the first time since the injury, and James Franklin called him about a week ahead of schedule and a likely game-time decision for the Nov. 14 game against Stanford.",
       "0"
     ],
     [
       "Luke Stuewe",
       "",
       "",
-      "Q",
+      "O",
       "WR",
-      "FALSE",
+      "TRUE",
       "8.9",
-      "1",
-      "11/11/2026",
-      "Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
+      "3",
+      "11/14/2026",
+      "Official report 2026-11-14: out. Game 2026-11-14. Previous context: Has been on the availability report with an undisclosed injury since the week of the Oct. 2 Pitt game and was ruled out against Georgia Tech, Clemson and SMU. The receiver is questionable for the Nov. 14 game against Stanford.",
       "0"
     ],
     [
@@ -1355,13 +1373,13 @@
       "Randy Adirika",
       "",
       "",
-      "Q",
+      "GTD",
       "DL",
       "FALSE",
       "13.4",
-      "1",
-      "11/11/2026",
-      "Got hurt in the 20-16 win at Clemson on Oct. 24 and sat out the Nov. 6 loss at SMU after a midweek downgrade. The defensive lineman is questionable for the Nov. 14 game against Stanford.",
+      "0",
+      "11/14/2026",
+      "Official report 2026-11-14: game time decision. Game 2026-11-14. Previous context: Got hurt in the 20-16 win at Clemson on Oct. 24 and sat out the Nov. 6 loss at SMU after a midweek downgrade. The defensive lineman is questionable for the Nov. 14 game against Stanford.",
       "0"
     ],
     [
@@ -1381,23 +1399,26 @@
       "Joshua Clarke",
       "",
       "",
-      "D",
+      "O",
       "CB",
       "TRUE",
       "13.7",
-      "3",
-      "11/13/2026",
-      "Official report 2026-11-13: doubtful. Game 2026-11-14. Previous context: Official report 2026-11-12: questionable. Game 2026-11-14.",
+      "5",
+      "11/14/2026",
+      "Official report 2026-11-14: out. Game 2026-11-14. Previous context: Official report 2026-11-13: doubtful. Game 2026-11-14. Previous context: Official report 2026-11-12: questionable. Game 2026-11-14.",
       "41"
     ],
     [
+      "Takye Heath",
       "",
       "",
-      "",
-      "",
-      "",
-      "",
-      "",
+      "O",
+      "WR",
+      "TRUE",
+      "11.4",
+      "4",
+      "11/14/2026",
+      "Official report 2026-11-14: out. Game 2026-11-14.",
       "0"
     ],
     [
@@ -1408,7 +1429,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1418,7 +1442,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1428,7 +1455,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1438,7 +1468,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1448,7 +1481,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1458,7 +1494,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1468,7 +1507,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1478,7 +1520,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1488,47 +1533,10 @@
       "",
       "",
       "",
-      "0"
-    ],
-    [
+      "0",
       "",
       "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "FALSE",
-      "",
-      "0"
+      ""
     ],
     [
       "",
@@ -1538,7 +1546,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1548,7 +1559,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1558,7 +1572,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1568,7 +1585,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1578,7 +1598,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1588,7 +1611,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1598,7 +1624,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1608,7 +1637,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1618,7 +1650,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1628,7 +1663,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1638,7 +1676,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1648,7 +1689,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1658,7 +1702,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1668,7 +1715,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1678,7 +1728,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1688,7 +1741,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1698,7 +1754,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1708,7 +1767,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1718,7 +1780,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1728,7 +1793,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1738,7 +1806,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1748,7 +1819,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1758,7 +1832,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1768,7 +1845,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1778,7 +1858,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1788,7 +1871,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1798,7 +1884,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1808,7 +1897,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1818,7 +1910,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1828,7 +1923,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1838,7 +1936,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1848,7 +1949,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1858,7 +1962,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1868,7 +1975,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1878,7 +1988,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1888,7 +2001,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1898,7 +2014,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1908,7 +2027,10 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "",
@@ -1918,7 +2040,62 @@
       "",
       "FALSE",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "0",
@@ -1928,7 +2105,10 @@
       "",
       "",
       "",
-      "0"
+      "0",
+      "",
+      "",
+      ""
     ],
     [
       "Player Name",
@@ -1940,7 +2120,8 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes"
+      "Update Notes",
+      ""
     ],
     [
       "Shamarius \"Snook\" Peterkin",
@@ -1952,7 +2133,8 @@
       "10.8",
       "1",
       "11/13/2026",
-      "Cleared from the injury/status report on 11/13/2026"
+      "Cleared from the injury/status report on 11/13/2026",
+      ""
     ],
     [
       "Thomas Williams",
@@ -1964,10 +2146,21 @@
       "13.9",
       "4",
       "11/11/2026",
-      "Cleared from the injury/status report on 11/11/2026"
+      "Cleared from the injury/status report on 11/11/2026",
+      ""
     ],
     [
-      "Thomas Williams"
+      "Thomas Williams",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
     [
       "Emmett Laws",
@@ -1979,7 +2172,8 @@
       "13.4",
       "0",
       "11/10/2026",
-      "Cleared from the injury/status report on 11/10/2026"
+      "Cleared from the injury/status report on 11/10/2026",
+      ""
     ],
     [
       "Chanz Wiggins",
@@ -1991,7 +2185,8 @@
       "10.4",
       "1",
       "11/5/2026",
-      "Cleared from the injury/status report on 11/05/2026"
+      "Cleared from the injury/status report on 11/05/2026",
+      ""
     ],
     [
       "L.J. Booker",
@@ -2003,7 +2198,8 @@
       "9.3",
       "0",
       "11/3/2026",
-      "Cleared from the injury/status report on 11/03/2026"
+      "Cleared from the injury/status report on 11/03/2026",
+      ""
     ],
     [
       "Montavious Cunningham",
@@ -2015,7 +2211,8 @@
       "11.5",
       "3",
       "11/3/2026",
-      "Cleared from the injury/status report on 11/03/2026"
+      "Cleared from the injury/status report on 11/03/2026",
+      ""
     ],
     [
       "Cam Chadwick Jr.",
@@ -2027,7 +2224,8 @@
       "13.7",
       "0",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026"
+      "Cleared from the injury/status report on 10/22/2026",
+      ""
     ],
     [
       "Brody Meadows",
@@ -2039,7 +2237,8 @@
       "12.5",
       "0",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026"
+      "Cleared from the injury/status report on 10/22/2026",
+      ""
     ],
     [
       "Roseby Lubintus",
@@ -2051,7 +2250,8 @@
       "9.7",
       "0",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026"
+      "Cleared from the injury/status report on 10/22/2026",
+      ""
     ],
     [
       "Kaleb Spencer",
@@ -2063,7 +2263,8 @@
       "13.7",
       "0",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026"
+      "Cleared from the injury/status report on 10/18/2026",
+      ""
     ],
     [
       "Takye Heath",
@@ -2075,7 +2276,8 @@
       "11.4",
       "0",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Jojo Crim",
@@ -2087,7 +2289,8 @@
       "10.8",
       "0",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026"
+      "Cleared from the injury/status report on 10/17/2026",
+      ""
     ],
     [
       "Bill Davis",
@@ -2099,7 +2302,8 @@
       "13.4",
       "4",
       "10/14/2026",
-      "Cleared from the injury/status report on 10/14/2026"
+      "Cleared from the injury/status report on 10/14/2026",
+      ""
     ],
     [
       "Luke Stuewe",
@@ -2111,7 +2315,8 @@
       "8.9",
       "1",
       "10/8/2026",
-      "Cleared from the injury/status report on 10/08/2026"
+      "Cleared from the injury/status report on 10/08/2026",
+      ""
     ],
     [
       "Montavious Cunningham",
@@ -2123,7 +2328,8 @@
       "11.5",
       "1",
       "10/8/2026",
-      "Cleared from the injury/status report on 10/08/2026"
+      "Cleared from the injury/status report on 10/08/2026",
+      ""
     ],
     [
       "Ayden Greene",
@@ -2135,7 +2341,8 @@
       "12.1",
       "0",
       "10/2/2026",
-      "Cleared from the injury/status report on 10/02/2026"
+      "Cleared from the injury/status report on 10/02/2026",
+      ""
     ],
     [
       "Samuel Okunlola",
@@ -2147,7 +2354,8 @@
       "13.2",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Thomas Williams",
@@ -2159,7 +2367,8 @@
       "13.8",
       "0",
       "9/24/2026",
-      "Cleared from the injury/status report on 09/24/2026"
+      "Cleared from the injury/status report on 09/24/2026",
+      ""
     ],
     [
       "Gabe Williams",
@@ -2171,7 +2380,8 @@
       "10.9",
       "0",
       "9/23/2026",
-      "Cleared from the injury/status report on 09/23/2026"
+      "Cleared from the injury/status report on 09/23/2026",
+      ""
     ],
     [
       "Johnny Garrett",
@@ -2183,7 +2393,8 @@
       "10.1",
       "0",
       "9/23/2026",
-      "Cleared from the injury/status report on 09/23/2026"
+      "Cleared from the injury/status report on 09/23/2026",
+      ""
     ],
     [
       "Kyle Altuner",
@@ -2195,7 +2406,8 @@
       "12.0",
       "3",
       "9/20/2026",
-      "Cleared from the injury/status report on 09/20/2026"
+      "Cleared from the injury/status report on 09/20/2026",
+      ""
     ],
     [
       "Montavious Cunningham",
@@ -2207,7 +2419,8 @@
       "11.5",
       "3",
       "9/16/2026",
-      "Cleared from the injury/status report on 09/16/2026"
+      "Cleared from the injury/status report on 09/16/2026",
+      ""
     ],
     [
       "Zeke Chinwike",
@@ -2219,7 +2432,8 @@
       "9.6",
       "0",
       "8/7/2026",
-      "Cleared from the injury/status report on 08/07/2026"
+      "Cleared from the injury/status report on 08/07/2026",
+      ""
     ],
     [
       "Messiah Mickens",
@@ -2231,7 +2445,8 @@
       "11.6",
       "0",
       "8/7/2026",
-      "Cleared from the injury/status report on 08/07/2026"
+      "Cleared from the injury/status report on 08/07/2026",
+      ""
     ],
     [
       "Logan Howland",
@@ -2243,7 +2458,8 @@
       "13.0",
       "0",
       "8/7/2026",
-      "Cleared from the injury/status report on 08/07/2026"
+      "Cleared from the injury/status report on 08/07/2026",
+      ""
     ],
     [
       "Jaquez White",
@@ -2255,7 +2471,8 @@
       "16.4",
       "0",
       "8/7/2026",
-      "Cleared from the injury/status report on 08/07/2026"
+      "Cleared from the injury/status report on 08/07/2026",
+      ""
     ],
     [
       "Marcellous Hawkins",
@@ -2267,9 +2484,10 @@
       "15.7",
       "0",
       "8/7/2026",
-      "Cleared from the injury/status report on 08/07/2026"
+      "Cleared from the injury/status report on 08/07/2026",
+      ""
     ]
   ],
   "count": 95,
-  "timestamp": "2026-11-14T22:03:21.867Z"
+  "timestamp": "2026-11-14T23:05:11.582Z"
 }
