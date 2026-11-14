@@ -1,14 +1,14 @@
 {
-  "listed_player_count": 113,
+  "listed_player_count": 117,
   "player_metrics": {
     "all_players_matched": false,
     "available": true,
     "coverage": {
-      "complete_coverage_rate": 0.6372,
-      "matched": 72,
-      "no_current_season_row": 41,
+      "complete_coverage_rate": 0.641,
+      "matched": 75,
+      "no_current_season_row": 42,
       "partial": 0,
-      "player_count": 113,
+      "player_count": 117,
       "source_unavailable": 0
     },
     "coverage_status": "partial",
@@ -132,7 +132,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -0.6,
       "dbpm_rank": 267,
       "game_date": "2026-11-13",
@@ -170,7 +170,7 @@
       "usg_pct_rank": null
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": 4.2,
       "dbpm_rank": 10,
       "game_date": "2026-11-13",
@@ -605,6 +605,82 @@
       "team_name": "Dallas Mavericks",
       "usg_pct": null,
       "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -2.3,
+      "dbpm_rank": 401,
+      "game_date": "2026-11-14",
+      "game_time_et": "07:00",
+      "matchup": "DEN@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 7.5,
+      "minutes_per_game_rank": 379,
+      "obpm": -2.8,
+      "obpm_rank": 315,
+      "player_name": "Cam Whitmore",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 24.8,
+      "usg_pct_rank": 78
+    },
+    {
+      "current_status": "Out",
+      "dbpm": 3.5,
+      "dbpm_rank": 16,
+      "game_date": "2026-11-14",
+      "game_time_et": "07:00",
+      "matchup": "DEN@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 2.5,
+      "minutes_per_game_rank": 451,
+      "obpm": 1.2,
+      "obpm_rank": 122,
+      "player_name": "DaRon Holmes II",
+      "reason": "G League - On Assignment",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 17.6,
+      "usg_pct_rank": 236
+    },
+    {
+      "current_status": "Out",
+      "dbpm": null,
+      "dbpm_rank": null,
+      "game_date": "2026-11-14",
+      "game_time_et": "07:00",
+      "matchup": "DEN@NOP",
+      "metrics_status": "no_current_season_row",
+      "minutes_per_game": null,
+      "minutes_per_game_rank": null,
+      "obpm": null,
+      "obpm_rank": null,
+      "player_name": "Julian Strawther",
+      "reason": "Injury/Illness - Left Knee Sprain",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": null,
+      "usg_pct_rank": null
+    },
+    {
+      "current_status": "Out",
+      "dbpm": -2.1,
+      "dbpm_rank": 388,
+      "game_date": "2026-11-14",
+      "game_time_et": "07:00",
+      "matchup": "DEN@NOP",
+      "metrics_status": "matched",
+      "minutes_per_game": 3.3333333333333335,
+      "minutes_per_game_rank": 437,
+      "obpm": 14.0,
+      "obpm_rank": 2,
+      "player_name": "Ryan Nembhard",
+      "reason": "G League - Two-Way",
+      "team_abbreviation": "DEN",
+      "team_name": "Denver Nuggets",
+      "usg_pct": 30.3,
+      "usg_pct_rank": 20
     },
     {
       "current_status": "Out",
@@ -1272,7 +1348,7 @@
       "usg_pct_rank": 11
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Out",
       "dbpm": -2.4,
       "dbpm_rank": 408,
       "game_date": "2026-11-13",
@@ -1386,7 +1462,7 @@
       "usg_pct_rank": 368
     },
     {
-      "current_status": "Questionable",
+      "current_status": "Available",
       "dbpm": -3.9,
       "dbpm_rank": 448,
       "game_date": "2026-11-13",
@@ -2187,8 +2263,8 @@
   "report": {
     "index_url": "https://official.nba.com/nba-injury-report-2026-27-season/",
     "report_date": "2026-11-13",
-    "report_time_et": "2026-11-13 06:00 PM ET",
-    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-13_06_00PM.pdf"
+    "report_time_et": "2026-11-13 07:00 PM ET",
+    "report_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-13_07_00PM.pdf"
   },
   "schema_version": 1,
   "season": {
@@ -2302,15 +2378,15 @@
       "team_name": "Dallas Mavericks"
     },
     {
-      "player_count": 0,
-      "report_status": "not_yet_submitted",
+      "player_count": 4,
+      "report_status": "submitted",
       "reports": [
         {
           "game_date": "2026-11-14",
           "game_time_et": "07:00",
           "matchup": "DEN@NOP",
-          "player_count": 0,
-          "report_status": "not_yet_submitted"
+          "player_count": 4,
+          "report_status": "submitted"
         }
       ],
       "team_abbreviation": "DEN",
