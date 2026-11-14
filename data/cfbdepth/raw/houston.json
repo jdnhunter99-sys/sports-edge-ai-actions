@@ -1,6 +1,6 @@
 {
   "success": true,
-  "sheetTitle": "",
+  "sheetTitle": "Status Update",
   "headers": [
     "Col1",
     "Col2",
@@ -43,15 +43,15 @@
     },
     {
       "Col1": "#:",
-      "Col2": "10",
+      "Col2": "6",
       "Col3": "# New:",
-      "Col4": "6",
+      "Col4": "0",
       "Col5": "Impact:",
-      "Col6": "10",
+      "Col6": "9",
       "Col7": "Impact Avg:",
-      "Col8": "1.0",
+      "Col8": "1.4",
       "Col9": "Impact Rank:",
-      "Col10": "104",
+      "Col10": "110",
       "Col11": ""
     },
     {
@@ -107,43 +107,17 @@
       "Col11": "0"
     },
     {
-      "Col1": "Jd Rhym",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "P",
-      "Col5": "DB",
-      "Col6": "TRUE",
-      "Col7": "13.8",
-      "Col8": "0",
-      "Col9": "11/10/2026",
-      "Col10": "Official report 2026-11-10: probable. Game 2026-11-13.",
-      "Col11": "0"
-    },
-    {
       "Col1": "Carmycah Glass",
       "Col2": "",
       "Col3": "",
       "Col4": "O",
       "Col5": "LB",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "10.5",
-      "Col8": "4",
+      "Col8": "3",
       "Col9": "11/10/2026",
       "Col10": "Official report 2026-11-10: out. Game 2026-11-13.",
       "Col11": "16"
-    },
-    {
-      "Col1": "Ejiro Egodogbare",
-      "Col2": "",
-      "Col3": "",
-      "Col4": "P",
-      "Col5": "DL",
-      "Col6": "TRUE",
-      "Col7": "10.6",
-      "Col8": "0",
-      "Col9": "11/10/2026",
-      "Col10": "Official report 2026-11-10: probable. Game 2026-11-13.",
-      "Col11": "0"
     },
     {
       "Col1": "Aaron Wolford",
@@ -151,7 +125,7 @@
       "Col3": "",
       "Col4": "O",
       "Col5": "OL",
-      "Col6": "TRUE",
+      "Col6": "FALSE",
       "Col7": "9.6",
       "Col8": "3",
       "Col9": "11/11/2026",
@@ -159,30 +133,56 @@
       "Col11": "0"
     },
     {
-      "Col1": "De'Marion Thomas",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "P",
-      "Col5": "DL",
-      "Col6": "TRUE",
-      "Col7": "11.4",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "11/10/2026",
-      "Col10": "Official report 2026-11-10: probable. Game 2026-11-13.",
-      "Col11": "8"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
-      "Col1": "Travis Buhake",
+      "Col1": "",
       "Col2": "",
       "Col3": "",
-      "Col4": "P",
-      "Col5": "DL",
-      "Col6": "TRUE",
-      "Col7": "11.9",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
       "Col8": "0",
-      "Col9": "11/12/2026",
-      "Col10": "Official report 2026-11-12: probable. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13.",
-      "Col11": "10"
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
+      "Col1": "",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "0",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
     },
     {
       "Col1": "",
@@ -887,6 +887,71 @@
       "Col11": ""
     },
     {
+      "Col1": "De'Marion Thomas",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DL",
+      "Col6": "",
+      "Col7": "11.4",
+      "Col8": "0",
+      "Col9": "11/14/2026",
+      "Col10": "Cleared from the injury/status report on 11/14/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Travis Buhake",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DL",
+      "Col6": "",
+      "Col7": "11.9",
+      "Col8": "0",
+      "Col9": "11/14/2026",
+      "Col10": "Cleared from the injury/status report on 11/14/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Ejiro Egodogbare",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DL",
+      "Col6": "",
+      "Col7": "10.6",
+      "Col8": "0",
+      "Col9": "11/14/2026",
+      "Col10": "Cleared from the injury/status report on 11/14/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Jd Rhym",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "Cleared",
+      "Col5": "DB",
+      "Col6": "",
+      "Col7": "13.8",
+      "Col8": "0",
+      "Col9": "11/14/2026",
+      "Col10": "Cleared from the injury/status report on 11/14/2026",
+      "Col11": ""
+    },
+    {
+      "Col1": "Jd Rhym",
+      "Col2": "",
+      "Col3": "",
+      "Col4": "",
+      "Col5": "",
+      "Col6": "",
+      "Col7": "",
+      "Col8": "",
+      "Col9": "",
+      "Col10": "",
+      "Col11": ""
+    },
+    {
       "Col1": "Keany Parks",
       "Col2": "",
       "Col3": "",
@@ -1411,41 +1476,23 @@
     [
       "",
       "#c92a39",
-      "Houston",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "Houston"
     ],
     [
       "",
-      "INJURY / STATUS UPDATE SHEET",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "INJURY / STATUS UPDATE SHEET"
     ],
     [
       "#:",
-      "10",
-      "# New:",
       "6",
+      "# New:",
+      "0",
       "Impact:",
-      "10",
+      "9",
       "Impact Avg:",
-      "1.0",
+      "1.4",
       "Impact Rank:",
-      "104",
-      ""
+      "110"
     ],
     [
       "Player Name",
@@ -1500,43 +1547,17 @@
       "0"
     ],
     [
-      "Jd Rhym",
-      "",
-      "",
-      "P",
-      "DB",
-      "TRUE",
-      "13.8",
-      "0",
-      "11/10/2026",
-      "Official report 2026-11-10: probable. Game 2026-11-13.",
-      "0"
-    ],
-    [
       "Carmycah Glass",
       "",
       "",
       "O",
       "LB",
-      "TRUE",
+      "FALSE",
       "10.5",
-      "4",
+      "3",
       "11/10/2026",
       "Official report 2026-11-10: out. Game 2026-11-13.",
       "16"
-    ],
-    [
-      "Ejiro Egodogbare",
-      "",
-      "",
-      "P",
-      "DL",
-      "TRUE",
-      "10.6",
-      "0",
-      "11/10/2026",
-      "Official report 2026-11-10: probable. Game 2026-11-13.",
-      "0"
     ],
     [
       "Aaron Wolford",
@@ -1544,7 +1565,7 @@
       "",
       "O",
       "OL",
-      "TRUE",
+      "FALSE",
       "9.6",
       "3",
       "11/11/2026",
@@ -1552,30 +1573,14 @@
       "0"
     ],
     [
-      "De'Marion Thomas",
       "",
       "",
-      "P",
-      "DL",
-      "TRUE",
-      "11.4",
-      "0",
-      "11/10/2026",
-      "Official report 2026-11-10: probable. Game 2026-11-13.",
-      "8"
-    ],
-    [
-      "Travis Buhake",
       "",
       "",
-      "P",
-      "DL",
-      "TRUE",
-      "11.9",
-      "0",
-      "11/12/2026",
-      "Official report 2026-11-12: probable. Game 2026-11-13. Previous context: Official report 2026-11-10: questionable. Game 2026-11-13.",
-      "10"
+      "",
+      "",
+      "",
+      "0"
     ],
     [
       "",
@@ -1585,10 +1590,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1598,10 +1600,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1611,10 +1610,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1624,10 +1620,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1635,12 +1628,29 @@
       "",
       "",
       "",
-      "FALSE",
-      "",
-      "0",
       "",
       "",
-      ""
+      "0"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0"
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "0"
     ],
     [
       "",
@@ -1650,10 +1660,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1663,10 +1670,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1676,10 +1680,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1689,10 +1690,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1702,10 +1700,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1715,10 +1710,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1728,10 +1720,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1741,10 +1730,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1754,10 +1740,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1767,10 +1750,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1780,10 +1760,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1793,10 +1770,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1806,10 +1780,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1819,10 +1790,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1832,10 +1800,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1845,10 +1810,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1858,10 +1820,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1871,10 +1830,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1884,10 +1840,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1897,10 +1850,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1910,10 +1860,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1923,10 +1870,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1936,10 +1880,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1949,10 +1890,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1962,10 +1900,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1975,10 +1910,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -1988,10 +1920,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2001,10 +1930,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2014,10 +1940,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2027,10 +1950,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2040,10 +1960,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2053,10 +1970,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2066,10 +1980,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2079,10 +1990,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2092,10 +2000,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2105,10 +2010,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2118,10 +2020,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2131,10 +2030,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2144,10 +2040,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2157,10 +2050,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2170,10 +2060,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2183,10 +2070,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2196,10 +2080,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2209,10 +2090,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2222,10 +2100,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2235,10 +2110,7 @@
       "",
       "FALSE",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "",
@@ -2248,10 +2120,17 @@
       "",
       "FALSE",
       "",
-      "0",
+      "0"
+    ],
+    [
       "",
       "",
-      ""
+      "",
+      "",
+      "",
+      "FALSE",
+      "",
+      "0"
     ],
     [
       "0",
@@ -2261,10 +2140,7 @@
       "",
       "",
       "",
-      "0",
-      "",
-      "",
-      ""
+      "0"
     ],
     [
       "Player Name",
@@ -2276,8 +2152,58 @@
       "Rating",
       "Impact",
       "Update Date",
-      "Update Notes",
-      ""
+      "Update Notes"
+    ],
+    [
+      "De'Marion Thomas",
+      "",
+      "",
+      "Cleared",
+      "DL",
+      "",
+      "11.4",
+      "0",
+      "11/14/2026",
+      "Cleared from the injury/status report on 11/14/2026"
+    ],
+    [
+      "Travis Buhake",
+      "",
+      "",
+      "Cleared",
+      "DL",
+      "",
+      "11.9",
+      "0",
+      "11/14/2026",
+      "Cleared from the injury/status report on 11/14/2026"
+    ],
+    [
+      "Ejiro Egodogbare",
+      "",
+      "",
+      "Cleared",
+      "DL",
+      "",
+      "10.6",
+      "0",
+      "11/14/2026",
+      "Cleared from the injury/status report on 11/14/2026"
+    ],
+    [
+      "Jd Rhym",
+      "",
+      "",
+      "Cleared",
+      "DB",
+      "",
+      "13.8",
+      "0",
+      "11/14/2026",
+      "Cleared from the injury/status report on 11/14/2026"
+    ],
+    [
+      "Jd Rhym"
     ],
     [
       "Keany Parks",
@@ -2289,8 +2215,7 @@
       "12.3",
       "0",
       "11/7/2026",
-      "Cleared from the injury/status report on 11/07/2026",
-      ""
+      "Cleared from the injury/status report on 11/07/2026"
     ],
     [
       "Tyson Turner",
@@ -2302,8 +2227,7 @@
       "10.5",
       "0",
       "11/7/2026",
-      "Cleared from the injury/status report on 11/07/2026",
-      ""
+      "Cleared from the injury/status report on 11/07/2026"
     ],
     [
       "Jd Rhym",
@@ -2315,8 +2239,7 @@
       "13.8",
       "0",
       "11/7/2026",
-      "Cleared from the injury/status report on 11/07/2026",
-      ""
+      "Cleared from the injury/status report on 11/07/2026"
     ],
     [
       "De'Marion Thomas",
@@ -2328,8 +2251,7 @@
       "11.3",
       "0",
       "11/7/2026",
-      "Cleared from the injury/status report on 11/07/2026",
-      ""
+      "Cleared from the injury/status report on 11/07/2026"
     ],
     [
       "Jaden Yates",
@@ -2341,8 +2263,7 @@
       "11.7",
       "3",
       "11/5/2026",
-      "Cleared from the injury/status report on 11/05/2026",
-      ""
+      "Cleared from the injury/status report on 11/05/2026"
     ],
     [
       "Conner Weigman",
@@ -2354,8 +2275,7 @@
       "15.5",
       "2",
       "11/5/2026",
-      "Cleared from the injury/status report on 11/05/2026",
-      ""
+      "Cleared from the injury/status report on 11/05/2026"
     ],
     [
       "Jd Rhym",
@@ -2367,8 +2287,7 @@
       "12.9",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026",
-      ""
+      "Cleared from the injury/status report on 10/24/2026"
     ],
     [
       "Tyson Turner",
@@ -2380,8 +2299,7 @@
       "10.5",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026",
-      ""
+      "Cleared from the injury/status report on 10/24/2026"
     ],
     [
       "Ejiro Egodogbare",
@@ -2393,8 +2311,7 @@
       "10.7",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026",
-      ""
+      "Cleared from the injury/status report on 10/24/2026"
     ],
     [
       "Hayden Wright",
@@ -2406,8 +2323,7 @@
       "9.5",
       "0",
       "10/24/2026",
-      "Cleared from the injury/status report on 10/24/2026",
-      ""
+      "Cleared from the injury/status report on 10/24/2026"
     ],
     [
       "Miller Malone",
@@ -2419,8 +2335,7 @@
       "11.5",
       "0",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Alvin Williamson Jr.",
@@ -2432,8 +2347,7 @@
       "8.8",
       "2",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Jaden Yates",
@@ -2445,8 +2359,7 @@
       "11.7",
       "3",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Jalen Mayo",
@@ -2458,8 +2371,7 @@
       "15.5",
       "4",
       "10/22/2026",
-      "Cleared from the injury/status report on 10/22/2026",
-      ""
+      "Cleared from the injury/status report on 10/22/2026"
     ],
     [
       "Ejiro Egodogbare",
@@ -2471,8 +2383,7 @@
       "10.7",
       "0",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026",
-      ""
+      "Cleared from the injury/status report on 10/18/2026"
     ],
     [
       "Jd Rhym",
@@ -2484,8 +2395,7 @@
       "12.9",
       "0",
       "10/18/2026",
-      "Cleared from the injury/status report on 10/18/2026",
-      ""
+      "Cleared from the injury/status report on 10/18/2026"
     ],
     [
       "Demetris Dean II",
@@ -2497,8 +2407,7 @@
       "11.3",
       "4",
       "10/17/2026",
-      "Cleared from the injury/status report on 10/17/2026",
-      ""
+      "Cleared from the injury/status report on 10/17/2026"
     ],
     [
       "Jacory Thurman",
@@ -2510,8 +2419,7 @@
       "8.3",
       "0",
       "10/15/2026",
-      "Cleared from the injury/status report on 10/15/2026",
-      ""
+      "Cleared from the injury/status report on 10/15/2026"
     ],
     [
       "Bryson Castile",
@@ -2523,8 +2431,7 @@
       "9.6",
       "0",
       "10/15/2026",
-      "Cleared from the injury/status report on 10/15/2026",
-      ""
+      "Cleared from the injury/status report on 10/15/2026"
     ],
     [
       "Ejiro Egodogbare",
@@ -2536,8 +2443,7 @@
       "10.5",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026",
-      ""
+      "Cleared from the injury/status report on 10/10/2026"
     ],
     [
       "Jd Rhym",
@@ -2549,8 +2455,7 @@
       "12.0",
       "0",
       "10/10/2026",
-      "Cleared from the injury/status report on 10/10/2026",
-      ""
+      "Cleared from the injury/status report on 10/10/2026"
     ],
     [
       "Evan Noel",
@@ -2562,8 +2467,7 @@
       "7.7",
       "0",
       "10/8/2026",
-      "Cleared from the injury/status report on 10/08/2026",
-      ""
+      "Cleared from the injury/status report on 10/08/2026"
     ],
     [
       "Myles Rowser",
@@ -2575,8 +2479,7 @@
       "13.6",
       "1",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Stephon Johnson",
@@ -2588,8 +2491,7 @@
       "12.5",
       "1",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Ejiro Egodogbare",
@@ -2601,8 +2503,7 @@
       "10.5",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Jd Rhym",
@@ -2614,8 +2515,7 @@
       "11.7",
       "0",
       "10/3/2026",
-      "Cleared from the injury/status report on 10/03/2026",
-      ""
+      "Cleared from the injury/status report on 10/03/2026"
     ],
     [
       "Quindario Lee",
@@ -2627,8 +2527,7 @@
       "10.5",
       "2",
       "10/1/2026",
-      "Cleared from the injury/status report on 10/01/2026",
-      ""
+      "Cleared from the injury/status report on 10/01/2026"
     ],
     [
       "Jeffrey Strozier Jr.",
@@ -2640,8 +2539,7 @@
       "5.3",
       "0",
       "10/1/2026",
-      "Cleared from the injury/status report on 10/01/2026",
-      ""
+      "Cleared from the injury/status report on 10/01/2026"
     ],
     [
       "Muizz Tounkara",
@@ -2653,8 +2551,7 @@
       "9.7",
       "0",
       "10/1/2026",
-      "Cleared from the injury/status report on 10/01/2026",
-      ""
+      "Cleared from the injury/status report on 10/01/2026"
     ],
     [
       "Mudassir Abdullah",
@@ -2666,8 +2563,7 @@
       "9.0",
       "0",
       "10/1/2026",
-      "Cleared from the injury/status report on 10/01/2026",
-      ""
+      "Cleared from the injury/status report on 10/01/2026"
     ],
     [
       "Myles Parker",
@@ -2679,8 +2575,7 @@
       "12.4",
       "1",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026",
-      ""
+      "Cleared from the injury/status report on 09/27/2026"
     ],
     [
       "Alvin Ebosele",
@@ -2692,8 +2587,7 @@
       "11.6",
       "1",
       "9/27/2026",
-      "Cleared from the injury/status report on 09/27/2026",
-      ""
+      "Cleared from the injury/status report on 09/27/2026"
     ],
     [
       "Ejiro Egodogbare",
@@ -2705,21 +2599,10 @@
       "10.5",
       "1",
       "9/19/2026",
-      "Cleared from the injury/status report on 09/19/2026",
-      ""
+      "Cleared from the injury/status report on 09/19/2026"
     ],
     [
-      "Ejiro Egodogbare",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "Ejiro Egodogbare"
     ],
     [
       "Jd Rhym",
@@ -2731,8 +2614,7 @@
       "11.9",
       "0",
       "9/19/2026",
-      "Cleared from the injury/status report on 09/19/2026",
-      ""
+      "Cleared from the injury/status report on 09/19/2026"
     ],
     [
       "JayShon Ridgle",
@@ -2744,8 +2626,7 @@
       "9.9",
       "0",
       "9/19/2026",
-      "Cleared from the injury/status report on 09/19/2026",
-      ""
+      "Cleared from the injury/status report on 09/19/2026"
     ],
     [
       "Drew Terrill",
@@ -2757,8 +2638,7 @@
       "14.3",
       "0",
       "9/15/2026",
-      "Cleared from the injury/status report on 09/15/2026",
-      ""
+      "Cleared from the injury/status report on 09/15/2026"
     ],
     [
       "Luke McGary",
@@ -2770,8 +2650,7 @@
       "10.6",
       "2",
       "9/14/2026",
-      "Cleared from the injury/status report on 09/14/2026",
-      ""
+      "Cleared from the injury/status report on 09/14/2026"
     ],
     [
       "Conner Weigman",
@@ -2783,8 +2662,7 @@
       "14.5",
       "1",
       "8/25/2026",
-      "Cleared from the injury/status report on 08/25/2026",
-      ""
+      "Cleared from the injury/status report on 08/25/2026"
     ],
     [
       "Luke McGary",
@@ -2796,10 +2674,9 @@
       "11.3",
       "0",
       "8/10/2026",
-      "Cleared from the injury/status report on 08/10/2026",
-      ""
+      "Cleared from the injury/status report on 08/10/2026"
     ]
   ],
-  "count": 107,
-  "timestamp": "2026-11-14T12:03:50.820Z"
+  "count": 112,
+  "timestamp": "2026-11-14T13:05:30.196Z"
 }
